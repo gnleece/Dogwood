@@ -25,51 +25,51 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 
 int main(void)
 {
-	GLFWwindow* window = Setup();
+    GLFWwindow* window = Setup();
     
     while (!glfwWindowShouldClose(window))
     {
-		Render(window);
+        Render(window);
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
 
-	Cleanup(window);
+    Cleanup(window);
     exit(EXIT_SUCCESS);
 }
 
 GLFWwindow* Setup()
 {
-	glfwSetErrorCallback(error_callback);
+    glfwSetErrorCallback(error_callback);
     if (!glfwInit())
         exit(EXIT_FAILURE);
 
-	GLFWwindow* window = glfwCreateWindow(640, 480, "Simple example", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(640, 480, "Simple example", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
         exit(EXIT_FAILURE);
     }
 
-	glfwMakeContextCurrent(window);
+    glfwMakeContextCurrent(window);
     glfwSetKeyCallback(window, key_callback);
 
-	return window;
+    return window;
 }
 
 void Cleanup(GLFWwindow* window)
 {
-	glfwDestroyWindow(window);
+    glfwDestroyWindow(window);
     glfwTerminate();
 }
 
 void Render(GLFWwindow* window)
 {
-	// GLFW TEST CODE:
-	float ratio;
+    // GLFW TEST CODE:
+    float ratio;
     int width, height;
     
-	glfwGetFramebufferSize(window, &width, &height);
+    glfwGetFramebufferSize(window, &width, &height);
     ratio = width / (float) height;
     glViewport(0, 0, width, height);
     glClear(GL_COLOR_BUFFER_BIT);
@@ -88,10 +88,10 @@ void Render(GLFWwindow* window)
     glColor3f(0.f, 0.f, 1.f);
     glVertex3f(0.f, 0.6f, 0.f);
 
-	GLUquadricObj* quad;
+    GLUquadricObj* quad;
     quad = gluNewQuadric();
-	gluSphere(quad, 0.5, 20, 20);
-	gluDeleteQuadric(quad);
+    gluSphere(quad, 0.5, 20, 20);
+    gluDeleteQuadric(quad);
 
     glEnd();
 }
