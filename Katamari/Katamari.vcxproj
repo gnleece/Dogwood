@@ -86,10 +86,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Algebra.h" />
+    <ClInclude Include="Engine\Primitive.h" />
+    <ClInclude Include="Engine\SceneNode.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Algebra.cpp" />
+    <ClCompile Include="Engine\Primitive.cpp" />
+    <ClCompile Include="Engine\SceneNode.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -4,6 +4,7 @@
 #include <string>
 
 #include "Algebra.h"
+#include "Primitive.h"
 
 using std::string;
 
@@ -13,6 +14,8 @@ typedef std::list<SceneNode*> NodeList;
 class SceneNode
 {
 public:
+    virtual void Render();
+    
     const Matrix4x4& GetTransform() const { return m_transform; }
     void SetTransform(const Matrix4x4& m) { m_transform = m; }
 
@@ -34,6 +37,6 @@ class GeometryNode : public SceneNode
 public:
 
 protected:
-    //Material*     m_material;
-    //Primitive*    m_primitive;
+    Primitive*    m_primitive;
+    //Material*   m_material;
 };
