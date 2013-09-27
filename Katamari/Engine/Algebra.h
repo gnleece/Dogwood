@@ -72,14 +72,14 @@ public:
         return m_values[0]*other.m_values[0] +
                m_values[1]*other.m_values[1] +
                m_values[2]*other.m_values[2];
-	}
+    }
 
     Vector3 Cross(const Vector3& other) const
     {
         return Vector3(m_values[1]*other.m_values[2] - m_values[2]*other.m_values[1],
                        m_values[2]*other.m_values[0] - m_values[0]*other.m_values[2],
                        m_values[0]*other.m_values[1] - m_values[1]*other.m_values[0]);
-	}
+    }
 
     bool Normalize();
 
