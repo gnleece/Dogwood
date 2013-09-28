@@ -3,6 +3,8 @@
 #include <cmath>
 #include <memory>
 
+#define M_PI 3.141592653589
+
 enum E_AXIS { AXIS_X, AXIS_Y, AXIS_Z };
 
 class Point3
@@ -55,6 +57,15 @@ public:
         m_values[2] = z;
     }
 
+    float& operator[](int i)
+    {
+        return m_values[i];
+    }
+    float operator[](int i) const
+    {
+        return m_values[i];
+    }
+
     float MagnitudeSqrd()
     {
         return m_values[0]*m_values[0] +
@@ -105,6 +116,15 @@ public:
         m_values[3] = w;
     }
 
+    float& operator[](int i)
+    {
+        return m_values[i];
+    }
+    float operator[](int i) const
+    {
+        return m_values[i];
+    }
+
 private:
     float m_values[4];
 };
@@ -119,6 +139,37 @@ public:
         m_values[5] = 1.0f;
         m_values[10] = 1.0f;
         m_values[15] = 1.0f;
+    }
+    Matrix4x4(Vector4 row0, Vector4 row1, Vector4 row2, Vector4 row3)
+    {
+        m_values[0] = row0[0];
+        m_values[1] = row0[1];
+        m_values[2] = row0[2];
+        m_values[3] = row0[3];
+
+        m_values[4] = row1[0];
+        m_values[5] = row1[1];
+        m_values[6] = row1[2];
+        m_values[7] = row1[3];
+
+        m_values[8] = row2[0];
+        m_values[9] = row2[1];
+        m_values[10] = row2[2];
+        m_values[11] = row2[3];
+
+        m_values[12] = row3[0];
+        m_values[13] = row3[1];
+        m_values[14] = row3[2];
+        m_values[15] = row3[3];
+    }
+
+    const float *Start() const
+    {
+        return (float*)m_values;
+    }
+    const float *End() const
+    {
+        return (float*)(m_values + m_size);
     }
 
 private:
