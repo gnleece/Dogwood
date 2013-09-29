@@ -7,9 +7,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include "Engine\Primitive.h"
+
 GLFWwindow* Setup();
 void Cleanup(GLFWwindow* window);
-void Render(GLFWwindow* window);
+void Render(GLFWwindow* window, Sphere& sphere);
 
 static void error_callback(int error, const char* description)
 {
@@ -25,9 +27,12 @@ int main(void)
 {
     GLFWwindow* window = Setup();
     
+    Sphere testSphere;
+    testSphere.Compile();
+
     while (!glfwWindowShouldClose(window))
     {
-        Render(window);
+        Render(window, testSphere);
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
@@ -87,7 +92,7 @@ void Cleanup(GLFWwindow* window)
     glfwTerminate();
 }
 
-void Render(GLFWwindow* window)
+void Render(GLFWwindow* window, Sphere& sphere)
 {
     glClear(GL_COLOR_BUFFER_BIT);
     glMatrixMode(GL_PROJECTION);
@@ -113,21 +118,7 @@ void Render(GLFWwindow* window)
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    // GLFW TEST CODE:
-    glRotatef((float) glfwGetTime() * 50.f, 0.f, 0.f, 1.f);
-    glBegin(GL_TRIANGLES);
-    glColor3f(1.f, 0.f, 0.f);
-    glVertex3f(-0.6f, -0.4f, 0.f);
-    glColor3f(0.f, 1.f, 0.f);
-    glVertex3f(0.6f, -0.4f, 0.f);
-    glColor3f(0.f, 0.f, 1.f);
-    glVertex3f(0.f, 0.6f, 0.f);
-
-    // test sphere
-    GLUquadricObj* quad;
-    quad = gluNewQuadric();
-    gluSphere(quad, 0.3, 20, 20);
-    gluDeleteQuadric(quad);
+    sphere.Render();
 
     // Cleanup
     glMatrixMode(GL_PROJECTION);
