@@ -1,6 +1,9 @@
 // main.cpp : Defines the entry point for the console application.
 //
 
+#define GLEW_STATIC
+#include <GL/glew.h>
+
 #define GLFW_INCLUDE_GLU
 #include <GLFW/glfw3.h>
 
@@ -82,6 +85,9 @@ GLFWwindow* Setup()
     glLoadIdentity();
     glViewport(0, 0, width, height);
     gluPerspective(40.0, ratio, 0.1, 1000.0);
+
+    glewExperimental = GL_TRUE;
+    glewInit();
 
     return window;
 }
