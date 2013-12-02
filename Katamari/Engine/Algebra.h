@@ -5,7 +5,7 @@
 
 #define M_PI 3.141592653589
 
-enum E_AXIS { AXIS_X, AXIS_Y, AXIS_Z };
+enum AXIS { AXIS_X, AXIS_Y, AXIS_Z };
 
 class Point3
 {
@@ -134,6 +134,7 @@ class Matrix4x4
 public:
     Matrix4x4()
     {
+        // default is identity matrix
         std::fill(m_values, m_values+m_size, 0.0f);
         m_values[0] = 1.0f;
         m_values[5] = 1.0f;
@@ -171,6 +172,10 @@ public:
     {
         return (float*)(m_values + m_size);
     }
+
+    static Matrix4x4 Rotation(float angle, AXIS axis);
+    static Matrix4x4 Translation(const Vector3& displacement);
+    static Matrix4x4 Scaling(const Vector3& scale);
 
 private:
     static const int m_size = 16;
