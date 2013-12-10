@@ -14,10 +14,13 @@ bool Vector3::Normalize()
     return true;
 }
 
+// Return a matrix to represent a counterclockwise rotation of "angle" degrees
 // TODO (gnleece) allow rotation about arbitrary axes
 Matrix4x4 Matrix4x4::Rotation(float angle, AXIS axis)
 {
     Matrix4x4 r;
+    angle = DegreesToRadians(angle);
+
     switch(axis)
     {
         case AXIS_X:
@@ -62,4 +65,9 @@ Matrix4x4 Matrix4x4::Scaling(const Vector3& scale)
                Vector4(0, 0, scale[2], 0),
                Vector4(0, 0, 0, 1) );
   return s;
+}
+
+float DegreesToRadians(float degrees)
+{
+    return degrees*M_PI/180;
 }

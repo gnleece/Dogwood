@@ -4,7 +4,6 @@ class Primitive
 {
 public:
     Primitive();
-    virtual void Compile() = 0;
     virtual void Render() = 0;
 
 protected:
@@ -14,7 +13,6 @@ protected:
 class Sphere : public Primitive
 {
 public:
-    virtual void Compile();
     virtual void Render();
 
 private:
@@ -24,13 +22,11 @@ private:
 class Cube : public Primitive
 {
 public:
-    virtual void Compile();
     virtual void Render();
 };
 
 class Cylinder : public Primitive
 {
 public:
-    virtual void Compile();
     virtual void Render();
 };

@@ -181,3 +181,5 @@ private:
     static const int m_size = 16;
     float m_values[m_size];
 };
+
+float DegreesToRadians(float degrees);
