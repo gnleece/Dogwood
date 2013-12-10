@@ -1,1 +1,3 @@
 * Debug logging (with streams)
+* Reorganize Engine files into folders?
+* Engine needs a name!
