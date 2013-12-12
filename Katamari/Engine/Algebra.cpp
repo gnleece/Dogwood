@@ -126,7 +126,7 @@ Vector3 operator -(const Vector3& a, const Vector3& b)
   return Vector3(a[0]-b[0], a[1]-b[1], a[2]-b[2]);
 }
 
-Vector3 operator *(double s, const Vector3& v)
+Vector3 operator *(float s, const Vector3& v)
 {
   return Vector3(s*v[0], s*v[1], s*v[2]);
 }
@@ -206,7 +206,7 @@ Vector4 operator -(const Vector4& a, const Vector4& b)
   return Vector4(a[0]-b[0], a[1]-b[1], a[2]-b[2], a[3]-b[3]);
 }
 
-Vector4 operator *(double s, const Vector4& v)
+Vector4 operator *(float s, const Vector4& v)
 {
   return Vector4(s*v[0], s*v[1], s*v[2], s*v[3]);
 }
@@ -216,6 +216,77 @@ void Vector4::DebugPrint()
     printf("%f\t%f\t%f\t%f\n", m_values[0], m_values[1], m_values[2], m_values[3]);
 }
 
+Matrix4x4::Matrix4x4()
+{
+    // default is identity matrix
+    std::fill(m_values, m_values+m_size, 0.0f);
+    m_values[0] = 1.0f;
+    m_values[5] = 1.0f;
+    m_values[10] = 1.0f;
+    m_values[15] = 1.0f;
+}
+
+Matrix4x4::Matrix4x4(const Matrix4x4& other)
+{
+    //TODO use copy for Vectors/Points as well
+    std::copy(other.m_values, other.m_values + m_size, m_values);
+}
+
+Matrix4x4::Matrix4x4(Vector4 row0, Vector4 row1, Vector4 row2, Vector4 row3)
+{
+    m_values[0] = row0[0];
+    m_values[1] = row0[1];
+    m_values[2] = row0[2];
+    m_values[3] = row0[3];
+
+    m_values[4] = row1[0];
+    m_values[5] = row1[1];
+    m_values[6] = row1[2];
+    m_values[7] = row1[3];
+
+    m_values[8] = row2[0];
+    m_values[9] = row2[1];
+    m_values[10] = row2[2];
+    m_values[11] = row2[3];
+
+    m_values[12] = row3[0];
+    m_values[13] = row3[1];
+    m_values[14] = row3[2];
+    m_values[15] = row3[3];
+}
+
+Matrix4x4 Matrix4x4::operator =(const Matrix4x4 other)
+{
+    std::copy(other.m_values, other.m_values + m_size, m_values);
+    return *this;
+}
+
+const float* Matrix4x4::Start() const
+{
+    return (float*)m_values;
+}
+const float* Matrix4x4::End() const
+{
+    return (float*)(m_values + m_size);
+}
+
+Vector4 Matrix4x4::Row(int row) const
+{
+    return Vector4(m_values[4*row], m_values[4*row+1], m_values[4*row+2], m_values[4*row+3]);
+}
+float* Matrix4x4::Row(int row)
+{
+    return (float*)m_values + 4*row;
+}
+
+Vector4 Matrix4x4::operator[](int row) const
+{
+    return Row(row);
+}
+float* Matrix4x4::operator[](int row)
+{
+    return Row(row);
+}
 
 // Return a matrix to represent a counterclockwise rotation of "angle" degrees
 // TODO (gnleece) allow rotation about arbitrary axes
@@ -271,7 +342,7 @@ Matrix4x4 Matrix4x4::Scaling(const Vector3& scale)
 }
 
 //TODO oh god fix this
-Vector4 Matrix4x4::getColumn(size_t col) const
+Vector4 Matrix4x4::getColumn(int col) const
 {
     return Vector4(m_values[col], m_values[4+col], m_values[8+col], m_values[12+col]);
 }
@@ -286,7 +357,7 @@ Matrix4x4 Matrix4x4::Transpose() const
  * Define some helper functions for matrix inversion.
  */
 
-static void swaprows(Matrix4x4& a, size_t r1, size_t r2)
+static void swaprows(Matrix4x4& a, int r1, int r2)
 {
     //printf("Swapping row %d and %d\n", r1, r2);
     for (int col = 0; col < 4; col++)
@@ -297,7 +368,7 @@ static void swaprows(Matrix4x4& a, size_t r1, size_t r2)
     }
 }
 
-static void dividerow(Matrix4x4& a, size_t r, float fac)
+static void dividerow(Matrix4x4& a, int r, float fac)
 {
   a[r][0] /= fac;
   a[r][1] /= fac;
@@ -305,7 +376,7 @@ static void dividerow(Matrix4x4& a, size_t r, float fac)
   a[r][3] /= fac;
 }
 
-static void submultrow(Matrix4x4& a, size_t dest, size_t src, float fac)
+static void submultrow(Matrix4x4& a, int dest, int src, float fac)
 {
   a[dest][0] -= fac * a[src][0];
   a[dest][1] -= fac * a[src][1];
@@ -335,9 +406,9 @@ Matrix4x4 Matrix4x4::Invert() const
      eliminating above and below diag */
 
   /* Find largest pivot in column j among rows j..3 */
-  for(size_t j = 0; j < 4; ++j) { 
-    size_t i1 = j; /* Row with largest pivot candidate */
-    for(size_t i = j + 1; i < 4; ++i) {
+  for(int j = 0; j < 4; ++j) { 
+    int i1 = j; /* Row with largest pivot candidate */
+    for(int i = j + 1; i < 4; ++i) {
       if(fabs(a[i][j]) > fabs(a[i1][j])) {
         i1 = i;
       }
@@ -358,7 +429,7 @@ Matrix4x4 Matrix4x4::Invert() const
 
     /* Eliminate off-diagonal elems in col j of a, doing identical 
        ops to b */
-    for(size_t i = 0; i < 4; ++i) {
+    for(int i = 0; i < 4; ++i) {
       if(i != j) {
         submultrow(ret, i, j, a[i][j]);
         submultrow(a, i, j, a[i][j]);
@@ -405,5 +476,5 @@ void Matrix4x4::DebugPrint()
 
 float DegreesToRadians(float degrees)
 {
-    return degrees*M_PI/180;
+    return degrees*M_PI/180.0f;
 }
