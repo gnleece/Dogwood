@@ -7,9 +7,9 @@
 #define GLFW_INCLUDE_GLU
 #include <GLFW/glfw3.h>
 
-#include <ctime>
 #include <stdlib.h>
 #include <stdio.h>
+#include <time.h>
 
 #include "Engine\Algebra.h"
 #include "Engine\Primitive.h"
@@ -17,7 +17,6 @@
 
 GLFWwindow* Setup();
 void Cleanup(GLFWwindow* window);
-void Render(GLFWwindow* window);
 
 static void error_callback(int error, const char* description)
 {
@@ -32,14 +31,49 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 int main(void)
 {
     GLFWwindow* window = Setup();
-
-    // Open.gl tutorial setup
-    float vertices[] = {
-         0.0f,  0.5f, 1.0f, 0.0f, 0.0f, // Vertex 1: Red
-         0.5f, -0.5f, 0.0f, 1.0f, 0.0f, // Vertex 2: Green
-        -0.5f, -0.5f, 0.0f, 0.0f, 1.0f  // Vertex 3: Blue
+    
+    // cube with random vertex colours
+    // TODO this is super redundant. reuse vertices!
+    static const GLfloat g_vertex_buffer_data[] = 
+    {
+        -1.0f,-1.0f,-1.0f, 1.0f, 0.0f, 0.0f,// triangle 1 : begin
+        -1.0f,-1.0f, 1.0f, 1.0f, 0.2f, 0.0f,
+        -1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.2f,// triangle 1 : end
+        1.0f, 1.0f,-1.0f, 1.0f, 0.2f, 0.2f,// triangle 2 : begin
+        -1.0f,-1.0f,-1.0f,1.0f, 0.4f, 0.0f,
+        -1.0f, 1.0f,-1.0f,1.0f, 0.0f, 0.4f, // triangle 2 : end
+        1.0f,-1.0f, 1.0f,1.0f, 0.4f, 0.4f,
+        -1.0f,-1.0f,-1.0f,1.0f, 0.6f, 0.0f,
+        1.0f,-1.0f,-1.0f,1.0f, 0.0f, 0.6f,
+        1.0f, 1.0f,-1.0f,1.0f, 0.6f, 0.6f,
+        1.0f,-1.0f,-1.0f,1.0f, 0.8f, 0.0f,
+        -1.0f,-1.0f,-1.0f,1.0f, 0.0f, 0.8f,
+        -1.0f,-1.0f,-1.0f,1.0f, 0.8f, 0.8f,
+        -1.0f, 1.0f, 1.0f,1.0f, 1.0f, 0.0f,
+        -1.0f, 1.0f,-1.0f,1.0f, 0.0f, 1.0f,
+        1.0f,-1.0f, 1.0f,1.0f, 1.0f, 1.0f,
+        -1.0f,-1.0f, 1.0f,0.0f, 1.0f, 0.0f,
+        -1.0f,-1.0f,-1.0f,0.0f, 0.0f, 1.0f,
+        -1.0f, 1.0f, 1.0f,0.0f, 0.2f, 0.0f,
+        -1.0f,-1.0f, 1.0f,0.0f, 0.0f, 0.2f,
+        1.0f,-1.0f, 1.0f,0.0f, 0.2f, 0.2f,
+        1.0f, 1.0f, 1.0f,0.0f, 0.4f, 0.0f,
+        1.0f,-1.0f,-1.0f,0.0f, 0.0f, 0.4f,
+        1.0f, 1.0f,-1.0f,0.0f, 0.4f, 0.4f,
+        1.0f,-1.0f,-1.0f,0.0f, 0.6f, 0.0f,
+        1.0f, 1.0f, 1.0f,0.0f, 0.0f, 0.6f,
+        1.0f,-1.0f, 1.0f,0.0f, 0.6f, 0.6f,
+        1.0f, 1.0f, 1.0f,0.0f, 0.8f, 0.0f,
+        1.0f, 1.0f,-1.0f,0.0f, 0.0f, 0.8f,
+        -1.0f, 1.0f,-1.0f,0.0f, 0.8f, 0.8f,
+        1.0f, 1.0f, 1.0f,0.5f, 0.2f, 0.0f,
+        -1.0f, 1.0f,-1.0f,0.5f, 0.0f, 0.2f,
+        -1.0f, 1.0f, 1.0f,0.5f, 0.2f, 0.2f,
+        1.0f, 1.0f, 1.0f,0.5f, 0.4f, 0.0f,
+        -1.0f, 1.0f, 1.0f,0.5f, 0.0f, 0.4f,
+        1.0f,-1.0f, 1.0f,0.5f, 0.4f, 0.4f,
     };
-
+    
     // Create Vertex Array Object
     GLuint vao;
     glGenVertexArrays(1, &vao);
@@ -48,7 +82,7 @@ int main(void)
     GLuint vbo;
     glGenBuffers(1, &vbo);                  // Generate buffer
     glBindBuffer(GL_ARRAY_BUFFER, vbo);     // Make buffer active
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW); // Copy data to buffer
+    glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW); // Copy data to buffer
 
     GLuint vertexShader = loadShaderFromFile("VertexTest.glsl", GL_VERTEX_SHADER);
     GLuint fragmentShader = loadShaderFromFile("FragmentTest.glsl", GL_FRAGMENT_SHADER);
@@ -61,29 +95,49 @@ int main(void)
     glLinkProgram(shaderProgram);
     glUseProgram(shaderProgram);
 
-    Matrix4x4 m = Matrix4x4::Rotation(180, AXIS_Z);
-    GLint uniTrans = glGetUniformLocation(shaderProgram, "model");
-    glUniformMatrix4fv(uniTrans, 1, GL_FALSE, m.Start());
+    
+    GLint uniModel = glGetUniformLocation(shaderProgram, "model");
+
+    // prepare view matrix
+    Matrix4x4 view = Matrix4x4::LookAt(Vector3(0.0, 0.0, 0.5),
+                                       Vector3(0.0, 0.0, 0.0),
+                                       Vector3(0.0, 1.0, 0.0));
+    GLint uniView = glGetUniformLocation(shaderProgram, "view");
+    glUniformMatrix4fv(uniView, 1, GL_FALSE, view.Transpose().Start());
+
+    // prepare (perspective) projection matrix
+    Matrix4x4 proj = Matrix4x4::Projection(45.0f, 800.0f / 600.0f, 0.1f, 1000.0f);
+    GLint uniProj = glGetUniformLocation(shaderProgram, "proj");
+    glUniformMatrix4fv(uniProj, 1, GL_FALSE, proj.Transpose().Start());
+
+    // Enable depth test
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);     // Accept fragment if it closer to the camera than the former one
 
     while (!glfwWindowShouldClose(window))
     {
-
         // Specify the layout of the vertex data
         GLint posAttrib = glGetAttribLocation(shaderProgram, "position");
         glEnableVertexAttribArray(posAttrib);
-        glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 5*sizeof(float), 0);
+        glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 6*sizeof(float), 0);
 
         GLint colAttrib = glGetAttribLocation(shaderProgram, "color");
         glEnableVertexAttribArray(colAttrib);
         glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE,
-                               5*sizeof(float), (void*)(2*sizeof(float)));
+                               6*sizeof(float), (void*)(3*sizeof(float)));
 
         // Clear the screen to black
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
-        
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        Matrix4x4 t = Matrix4x4::Translation(Vector3(0,0,-10));
+        Matrix4x4 r = Matrix4x4::Rotation(45, AXIS_Y);
+        r = r*Matrix4x4::Rotation(45, AXIS_X);
+        Matrix4x4 m = t*r;
+        glUniformMatrix4fv(uniModel, 1, GL_FALSE, m.Transpose().Start());
+
         // Draw a triangle from the 3 vertices
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
         glfwSwapBuffers(window);
         glfwPollEvents();
 
@@ -139,12 +193,12 @@ GLFWwindow* Setup()
 
     glfwGetFramebufferSize(window, &width, &height);
     ratio = width / (float) height;
-
+    /*
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glViewport(0, 0, width, height);
     gluPerspective(40.0, ratio, 0.1, 1000.0);
-
+    */
     glewExperimental = GL_TRUE;
     glewInit();
 
@@ -155,37 +209,4 @@ void Cleanup(GLFWwindow* window)
 {
     glfwDestroyWindow(window);
     glfwTerminate();
-}
-
-void Render(GLFWwindow* window)
-{
-    glClear(GL_COLOR_BUFFER_BIT);
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
-
-    // Set the initial camera
-    glTranslated(0.0, 0, -5.0);
-    glRotated(10,1.0,0.0,0.0);
-
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-
-    // Position the camera
-    float m_zoom = 1.0f;
-    glScaled(m_zoom,m_zoom,m_zoom);
-    //glMultMatrixd(m_camera.transpose().begin());
-
-    // Position the light source
-    GLfloat light_position[] = {1.0,1.0,1.0,0.0};
-    glLightfv(GL_LIGHT0, GL_POSITION, light_position );
-
-    // DRAW SCENE
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-
-    // Cleanup
-    glMatrixMode(GL_PROJECTION);
-    glPopMatrix();
-
-    glEnd();
 }
