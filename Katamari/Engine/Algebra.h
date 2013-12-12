@@ -98,6 +98,31 @@ private:
     float m_values[3];
 };
 
+inline Vector3 operator *(double s, const Vector3& v)
+{
+  return Vector3(s*v[0], s*v[1], s*v[2]);
+}
+
+inline Vector3 operator +(const Vector3& a, const Vector3& b)
+{
+  return Vector3(a[0]+b[0], a[1]+b[1], a[2]+b[2]);
+}
+
+inline Vector3 operator -(const Vector3& a, const Vector3& b)
+{
+  return Vector3(a[0]-b[0], a[1]-b[1], a[2]-b[2]);
+}
+
+inline Vector3 cross(const Vector3& a, const Vector3& b) 
+{
+  return a.Cross(b);
+}
+
+inline float dot(const Vector3& a, const Vector3& b)
+{
+    return a.Dot(b);
+}
+
 class Vector4
 {
 public:
@@ -115,6 +140,13 @@ public:
         m_values[2] = z;
         m_values[3] = w;
     }
+    Vector4(Vector3& v, float w)
+    {
+        m_values[0] = v[0];
+        m_values[1] = v[1];
+        m_values[2] = v[2];
+        m_values[3] = w;
+    }
 
     float& operator[](int i)
     {
@@ -128,6 +160,21 @@ public:
 private:
     float m_values[4];
 };
+
+inline Vector4 operator *(double s, const Vector4& v)
+{
+  return Vector4(s*v[0], s*v[1], s*v[2], s*v[3]);
+}
+
+inline Vector4 operator +(const Vector4& a, const Vector4& b)
+{
+  return Vector4(a[0]+b[0], a[1]+b[1], a[2]+b[2], a[3]+b[3]);
+}
+
+inline Vector4 operator -(const Vector4& a, const Vector4& b)
+{
+  return Vector4(a[0]-b[0], a[1]-b[1], a[2]-b[2], a[3]-b[3]);
+}
 
 class Matrix4x4
 {
@@ -173,13 +220,57 @@ public:
         return (float*)(m_values + m_size);
     }
 
+    Vector4 getRow(size_t row) const
+    {
+    return Vector4(m_values[4*row], m_values[4*row+1], m_values[4*row+2], m_values[4*row+3]);
+    }
+    float *getRow(size_t row) 
+    {
+    return (float*)m_values + 4*row;
+    }
+
+    Vector4 operator[](size_t row) const
+    {
+    return getRow(row);
+    }
+    float *operator[](size_t row) 
+    {
+    return getRow(row);
+    }
+
+    //TODO quick hack fix this
+    Vector4 getColumn(size_t col) const;
+    Matrix4x4 Transpose() const;
+    Matrix4x4 Invert() const;
+
+    // TODO put these somewhere else maybe?
     static Matrix4x4 Rotation(float angle, AXIS axis);
     static Matrix4x4 Translation(const Vector3& displacement);
     static Matrix4x4 Scaling(const Vector3& scale);
+    static Matrix4x4 LookAt(Vector3 eye, Vector3 target, Vector3 up);
+    static Matrix4x4 Projection(float FOV, float aspect, float near, float far);
+
+    void DebugPrint();
 
 private:
     static const int m_size = 16;
     float m_values[m_size];
 };
 
+//TODO hack fix me
+inline Matrix4x4 operator *(const Matrix4x4& a, const Matrix4x4& b)
+{
+  Matrix4x4 ret;
+
+  for(size_t i = 0; i < 4; ++i) {
+    Vector4 row = a.getRow(i);
+		
+    for(size_t j = 0; j < 4; ++j) {
+      ret[i][j] = row[0] * b[0][j] + row[1] * b[1][j] + 
+        row[2] * b[2][j] + row[3] * b[3][j];
+    }
+  }
+
+  return ret;
+}
 float DegreesToRadians(float degrees);
