@@ -93,13 +93,6 @@ public:
     Matrix4x4 Transpose() const;
     Matrix4x4 Inverse() const;
 
-    // TODO put these somewhere else maybe?
-    static Matrix4x4 Rotation(float angle, AXIS axis);
-    static Matrix4x4 Translation(const Vector3& displacement);
-    static Matrix4x4 Scaling(const Vector3& scale);
-    static Matrix4x4 LookAt(Vector3 eye, Vector3 target, Vector3 up);
-    static Matrix4x4 Projection(float FOV, float aspect, float near, float far);
-
     void DebugPrint();
 
 private:

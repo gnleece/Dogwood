@@ -12,6 +12,7 @@
 #include <time.h>
 
 #include "Engine\Math\Algebra.h"
+#include "Engine\Math\Transformations.h"
 #include "Engine\Primitive.h"
 #include "Engine\Util.h"
 
@@ -99,14 +100,14 @@ int main(void)
     GLint uniModel = glGetUniformLocation(shaderProgram, "model");
 
     // prepare view matrix
-    Matrix4x4 view = Matrix4x4::LookAt(Vector3(0.0, 0.0, 0.5),
-                                       Vector3(0.0, 0.0, 0.0),
-                                       Vector3(0.0, 1.0, 0.0));
+    Matrix4x4 view = LookAt(Vector3(0.0, 0.0, 0.5),
+                            Vector3(0.0, 0.0, 0.0),
+                            Vector3(0.0, 1.0, 0.0));
     GLint uniView = glGetUniformLocation(shaderProgram, "view");
     glUniformMatrix4fv(uniView, 1, GL_FALSE, view.Transpose().Start());
 
-    // prepare (perspective) projection matrix
-    Matrix4x4 proj = Matrix4x4::Projection(45.0f, 800.0f / 600.0f, 0.1f, 1000.0f);
+    // prepare projection matrix
+    Matrix4x4 proj = PerspectiveProjection(45.0f, 800.0f / 600.0f, 0.1f, 1000.0f);
     GLint uniProj = glGetUniformLocation(shaderProgram, "proj");
     glUniformMatrix4fv(uniProj, 1, GL_FALSE, proj.Transpose().Start());
 
@@ -130,9 +131,9 @@ int main(void)
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        Matrix4x4 t = Matrix4x4::Translation(Vector3(0,0,-10));
-        Matrix4x4 r = Matrix4x4::Rotation(45, AXIS_Y);
-        r = r*Matrix4x4::Rotation(45, AXIS_X);
+        Matrix4x4 t = Translation(Vector3(0,0,-10));
+        Matrix4x4 r = Rotation(45, AXIS_Y);
+        r = r*Rotation(45, AXIS_X);
         Matrix4x4 m = t*r;
         glUniformMatrix4fv(uniModel, 1, GL_FALSE, m.Transpose().Start());
 
