@@ -10,32 +10,10 @@ enum AXIS { AXIS_X, AXIS_Y, AXIS_Z };
 class Point3
 {
 public:
-    Point3()
-    {
-        m_values[0] = 0.0f;
-        m_values[1] = 0.0f;
-        m_values[2] = 0.0f;
-    }
-    Point3(const Point3& other)
-    {
-        m_values[0] = other.m_values[0];
-        m_values[1] = other.m_values[1];
-        m_values[2] = other.m_values[2];
-    }
-    Point3(float x, float y, float z)
-    {
-        m_values[0] = x;
-        m_values[1] = y;
-        m_values[2] = z;
-    }
-
-    Point3& operator =(const Point3 other)
-    {
-        m_values[0] = other.m_values[0];
-        m_values[1] = other.m_values[1];
-        m_values[2] = other.m_values[2];
-        return *this;
-    }
+    Point3();
+    Point3(const Point3& other);
+    Point3(float x, float y, float z);
+    Point3& operator =(const Point3 other);
 
 private:
     float m_values[3];
@@ -44,55 +22,22 @@ private:
 class Vector3
 {
 public:
-    Vector3()
-    {
-        m_values[0] = 0.0f;
-        m_values[1] = 0.0f;
-        m_values[2] = 0.0f;
-    }
-    Vector3(float x, float y, float z)
-    {
-        m_values[0] = x;
-        m_values[1] = y;
-        m_values[2] = z;
-    }
+    Vector3();
+    Vector3(const Vector3& other);
+    Vector3(float x, float y, float z);
+    Vector3& operator =(const Vector3 other);
 
-    float& operator[](int i)
-    {
-        return m_values[i];
-    }
-    float operator[](int i) const
-    {
-        return m_values[i];
-    }
+    float& operator[](int i);
+    float operator[](int i) const;
 
-    float MagnitudeSqrd()
-    {
-        return m_values[0]*m_values[0] +
-               m_values[1]*m_values[1] +
-               m_values[2]*m_values[2];
-    }
+    float MagnitudeSqrd() const;
+    float Magnitude() const;
 
-    float Magnitude()
-    {
-        return sqrt(MagnitudeSqrd());
-    }
+    float Dot(const Vector3& other) const;
+    Vector3 Cross(const Vector3& other) const;
+    Vector3 Normalized() const;
 
-    float Dot(const Vector3& other) const
-    {
-        return m_values[0]*other.m_values[0] +
-               m_values[1]*other.m_values[1] +
-               m_values[2]*other.m_values[2];
-    }
-
-    Vector3 Cross(const Vector3& other) const
-    {
-        return Vector3(m_values[1]*other.m_values[2] - m_values[2]*other.m_values[1],
-                       m_values[2]*other.m_values[0] - m_values[0]*other.m_values[2],
-                       m_values[0]*other.m_values[1] - m_values[1]*other.m_values[0]);
-    }
-
-    bool Normalize();
+    void DebugPrint();
 
 private:
     float m_values[3];

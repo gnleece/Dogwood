@@ -1,17 +1,118 @@
 #include "Algebra.h"
 
-// TODO (gnleece) make this more robust against floating point weirdness
-bool Vector3::Normalize()
+Point3::Point3()
 {
-    float mag = Magnitude();
+    m_values[0] = 0.0f;
+    m_values[1] = 0.0f;
+    m_values[2] = 0.0f;
+}
+
+Point3::Point3(const Point3& other)
+{
+    m_values[0] = other.m_values[0];
+    m_values[1] = other.m_values[1];
+    m_values[2] = other.m_values[2];
+}
+
+Point3::Point3(float x, float y, float z)
+{
+    m_values[0] = x;
+    m_values[1] = y;
+    m_values[2] = z;
+}
+
+Point3& Point3::operator =(const Point3 other)
+{
+    m_values[0] = other.m_values[0];
+    m_values[1] = other.m_values[1];
+    m_values[2] = other.m_values[2];
+    return *this;
+}
+
+
+Vector3::Vector3()
+{
+    m_values[0] = 0.0f;
+    m_values[1] = 0.0f;
+    m_values[2] = 0.0f;
+}
+
+Vector3::Vector3(const Vector3& other)
+{
+    m_values[0] = other.m_values[0];
+    m_values[1] = other.m_values[1];
+    m_values[2] = other.m_values[2];
+}
+
+Vector3::Vector3(float x, float y, float z)
+{
+    m_values[0] = x;
+    m_values[1] = y;
+    m_values[2] = z;
+}
+
+Vector3& Vector3::operator =(const Vector3 other)
+{
+    m_values[0] = other.m_values[0];
+    m_values[1] = other.m_values[1];
+    m_values[2] = other.m_values[2];
+    return *this;
+}
+
+float& Vector3::operator[](int i)
+{
+    return m_values[i];
+}
+
+float Vector3::operator[](int i) const
+{
+    return m_values[i];
+}
+
+float Vector3::MagnitudeSqrd() const
+{
+    return m_values[0]*m_values[0] +
+           m_values[1]*m_values[1] +
+           m_values[2]*m_values[2];
+}
+
+float Vector3::Magnitude() const
+{
+    return sqrt(MagnitudeSqrd());
+}
+
+float Vector3::Dot(const Vector3& other) const
+{
+    return m_values[0]*other.m_values[0] +
+           m_values[1]*other.m_values[1] +
+           m_values[2]*other.m_values[2];
+}
+
+Vector3 Vector3::Cross(const Vector3& other) const
+{
+    return Vector3(m_values[1]*other.m_values[2] - m_values[2]*other.m_values[1],
+                   m_values[2]*other.m_values[0] - m_values[0]*other.m_values[2],
+                   m_values[0]*other.m_values[1] - m_values[1]*other.m_values[0]);
+}
+
+// TODO (gnleece) make this more robust against floating point weirdness
+Vector3 Vector3::Normalized() const
+{
+    Vector3 ret = *this;
+    float mag = ret.Magnitude();
     if (mag == 0)
-        return false;
+        return ret;
 
-    m_values[0] /= mag;
-    m_values[1] /= mag;
-    m_values[2] /= mag;
+    ret[0] /= mag;
+    ret[1] /= mag;
+    ret[2] /= mag;
 
-    return true;
+    return ret;
+}
+
+void Vector3::DebugPrint()
+{
+    printf("%f\t%f\t%f\n", m_values[0], m_values[1], m_values[2]);
 }
 
 // Return a matrix to represent a counterclockwise rotation of "angle" degrees
@@ -170,11 +271,8 @@ Matrix4x4 Matrix4x4::Invert() const
 // http://webglfactory.blogspot.com/2011/06/how-to-create-view-matrix.html
 Matrix4x4 Matrix4x4::LookAt(Vector3 eye, Vector3 target, Vector3 up)
 {
-    //TODO static normalize
-    Vector3 v_z = eye - target;
-    v_z.Normalize();
-    Vector3 v_x = cross(up, v_z);
-    v_x.Normalize();
+    Vector3 v_z = (eye - target).Normalized();
+    Vector3 v_x = (cross(up, v_z)).Normalized();
     Vector3 v_y = cross(v_z, v_x);
     Vector3 w = Vector3(dot(v_x, eye), dot(v_y, eye), dot(v_z, eye));
 
@@ -183,7 +281,7 @@ Matrix4x4 Matrix4x4::LookAt(Vector3 eye, Vector3 target, Vector3 up)
                             Vector4(v_x[2], v_y[2], v_z[2], w[2]),
                             Vector4(0, 0, 0, 1));
 
-    return m;//m.Invert();
+    return m;
 }
 
 Matrix4x4 Matrix4x4::Projection(float FOV, float aspect, float near, float far)
