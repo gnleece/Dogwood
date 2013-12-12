@@ -22,6 +22,9 @@
     <Filter Include="Engine\Source">
       <UniqueIdentifier>{41edd2e3-e5db-4b8e-970d-9884ac237b61}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Source\Math">
+      <UniqueIdentifier>{c65181d2-d081-4761-9704-067cf2b58600}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -45,13 +48,13 @@
     <ClInclude Include="Engine\Util.h">
       <Filter>Engine\Headers</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Math\Algebra.h">
+      <Filter>Engine\Source\Math</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Algebra.cpp">
-      <Filter>Engine\Source</Filter>
     </ClCompile>
     <ClCompile Include="Engine\SceneNode.cpp">
       <Filter>Engine\Source</Filter>
@@ -61,6 +64,9 @@
     </ClCompile>
     <ClCompile Include="Engine\Util.cpp">
       <Filter>Engine\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Math\Algebra.cpp">
+      <Filter>Engine\Source\Math</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

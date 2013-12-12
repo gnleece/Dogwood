@@ -1,5 +1,4 @@
 * Debug logging (with streams)
-* Reorganize Engine files into folders?
 * Engine needs a name!
 
 * Rewrite matrix inversion. Currently just copied from CS488 provided code

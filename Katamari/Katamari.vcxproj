@@ -87,13 +87,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Algebra.h" />
+    <ClInclude Include="Engine\Math\Algebra.h" />
     <ClInclude Include="Engine\Primitive.h" />
     <ClInclude Include="Engine\SceneNode.h" />
     <ClInclude Include="Engine\Util.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Engine\Algebra.cpp" />
+    <ClCompile Include="Engine\Math\Algebra.cpp" />
     <ClCompile Include="Engine\Primitive.cpp" />
     <ClCompile Include="Engine\SceneNode.cpp" />
     <ClCompile Include="Engine\Util.cpp" />

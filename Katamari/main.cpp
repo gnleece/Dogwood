@@ -11,7 +11,7 @@
 #include <stdio.h>
 #include <time.h>
 
-#include "Engine\Algebra.h"
+#include "Engine\Math\Algebra.h"
 #include "Engine\Primitive.h"
 #include "Engine\Util.h"
 
@@ -73,7 +73,7 @@ int main(void)
         -1.0f, 1.0f, 1.0f,0.5f, 0.0f, 0.4f,
         1.0f,-1.0f, 1.0f,0.5f, 0.4f, 0.4f,
     };
-    
+
     // Create Vertex Array Object
     GLuint vao;
     glGenVertexArrays(1, &vao);

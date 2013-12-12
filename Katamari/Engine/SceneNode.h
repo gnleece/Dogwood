@@ -3,7 +3,7 @@
 #include <list>
 #include <string>
 
-#include "Algebra.h"
+#include "Math\Algebra.h"
 #include "Primitive.h"
 
 using std::string;
