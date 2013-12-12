@@ -80,19 +80,18 @@ public:
     Matrix4x4(Vector4 row0, Vector4 row1, Vector4 row2, Vector4 row3);
     Matrix4x4 operator =(const Matrix4x4 other);
 
+    Vector4 operator[](int row) const;
+    float* operator[](int row);
+
     const float *Start() const;
     const float *End() const;
 
     Vector4 Row(int row) const;
-    float *Row(int row);
+    float* Row(int row);
+    Vector4 Column(int col) const;
 
-    Vector4 operator[](int row) const;
-    float *operator[](int row);
-
-    //TODO quick hack fix this
-    Vector4 getColumn(int col) const;
     Matrix4x4 Transpose() const;
-    Matrix4x4 Invert() const;
+    Matrix4x4 Inverse() const;
 
     // TODO put these somewhere else maybe?
     static Matrix4x4 Rotation(float angle, AXIS axis);
@@ -108,20 +107,7 @@ private:
     float m_values[m_size];
 };
 
-//TODO hack fix me
-inline Matrix4x4 operator *(const Matrix4x4& a, const Matrix4x4& b)
-{
-  Matrix4x4 ret;
+//TODO matrix addition
+Matrix4x4 operator *(const Matrix4x4& a, const Matrix4x4& b);
 
-  for(int i = 0; i < 4; ++i) {
-    Vector4 row = a.Row(i);
-		
-    for(int j = 0; j < 4; ++j) {
-      ret[i][j] = row[0] * b[0][j] + row[1] * b[1][j] + 
-        row[2] * b[2][j] + row[3] * b[3][j];
-    }
-  }
-
-  return ret;
-}
 float DegreesToRadians(float degrees);

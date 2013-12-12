@@ -261,6 +261,15 @@ Matrix4x4 Matrix4x4::operator =(const Matrix4x4 other)
     return *this;
 }
 
+Vector4 Matrix4x4::operator[](int row) const
+{
+    return Row(row);
+}
+float* Matrix4x4::operator[](int row)
+{
+    return Row(row);
+}
+
 const float* Matrix4x4::Start() const
 {
     return (float*)m_values;
@@ -279,13 +288,15 @@ float* Matrix4x4::Row(int row)
     return (float*)m_values + 4*row;
 }
 
-Vector4 Matrix4x4::operator[](int row) const
+Vector4 Matrix4x4::Column(int col) const
 {
-    return Row(row);
+    return Vector4(m_values[col], m_values[4+col], m_values[8+col], m_values[12+col]);
 }
-float* Matrix4x4::operator[](int row)
+
+Matrix4x4 Matrix4x4::Transpose() const
 {
-    return Row(row);
+    return Matrix4x4(Column(0), Column(1),
+                     Column(2), Column(3));
 }
 
 // Return a matrix to represent a counterclockwise rotation of "angle" degrees
@@ -341,18 +352,6 @@ Matrix4x4 Matrix4x4::Scaling(const Vector3& scale)
   return s;
 }
 
-//TODO oh god fix this
-Vector4 Matrix4x4::getColumn(int col) const
-{
-    return Vector4(m_values[col], m_values[4+col], m_values[8+col], m_values[12+col]);
-}
-
-Matrix4x4 Matrix4x4::Transpose() const
-{
-    return Matrix4x4(getColumn(0), getColumn(1), 
-                      getColumn(2), getColumn(3));
-}
-
 /*
  * Define some helper functions for matrix inversion.
  */
@@ -394,7 +393,7 @@ static void submultrow(Matrix4x4& a, int dest, int src, float fac)
  */
 
 
-Matrix4x4 Matrix4x4::Invert() const
+Matrix4x4 Matrix4x4::Inverse() const
 {
     /* The algorithm is plain old Gauss-Jordan elimination 
      with partial pivoting. */
@@ -472,6 +471,24 @@ void Matrix4x4::DebugPrint()
     {
         printf("%f\t%f\t%f\t%f\n", m_values[i*4], m_values[1+i*4], m_values[2+i*4], m_values[3+i*4]);
     }
+}
+
+Matrix4x4 operator *(const Matrix4x4& a, const Matrix4x4& b)
+{
+    Matrix4x4 ret;
+
+    for(int i = 0; i < 4; ++i)
+    {
+        for(int j = 0; j < 4; ++j)
+        {
+            ret[i][j] = a[i][0] * b[0][j] +
+                        a[i][1] * b[1][j] +
+                        a[i][2] * b[2][j] +
+                        a[i][3] * b[3][j];
+        }
+    }
+
+    return ret;
 }
 
 float DegreesToRadians(float degrees)
