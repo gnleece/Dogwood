@@ -43,83 +43,34 @@ private:
     float m_values[3];
 };
 
-inline Vector3 operator *(double s, const Vector3& v)
-{
-  return Vector3(s*v[0], s*v[1], s*v[2]);
-}
-
-inline Vector3 operator +(const Vector3& a, const Vector3& b)
-{
-  return Vector3(a[0]+b[0], a[1]+b[1], a[2]+b[2]);
-}
-
-inline Vector3 operator -(const Vector3& a, const Vector3& b)
-{
-  return Vector3(a[0]-b[0], a[1]-b[1], a[2]-b[2]);
-}
-
-inline Vector3 cross(const Vector3& a, const Vector3& b) 
-{
-  return a.Cross(b);
-}
-
-inline float dot(const Vector3& a, const Vector3& b)
-{
-    return a.Dot(b);
-}
+Vector3 operator +(const Vector3& a, const Vector3& b);
+Vector3 operator -(const Vector3& a, const Vector3& b);
+Vector3 operator *(double s, const Vector3& v);
+Vector3 cross(const Vector3& a, const Vector3& b);
+float dot(const Vector3& a, const Vector3& b);
+Vector3 normalize(Vector3 v);
 
 class Vector4
 {
 public:
-    Vector4()
-    {
-        m_values[0] = 0.0f;
-        m_values[1] = 0.0f;
-        m_values[2] = 0.0f;
-        m_values[3] = 0.0f;
-    }
-    Vector4(float x, float y, float z, float w)
-    {
-        m_values[0] = x;
-        m_values[1] = y;
-        m_values[2] = z;
-        m_values[3] = w;
-    }
-    Vector4(Vector3& v, float w)
-    {
-        m_values[0] = v[0];
-        m_values[1] = v[1];
-        m_values[2] = v[2];
-        m_values[3] = w;
-    }
+    Vector4();
+    Vector4(const Vector4& other);
+    Vector4(float x, float y, float z, float w);
+    Vector4(Vector3& v, float w);
+    Vector4& operator =(const Vector4 other);
 
-    float& operator[](int i)
-    {
-        return m_values[i];
-    }
-    float operator[](int i) const
-    {
-        return m_values[i];
-    }
+    float& operator[](int i);
+    float operator[](int i) const;
+
+    void DebugPrint();
 
 private:
     float m_values[4];
 };
 
-inline Vector4 operator *(double s, const Vector4& v)
-{
-  return Vector4(s*v[0], s*v[1], s*v[2], s*v[3]);
-}
-
-inline Vector4 operator +(const Vector4& a, const Vector4& b)
-{
-  return Vector4(a[0]+b[0], a[1]+b[1], a[2]+b[2], a[3]+b[3]);
-}
-
-inline Vector4 operator -(const Vector4& a, const Vector4& b)
-{
-  return Vector4(a[0]-b[0], a[1]-b[1], a[2]-b[2], a[3]-b[3]);
-}
+Vector4 operator +(const Vector4& a, const Vector4& b);
+Vector4 operator -(const Vector4& a, const Vector4& b);
+Vector4 operator *(double s, const Vector4& v);
 
 class Matrix4x4
 {

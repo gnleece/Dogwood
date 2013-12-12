@@ -115,6 +115,108 @@ void Vector3::DebugPrint()
     printf("%f\t%f\t%f\n", m_values[0], m_values[1], m_values[2]);
 }
 
+
+Vector3 operator +(const Vector3& a, const Vector3& b)
+{
+  return Vector3(a[0]+b[0], a[1]+b[1], a[2]+b[2]);
+}
+
+Vector3 operator -(const Vector3& a, const Vector3& b)
+{
+  return Vector3(a[0]-b[0], a[1]-b[1], a[2]-b[2]);
+}
+
+Vector3 operator *(double s, const Vector3& v)
+{
+  return Vector3(s*v[0], s*v[1], s*v[2]);
+}
+
+Vector3 cross(const Vector3& a, const Vector3& b)
+{
+  return a.Cross(b);
+}
+
+float dot(const Vector3& a, const Vector3& b)
+{
+    return a.Dot(b);
+}
+
+Vector3 normalize(Vector3 v)
+{
+    return v.Normalized();
+}
+
+Vector4::Vector4()
+{
+    m_values[0] = 0.0f;
+    m_values[1] = 0.0f;
+    m_values[2] = 0.0f;
+    m_values[3] = 0.0f;
+}
+
+Vector4::Vector4(const Vector4& other)
+{
+    m_values[0] = other.m_values[0];
+    m_values[1] = other.m_values[1];
+    m_values[2] = other.m_values[2];
+    m_values[3] = other.m_values[4];
+}
+
+Vector4::Vector4(float x, float y, float z, float w)
+{
+    m_values[0] = x;
+    m_values[1] = y;
+    m_values[2] = z;
+    m_values[3] = w;
+}
+
+Vector4::Vector4(Vector3& v, float w)
+{
+    m_values[0] = v[0];
+    m_values[1] = v[1];
+    m_values[2] = v[2];
+    m_values[3] = w;
+}
+
+Vector4& Vector4::operator =(const Vector4 other)
+{
+    m_values[0] = other.m_values[0];
+    m_values[1] = other.m_values[1];
+    m_values[2] = other.m_values[2];
+    m_values[3] = other.m_values[3];
+    return *this;
+}
+
+float& Vector4::operator[](int i)
+{
+    return m_values[i];
+}
+float Vector4::operator[](int i) const
+{
+    return m_values[i];
+}
+
+Vector4 operator +(const Vector4& a, const Vector4& b)
+{
+  return Vector4(a[0]+b[0], a[1]+b[1], a[2]+b[2], a[3]+b[3]);
+}
+
+Vector4 operator -(const Vector4& a, const Vector4& b)
+{
+  return Vector4(a[0]-b[0], a[1]-b[1], a[2]-b[2], a[3]-b[3]);
+}
+
+Vector4 operator *(double s, const Vector4& v)
+{
+  return Vector4(s*v[0], s*v[1], s*v[2], s*v[3]);
+}
+
+void Vector4::DebugPrint()
+{
+    printf("%f\t%f\t%f\t%f\n", m_values[0], m_values[1], m_values[2], m_values[3]);
+}
+
+
 // Return a matrix to represent a counterclockwise rotation of "angle" degrees
 // TODO (gnleece) allow rotation about arbitrary axes
 Matrix4x4 Matrix4x4::Rotation(float angle, AXIS axis)
