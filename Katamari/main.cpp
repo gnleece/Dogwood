@@ -173,21 +173,6 @@ GLFWwindow* Setup()
     glfwMakeContextCurrent(window);
     glfwSetKeyCallback(window, key_callback);
 
-    // Set up lighting
-    GLfloat light_position[] = {1.0f,1.0f,1.0f,0.0f};
-    GLfloat light_color[]={ 1.0f, 1.0f, 1.0f, 1.0f };
-    GLfloat ambient_color[]={ 0.4f, 0.4f, 0.4f, 1.0f };
-
-    glShadeModel(GL_SMOOTH);
-
-    glLightfv(GL_LIGHT0, GL_POSITION, light_position );
-    glLightfv(GL_LIGHT0, GL_AMBIENT, ambient_color );
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, light_color );
-
-    glEnable(GL_LIGHT0);
-    glEnable(GL_LIGHTING);
-    glEnable(GL_NORMALIZE);
-
     float ratio;
     int width, height;
 
