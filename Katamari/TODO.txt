@@ -1,4 +1,17 @@
+* Primitives
+* Textures
+* Lighting/shading
+* Scene graph
+
+* Particles
+* Shadows
+* Model loading
+
 * Debug logging (with streams)
+* FPS counter
+* Tweakables?
+
 * Engine needs a name!
 
 * Rewrite matrix inversion. Currently just copied from CS488 provided code
+* Add missing matrix maths (e.g. addition)
