@@ -36,9 +36,6 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Algebra.h">
-      <Filter>Engine\Headers</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\SceneNode.h">
       <Filter>Engine\Headers</Filter>
     </ClInclude>
@@ -49,10 +46,10 @@
       <Filter>Engine\Headers</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Math\Algebra.h">
-      <Filter>Engine\Source\Math</Filter>
+      <Filter>Engine\Headers</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Math\Transformations.h">
-      <Filter>Engine\Source\Math</Filter>
+      <Filter>Engine\Headers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

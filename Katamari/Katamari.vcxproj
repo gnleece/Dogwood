@@ -86,7 +86,6 @@
     <Text Include="TODO.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Engine\Algebra.h" />
     <ClInclude Include="Engine\Math\Algebra.h" />
     <ClInclude Include="Engine\Math\Transformations.h" />
     <ClInclude Include="Engine\Primitive.h" />
