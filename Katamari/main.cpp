@@ -18,6 +18,7 @@
 
 GLFWwindow* Setup();
 void Cleanup(GLFWwindow* window);
+void SetVertexLayout(GLuint shaderProgram);
 
 static void error_callback(int error, const char* description)
 {
@@ -33,6 +34,17 @@ int main(void)
 {
     GLFWwindow* window = Setup();
     
+        GLuint vertexShader = loadShaderFromFile("VertexTest.glsl", GL_VERTEX_SHADER);
+    GLuint fragmentShader = loadShaderFromFile("FragmentTest.glsl", GL_FRAGMENT_SHADER);
+
+    // Link the vertex and fragment shader into a shader program
+    GLuint shaderProgram = glCreateProgram();
+    glAttachShader(shaderProgram, vertexShader);
+    glAttachShader(shaderProgram, fragmentShader);
+    glBindFragDataLocation(shaderProgram, 0, "outColor");
+    glLinkProgram(shaderProgram);
+    glUseProgram(shaderProgram);
+
     // cube with random vertex colours
     static const GLfloat g_vertex_buffer_data[] = 
     {
@@ -63,30 +75,42 @@ int main(void)
     };
 
     // Create Vertex Array Object
-    GLuint vao;
-    glGenVertexArrays(1, &vao);
-    glBindVertexArray(vao);
+    GLuint vao_cube;
+    glGenVertexArrays(1, &vao_cube);
+    glBindVertexArray(vao_cube);
 
-    GLuint vbo;
-    glGenBuffers(1, &vbo);                  // Generate buffer
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);     // Make buffer active
+    GLuint vbo_cube;
+    glGenBuffers(1, &vbo_cube);                  // Generate buffer
+    glBindBuffer(GL_ARRAY_BUFFER, vbo_cube);     // Make buffer active
     glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW); // Copy data to buffer
 
-    GLuint ebo;
-    glGenBuffers(1, &ebo);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+    GLuint ebo_cube;
+    glGenBuffers(1, &ebo_cube);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo_cube);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(elements), elements, GL_STATIC_DRAW);
+    
+    SetVertexLayout(shaderProgram);
 
-    GLuint vertexShader = loadShaderFromFile("VertexTest.glsl", GL_VERTEX_SHADER);
-    GLuint fragmentShader = loadShaderFromFile("FragmentTest.glsl", GL_FRAGMENT_SHADER);
+    //---------
 
-    // Link the vertex and fragment shader into a shader program
-    GLuint shaderProgram = glCreateProgram();
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
-    glBindFragDataLocation(shaderProgram, 0, "outColor");
-    glLinkProgram(shaderProgram);
-    glUseProgram(shaderProgram);
+    GLfloat vertices[] = {
+         0.0f,  0.5f, 0.f, 1.0f, 0.0f, 0.0f,
+         0.5f, -0.5f, 0.f, 0.0f, 1.0f, 0.0f,
+        -0.5f, -0.5f, 0.f, 0.0f, 0.0f, 1.0f
+    };
+    // Create Vertex Array Object
+    GLuint vao_triangle;
+    glGenVertexArrays(1, &vao_triangle);
+    glBindVertexArray(vao_triangle);
+
+    // Create a Vertex Buffer Object and copy the vertex data to it
+    GLuint vbo_triangle;
+    glGenBuffers(1, &vbo_triangle);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo_triangle);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    
+    SetVertexLayout(shaderProgram);
+    //---------
 
     GLint uniModel = glGetUniformLocation(shaderProgram, "model");
 
@@ -102,16 +126,6 @@ int main(void)
     GLint uniProj = glGetUniformLocation(shaderProgram, "proj");
     glUniformMatrix4fv(uniProj, 1, GL_FALSE, proj.Transpose().Start());
 
-    // Specify the layout of the vertex data
-    GLint posAttrib = glGetAttribLocation(shaderProgram, "position");
-    glEnableVertexAttribArray(posAttrib);
-    glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 6*sizeof(float), 0);
-
-    GLint colAttrib = glGetAttribLocation(shaderProgram, "color");
-    glEnableVertexAttribArray(colAttrib);
-    glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE,
-                            6*sizeof(float), (void*)(3*sizeof(float)));
-
     // Enable depth test
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);     // Accept fragment if it closer to the camera than the former one
@@ -122,8 +136,19 @@ int main(void)
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        // draw a test cube
+        // draw the triangle
+        glBindVertexArray(vao_triangle);
+        glBindBuffer(GL_ARRAY_BUFFER, vbo_triangle);
+
         Matrix4x4 t = Translation(Vector3(0,0,-10));
+        glUniformMatrix4fv(uniModel, 1, GL_FALSE, t.Transpose().Start());
+        glDrawArrays(GL_TRIANGLES, 0, 3);
+
+        // draw a test cube
+        glBindVertexArray(vao_cube);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo_cube);
+
+        t = Translation(Vector3(-2,0,-10));
         Matrix4x4 r = Rotation(45, AXIS_Y);
         r = r*Rotation(45, AXIS_X);
         Matrix4x4 m = t*r;
@@ -142,16 +167,19 @@ int main(void)
         glfwPollEvents();
     }
 
-    glDisableVertexAttribArray(posAttrib);
-    glDisableVertexAttribArray(colAttrib);
+    //glDisableVertexAttribArray(posAttrib);        // TODO clean up properly
+    //glDisableVertexAttribArray(colAttrib);
 
     glDeleteProgram(shaderProgram);
     glDeleteShader(fragmentShader);
     glDeleteShader(vertexShader);
 
-    glDeleteBuffers(1, &ebo);
-    glDeleteBuffers(1, &vbo);
-    glDeleteVertexArrays(1, &vao);
+    glDeleteBuffers(1, &ebo_cube);
+    glDeleteBuffers(1, &vbo_cube);
+    glDeleteVertexArrays(1, &vao_cube);
+
+    glDeleteBuffers(1, &vbo_triangle);
+    glDeleteVertexArrays(1, &vao_triangle);
 
     Cleanup(window);
     exit(EXIT_SUCCESS);
@@ -189,4 +217,17 @@ void Cleanup(GLFWwindow* window)
 {
     glfwDestroyWindow(window);
     glfwTerminate();
+}
+
+void SetVertexLayout(GLuint shaderProgram)
+{
+    //TODO store these for cleanup
+    GLint posAttrib = glGetAttribLocation(shaderProgram, "position");
+    glEnableVertexAttribArray(posAttrib);
+    glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 6*sizeof(float), 0);
+
+    GLint colAttrib = glGetAttribLocation(shaderProgram, "color");
+    glEnableVertexAttribArray(colAttrib);
+    glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE,
+                            6*sizeof(float), (void*)(3*sizeof(float)));
 }
