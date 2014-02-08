@@ -13,15 +13,17 @@ protected:
     void Init(GLuint shaderProgram);
 
     GLuint      m_vao;
-    GLuint      m_vbo;
+    GLuint      m_vboPosition;
+    GLuint      m_vboColour;
     GLuint      m_ebo;
 
     GLint       m_positionAttrib;
     GLint       m_colourAttrib;
 
-    GLfloat*    m_vertexData;
-    GLsizei     m_vertexDataCount;
-    
+    GLfloat*    m_vertexPositionData;
+    GLfloat*    m_vertexColourData;
+    GLsizei     m_vertexCount;
+
     GLuint*     m_elementData;
     GLsizei     m_elementDataCount;
 };
