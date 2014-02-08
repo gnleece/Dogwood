@@ -38,7 +38,7 @@ void Primitive::Render()
 {
     glBindVertexArray(m_vao);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
-    glDrawElements(GL_TRIANGLES, m_elementDataCount, GL_UNSIGNED_INT, 0);
+    glDrawElements(m_drawMode, m_elementDataCount, GL_UNSIGNED_INT, 0);
 }
 
 void Primitive::Cleanup()
@@ -52,6 +52,37 @@ void Primitive::Cleanup()
     glDeleteBuffers(1, &m_ebo);
 }
 
+
+GLfloat line_vertexData[] =
+{
+    0.0f, 0.0f, 0.0f,
+    1.0f, 0.0f, 0.0f
+};
+
+GLfloat line_colourData[] =
+{
+    1.0f, 1.0f, 1.0f,
+    1.0f, 1.0f, 1.0f
+};
+
+GLuint line_elementData[] =
+{
+    0, 1
+};
+
+Line::Line(GLuint shaderProgram)
+{
+    m_vertexPositionData = line_vertexData;
+    m_vertexColourData = line_colourData;
+    m_vertexCount = 2;
+
+    m_elementData = line_elementData;
+    m_elementDataCount = 2;
+    
+    m_drawMode = GL_LINE_STRIP;
+
+    Init(shaderProgram);
+}
 
 GLfloat cube_vertexData[] =
 {
@@ -101,7 +132,9 @@ Cube::Cube(GLuint shaderProgram)
 
     m_elementData = cube_elementData;
     m_elementDataCount = 3*6*2;
-    
+
+    m_drawMode = GL_TRIANGLES;
+
     Init(shaderProgram);
 }
 
@@ -132,6 +165,8 @@ Triangle::Triangle(GLuint shaderProgram)
 
     m_elementData = triangle_elementData;
     m_elementDataCount = 3;
+
+    m_drawMode = GL_TRIANGLES;
 
     Init(shaderProgram);
 }

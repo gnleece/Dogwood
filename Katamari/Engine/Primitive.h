@@ -26,6 +26,14 @@ protected:
 
     GLuint*     m_elementData;
     GLsizei     m_elementDataCount;
+
+    GLenum      m_drawMode;
+};
+
+class Line : public Primitive
+{
+public:
+    Line(GLuint shaderProgram);
 };
 
 class Cube : public Primitive

@@ -67,6 +67,7 @@ int main(void)
     // Test objects
     Triangle triangle(shaderProgram);
     Cube cube(shaderProgram);
+    Line line(shaderProgram);
 
     while (!glfwWindowShouldClose(window))
     {
@@ -94,6 +95,11 @@ int main(void)
         m = t*r;
         glUniformMatrix4fv(uniModel, 1, GL_FALSE, m.Transpose().Start());
         cube.Render();
+
+        // Position & draw the line
+        t = Translation(Vector3(0,0,-5));
+        glUniformMatrix4fv(uniModel, 1, GL_FALSE, t.Transpose().Start());
+        line.Render();
 
         glfwSwapBuffers(window);
         glfwPollEvents();
