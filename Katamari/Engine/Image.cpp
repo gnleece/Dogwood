@@ -4,15 +4,29 @@
 
 #define BMP_HEADER_SIZE 54
 
-GLuint ImageBMP::Load(const char* filename)
+ImageBMP::ImageBMP() : m_loaded(false) { }
+
+ImageBMP::ImageBMP(const char* filename) : m_loaded(false)
 {
+    Load(filename);
+}
+
+ImageBMP::~ImageBMP()
+{
+    FreeData();
+}
+
+bool ImageBMP::Load(const char* filename)
+{
+    FreeData();
+    
     // open file
     FILE* file;
     errno_t ret = fopen_s(&file, filename, "rb");
     if (ret)
     {
         printf("Error loading BMP: could not open file %s\n", filename);
-        return 0;
+        return false;
     }
 
     // read header
@@ -21,28 +35,40 @@ GLuint ImageBMP::Load(const char* filename)
     if (readSize != BMP_HEADER_SIZE || header[0] != 'B' || header[1] != 'M')
     {
         printf("Error loading BMP: invalid header in %s\n", filename);
-        return 0;
+        return false;
     }
-    unsigned int dataPos    = *(int*)&(header[0x0A]);
-    unsigned int width      = *(int*)&(header[0x12]);
-    unsigned int height     = *(int*)&(header[0x16]);
-    unsigned int size       = *(int*)&(header[0x22]);
+    m_dataPos    = *(int*)&(header[0x0A]);
+    m_width      = *(int*)&(header[0x12]);
+    m_height     = *(int*)&(header[0x16]);
+    m_size       = *(int*)&(header[0x22]);
 
-    if (size == 0)
+    if (m_size == 0)
     {
-        size = width*height*3;
+        m_size = m_width*m_height*3;
     }
-    if (dataPos == 0)
+    if (m_dataPos == 0)
     {
-        dataPos = BMP_HEADER_SIZE;
+        m_dataPos = BMP_HEADER_SIZE;
     }
 
     // read image data
-    unsigned char* data = new unsigned char[size];
-    fread(data, 1, size, file);
+    m_data = new unsigned char[m_size];
+    fread(m_data, 1, m_size, file);
     fclose(file);
 
-    delete [] data;
+    m_loaded = true;
+    return true;
+}
 
-    return 0;
+void ImageBMP::FreeData()
+{
+    if (m_loaded)
+    {
+        delete [] m_data;
+
+        m_width = 0;
+        m_height = 0;
+        m_size = 0;
+        m_loaded = false;
+    }
 }
