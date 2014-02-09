@@ -49,6 +49,5 @@ GLuint LinkShaderProgram(GLuint vertexShader, GLuint fragmentShader)
     glAttachShader(shaderProgram, fragmentShader);
     glBindFragDataLocation(shaderProgram, 0, "outColour");
     glLinkProgram(shaderProgram);
-    printf("foo bar baz\n");
     return shaderProgram;
 }

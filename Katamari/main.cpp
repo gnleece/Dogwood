@@ -34,60 +34,49 @@ int main(void)
     GLFWwindow* window = Setup();
     
     // Load common vertex and fragment shaders
-    GLuint vertexColourShader = LoadShaderFromFile("Engine\\Shaders\\VertexColour.glsl", GL_VERTEX_SHADER);
-    GLuint fragmentColourShader = LoadShaderFromFile("Engine\\Shaders\\FragmentColour.glsl", GL_FRAGMENT_SHADER);
-
-    GLuint vertexTextureShader = LoadShaderFromFile("Engine\\Shaders\\VertexTexture.glsl", GL_VERTEX_SHADER);
-    GLuint fragmentTextureShader = LoadShaderFromFile("Engine\\Shaders\\FragmentTexture.glsl", GL_FRAGMENT_SHADER);
-
-    // Link the common vertex and fragment shaders into shader programs
-    GLuint colourShaderProgram = LinkShaderProgram(vertexColourShader, fragmentColourShader);
-    GLuint textureShaderProgram = LinkShaderProgram(vertexTextureShader, fragmentTextureShader);
-
-    glUseProgram(colourShaderProgram); 
+    GLuint vertexShader = LoadShaderFromFile("Engine\\Shaders\\VertexShader.glsl", GL_VERTEX_SHADER);
+    GLuint fragmentShader = LoadShaderFromFile("Engine\\Shaders\\FragmentShader.glsl", GL_FRAGMENT_SHADER);
+    GLuint shaderProgram = LinkShaderProgram(vertexShader, fragmentShader);
+    glUseProgram(shaderProgram);
 
     // Prepare view matrix
     Matrix4x4 view = LookAt(Vector3(0.0, 0.0, 0.5),
                             Vector3(0.0, 0.0, 0.0),
                             Vector3(0.0, 1.0, 0.0));
-    GLint uniView = glGetUniformLocation(colourShaderProgram, "view");
-    glUniformMatrix4fv(uniView, 1, GL_FALSE, view.Transpose().Start());
-    uniView = glGetUniformLocation(textureShaderProgram, "view");
+    GLint uniView = glGetUniformLocation(shaderProgram, "view");
     glUniformMatrix4fv(uniView, 1, GL_FALSE, view.Transpose().Start());
 
     // Prepare projection matrix
     Matrix4x4 proj = PerspectiveProjection(45.0f, 800.0f / 600.0f, 0.1f, 1000.0f);
-    GLint uniProj = glGetUniformLocation(colourShaderProgram, "proj");
-    glUniformMatrix4fv(uniProj, 1, GL_FALSE, proj.Transpose().Start());
-    uniProj = glGetUniformLocation(textureShaderProgram, "proj");
+    GLint uniProj = glGetUniformLocation(shaderProgram, "proj");
     glUniformMatrix4fv(uniProj, 1, GL_FALSE, proj.Transpose().Start());
 
     // Enable depth test
     glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LESS);     // Accept fragment if it closer to the camera than the former one
+    glDepthFunc(GL_LESS);
 
     // Test objects
     Matrix4x4 trans;
 
-    Triangle triangle(colourShaderProgram);
+    Triangle triangle(shaderProgram);
     trans = Translation(Vector3(0,0,-10));
     triangle.SetTransform(trans);
 
-    Cube cube(colourShaderProgram);
-    trans = Translation(Vector3(-2,2,-10));
+    Cube cube(shaderProgram);
+    trans = Translation(Vector3(-1,1,-5));
     Matrix4x4 r = Rotation(45, AXIS_Y);
     r = r*Rotation(45, AXIS_X);
     trans = trans*r;
     cube.SetTransform(trans);
 
-    Cube cube2(colourShaderProgram);     // TODO share underlying primitive data between copies
-    trans = Translation(Vector3(4,0,-10));
-    r = Rotation(45, AXIS_Y);
-    r = r*Rotation(45, AXIS_X);
-    trans = trans*r;
-    cube2.SetTransform(trans);
+    Cube cube2(shaderProgram);     // TODO share underlying primitive data between copies
+    Matrix4x4 trans2 = Translation(Vector3(2,2,-10));
+    Matrix4x4 r2 = Rotation(45, AXIS_Y);
+    r2 = r2*Rotation(45, AXIS_X);
+    trans2 = trans2*r2;
+    cube2.SetTransform(trans2);
 
-    Line line(colourShaderProgram);
+    Line line(shaderProgram);
     trans = Translation(Vector3(0,0,-5));
     line.SetTransform(trans);
 
@@ -98,9 +87,9 @@ int main(void)
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         // Draw test objects
-        triangle.Render();
         cube.Render();
         cube2.Render();
+        triangle.Render();
         line.Render();
 
         glfwSwapBuffers(window);
@@ -112,13 +101,10 @@ int main(void)
     cube2.Cleanup();
     line.Cleanup();
 
-    glDeleteProgram(colourShaderProgram);
-    glDeleteProgram(textureShaderProgram);
+    glDeleteProgram(shaderProgram);
 
-    glDeleteShader(vertexColourShader);
-    glDeleteShader(fragmentColourShader);
-    glDeleteShader(vertexTextureShader);
-    glDeleteShader(fragmentTextureShader);
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader);
 
     Cleanup(window);
     exit(EXIT_SUCCESS);

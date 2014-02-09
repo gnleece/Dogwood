@@ -24,13 +24,16 @@ protected:
     GLuint      m_vao;
     GLuint      m_vboPosition;
     GLuint      m_vboColour;
+    GLuint      m_vboUV;
     GLuint      m_ebo;
 
     GLint       m_positionAttrib;       // TODO store this per shader program not per primitive
     GLint       m_colourAttrib;
+    GLint       m_UVAttrib;
 
     GLfloat*    m_vertexPositionData;
     GLfloat*    m_vertexColourData;
+    GLfloat*    m_vertexUVData;
     GLsizei     m_vertexCount;
 
     GLuint*     m_elementData;

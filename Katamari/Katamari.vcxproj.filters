@@ -84,16 +84,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Engine\Shaders\FragmentColour.glsl">
+    <None Include="Engine\Shaders\FragmentShader.glsl">
       <Filter>Engine\Source\Shaders</Filter>
     </None>
-    <None Include="Engine\Shaders\FragmentTexture.glsl">
-      <Filter>Engine\Source\Shaders</Filter>
-    </None>
-    <None Include="Engine\Shaders\VertexColour.glsl">
-      <Filter>Engine\Source\Shaders</Filter>
-    </None>
-    <None Include="Engine\Shaders\VertexTexture.glsl">
+    <None Include="Engine\Shaders\VertexShader.glsl">
       <Filter>Engine\Source\Shaders</Filter>
     </None>
   </ItemGroup>
