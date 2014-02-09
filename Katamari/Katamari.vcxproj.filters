@@ -25,9 +25,14 @@
     <Filter Include="Engine\Source\Math">
       <UniqueIdentifier>{c65181d2-d081-4761-9704-067cf2b58600}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Headers\Math">
+      <UniqueIdentifier>{e71ce188-2800-4ea5-bfbf-1c7a9c18c76d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Source\Shaders">
+      <UniqueIdentifier>{04d7aff8-7fb0-4ca6-be84-d3fc94085135}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="ReadMe.txt" />
     <Text Include="TODO.txt">
       <Filter>Source Files</Filter>
     </Text>
@@ -45,11 +50,14 @@
     <ClInclude Include="Engine\Util.h">
       <Filter>Engine\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Math\Algebra.h">
+    <ClInclude Include="Engine\Image.h">
       <Filter>Engine\Headers</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Math\Algebra.h">
+      <Filter>Engine\Headers\Math</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\Math\Transformations.h">
-      <Filter>Engine\Headers</Filter>
+      <Filter>Engine\Headers\Math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -71,13 +79,22 @@
     <ClCompile Include="Engine\Math\Transformations.cpp">
       <Filter>Engine\Source\Math</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Image.cpp">
+      <Filter>Engine\Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="VertexTest.glsl">
-      <Filter>Source Files</Filter>
+    <None Include="Engine\Shaders\FragmentColour.glsl">
+      <Filter>Engine\Source\Shaders</Filter>
     </None>
-    <None Include="FragmentTest.glsl">
-      <Filter>Source Files</Filter>
+    <None Include="Engine\Shaders\FragmentTexture.glsl">
+      <Filter>Engine\Source\Shaders</Filter>
+    </None>
+    <None Include="Engine\Shaders\VertexColour.glsl">
+      <Filter>Engine\Source\Shaders</Filter>
+    </None>
+    <None Include="Engine\Shaders\VertexTexture.glsl">
+      <Filter>Engine\Source\Shaders</Filter>
     </None>
   </ItemGroup>
 </Project>

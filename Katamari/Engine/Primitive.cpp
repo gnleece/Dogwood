@@ -8,6 +8,8 @@
 
 void Primitive::Init(GLuint shaderProgram)
 {
+    m_shaderProgram = shaderProgram;
+    
     glGenVertexArrays(1, &m_vao);
     glBindVertexArray(m_vao);
 
@@ -23,19 +25,24 @@ void Primitive::Init(GLuint shaderProgram)
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)*m_elementDataCount, m_elementData, GL_STATIC_DRAW);
 
-    m_positionAttrib = glGetAttribLocation(shaderProgram, "position");
+    m_positionAttrib = glGetAttribLocation(m_shaderProgram, "position");
     glEnableVertexAttribArray(m_positionAttrib);
     glBindBuffer(GL_ARRAY_BUFFER, m_vboPosition);
     glVertexAttribPointer(m_positionAttrib, 3, GL_FLOAT, GL_FALSE, 3*sizeof(float), 0);
 
-    m_colourAttrib = glGetAttribLocation(shaderProgram, "colour");
+    m_colourAttrib = glGetAttribLocation(m_shaderProgram, "colour");
     glEnableVertexAttribArray(m_colourAttrib);
     glBindBuffer(GL_ARRAY_BUFFER, m_vboColour);
     glVertexAttribPointer(m_colourAttrib, 3, GL_FLOAT, GL_FALSE, 3*sizeof(float), 0);
+
+    m_uniModel = glGetUniformLocation(m_shaderProgram, "model");
 }
 
 void Primitive::Render()
 {
+    glUniformMatrix4fv(m_uniModel, 1, GL_FALSE, m_transform.Transpose().Start());
+    
+    glUseProgram(m_shaderProgram);      // TODO check if shader is already active
     glBindVertexArray(m_vao);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
     glDrawElements(m_drawMode, m_elementDataCount, GL_UNSIGNED_INT, 0);

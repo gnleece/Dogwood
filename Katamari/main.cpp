@@ -33,31 +33,33 @@ int main(void)
 {
     GLFWwindow* window = Setup();
     
-    // Load vertex and fragment shaders
-    GLuint vertexShader = loadShaderFromFile("VertexTest.glsl", GL_VERTEX_SHADER);
-    GLuint fragmentShader = loadShaderFromFile("FragmentTest.glsl", GL_FRAGMENT_SHADER);
+    // Load common vertex and fragment shaders
+    GLuint vertexColourShader = LoadShaderFromFile("Engine\\Shaders\\VertexColour.glsl", GL_VERTEX_SHADER);
+    GLuint fragmentColourShader = LoadShaderFromFile("Engine\\Shaders\\FragmentColour.glsl", GL_FRAGMENT_SHADER);
 
-    // Link the vertex and fragment shader into a shader program
-    GLuint shaderProgram = glCreateProgram();
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
-    glBindFragDataLocation(shaderProgram, 0, "outColor");
-    glLinkProgram(shaderProgram);
-    glUseProgram(shaderProgram);
+    GLuint vertexTextureShader = LoadShaderFromFile("Engine\\Shaders\\VertexTexture.glsl", GL_VERTEX_SHADER);
+    GLuint fragmentTextureShader = LoadShaderFromFile("Engine\\Shaders\\FragmentTexture.glsl", GL_FRAGMENT_SHADER);
 
-    // Prepare model matrix
-    GLint uniModel = glGetUniformLocation(shaderProgram, "model");
+    // Link the common vertex and fragment shaders into shader programs
+    GLuint colourShaderProgram = LinkShaderProgram(vertexColourShader, fragmentColourShader);
+    GLuint textureShaderProgram = LinkShaderProgram(vertexTextureShader, fragmentTextureShader);
+
+    glUseProgram(colourShaderProgram); 
 
     // Prepare view matrix
     Matrix4x4 view = LookAt(Vector3(0.0, 0.0, 0.5),
                             Vector3(0.0, 0.0, 0.0),
                             Vector3(0.0, 1.0, 0.0));
-    GLint uniView = glGetUniformLocation(shaderProgram, "view");
+    GLint uniView = glGetUniformLocation(colourShaderProgram, "view");
+    glUniformMatrix4fv(uniView, 1, GL_FALSE, view.Transpose().Start());
+    uniView = glGetUniformLocation(textureShaderProgram, "view");
     glUniformMatrix4fv(uniView, 1, GL_FALSE, view.Transpose().Start());
 
     // Prepare projection matrix
     Matrix4x4 proj = PerspectiveProjection(45.0f, 800.0f / 600.0f, 0.1f, 1000.0f);
-    GLint uniProj = glGetUniformLocation(shaderProgram, "proj");
+    GLint uniProj = glGetUniformLocation(colourShaderProgram, "proj");
+    glUniformMatrix4fv(uniProj, 1, GL_FALSE, proj.Transpose().Start());
+    uniProj = glGetUniformLocation(textureShaderProgram, "proj");
     glUniformMatrix4fv(uniProj, 1, GL_FALSE, proj.Transpose().Start());
 
     // Enable depth test
@@ -65,9 +67,29 @@ int main(void)
     glDepthFunc(GL_LESS);     // Accept fragment if it closer to the camera than the former one
 
     // Test objects
-    Triangle triangle(shaderProgram);
-    Cube cube(shaderProgram);
-    Line line(shaderProgram);
+    Matrix4x4 trans;
+
+    Triangle triangle(colourShaderProgram);
+    trans = Translation(Vector3(0,0,-10));
+    triangle.SetTransform(trans);
+
+    Cube cube(colourShaderProgram);
+    trans = Translation(Vector3(-2,2,-10));
+    Matrix4x4 r = Rotation(45, AXIS_Y);
+    r = r*Rotation(45, AXIS_X);
+    trans = trans*r;
+    cube.SetTransform(trans);
+
+    Cube cube2(colourShaderProgram);     // TODO share underlying primitive data between copies
+    trans = Translation(Vector3(4,0,-10));
+    r = Rotation(45, AXIS_Y);
+    r = r*Rotation(45, AXIS_X);
+    trans = trans*r;
+    cube2.SetTransform(trans);
+
+    Line line(colourShaderProgram);
+    trans = Translation(Vector3(0,0,-5));
+    line.SetTransform(trans);
 
     while (!glfwWindowShouldClose(window))
     {
@@ -75,42 +97,28 @@ int main(void)
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        // Position & draw the triangle
-        Matrix4x4 t = Translation(Vector3(0,0,-10));
-        glUniformMatrix4fv(uniModel, 1, GL_FALSE, t.Transpose().Start());
+        // Draw test objects
         triangle.Render();
-
-        // Position & draw the cube
-        t = Translation(Vector3(-2,2,-10));
-        Matrix4x4 r = Rotation(45, AXIS_Y);
-        r = r*Rotation(45, AXIS_X);
-        Matrix4x4 m = t*r;
-        glUniformMatrix4fv(uniModel, 1, GL_FALSE, m.Transpose().Start());
         cube.Render();
-
-        // Position & draw the cube again
-        t = Translation(Vector3(4,0,-10));
-        r = Rotation(45, AXIS_Y);
-        r = r*Rotation(45, AXIS_X);
-        m = t*r;
-        glUniformMatrix4fv(uniModel, 1, GL_FALSE, m.Transpose().Start());
-        cube.Render();
-
-        // Position & draw the line
-        t = Translation(Vector3(0,0,-5));
-        glUniformMatrix4fv(uniModel, 1, GL_FALSE, t.Transpose().Start());
+        cube2.Render();
         line.Render();
 
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
 
-    triangle.Cleanup();
+    triangle.Cleanup();     // TODO objects need to auto-cleaup
     cube.Cleanup();
+    cube2.Cleanup();
+    line.Cleanup();
 
-    glDeleteProgram(shaderProgram);
-    glDeleteShader(fragmentShader);
-    glDeleteShader(vertexShader);
+    glDeleteProgram(colourShaderProgram);
+    glDeleteProgram(textureShaderProgram);
+
+    glDeleteShader(vertexColourShader);
+    glDeleteShader(fragmentColourShader);
+    glDeleteShader(vertexTextureShader);
+    glDeleteShader(fragmentTextureShader);
 
     Cleanup(window);
     exit(EXIT_SUCCESS);

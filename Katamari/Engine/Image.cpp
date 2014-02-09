@@ -7,8 +7,9 @@
 GLuint ImageBMP::Load(const char* filename)
 {
     // open file
-    FILE* file = fopen(filename, "rb");
-    if (!file)
+    FILE* file;
+    errno_t ret = fopen_s(&file, filename, "rb");
+    if (ret)
     {
         printf("Error loading BMP: could not open file %s\n", filename);
         return 0;
@@ -40,4 +41,8 @@ GLuint ImageBMP::Load(const char* filename)
     unsigned char* data = new unsigned char[size];
     fread(data, 1, size, file);
     fclose(file);
+
+    delete [] data;
+
+    return 0;
 }

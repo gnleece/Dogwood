@@ -1,7 +1,7 @@
 #include "Util.h"
 
 // from http://lazyfoo.net/tutorials/OpenGL/30_loading_text_file_shaders/index.php
-GLuint loadShaderFromFile( std::string path, GLenum shaderType )
+GLuint LoadShaderFromFile( std::string path, GLenum shaderType )
 {
     //Open file
     GLuint shaderID = 0;
@@ -40,4 +40,15 @@ GLuint loadShaderFromFile( std::string path, GLenum shaderType )
     }
 
     return shaderID;
+}
+
+GLuint LinkShaderProgram(GLuint vertexShader, GLuint fragmentShader)
+{
+    GLuint shaderProgram = glCreateProgram();
+    glAttachShader(shaderProgram, vertexShader);
+    glAttachShader(shaderProgram, fragmentShader);
+    glBindFragDataLocation(shaderProgram, 0, "outColour");
+    glLinkProgram(shaderProgram);
+    printf("foo bar baz\n");
+    return shaderProgram;
 }

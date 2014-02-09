@@ -3,21 +3,30 @@
 #define GLEW_STATIC
 #include <GL/glew.h>
 
+#include "Math\Algebra.h"
+
 class Primitive
 {
 public:
     virtual void Render();
     virtual void Cleanup();
 
+    void SetTransform(Matrix4x4 transform) { m_transform = transform; }
+
 protected:
     void Init(GLuint shaderProgram);
+
+    Matrix4x4   m_transform;        // TODO this should go in SceneNode
+
+    GLuint      m_shaderProgram;
+    GLint       m_uniModel;
 
     GLuint      m_vao;
     GLuint      m_vboPosition;
     GLuint      m_vboColour;
     GLuint      m_ebo;
 
-    GLint       m_positionAttrib;
+    GLint       m_positionAttrib;       // TODO store this per shader program not per primitive
     GLint       m_colourAttrib;
 
     GLfloat*    m_vertexPositionData;

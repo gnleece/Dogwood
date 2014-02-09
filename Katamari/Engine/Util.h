@@ -5,4 +5,5 @@
 
 #include <fstream>
 
-GLuint loadShaderFromFile( std::string path, GLenum shaderType );
+GLuint LoadShaderFromFile(std::string path, GLenum shaderType);
+GLuint LinkShaderProgram(GLuint vertexShader, GLuint fragmentShader);

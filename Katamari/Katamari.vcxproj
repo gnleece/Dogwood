@@ -82,10 +82,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <Text Include="ReadMe.txt" />
     <Text Include="TODO.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\Image.h" />
     <ClInclude Include="Engine\Math\Algebra.h" />
     <ClInclude Include="Engine\Math\Transformations.h" />
     <ClInclude Include="Engine\Primitive.h" />
@@ -94,6 +94,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\Image.cpp" />
     <ClCompile Include="Engine\Math\Algebra.cpp" />
     <ClCompile Include="Engine\Math\Transformations.cpp" />
     <ClCompile Include="Engine\Primitive.cpp" />
@@ -102,8 +103,10 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="FragmentTest.glsl" />
-    <None Include="VertexTest.glsl" />
+    <None Include="Engine\Shaders\FragmentColour.glsl" />
+    <None Include="Engine\Shaders\FragmentTexture.glsl" />
+    <None Include="Engine\Shaders\VertexColour.glsl" />
+    <None Include="Engine\Shaders\VertexTexture.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
