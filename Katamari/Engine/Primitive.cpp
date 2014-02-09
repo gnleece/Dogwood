@@ -48,8 +48,6 @@ void Primitive::Init(GLuint shaderProgram)
     glEnableVertexAttribArray(m_UVAttrib);
     glBindBuffer(GL_ARRAY_BUFFER, m_vboUV);
     glVertexAttribPointer(m_UVAttrib, 2, GL_FLOAT, GL_FALSE, 2*sizeof(float), 0);
-
-    Texture tex("Engine\\Assets\\test_texture.bmp");
     
     glUseProgram(m_shaderProgram);
     m_uniModel = glGetUniformLocation(m_shaderProgram, "model");
@@ -57,6 +55,12 @@ void Primitive::Init(GLuint shaderProgram)
 
 void Primitive::Render()
 {
+    if (m_texture == NULL)
+    {
+        m_texture = Texture::DefaultTexture();
+    }
+    m_texture->BindTexture();
+
     glUseProgram(m_shaderProgram);      // TODO check if shader is already active
     glUniformMatrix4fv(m_uniModel, 1, GL_FALSE, m_transform.Transpose().Start());
     glBindVertexArray(m_vao);

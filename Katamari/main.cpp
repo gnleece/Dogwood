@@ -14,6 +14,7 @@
 #include "Engine\Math\Algebra.h"
 #include "Engine\Math\Transformations.h"
 #include "Engine\Primitive.h"
+#include "Engine\Texture.h"
 #include "Engine\Util.h"
 
 GLFWwindow* Setup();
@@ -55,6 +56,10 @@ int main(void)
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
 
+    // Test textures
+    Texture tex("Engine\\Assets\\test_texture.bmp");
+    Texture tex2("Engine\\Assets\\test_texture2.bmp");
+
     // Test objects
     Matrix4x4 trans;
 
@@ -68,6 +73,7 @@ int main(void)
     r = r*Rotation(45, AXIS_X);
     trans = trans*r;
     cube.SetTransform(trans);
+    cube.SetTexture(&tex);
 
     Cube cube2(shaderProgram);     // TODO share underlying primitive data between copies
     Matrix4x4 trans2 = Translation(Vector3(2,2,-10));
@@ -75,6 +81,7 @@ int main(void)
     r2 = r2*Rotation(45, AXIS_X);
     trans2 = trans2*r2;
     cube2.SetTransform(trans2);
+    cube2.SetTexture(&tex2);
 
     Line line(shaderProgram);
     trans = Translation(Vector3(0,0,-5));
@@ -100,6 +107,9 @@ int main(void)
     cube.Cleanup();
     cube2.Cleanup();
     line.Cleanup();
+
+    tex.FreeTexture();
+    tex2.FreeTexture();
 
     glDeleteProgram(shaderProgram);
 
