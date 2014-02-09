@@ -6,7 +6,7 @@
 
 ImageBMP::ImageBMP() : m_loaded(false) { }
 
-ImageBMP::ImageBMP(const char* filename) : m_loaded(false)
+ImageBMP::ImageBMP(std::string filename) : m_loaded(false)
 {
     Load(filename);
 }
@@ -16,13 +16,13 @@ ImageBMP::~ImageBMP()
     FreeData();
 }
 
-bool ImageBMP::Load(const char* filename)
+bool ImageBMP::Load(std::string filename)
 {
     FreeData();
     
     // open file
     FILE* file;
-    errno_t ret = fopen_s(&file, filename, "rb");
+    errno_t ret = fopen_s(&file, filename.c_str(), "rb");
     if (ret)
     {
         printf("Error loading BMP: could not open file %s\n", filename);

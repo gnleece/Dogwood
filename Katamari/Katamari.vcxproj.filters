@@ -59,6 +59,9 @@
     <ClInclude Include="Engine\Math\Transformations.h">
       <Filter>Engine\Headers\Math</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Texture.h">
+      <Filter>Engine\Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -80,6 +83,9 @@
       <Filter>Engine\Source\Math</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Image.cpp">
+      <Filter>Engine\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Texture.cpp">
       <Filter>Engine\Source</Filter>
     </ClCompile>
   </ItemGroup>

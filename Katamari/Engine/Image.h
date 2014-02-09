@@ -3,10 +3,12 @@
 #define GLEW_STATIC
 #include <GL/glew.h>
 
+#include <fstream>
+
 class Image
 {
 public:
-    virtual bool Load(const char* filename) = 0;
+    virtual bool Load(std::string filename) = 0;
     virtual void FreeData() = 0;
     // TODO add Save()
 
@@ -24,10 +26,10 @@ class ImageBMP : public Image
 {
 public:
     ImageBMP();
-    ImageBMP(const char* filename);
+    ImageBMP(std::string filename);
     ~ImageBMP();
 
-    virtual bool            Load(const char* filename);
+    virtual bool            Load(std::string filename);
     virtual void            FreeData();
 
     const unsigned char*    DataPtr() { return m_data; }

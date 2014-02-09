@@ -7,6 +7,7 @@
 #include <GLFW/glfw3.h>
 
 #include "Image.h"
+#include "Texture.h"
 
 void Primitive::Init(GLuint shaderProgram)
 {
@@ -48,25 +49,7 @@ void Primitive::Init(GLuint shaderProgram)
     glBindBuffer(GL_ARRAY_BUFFER, m_vboUV);
     glVertexAttribPointer(m_UVAttrib, 2, GL_FLOAT, GL_FALSE, 2*sizeof(float), 0);
 
-    // TODO remove this test code, specify texture as argument
-    ImageBMP image;
-    image.Load("Engine\\Assets\\test_texture.bmp");
-
-    // Create one OpenGL texture
-    GLuint textureID;
-    glGenTextures(1, &textureID);
- 
-    // "Bind" the newly created texture : all future texture functions will modify this texture
-    glBindTexture(GL_TEXTURE_2D, textureID);
- 
-    // Give the image to OpenGL
-    glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, image.Width(), image.Height(), 0, GL_BGR, GL_UNSIGNED_BYTE, image.DataPtr());
-    image.FreeData();
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    Texture tex("Engine\\Assets\\test_texture.bmp");
     
     glUseProgram(m_shaderProgram);
     m_uniModel = glGetUniformLocation(m_shaderProgram, "model");
