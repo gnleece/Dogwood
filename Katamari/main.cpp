@@ -62,41 +62,60 @@ int main(void)
 
     // Test objects
     Matrix4x4 trans;
+    Matrix4x4 rot;
 
     Triangle triangle(shaderProgram);
-    trans = Translation(Vector3(0,0,-10));
+    trans = Translation(Vector3(0,1,-8));
+    rot = Rotation(45, AXIS_Y);
+    trans = trans*rot;
     triangle.SetTransform(trans);
+    triangle.SetColour(ColourRGB::Cyan);
+
+    Triangle triangle2(shaderProgram);
+    trans = Translation(Vector3(-1,2,-10));
+    triangle2.SetTransform(trans);
+    triangle2.SetColour(ColourRGB::Yellow);
+
+    Triangle triangle3(shaderProgram);
+    trans = Translation(Vector3(2,0,-10));
+    triangle3.SetTransform(trans);
+    triangle3.SetColour(ColourRGB::Green);
 
     Cube cube(shaderProgram);
-    trans = Translation(Vector3(-1,1,-5));
-    Matrix4x4 r = Rotation(45, AXIS_Y);
-    r = r*Rotation(45, AXIS_X);
-    trans = trans*r;
+    trans = Translation(Vector3(-2,0.5,-5));
+    rot = Rotation(45, AXIS_Y);
+    rot = rot*Rotation(45, AXIS_X);
+    trans = trans*rot;
     cube.SetTransform(trans);
     cube.SetTexture(&tex);
+    cube.SetColour(ColourRGB::White);
 
-    Cube cube2(shaderProgram);     // TODO share underlying primitive data between copies
-    Matrix4x4 trans2 = Translation(Vector3(2,2,-10));
-    Matrix4x4 r2 = Rotation(45, AXIS_Y);
-    r2 = r2*Rotation(45, AXIS_X);
-    trans2 = trans2*r2;
-    cube2.SetTransform(trans2);
+    Cube cube2(shaderProgram);
+    trans = Translation(Vector3(2,-2,-10));
+    rot = Rotation(45, AXIS_Y);
+    rot = rot*Rotation(45, AXIS_X);
+    trans = trans*rot;
+    cube2.SetTransform(trans);
     cube2.SetTexture(&tex2);
+    cube2.SetColour(ColourRGB::Green);
 
     Line line(shaderProgram);
-    trans = Translation(Vector3(0,0,-5));
+    trans = Translation(Vector3(2,0,-5));
     line.SetTransform(trans);
+    line.SetColour(ColourRGB::White);
 
     while (!glfwWindowShouldClose(window))
     {
         // Clear the screen to black
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+        
         // Draw test objects
+        triangle.Render();
+        triangle2.Render();
+        triangle3.Render();
         cube.Render();
         cube2.Render();
-        triangle.Render();
         line.Render();
 
         glfwSwapBuffers(window);
@@ -104,6 +123,8 @@ int main(void)
     }
 
     triangle.Cleanup();     // TODO objects need to auto-cleaup
+    triangle2.Cleanup();
+    triangle3.Cleanup();
     cube.Cleanup();
     cube2.Cleanup();
     line.Cleanup();

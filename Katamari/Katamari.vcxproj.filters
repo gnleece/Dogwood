@@ -62,7 +62,7 @@
     <ClInclude Include="Engine\Texture.h">
       <Filter>Engine\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Global.h">
+    <ClInclude Include="Engine\Colour.h">
       <Filter>Engine\Headers</Filter>
     </ClInclude>
   </ItemGroup>
@@ -91,7 +91,7 @@
     <ClCompile Include="Engine\Texture.cpp">
       <Filter>Engine\Source</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Global.cpp">
+    <ClCompile Include="Engine\Colour.cpp">
       <Filter>Engine\Source</Filter>
     </ClCompile>
   </ItemGroup>

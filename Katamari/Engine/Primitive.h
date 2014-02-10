@@ -4,6 +4,7 @@
 #include <GL/glew.h>
 
 #include "Math\Algebra.h"
+#include "Colour.h"
 
 class Texture;
 
@@ -15,12 +16,14 @@ public:
 
     void SetTransform(Matrix4x4 transform)  { m_transform = transform; }
     void SetTexture(Texture* texture)       { m_texture = texture; }
+    void SetColour(ColourRGB colour);
 
 protected:
     void Init(GLuint shaderProgram);
 
     Matrix4x4   m_transform;        // TODO this should go in SceneNode
     Texture*    m_texture;          // TODO this should go in SceneNode
+    ColourRGB   m_colour;
 
     GLuint      m_shaderProgram;
     GLint       m_uniModel;
@@ -44,8 +47,6 @@ protected:
     GLsizei     m_elementDataCount;
 
     GLenum      m_drawMode;
-
-
 };
 
 class Line : public Primitive

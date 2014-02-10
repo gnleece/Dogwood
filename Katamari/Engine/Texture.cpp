@@ -45,6 +45,5 @@ Texture* Texture::DefaultTexture()
     }
 
     m_defaultTexture = new Texture("Engine\\Assets\\default_texture.bmp");
-    printf("default texture loaded");
     return m_defaultTexture;
 }

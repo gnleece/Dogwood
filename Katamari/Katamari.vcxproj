@@ -85,7 +85,7 @@
     <Text Include="TODO.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Engine\Global.h" />
+    <ClInclude Include="Engine\Colour.h" />
     <ClInclude Include="Engine\Image.h" />
     <ClInclude Include="Engine\Math\Algebra.h" />
     <ClInclude Include="Engine\Math\Transformations.h" />
@@ -96,7 +96,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Engine\Global.cpp" />
+    <ClCompile Include="Engine\Colour.cpp" />
     <ClCompile Include="Engine\Image.cpp" />
     <ClCompile Include="Engine\Math\Algebra.cpp" />
     <ClCompile Include="Engine\Math\Transformations.cpp" />
