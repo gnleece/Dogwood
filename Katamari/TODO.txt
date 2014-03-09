@@ -15,3 +15,6 @@
 
 * Rewrite matrix inversion. Currently just copied from CS488 provided code
 * Add missing matrix maths (e.g. addition)
+
+Things to understand better:
+- which calculations are done in vertex vs. fragment shader
