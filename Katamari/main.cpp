@@ -53,7 +53,7 @@ int main(void)
 
     // LIGHT SETUP
     Vector3 lightPosition(0.0f, 0.0f, 0.0f);
-    GLint uniLight = glGetUniformLocation(shaderProgram.GetID(), "light");
+    GLint uniLight = glGetUniformLocation(shaderProgram.GetID(), "lightpos");
     glUniform3fv(uniLight, 1, lightPosition.Start());
 
     // Enable depth test
