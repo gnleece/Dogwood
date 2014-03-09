@@ -2,7 +2,7 @@
 
 #include "Algebra.h"
 
-Matrix4x4 Rotation(float angle, AXIS axis);
+Matrix4x4 Rotation(float angle, eAXIS axis);
 Matrix4x4 Translation(const Vector3& displacement);
 Matrix4x4 Scaling(const Vector3& scale);
 

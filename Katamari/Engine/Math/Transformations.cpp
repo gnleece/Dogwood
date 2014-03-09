@@ -2,7 +2,7 @@
 
 // Return a matrix to represent a counterclockwise rotation of "angle" degrees
 // TODO (gnleece) allow rotation about arbitrary axes
-Matrix4x4 Rotation(float angle, AXIS axis)
+Matrix4x4 Rotation(float angle, eAXIS axis)
 {
     Matrix4x4 r;
     angle = DegreesToRadians(angle);

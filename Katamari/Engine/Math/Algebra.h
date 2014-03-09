@@ -5,7 +5,7 @@
 
 #define M_PI 3.141592653589f
 
-enum AXIS { AXIS_X, AXIS_Y, AXIS_Z };
+enum eAXIS { AXIS_X, AXIS_Y, AXIS_Z };
 
 class Point3
 {

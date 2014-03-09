@@ -63,24 +63,24 @@ int main(void)
     Matrix4x4 trans;
     Matrix4x4 rot;
 
-    Triangle triangle(shaderProgram.GetID());
+    Triangle triangle(shaderProgram);
     trans = Translation(Vector3(0,1,-8));
     rot = Rotation(45, AXIS_Y);
     trans = trans*rot;
     triangle.SetTransform(trans);
     triangle.SetColour(ColourRGB::Cyan);
 
-    Triangle triangle2(shaderProgram.GetID());
+    Triangle triangle2(shaderProgram);
     trans = Translation(Vector3(-1,2,-10));
     triangle2.SetTransform(trans);
     triangle2.SetColour(ColourRGB::Yellow);
 
-    Triangle triangle3(shaderProgram.GetID());
+    Triangle triangle3(shaderProgram);
     trans = Translation(Vector3(2,0,-10));
     triangle3.SetTransform(trans);
     triangle3.SetColour(ColourRGB::Green);
 
-    Cube cube(shaderProgram.GetID());
+    Cube cube(shaderProgram);
     trans = Translation(Vector3(-2,0.5,-5));
     rot = Rotation(45, AXIS_Y);
     rot = rot*Rotation(45, AXIS_X);
@@ -89,7 +89,7 @@ int main(void)
     cube.SetTexture(&tex);
     cube.SetColour(ColourRGB::White);
 
-    Cube cube2(shaderProgram.GetID());
+    Cube cube2(shaderProgram);
     trans = Translation(Vector3(2,-2,-10));
     rot = Rotation(45, AXIS_Y);
     rot = rot*Rotation(45, AXIS_X);
@@ -98,7 +98,7 @@ int main(void)
     cube2.SetTexture(&tex2);
     cube2.SetColour(ColourRGB::Green);
 
-    Line line(shaderProgram.GetID());
+    Line line(shaderProgram);
     trans = Translation(Vector3(2,0,-5));
     line.SetTransform(trans);
     line.SetColour(ColourRGB::White);
@@ -131,11 +131,7 @@ int main(void)
     tex.FreeTexture();
     tex2.FreeTexture();
 
-	// TODO shaderprogram should do its own cleanup
-    glDeleteProgram(shaderProgram.GetID());
-
-    //glDeleteShader(vertexShader);
-    //glDeleteShader(fragmentShader);
+    shaderProgram.Delete();
 
     Cleanup(window);
     exit(EXIT_SUCCESS);

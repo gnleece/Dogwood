@@ -5,6 +5,7 @@
 
 #include "Math\Algebra.h"
 #include "Colour.h"
+#include "ShaderProgram.h"
 
 class Texture;
 
@@ -19,13 +20,12 @@ public:
     void SetColour(ColourRGB colour);
 
 protected:
-    void Init(GLuint shaderProgram);
+    void Init(const ShaderProgram & shaderProgram);
 
     Matrix4x4   m_transform;        // TODO this should go in SceneNode
     Texture*    m_texture;          // TODO this should go in SceneNode
     ColourRGB   m_colour;
 
-    GLuint      m_shaderProgram;
     GLint       m_uniModel;
 
     GLuint      m_vao;
@@ -34,9 +34,10 @@ protected:
     GLuint      m_vboUV;
     GLuint      m_ebo;
 
-    GLint       m_positionAttrib;       // TODO store this per shader program not per primitive
+    GLuint      m_shaderProgramID;
+    GLint       m_positionAttrib;
     GLint       m_colourAttrib;
-    GLint       m_UVAttrib;
+    GLint       m_texAttrib;
 
     GLfloat*    m_vertexPositionData;
     GLfloat*    m_vertexColourData;
@@ -52,19 +53,19 @@ protected:
 class Line : public Primitive
 {
 public:
-    Line(GLuint shaderProgram);
+    Line(const ShaderProgram & shaderProgram);
 };
 
 class Cube : public Primitive
 {
 public:
-    Cube(GLuint shaderProgram);
+    Cube(const ShaderProgram & shaderProgram);
 };
 
 class Triangle : public Primitive
 {
 public:
-    Triangle(GLuint shaderProgram);
+    Triangle(const ShaderProgram & shaderProgram);
 };
 
 class Sphere : public Primitive

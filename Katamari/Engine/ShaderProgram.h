@@ -8,15 +8,21 @@
 class ShaderProgram
 {
 public:
-	ShaderProgram(std::string vertexShaderPath, std::string fragmentShaderPath);
+    enum eAttribType { ATTRIB_POS, ATTRIB_COLOR, ATTRIB_TEXCOORD, NUM_ATTRIBS };
 	
-	GLuint GetID() { return m_programID; }
+    ShaderProgram(std::string vertexShaderPath, std::string fragmentShaderPath);
+	
+    GLuint	GetID()	const	{ return m_programID; }
+    GLint	GetAttribLocation(eAttribType attrib) const;
+    void	Delete();
 
 private:
-	GLuint m_programID;
-	GLuint m_vertexID;
-	GLuint m_fragmentID;
+    GLuint m_programID;
+    GLuint m_vertexID;
+    GLuint m_fragmentID;
 
-	GLuint LoadShaderFromFile(std::string path, GLenum shaderType);
-	GLuint LinkProgram(GLuint vertexShader, GLuint fragmentShader);
+    GLint m_attribLocations[NUM_ATTRIBS];
+
+    GLuint LoadShaderFromFile(std::string path, GLenum shaderType);
+    GLuint LinkProgram(GLuint vertexShader, GLuint fragmentShader);
 };

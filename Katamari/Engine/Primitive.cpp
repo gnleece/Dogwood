@@ -25,10 +25,10 @@ void Primitive::SetColour(ColourRGB colour)
     glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*m_vertexCount*3, m_vertexColourData, GL_STATIC_DRAW);
 }
 
-void Primitive::Init(GLuint shaderProgram)
+void Primitive::Init(const ShaderProgram & shaderProgram)
 {
-    m_shaderProgram = shaderProgram;
-    
+    m_shaderProgramID = shaderProgram.GetID();
+
     // prepare buffers
     glGenVertexArrays(1, &m_vao);
     glBindVertexArray(m_vao);
@@ -49,24 +49,23 @@ void Primitive::Init(GLuint shaderProgram)
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)*m_elementDataCount, m_elementData, GL_STATIC_DRAW);
 
-    // get shader param locations   TODO this should be stored with the shader itself
-    m_positionAttrib = glGetAttribLocation(m_shaderProgram, "position");
+    m_positionAttrib = shaderProgram.GetAttribLocation(ShaderProgram::ATTRIB_POS);
     glEnableVertexAttribArray(m_positionAttrib);
     glBindBuffer(GL_ARRAY_BUFFER, m_vboPosition);
     glVertexAttribPointer(m_positionAttrib, 3, GL_FLOAT, GL_FALSE, 3*sizeof(float), 0);
  
-    m_colourAttrib = glGetAttribLocation(m_shaderProgram, "color");
+    m_colourAttrib = shaderProgram.GetAttribLocation(ShaderProgram::ATTRIB_COLOR);
     glEnableVertexAttribArray(m_colourAttrib);
     glBindBuffer(GL_ARRAY_BUFFER, m_vboColour);
     glVertexAttribPointer(m_colourAttrib, 3, GL_FLOAT, GL_FALSE, 3*sizeof(float), 0);
 
-    m_UVAttrib = glGetAttribLocation(m_shaderProgram, "texcoord");
-    glEnableVertexAttribArray(m_UVAttrib);
+    m_texAttrib = shaderProgram.GetAttribLocation(ShaderProgram::ATTRIB_TEXCOORD);
+    glEnableVertexAttribArray(m_texAttrib);
     glBindBuffer(GL_ARRAY_BUFFER, m_vboUV);
-    glVertexAttribPointer(m_UVAttrib, 2, GL_FLOAT, GL_FALSE, 2*sizeof(float), 0);
+    glVertexAttribPointer(m_texAttrib, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0);
     
-    glUseProgram(m_shaderProgram);
-    m_uniModel = glGetUniformLocation(m_shaderProgram, "model");
+    glUseProgram(m_shaderProgramID);
+    m_uniModel = glGetUniformLocation(m_shaderProgramID, "model");
 }
 
 void Primitive::Render()
@@ -77,7 +76,7 @@ void Primitive::Render()
     }
     m_texture->BindTexture();
 
-    glUseProgram(m_shaderProgram);      // TODO check if shader is already active
+    glUseProgram(m_shaderProgramID);      // TODO check if shader is already active
     glUniformMatrix4fv(m_uniModel, 1, GL_FALSE, m_transform.Transpose().Start());
     glBindVertexArray(m_vao);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
@@ -88,7 +87,7 @@ void Primitive::Cleanup()
 {
     glDisableVertexAttribArray(m_positionAttrib);
     glDisableVertexAttribArray(m_colourAttrib);
-    glDisableVertexAttribArray(m_UVAttrib);
+    glDisableVertexAttribArray(m_texAttrib);
 
     glDeleteVertexArrays(1, &m_vao);
     glDeleteBuffers(1, &m_vboPosition);
@@ -117,7 +116,7 @@ GLuint line_elementData[] =
     0, 1
 };
 
-Line::Line(GLuint shaderProgram)
+Line::Line(const ShaderProgram & shaderProgram)
 {
     m_vertexPositionData = line_vertexData;
     m_vertexUVData = line_UVData;
@@ -249,7 +248,7 @@ GLuint cube_elementData[] =
     33, 34, 35
 };
 
-Cube::Cube(GLuint shaderProgram)
+Cube::Cube(const ShaderProgram & shaderProgram)
 {
     m_vertexPositionData = cube_vertexData;
     m_vertexColourData = new float[108];
@@ -283,7 +282,7 @@ GLuint triangle_elementData[] =
     0, 1, 2
 };
 
-Triangle::Triangle(GLuint shaderProgram)
+Triangle::Triangle(const ShaderProgram & shaderProgram)
 {
     m_vertexPositionData = triangle_vertexData;
     m_vertexColourData = new float[9];
