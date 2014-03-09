@@ -65,6 +65,9 @@
     <ClInclude Include="Engine\Colour.h">
       <Filter>Engine\Headers</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\ShaderProgram.h">
+      <Filter>Engine\Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -92,6 +95,9 @@
       <Filter>Engine\Source</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Colour.cpp">
+      <Filter>Engine\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\ShaderProgram.cpp">
       <Filter>Engine\Source</Filter>
     </ClCompile>
   </ItemGroup>

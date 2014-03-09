@@ -14,6 +14,7 @@
 #include "Engine\Math\Algebra.h"
 #include "Engine\Math\Transformations.h"
 #include "Engine\Primitive.h"
+#include "Engine\ShaderProgram.h"
 #include "Engine\Texture.h"
 #include "Engine\Util.h"
 
@@ -35,21 +36,19 @@ int main(void)
     GLFWwindow* window = Setup();
     
     // Load common vertex and fragment shaders
-    GLuint vertexShader = LoadShaderFromFile("Engine\\Shaders\\VertexShader.glsl", GL_VERTEX_SHADER);
-    GLuint fragmentShader = LoadShaderFromFile("Engine\\Shaders\\FragmentShader.glsl", GL_FRAGMENT_SHADER);
-    GLuint shaderProgram = LinkShaderProgram(vertexShader, fragmentShader);
-    glUseProgram(shaderProgram);
+	ShaderProgram shaderProgram("Engine\\Shaders\\VertexShader.glsl", "Engine\\Shaders\\FragmentShader.glsl");
+	glUseProgram(shaderProgram.GetID());
 
     // Prepare view matrix
     Matrix4x4 view = LookAt(Vector3(0.0, 0.0, 0.5),
                             Vector3(0.0, 0.0, 0.0),
                             Vector3(0.0, 1.0, 0.0));
-    GLint uniView = glGetUniformLocation(shaderProgram, "view");
+    GLint uniView = glGetUniformLocation(shaderProgram.GetID(), "view");
     glUniformMatrix4fv(uniView, 1, GL_FALSE, view.Transpose().Start());
 
     // Prepare projection matrix
     Matrix4x4 proj = PerspectiveProjection(45.0f, 800.0f / 600.0f, 0.1f, 1000.0f);
-    GLint uniProj = glGetUniformLocation(shaderProgram, "proj");
+    GLint uniProj = glGetUniformLocation(shaderProgram.GetID(), "proj");
     glUniformMatrix4fv(uniProj, 1, GL_FALSE, proj.Transpose().Start());
 
     // Enable depth test
@@ -64,24 +63,24 @@ int main(void)
     Matrix4x4 trans;
     Matrix4x4 rot;
 
-    Triangle triangle(shaderProgram);
+    Triangle triangle(shaderProgram.GetID());
     trans = Translation(Vector3(0,1,-8));
     rot = Rotation(45, AXIS_Y);
     trans = trans*rot;
     triangle.SetTransform(trans);
     triangle.SetColour(ColourRGB::Cyan);
 
-    Triangle triangle2(shaderProgram);
+    Triangle triangle2(shaderProgram.GetID());
     trans = Translation(Vector3(-1,2,-10));
     triangle2.SetTransform(trans);
     triangle2.SetColour(ColourRGB::Yellow);
 
-    Triangle triangle3(shaderProgram);
+    Triangle triangle3(shaderProgram.GetID());
     trans = Translation(Vector3(2,0,-10));
     triangle3.SetTransform(trans);
     triangle3.SetColour(ColourRGB::Green);
 
-    Cube cube(shaderProgram);
+    Cube cube(shaderProgram.GetID());
     trans = Translation(Vector3(-2,0.5,-5));
     rot = Rotation(45, AXIS_Y);
     rot = rot*Rotation(45, AXIS_X);
@@ -90,7 +89,7 @@ int main(void)
     cube.SetTexture(&tex);
     cube.SetColour(ColourRGB::White);
 
-    Cube cube2(shaderProgram);
+    Cube cube2(shaderProgram.GetID());
     trans = Translation(Vector3(2,-2,-10));
     rot = Rotation(45, AXIS_Y);
     rot = rot*Rotation(45, AXIS_X);
@@ -99,7 +98,7 @@ int main(void)
     cube2.SetTexture(&tex2);
     cube2.SetColour(ColourRGB::Green);
 
-    Line line(shaderProgram);
+    Line line(shaderProgram.GetID());
     trans = Translation(Vector3(2,0,-5));
     line.SetTransform(trans);
     line.SetColour(ColourRGB::White);
@@ -132,10 +131,11 @@ int main(void)
     tex.FreeTexture();
     tex2.FreeTexture();
 
-    glDeleteProgram(shaderProgram);
+	// TODO shaderprogram should do its own cleanup
+    glDeleteProgram(shaderProgram.GetID());
 
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
+    //glDeleteShader(vertexShader);
+    //glDeleteShader(fragmentShader);
 
     Cleanup(window);
     exit(EXIT_SUCCESS);
@@ -147,7 +147,7 @@ GLFWwindow* Setup()
     if (!glfwInit())
         exit(EXIT_FAILURE);
 
-    GLFWwindow* window = glfwCreateWindow(640, 480, "Katamari", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(1024, 768, "Katamari", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
