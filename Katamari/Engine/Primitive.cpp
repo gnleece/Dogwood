@@ -76,7 +76,14 @@ void Primitive::Render()
     }
     m_texture->BindTexture();
 
-    glUseProgram(m_shaderProgramID);      // TODO check if shader is already active
+    // enable shader if not already active
+    GLint currentProgram;
+    glGetIntegerv(GL_CURRENT_PROGRAM, (GLint*)&currentProgram);
+    if (currentProgram != m_shaderProgramID)
+    {
+        glUseProgram(m_shaderProgramID);
+    }
+
     glUniformMatrix4fv(m_uniModel, 1, GL_FALSE, m_transform.Transpose().Start());
     glBindVertexArray(m_vao);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
