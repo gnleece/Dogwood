@@ -8,7 +8,7 @@
 * Model loading
 
 * Debug logging (with streams)
-* FPS counter
+* FPS counter (debug draw)
 * Tweakables?
 
 * Engine needs a name!

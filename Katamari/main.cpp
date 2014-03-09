@@ -105,6 +105,8 @@ int main(void)
     cube2.SetTexture(&tex2);
     cube2.SetColour(ColourRGB::Green);
 
+    double prevTime = glfwGetTime();
+
     while (!glfwWindowShouldClose(window))
     {
         // Clear the screen to black
@@ -120,6 +122,12 @@ int main(void)
 
         glfwSwapBuffers(window);
         glfwPollEvents();
+
+        double currentTime = glfwGetTime();
+        double frameTime = currentTime - prevTime;
+        double FPS = 1 / frameTime;
+        //printf("Frame time: %f\t\tFPS: %3.f\n", frameTime, FPS);
+        prevTime = currentTime;
     }
 
     triangle.Cleanup();     // TODO objects need to auto-cleaup
