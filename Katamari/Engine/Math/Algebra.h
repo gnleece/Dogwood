@@ -29,6 +29,7 @@ public:
 
     float& operator[](int i);
     float operator[](int i) const;
+    const float* Start();
 
     float MagnitudeSqrd() const;
     float Magnitude() const;

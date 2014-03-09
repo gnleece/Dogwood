@@ -36,6 +36,10 @@ void Primitive::Init(const ShaderProgram & shaderProgram)
     glGenBuffers(1, &m_vboPosition);
     glBindBuffer(GL_ARRAY_BUFFER, m_vboPosition);
     glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*m_vertexCount*3, m_vertexPositionData, GL_STATIC_DRAW);
+    
+    glGenBuffers(1, &m_vboNormal);
+    glBindBuffer(GL_ARRAY_BUFFER, m_vboNormal);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*m_vertexCount*3, m_vertexNormalData, GL_STATIC_DRAW);
 
     glGenBuffers(1, &m_vboColour);
     glBindBuffer(GL_ARRAY_BUFFER, m_vboColour);
@@ -54,6 +58,11 @@ void Primitive::Init(const ShaderProgram & shaderProgram)
     glBindBuffer(GL_ARRAY_BUFFER, m_vboPosition);
     glVertexAttribPointer(m_positionAttrib, 3, GL_FLOAT, GL_FALSE, 3*sizeof(float), 0);
  
+    m_normalAttrib = shaderProgram.GetAttribLocation(ShaderProgram::ATTRIB_NORMAL);
+    glEnableVertexAttribArray(m_normalAttrib);
+    glBindBuffer(GL_ARRAY_BUFFER, m_vboNormal);
+    glVertexAttribPointer(m_normalAttrib, 3, GL_FLOAT, GL_FALSE, 3*sizeof(float), 0);
+
     m_colourAttrib = shaderProgram.GetAttribLocation(ShaderProgram::ATTRIB_COLOR);
     glEnableVertexAttribArray(m_colourAttrib);
     glBindBuffer(GL_ARRAY_BUFFER, m_vboColour);
@@ -93,11 +102,13 @@ void Primitive::Render()
 void Primitive::Cleanup()
 {
     glDisableVertexAttribArray(m_positionAttrib);
+    glDisableVertexAttribArray(m_normalAttrib);
     glDisableVertexAttribArray(m_colourAttrib);
     glDisableVertexAttribArray(m_texAttrib);
 
     glDeleteVertexArrays(1, &m_vao);
     glDeleteBuffers(1, &m_vboPosition);
+    glDeleteBuffers(1, &m_vboNormal);
     glDeleteBuffers(1, &m_vboColour);
     glDeleteBuffers(1, &m_vboUV);
     glDeleteBuffers(1, &m_ebo);
@@ -105,38 +116,7 @@ void Primitive::Cleanup()
     delete [] m_vertexColourData;
 }
 
-
-GLfloat line_vertexData[] =
-{
-    0.0f, 0.0f, 0.0f,
-    1.0f, 0.0f, 0.0f
-};
-
-GLfloat line_UVData[] =
-{
-    0.0f, 0.0f,
-    1.0f, 0.0f
-};
-
-GLuint line_elementData[] =
-{
-    0, 1
-};
-
-Line::Line(const ShaderProgram & shaderProgram)
-{
-    m_vertexPositionData = line_vertexData;
-    m_vertexUVData = line_UVData;
-    m_vertexColourData = new float[6];
-    m_vertexCount = 2;
-
-    m_elementData = line_elementData;
-    m_elementDataCount = 2;
-    
-    m_drawMode = GL_LINE_STRIP;
-
-    Init(shaderProgram);
-}
+// TODO write OBJ model importing so that I don't have to specify these values by hand!!
 
 GLfloat cube_vertexData[] =
 {
@@ -239,6 +219,57 @@ GLfloat cube_UVData[] = {
     0.0f, 1.0f
 };
 
+GLfloat cube_normalData[] =
+{
+    -1.0f, 0.0f, 0.0f, // 0
+    -1.0f, 0.0f, 0.0f, // 1
+    -1.0f, 0.0f, 0.0f, // 3
+
+    0.0f, 0.0f, -1.0f, // 6
+    0.0f, 0.0f, -1.0f, // 0
+    0.0f, 0.0f, -1.0f, // 2
+
+    0.0f, -1.0f, 0.0f, // 5
+    0.0f, -1.0f, 0.0f, // 0
+    0.0f, -1.0f, 0.0f, // 4
+
+    0.0f, 0.0f, -1.0f, // 6
+    0.0f, 0.0f, -1.0f, // 4
+    0.0f, 0.0f, -1.0f, // 0
+
+    -1.0f, 0.0f, 0.0f, // 0
+    -1.0f, 0.0f, 0.0f, // 3
+    -1.0f, 0.0f, 0.0f, // 2
+
+    0.0f, -1.0f, 0.0f, // 5
+    0.0f, -1.0f, 0.0f, // 1
+    0.0f, -1.0f, 0.0f, // 0
+
+    0.0f, 0.0f, 1.0f, // 3
+    0.0f, 0.0f, 1.0f, // 1
+    0.0f, 0.0f, 1.0f, // 5
+
+    1.0f, 0.0f, 0.0f, // 7
+    1.0f, 0.0f, 0.0f, // 4
+    1.0f, 0.0f, 0.0f, // 6
+
+    1.0f, 0.0f, 0.0f, // 4
+    1.0f, 0.0f, 0.0f, // 7
+    1.0f, 0.0f, 0.0f, // 5
+
+    0.0f, 1.0f, 0.0f, // 7
+    0.0f, 1.0f, 0.0f, // 6
+    0.0f, 1.0f, 0.0f, // 2
+
+    0.0f, 1.0f, 0.0f, // 7
+    0.0f, 1.0f, 0.0f, // 2
+    0.0f, 1.0f, 0.0f, // 3
+
+    0.0f, 0.0f, 1.0f, // 7
+    0.0f, 0.0f, 1.0f, // 3
+    0.0f, 0.0f, 1.0f, // 5
+};
+
 GLuint cube_elementData[] =
 {
     0, 1, 2,
@@ -258,6 +289,7 @@ GLuint cube_elementData[] =
 Cube::Cube(const ShaderProgram & shaderProgram)
 {
     m_vertexPositionData = cube_vertexData;
+    m_vertexNormalData = cube_normalData;
     m_vertexColourData = new float[108];
     m_vertexUVData = cube_UVData;
     m_vertexCount = 36;
@@ -284,6 +316,13 @@ GLfloat triangle_UVdata[] =
     0.f, 1.0f
 };
 
+GLfloat triagnle_normalData[] =
+{
+    0.0f, 0.0f, 1.f,
+    0.0f, 0.0f, 1.f,
+    0.0f, 0.0f, 1.f,
+};
+
 GLuint triangle_elementData[] =
 {
     0, 1, 2
@@ -292,6 +331,7 @@ GLuint triangle_elementData[] =
 Triangle::Triangle(const ShaderProgram & shaderProgram)
 {
     m_vertexPositionData = triangle_vertexData;
+    m_vertexNormalData = triagnle_normalData;
     m_vertexColourData = new float[9];
     m_vertexUVData = triangle_UVdata;
     m_vertexCount = 3;

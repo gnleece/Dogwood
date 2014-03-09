@@ -8,7 +8,7 @@
 class ShaderProgram
 {
 public:
-    enum eAttribType { ATTRIB_POS, ATTRIB_COLOR, ATTRIB_TEXCOORD, NUM_ATTRIBS };
+    enum eAttribType { ATTRIB_POS, ATTRIB_NORMAL, ATTRIB_COLOR, ATTRIB_TEXCOORD, NUM_ATTRIBS };
 	
     ShaderProgram(std::string vertexShaderPath, std::string fragmentShaderPath);
 	

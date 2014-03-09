@@ -51,6 +51,11 @@ int main(void)
     GLint uniProj = glGetUniformLocation(shaderProgram.GetID(), "proj");
     glUniformMatrix4fv(uniProj, 1, GL_FALSE, proj.Transpose().Start());
 
+    // LIGHT SETUP
+    Vector3 lightPosition(0.0f, 0.0f, 0.0f);
+    GLint uniLight = glGetUniformLocation(shaderProgram.GetID(), "light");
+    glUniform3fv(uniLight, 1, lightPosition.Start());
+
     // Enable depth test
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
@@ -64,30 +69,29 @@ int main(void)
     Matrix4x4 rot;
 
     Triangle triangle(shaderProgram);
-    trans = Translation(Vector3(0,1,-8));
-    rot = Rotation(45, AXIS_Y);
-    trans = trans*rot;
+    trans = Translation(Vector3(1,2,-10));
+    //rot = Rotation(45, AXIS_Y);
+    //trans = trans*rot;
     triangle.SetTransform(trans);
     triangle.SetColour(ColourRGB::Cyan);
 
     Triangle triangle2(shaderProgram);
-    trans = Translation(Vector3(-1,2,-10));
+    trans = Translation(Vector3(2.5,2,-10));
     triangle2.SetTransform(trans);
     triangle2.SetColour(ColourRGB::Yellow);
 
     Triangle triangle3(shaderProgram);
-    trans = Translation(Vector3(2,0,-10));
+    trans = Translation(Vector3(4,2,-10));
     triangle3.SetTransform(trans);
-    triangle3.SetColour(ColourRGB::Green);
+    triangle3.SetColour(ColourRGB::Magenta);
 
     Cube cube(shaderProgram);
-    trans = Translation(Vector3(-2,0.5,-5));
+    trans = Translation(Vector3(-1.5,0,-4));
     rot = Rotation(45, AXIS_Y);
     rot = rot*Rotation(45, AXIS_X);
     trans = trans*rot;
     cube.SetTransform(trans);
-    cube.SetTexture(&tex);
-    cube.SetColour(ColourRGB::White);
+    cube.SetColour(ColourRGB::Blue);
 
     Cube cube2(shaderProgram);
     trans = Translation(Vector3(2,-2,-10));
@@ -97,11 +101,6 @@ int main(void)
     cube2.SetTransform(trans);
     cube2.SetTexture(&tex2);
     cube2.SetColour(ColourRGB::Green);
-
-    Line line(shaderProgram);
-    trans = Translation(Vector3(2,0,-5));
-    line.SetTransform(trans);
-    line.SetColour(ColourRGB::White);
 
     while (!glfwWindowShouldClose(window))
     {
@@ -115,7 +114,6 @@ int main(void)
         triangle3.Render();
         cube.Render();
         cube2.Render();
-        line.Render();
 
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -126,7 +124,6 @@ int main(void)
     triangle3.Cleanup();
     cube.Cleanup();
     cube2.Cleanup();
-    line.Cleanup();
 
     tex.FreeTexture();
     tex2.FreeTexture();

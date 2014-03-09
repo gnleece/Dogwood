@@ -69,6 +69,11 @@ float Vector3::operator[](int i) const
     return m_values[i];
 }
 
+const float* Vector3::Start()
+{
+    return m_values;
+}
+
 float Vector3::MagnitudeSqrd() const
 {
     return m_values[0]*m_values[0] +

@@ -30,16 +30,19 @@ protected:
 
     GLuint      m_vao;
     GLuint      m_vboPosition;
+    GLuint      m_vboNormal;
     GLuint      m_vboColour;
     GLuint      m_vboUV;
     GLuint      m_ebo;
 
     GLuint      m_shaderProgramID;
     GLint       m_positionAttrib;
+    GLint       m_normalAttrib;
     GLint       m_colourAttrib;
     GLint       m_texAttrib;
 
     GLfloat*    m_vertexPositionData;
+    GLfloat*    m_vertexNormalData;
     GLfloat*    m_vertexColourData;
     GLfloat*    m_vertexUVData;
     GLsizei     m_vertexCount;
@@ -48,12 +51,6 @@ protected:
     GLsizei     m_elementDataCount;
 
     GLenum      m_drawMode;
-};
-
-class Line : public Primitive
-{
-public:
-    Line(const ShaderProgram & shaderProgram);
 };
 
 class Cube : public Primitive
