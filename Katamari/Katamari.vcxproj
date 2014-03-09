@@ -87,6 +87,7 @@
   <ItemGroup>
     <ClInclude Include="Engine\Colour.h" />
     <ClInclude Include="Engine\Image.h" />
+    <ClInclude Include="Engine\Light.h" />
     <ClInclude Include="Engine\Math\Algebra.h" />
     <ClInclude Include="Engine\Math\Transformations.h" />
     <ClInclude Include="Engine\Primitive.h" />
@@ -99,6 +100,7 @@
   <ItemGroup>
     <ClCompile Include="Engine\Colour.cpp" />
     <ClCompile Include="Engine\Image.cpp" />
+    <ClCompile Include="Engine\Light.cpp" />
     <ClCompile Include="Engine\Math\Algebra.cpp" />
     <ClCompile Include="Engine\Math\Transformations.cpp" />
     <ClCompile Include="Engine\Primitive.cpp" />

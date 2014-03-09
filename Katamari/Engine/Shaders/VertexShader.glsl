@@ -19,7 +19,7 @@ out vec2 Texcoord;
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 proj;
-uniform vec3 lightpos;
+uniform vec3 lightPos;
 //TODO light colour, power
 
 void main()
@@ -28,7 +28,7 @@ void main()
 
     Color = color;
     Texcoord = texcoord;
-    LightPosition_worldspace = lightpos;
+    LightPosition_worldspace = lightPos;
 
     // Position of vertex in worldspace
     Position_worldspace = (model * vec4(position,1)).xyz;
@@ -38,7 +38,7 @@ void main()
     EyeDirection_cameraspace = vec3(0,0,0) - Position_cameraspace;
 
     // Vector from vertex to light, in camera space
-    vec3 LightPosition_cameraspace = (view * vec4(lightpos,1)).xyz;
+    vec3 LightPosition_cameraspace = (view * vec4(lightPos,1)).xyz;
     LightDirection_cameraspace = LightPosition_cameraspace + EyeDirection_cameraspace;
 
     // Normal of vertex in camera space

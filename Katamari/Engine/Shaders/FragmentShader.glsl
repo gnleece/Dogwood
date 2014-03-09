@@ -13,6 +13,8 @@ in vec2 Texcoord;
 out vec4 outColor;
 
 uniform sampler2D tex;
+uniform vec3 lightColor;
+uniform float lightPower;
 
 void main() 
 {
@@ -37,6 +39,6 @@ void main()
     // combine all lighting types for final color
     //TODO light color, light power, ambient as parameter
     outColor =	MaterialAmbientColor + 
-                15 * MaterialDiffuseColor * cosTheta / distanceSqrd + 
-                150 * MaterialSpecularColor * pow(cosAlpha,5) / distanceSqrd;
+                lightPower * MaterialDiffuseColor * lightColor * cosTheta / distanceSqrd + 
+                150 * MaterialSpecularColor * lightColor * pow(cosAlpha,5) / distanceSqrd;
 }

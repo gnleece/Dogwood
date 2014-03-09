@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <time.h>
 
+#include "Engine\Light.h"
 #include "Engine\Math\Algebra.h"
 #include "Engine\Math\Transformations.h"
 #include "Engine\Primitive.h"
@@ -53,8 +54,10 @@ int main(void)
 
     // LIGHT SETUP
     Vector3 lightPosition(0.0f, 0.0f, 0.0f);
-    GLint uniLight = glGetUniformLocation(shaderProgram.GetID(), "lightpos");
-    glUniform3fv(uniLight, 1, lightPosition.Start());
+    Vector3 lightColor(1.0f, 1.0f, 1.0f);
+    GLfloat lightPower = 15.0f;
+    Light light(lightPosition, lightColor, lightPower);
+    light.SetLightForShader(shaderProgram.GetID());
 
     // Enable depth test
     glEnable(GL_DEPTH_TEST);
