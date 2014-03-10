@@ -22,8 +22,8 @@ bool ImageBMP::Load(std::string filename)
     
     // open file
     FILE* file;
-    errno_t ret = fopen_s(&file, filename.c_str(), "rb");
-    if (ret)
+    errno_t err = fopen_s(&file, filename.c_str(), "rb");
+    if (err)
     {
         printf("Error loading BMP: could not open file %s\n", filename.c_str());
         return false;

@@ -7,6 +7,7 @@
 #include <GLFW/glfw3.h>
 
 #include "Image.h"
+#include "Model.h"
 #include "Texture.h"
 
 void Primitive::SetColour(ColourRGB colour)
@@ -288,10 +289,17 @@ GLuint cube_elementData[] =
 
 Cube::Cube(const ShaderProgram & shaderProgram)
 {
-    m_vertexPositionData = cube_vertexData;
-    m_vertexNormalData = cube_normalData;
+    Model cubeModel("Engine\\Assets\\Models\\cube.obj");
+    
+    //m_vertexPositionData = cube_vertexData;
+    //m_vertexNormalData = cube_normalData;
+    //m_vertexUVData = cube_UVData;
+
+    m_vertexPositionData = cubeModel.vertices[0].Start();
+    m_vertexNormalData = cubeModel.normals[0].Start();
+    m_vertexUVData = cubeModel.uvs[0].Start();
+
     m_vertexColourData = new float[108];
-    m_vertexUVData = cube_UVData;
     m_vertexCount = 36;
 
     m_elementData = cube_elementData;

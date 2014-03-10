@@ -19,6 +19,24 @@ private:
     float m_values[3];
 };
 
+class Vector2
+{
+public:
+    Vector2();
+    Vector2(const Vector2& other);
+    Vector2(float x, float y);
+    Vector2& operator =(const Vector2 other);
+
+    float& operator[](int i);
+    float operator[](int i) const;
+    float* Start();
+
+    void DebugPrint();
+
+private:
+    float m_values[2];
+};
+
 class Vector3
 {
 public:
@@ -29,7 +47,7 @@ public:
 
     float& operator[](int i);
     float operator[](int i) const;
-    const float* Start();
+    float* Start();
 
     float MagnitudeSqrd() const;
     float Magnitude() const;

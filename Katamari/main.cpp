@@ -14,6 +14,7 @@
 #include "Engine\Light.h"
 #include "Engine\Math\Algebra.h"
 #include "Engine\Math\Transformations.h"
+#include "Engine\Model.h"
 #include "Engine\Primitive.h"
 #include "Engine\ShaderProgram.h"
 #include "Engine\Texture.h"
@@ -35,7 +36,7 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 int main(void)
 {
     GLFWwindow* window = Setup();
-    
+
     // Load common vertex and fragment shaders
 	ShaderProgram shaderProgram("Engine\\Shaders\\VertexShader.glsl", "Engine\\Shaders\\FragmentShader.glsl");
 	glUseProgram(shaderProgram.GetID());

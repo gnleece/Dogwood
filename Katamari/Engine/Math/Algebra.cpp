@@ -29,6 +29,45 @@ Point3& Point3::operator =(const Point3 other)
     return *this;
 }
 
+Vector2::Vector2()
+{
+    m_values[0] = 0.0f;
+    m_values[1] = 0.0f;
+}
+
+Vector2::Vector2(const Vector2& other)
+{
+    m_values[0] = other.m_values[0];
+    m_values[1] = other.m_values[1];
+}
+
+Vector2::Vector2(float x, float y)
+{
+    m_values[0] = x;
+    m_values[1] = y;
+}
+
+Vector2& Vector2::operator =(const Vector2 other)
+{
+    m_values[0] = other.m_values[0];
+    m_values[1] = other.m_values[1];
+    return *this;
+}
+
+float& Vector2::operator[](int i)
+{
+    return m_values[i];
+}
+
+float Vector2::operator[](int i) const
+{
+    return m_values[i];
+}
+
+float* Vector2::Start()
+{
+    return m_values;
+}
 
 Vector3::Vector3()
 {
@@ -69,7 +108,7 @@ float Vector3::operator[](int i) const
     return m_values[i];
 }
 
-const float* Vector3::Start()
+float* Vector3::Start()
 {
     return m_values;
 }
