@@ -40,5 +40,5 @@ void main()
     //TODO light color, light power, ambient as parameter
     outColor =	MaterialAmbientColor + 
                 lightPower * MaterialDiffuseColor * lightColor * cosTheta / distanceSqrd + 
-                150 * MaterialSpecularColor * lightColor * pow(cosAlpha,5) / distanceSqrd;
+                lightPower*2 * MaterialSpecularColor * lightColor * pow(cosAlpha,5) / distanceSqrd;
 }

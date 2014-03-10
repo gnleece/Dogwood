@@ -53,6 +53,11 @@ Matrix4x4 Scaling(const Vector3& scale)
   return s;
 }
 
+Matrix4x4 UniformScaling(float scale)
+{
+    return Scaling(Vector3(scale, scale, scale));
+}
+
 // based on pseudocode from 
 // http://webglfactory.blogspot.com/2011/06/how-to-create-view-matrix.html
 Matrix4x4 LookAt(Vector3 eye, Vector3 target, Vector3 up)

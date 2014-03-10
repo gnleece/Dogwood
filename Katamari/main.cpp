@@ -70,34 +70,37 @@ int main(void)
     // Test objects
     Matrix4x4 trans;
     Matrix4x4 rot;
+    Matrix4x4 scale;
 
     Triangle triangle(shaderProgram);
-    trans = Translation(Vector3(1,2,-10));
-    //rot = Rotation(45, AXIS_Y);
-    //trans = trans*rot;
-    triangle.SetTransform(trans);
+    trans = Translation(Vector3(0,1,-5));
+    scale = UniformScaling(0.5f);
+    triangle.SetTransform(trans*scale);
     triangle.SetColour(ColourRGB::Cyan);
 
     Triangle triangle2(shaderProgram);
-    trans = Translation(Vector3(2.5,2,-10));
-    triangle2.SetTransform(trans);
+    trans = Translation(Vector3(1,1,-5));
+    scale = UniformScaling(0.5f);
+    triangle2.SetTransform(trans*scale);
     triangle2.SetColour(ColourRGB::Yellow);
 
     Triangle triangle3(shaderProgram);
-    trans = Translation(Vector3(4,2,-10));
-    triangle3.SetTransform(trans);
+    trans = Translation(Vector3(2,1,-5));
+    scale = UniformScaling(0.5f);
+    triangle3.SetTransform(trans*scale);
     triangle3.SetColour(ColourRGB::Magenta);
 
     Cube cube(shaderProgram);
-    trans = Translation(Vector3(-1.5,0,-4));
+    trans = Translation(Vector3(-2,-0.2,-5));
     rot = Rotation(45, AXIS_Y);
     rot = rot*Rotation(45, AXIS_X);
-    trans = trans*rot;
+    scale = UniformScaling(1.2f);
+    trans = trans*rot*scale;
     cube.SetTransform(trans);
-    cube.SetColour(ColourRGB::Blue);
+    cube.SetColour(ColourRGB::White);
 
     Cube cube2(shaderProgram);
-    trans = Translation(Vector3(2,-2,-10));
+    trans = Translation(Vector3(0.5,-0.5,-5));
     rot = Rotation(45, AXIS_Y);
     rot = rot*Rotation(45, AXIS_X);
     trans = trans*rot;

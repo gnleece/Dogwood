@@ -1,20 +1,27 @@
-* Primitives
-* Textures
-* Lighting/shading
-* Scene graph
+First pass basic features:
+    * Scene graph
+    * Model loading
 
-* Particles
-* Shadows
-* Model loading
+    * Particles
+    * Shadows
 
-* Debug logging (with streams)
-* FPS counter (debug draw)
-* Tweakables?
+Second pass basic features:
+    * Multiple light sources?
 
-* Engine needs a name!
+Big systems:
+    * Physics
+    * Animation
+    * Lua scripting
 
-* Rewrite matrix inversion. Currently just copied from CS488 provided code
-* Add missing matrix maths (e.g. addition)
+Debugging stuff:
+    * Debug logging (with streams)
+    * Debug draw
+    * Tweakables?
+
+Fix-up stuff
+    * Engine needs a name!
+    * Rewrite matrix inversion. Currently just copied from CS488 provided code
+    * Add missing matrix maths (e.g. addition)
 
 Things to understand better:
-- which calculations are done in vertex vs. fragment shader
+    - which calculations are done in vertex vs. fragment shader
