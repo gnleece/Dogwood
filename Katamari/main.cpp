@@ -55,7 +55,7 @@ int main(void)
 
     // LIGHT SETUP
     Vector3 lightPosition(0.0f, 0.0f, 0.0f);
-    Vector3 lightColor(1.0f, 1.0f, 1.0f);
+    ColourRGB lightColor(1.0f, 1.0f, 1.0f);
     GLfloat lightPower = 15.0f;
     Light light(lightPosition, lightColor, lightPower);
     light.SetLightForShader(shaderProgram.GetID());

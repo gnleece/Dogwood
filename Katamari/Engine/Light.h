@@ -10,11 +10,11 @@ struct Light
 {
 public: 
     Vector3 position;
-    Vector3 color;      // TODO ColourRGB needs a GLfloat* Start()
+    ColourRGB color;
     GLfloat power;
 
-    Light() : position(Vector3(0.0f, 0.0f, 0.0f)), color(Vector3(1.0f, 1.0f, 1.0f)), power(15.0f) {}
-    Light(Vector3 p, Vector3 c, GLfloat pow) : position(p), color(c), power(pow) {}
+    Light() : position(Vector3(0.0f, 0.0f, 0.0f)), color(ColourRGB(1.0f, 1.0f, 1.0f)), power(15.0f) {}
+    Light(Vector3 p, ColourRGB c, GLfloat pow) : position(p), color(c), power(pow) {}
 
     void SetLightForShader(GLuint shaderID);
 };
