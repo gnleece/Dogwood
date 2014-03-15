@@ -7,7 +7,6 @@ in vec3 Normal_cameraspace;
 in vec3 LightDirection_cameraspace;
 in vec3 EyeDirection_cameraspace;
 
-in vec3 Color;
 in vec2 Texcoord;
 
 out vec4 outColor;
@@ -15,11 +14,12 @@ out vec4 outColor;
 uniform sampler2D tex;
 uniform vec3 lightColor;
 uniform float lightPower;
+uniform vec3 materialColor;
 
 void main() 
 {
     // material colors
-    vec4 MaterialDiffuseColor	= texture(tex, Texcoord)*vec4(Color, 1.0);
+    vec4 MaterialDiffuseColor	= texture(tex, Texcoord)*vec4(materialColor, 1.0);
     vec4 MaterialAmbientColor	= vec3(0.1,0.1,0.1) * MaterialDiffuseColor;
     vec4 MaterialSpecularColor	= vec4(1.0,1.0,1.0,1.0);
 

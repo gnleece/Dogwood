@@ -10,6 +10,8 @@ public:
     float g;
     float b;
 
+    float* Start() { return &r; }
+
     static ColourRGB Black;
     static ColourRGB White;
     static ColourRGB Gray;

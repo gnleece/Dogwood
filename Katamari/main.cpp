@@ -95,7 +95,7 @@ int main(void)
     trans = Translation(Vector3(-2,-0.2,-5));
     rot = Rotation(45, AXIS_Y);
     rot = rot*Rotation(45, AXIS_X);
-    scale = UniformScaling(1.2f);
+    scale = UniformScaling(0.5f);
     trans = trans*rot*scale;
     cube.SetTransform(trans);
     cube.SetColour(ColourRGB::White);
@@ -104,7 +104,8 @@ int main(void)
     trans = Translation(Vector3(0.5,-0.5,-5));
     rot = Rotation(45, AXIS_Y);
     rot = rot*Rotation(45, AXIS_X);
-    trans = trans*rot;
+    scale = UniformScaling(0.5f);
+    trans = trans*rot*scale;
     cube2.SetTransform(trans);
     cube2.SetTexture(&tex2);
     cube2.SetColour(ColourRGB::Green);
