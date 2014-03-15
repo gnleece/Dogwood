@@ -91,20 +91,32 @@ int main(void)
     triangle3.SetTransform(trans*scale);
     triangle3.SetColour(ColourRGB::Magenta);
 
+    /*
     Cube cube(shaderProgram);
-    trans = Translation(Vector3(-2,-0.2,-5));
+    trans = Translation(Vector3(-1.2,-0.25,-5));
     rot = Rotation(45, AXIS_Y);
     rot = rot*Rotation(45, AXIS_X);
-    scale = UniformScaling(0.5f);
+    scale = UniformScaling(0.6f);
     trans = trans*rot*scale;
     cube.SetTransform(trans);
     cube.SetColour(ColourRGB::White);
+    */
 
-    Cube cube2(shaderProgram);
-    trans = Translation(Vector3(0.5,-0.5,-5));
+    Sphere sphere(shaderProgram);
+    trans = Translation(Vector3(-1.0, -0.6, -5));
     rot = Rotation(45, AXIS_Y);
     rot = rot*Rotation(45, AXIS_X);
-    scale = UniformScaling(0.5f);
+    scale = UniformScaling(0.8f);
+    trans = trans*rot*scale;
+    sphere.SetTransform(trans);
+    sphere.SetColour(ColourRGB::White);
+    sphere.SetTexture(&tex);
+
+    Cube cube2(shaderProgram);
+    trans = Translation(Vector3(1.2,-0.5,-5));
+    rot = Rotation(45, AXIS_Y);
+    rot = rot*Rotation(45, AXIS_X);
+    scale = UniformScaling(0.45f);
     trans = trans*rot*scale;
     cube2.SetTransform(trans);
     cube2.SetTexture(&tex2);
@@ -122,7 +134,8 @@ int main(void)
         triangle.Render();
         triangle2.Render();
         triangle3.Render();
-        cube.Render();
+        //cube.Render();
+        sphere.Render();
         cube2.Render();
 
         glfwSwapBuffers(window);
@@ -138,7 +151,8 @@ int main(void)
     triangle.Cleanup();     // TODO objects need to auto-cleaup
     triangle2.Cleanup();
     triangle3.Cleanup();
-    cube.Cleanup();
+    //cube.Cleanup();
+    sphere.Cleanup();
     cube2.Cleanup();
 
     tex.FreeTexture();

@@ -65,6 +65,8 @@ public:
 
 class Sphere : public Primitive
 {
+public:
+    Sphere(const ShaderProgram & shaderProgram);
 };
 
 class Cylinder : public Primitive

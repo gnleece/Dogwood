@@ -164,3 +164,25 @@ Triangle::Triangle(const ShaderProgram & shaderProgram)
 
     Init(shaderProgram);
 }
+
+Sphere::Sphere(const ShaderProgram & shaderProgram)
+{
+    Model sphereModel("Engine\\Assets\\Models\\sphere.obj");
+    m_vertexPositionData = sphereModel.vertices[0].Start();
+    m_vertexNormalData = sphereModel.normals[0].Start();
+    m_vertexUVData = sphereModel.uvs[0].Start();
+
+    m_vertexCount = sphereModel.vertices.size();
+
+    // TODO fix this properly
+    m_elementData = new GLuint[m_vertexCount];
+    for (int i = 0; i < m_vertexCount; i++)
+    {
+        m_elementData[i] = i;
+    }
+    m_elementDataCount = m_vertexCount;
+
+    m_drawMode = GL_TRIANGLES;
+
+    Init(shaderProgram);
+}
