@@ -68,20 +68,20 @@
     <ClInclude Include="Engine\Texture.h">
       <Filter>Engine\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Colour.h">
-      <Filter>Engine\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\ShaderProgram.h">
-      <Filter>Engine\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Light.h">
-      <Filter>Engine\Headers</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Rendering\Vertex.h">
       <Filter>Engine\Headers\Rendering</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Mesh.h">
       <Filter>Engine\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Rendering\Colour.h">
+      <Filter>Engine\Headers\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Rendering\Light.h">
+      <Filter>Engine\Headers\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Rendering\ShaderProgram.h">
+      <Filter>Engine\Headers\Rendering</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -109,20 +109,20 @@
     <ClCompile Include="Engine\Texture.cpp">
       <Filter>Engine\Source</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Colour.cpp">
-      <Filter>Engine\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\ShaderProgram.cpp">
-      <Filter>Engine\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Light.cpp">
-      <Filter>Engine\Source</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Rendering\Vertex.cpp">
       <Filter>Engine\Source\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Mesh.cpp">
       <Filter>Engine\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Rendering\Colour.cpp">
+      <Filter>Engine\Source\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Rendering\Light.cpp">
+      <Filter>Engine\Source\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Rendering\ShaderProgram.cpp">
+      <Filter>Engine\Source\Rendering</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

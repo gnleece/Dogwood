@@ -4,7 +4,7 @@
 #include <GL/glew.h>
 
 #include "Colour.h"
-#include "Math\Algebra.h"
+#include "..\Math\Algebra.h"
 
 struct Light
 {

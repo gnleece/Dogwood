@@ -85,31 +85,31 @@
     <Text Include="TODO.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Engine\Colour.h" />
     <ClInclude Include="Engine\Image.h" />
-    <ClInclude Include="Engine\Light.h" />
     <ClInclude Include="Engine\Math\Algebra.h" />
     <ClInclude Include="Engine\Math\Transformations.h" />
     <ClInclude Include="Engine\Mesh.h" />
     <ClInclude Include="Engine\Primitive.h" />
+    <ClInclude Include="Engine\Rendering\Colour.h" />
+    <ClInclude Include="Engine\Rendering\Light.h" />
+    <ClInclude Include="Engine\Rendering\ShaderProgram.h" />
     <ClInclude Include="Engine\Rendering\Vertex.h" />
     <ClInclude Include="Engine\SceneNode.h" />
-    <ClInclude Include="Engine\ShaderProgram.h" />
     <ClInclude Include="Engine\Texture.h" />
     <ClInclude Include="Engine\Util.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Engine\Colour.cpp" />
     <ClCompile Include="Engine\Image.cpp" />
-    <ClCompile Include="Engine\Light.cpp" />
     <ClCompile Include="Engine\Math\Algebra.cpp" />
     <ClCompile Include="Engine\Math\Transformations.cpp" />
     <ClCompile Include="Engine\Mesh.cpp" />
     <ClCompile Include="Engine\Primitive.cpp" />
+    <ClCompile Include="Engine\Rendering\Colour.cpp" />
+    <ClCompile Include="Engine\Rendering\Light.cpp" />
+    <ClCompile Include="Engine\Rendering\ShaderProgram.cpp" />
     <ClCompile Include="Engine\Rendering\Vertex.cpp" />
     <ClCompile Include="Engine\SceneNode.cpp" />
-    <ClCompile Include="Engine\ShaderProgram.cpp" />
     <ClCompile Include="Engine\Texture.cpp" />
     <ClCompile Include="Engine\Util.cpp" />
     <ClCompile Include="main.cpp" />

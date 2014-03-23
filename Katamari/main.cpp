@@ -11,12 +11,12 @@
 #include <stdio.h>
 #include <time.h>
 
-#include "Engine\Light.h"
 #include "Engine\Math\Algebra.h"
 #include "Engine\Math\Transformations.h"
 #include "Engine\Mesh.h"
 #include "Engine\Primitive.h"
-#include "Engine\ShaderProgram.h"
+#include "Engine\Rendering\Light.h"
+#include "Engine\Rendering\ShaderProgram.h"
 #include "Engine\Texture.h"
 #include "Engine\Util.h"
 

@@ -4,8 +4,8 @@
 #include <GL/glew.h>
 
 #include "Math\Algebra.h"
-#include "Colour.h"
-#include "ShaderProgram.h"
+#include "Rendering\Colour.h"
+#include "Rendering\ShaderProgram.h"
 
 class Texture;
 

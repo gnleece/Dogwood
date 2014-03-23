@@ -2,8 +2,6 @@
 
 #include "..\Math\Algebra.h"
 
-// TODO move other rendering related code into the same folder as this
-
 class Vertex
 {
 public:
