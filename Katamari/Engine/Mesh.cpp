@@ -1,6 +1,6 @@
-#include "Model.h"
+#include "Mesh.h"
 
-Model::Model(std::string path)
+Mesh::Mesh(std::string path)
 {
     std::vector<Vector3> tempPositions;
     std::vector<Vector3> tempNormals;
@@ -15,7 +15,7 @@ Model::Model(std::string path)
 }
 
 // Based on OBJ loading tutorial from: http://www.opengl-tutorial.org/beginners-tutorials/tutorial-7-model-loading/
-bool Model::LoadOBJ(std::string path,
+bool Mesh::LoadOBJ(std::string path,
     std::vector<Vector3> & positions,
     std::vector<Vector3> & normals,
     std::vector<Vector2> & uvs)
@@ -24,7 +24,7 @@ bool Model::LoadOBJ(std::string path,
     errno_t err = fopen_s(&file, path.c_str(), "r");
     if (err)
     {
-        printf("Could not open model file: %s\n", path.c_str());
+        printf("Could not open mesh file: %s\n", path.c_str());
         return false;
     }
     
@@ -106,7 +106,7 @@ bool Model::LoadOBJ(std::string path,
     return true;
 }
 
-bool Model::IndexVBO(std::vector<Vector3> & in_positions,
+bool Mesh::IndexVBO(std::vector<Vector3> & in_positions,
                      std::vector<Vector3> & in_normals,
                      std::vector<Vector2> & in_uvs,
                      std::vector<Vector3> & out_positions,
@@ -141,7 +141,7 @@ bool Model::IndexVBO(std::vector<Vector3> & in_positions,
     return true;
 }
 
-bool Model::FindIndex(Vertex & vertex, std::unordered_map<Vertex, GLuint> & map, GLuint & index)
+bool Mesh::FindIndex(Vertex & vertex, std::unordered_map<Vertex, GLuint> & map, GLuint & index)
 {
     std::unordered_map<Vertex, GLuint>::iterator it = map.find(vertex);
     if (it != map.end())

@@ -10,13 +10,10 @@
 #define GLEW_STATIC
 #include <GL/glew.h>
 
-
-// TODO this is really just a Mesh so rename it to that
-
-class Model
+class Mesh
 {
 public:
-    Model(std::string path);
+    Mesh(std::string path);
 
     std::vector<Vector3> positions;
     std::vector<Vector3> normals;

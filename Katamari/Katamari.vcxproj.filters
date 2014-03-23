@@ -77,11 +77,11 @@
     <ClInclude Include="Engine\Light.h">
       <Filter>Engine\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Model.h">
-      <Filter>Engine\Headers</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Rendering\Vertex.h">
       <Filter>Engine\Headers\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Mesh.h">
+      <Filter>Engine\Headers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -118,11 +118,11 @@
     <ClCompile Include="Engine\Light.cpp">
       <Filter>Engine\Source</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Model.cpp">
-      <Filter>Engine\Source</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Rendering\Vertex.cpp">
       <Filter>Engine\Source\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Mesh.cpp">
+      <Filter>Engine\Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

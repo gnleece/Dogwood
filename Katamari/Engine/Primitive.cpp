@@ -7,7 +7,7 @@
 #include <GLFW/glfw3.h>
 
 #include "Image.h"
-#include "Model.h"
+#include "Mesh.h"
 #include "Texture.h"
 
 void Primitive::Init(const ShaderProgram & shaderProgram)
@@ -92,7 +92,7 @@ void Primitive::Cleanup()
 
 Cube::Cube(const ShaderProgram & shaderProgram)
 {
-    Model cubeModel("Engine\\Assets\\Models\\cube.obj");
+    Mesh cubeModel("Engine\\Assets\\Models\\cube.obj");
     m_vertexPositionData = cubeModel.positions[0].Start();
     m_vertexNormalData = cubeModel.normals[0].Start();
     m_vertexUVData = cubeModel.uvs[0].Start();
@@ -150,7 +150,7 @@ Triangle::Triangle(const ShaderProgram & shaderProgram)
 
 Sphere::Sphere(const ShaderProgram & shaderProgram)
 {
-    Model sphereModel("Engine\\Assets\\Models\\sphere.obj");
+    Mesh sphereModel("Engine\\Assets\\Models\\sphere.obj");
     m_vertexPositionData = sphereModel.positions[0].Start();
     m_vertexNormalData = sphereModel.normals[0].Start();
     m_vertexUVData = sphereModel.uvs[0].Start();

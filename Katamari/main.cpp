@@ -14,7 +14,7 @@
 #include "Engine\Light.h"
 #include "Engine\Math\Algebra.h"
 #include "Engine\Math\Transformations.h"
-#include "Engine\Model.h"
+#include "Engine\Mesh.h"
 #include "Engine\Primitive.h"
 #include "Engine\ShaderProgram.h"
 #include "Engine\Texture.h"
