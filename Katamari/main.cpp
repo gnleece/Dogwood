@@ -23,14 +23,30 @@
 GLFWwindow* Setup();
 void Cleanup(GLFWwindow* window);
 
+// TODO move this somewhere better
 static void error_callback(int error, const char* description)
 {
     fputs(description, stderr);
 }
-static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
+static void mouse_callback(GLFWwindow* window, int button, int action, int mods);
+static void cursor_callback(GLFWwindow* window, double x, double y);
+
+// TODO ugh temp hack
+Camera MainCamera;
+GLint uniView;
+Matrix4x4 viewMatrix;
+
+void MoveCamera(Vector3 localSpaceOffset)
 {
-    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, GL_TRUE);
+    viewMatrix = Translation(localSpaceOffset)*viewMatrix;
+    glUniformMatrix4fv(uniView, 1, GL_FALSE, viewMatrix.Transpose().Start());
+}
+
+void RotateCamera(eAXIS axis, float degrees)
+{
+    viewMatrix = Rotation(degrees, axis)*viewMatrix;
+    glUniformMatrix4fv(uniView, 1, GL_FALSE, viewMatrix.Transpose().Start());
 }
 
 int main(void)
@@ -42,11 +58,12 @@ int main(void)
 	glUseProgram(shaderProgram.GetID());
 
     // Prepare view matrix
-    Matrix4x4 view = LookAt(Vector3(0.0, 0.0, 0.5),
-                            Vector3(0.0, 0.0, 0.0),
-                            Vector3(0.0, 1.0, 0.0));
-    GLint uniView = glGetUniformLocation(shaderProgram.GetID(), "view");
-    glUniformMatrix4fv(uniView, 1, GL_FALSE, view.Transpose().Start());
+    MainCamera.position = Vector3(0.0, 0.0, 0.0);
+    MainCamera.direction = Vector3(0.0, 0.0, -1.0);
+    MainCamera.up = Vector3(0.0, 1.0, 0.0);
+    viewMatrix = LookAt(MainCamera);
+    uniView = glGetUniformLocation(shaderProgram.GetID(), "view");
+    glUniformMatrix4fv(uniView, 1, GL_FALSE, viewMatrix.Transpose().Start());
 
     // Prepare projection matrix
     Matrix4x4 proj = PerspectiveProjection(45.0f, 800.0f / 600.0f, 0.1f, 1000.0f);
@@ -105,7 +122,7 @@ int main(void)
     */
 
     Sphere sphere(shaderProgram);
-    trans = Translation(Vector3(-1.0f, -0.6f, -5.0f));
+    trans = Translation(Vector3(-1.0f, -0.5f, -5.0f));
     rot = Rotation(45, AXIS_Y);
     rot = rot*Rotation(45, AXIS_X);
     scale = UniformScaling(0.8f);
@@ -181,6 +198,8 @@ GLFWwindow* Setup()
 
     glfwMakeContextCurrent(window);
     glfwSetKeyCallback(window, key_callback);
+    glfwSetMouseButtonCallback(window, mouse_callback);
+    glfwSetCursorPosCallback(window, cursor_callback);
 
     float ratio;
     int width, height;
@@ -198,4 +217,75 @@ void Cleanup(GLFWwindow* window)
 {
     glfwDestroyWindow(window);
     glfwTerminate();
+}
+
+static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+    float rotAmt = 1.0f;
+    float transAmt = 0.2f;
+    switch (key)
+    {
+        case GLFW_KEY_ESCAPE:
+            glfwSetWindowShouldClose(window, GL_TRUE);
+            break;
+        case GLFW_KEY_UP:
+            RotateCamera(AXIS_X, -rotAmt);
+            break;
+        case GLFW_KEY_DOWN:
+            RotateCamera(AXIS_X, rotAmt);
+            break;
+        case GLFW_KEY_LEFT:
+            RotateCamera(AXIS_Y, -rotAmt);
+            break;
+        case GLFW_KEY_RIGHT:
+            RotateCamera(AXIS_Y, rotAmt);
+            break;
+        case GLFW_KEY_W:
+            MoveCamera(Vector3(0, 0, transAmt));
+            break;
+        case GLFW_KEY_S:
+            MoveCamera(Vector3(0, 0, -transAmt));
+            break;
+        case GLFW_KEY_A:
+            MoveCamera(Vector3(transAmt, 0, 0));
+            break;
+        case GLFW_KEY_D:
+            MoveCamera(Vector3(-transAmt, 0, 0));
+            break;
+    };
+}
+
+bool mouseDragging = false;
+double prevX;
+double prevY;
+
+static void mouse_callback(GLFWwindow* window, int button, int action, int mods)
+{
+    printf("Button: %d   Actions: %d\n", button, action);
+    if (button == GLFW_MOUSE_BUTTON_RIGHT)
+    {
+        if (action == GLFW_PRESS)
+        {
+            mouseDragging = true;
+            glfwGetCursorPos(window, &prevX, &prevY);
+        }
+        else
+        {
+            mouseDragging = false;
+        }
+    }
+}
+
+static void cursor_callback(GLFWwindow* window, double x, double y)
+{
+    float rotAmt;
+    if (mouseDragging)
+    {
+        double deltaX = x - prevX;
+        double deltaY = y - prevY;
+        RotateCamera(AXIS_Y, deltaX*0.07);
+        RotateCamera(AXIS_X, deltaY*0.07);
+    }
+    prevX = x;
+    prevY = y;
 }

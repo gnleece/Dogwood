@@ -60,9 +60,9 @@ Matrix4x4 UniformScaling(float scale)
 
 // based on pseudocode from 
 // http://webglfactory.blogspot.com/2011/06/how-to-create-view-matrix.html
-Matrix4x4 LookAt(Vector3 eye, Vector3 target, Vector3 up)
+Matrix4x4 LookAt(const Vector3 & eye, const Vector3 & direction, const Vector3 & up)
 {
-    Vector3 v_z = normalize(eye - target);
+    Vector3 v_z = normalize(-1*direction);
     Vector3 v_x = normalize(cross(up, v_z));
     Vector3 v_y = cross(v_z, v_x);
     Vector3 w = Vector3(dot(v_x, eye), dot(v_y, eye), dot(v_z, eye));
@@ -73,6 +73,11 @@ Matrix4x4 LookAt(Vector3 eye, Vector3 target, Vector3 up)
                             Vector4(0, 0, 0, 1));
 
     return m;
+}
+
+Matrix4x4 LookAt(const Camera & camera)
+{
+    return LookAt(camera.position, camera.direction, camera.up);
 }
 
 Matrix4x4 PerspectiveProjection(float FOV, float aspect, float near, float far)
