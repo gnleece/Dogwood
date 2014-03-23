@@ -31,6 +31,12 @@
     <Filter Include="Engine\Source\Shaders">
       <UniqueIdentifier>{04d7aff8-7fb0-4ca6-be84-d3fc94085135}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Headers\Rendering">
+      <UniqueIdentifier>{9723b093-dfc4-487f-9bc5-a6bb8ff6ecce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Source\Rendering">
+      <UniqueIdentifier>{dadb511c-0947-4170-b719-648ed8ebe152}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="TODO.txt">
@@ -74,6 +80,9 @@
     <ClInclude Include="Engine\Model.h">
       <Filter>Engine\Headers</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Rendering\Vertex.h">
+      <Filter>Engine\Headers\Rendering</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -111,6 +120,9 @@
     </ClCompile>
     <ClCompile Include="Engine\Model.cpp">
       <Filter>Engine\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Rendering\Vertex.cpp">
+      <Filter>Engine\Source\Rendering</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

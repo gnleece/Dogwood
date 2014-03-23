@@ -1,27 +1,31 @@
-First pass basic features:
+Systems
     * Scene graph
-    * Model loading
-
     * Particles
     * Shadows
-
-Second pass basic features:
-    * Multiple light sources?
-
-Big systems:
+    * Text (2D)
+    * Lua scripting
     * Physics
     * Animation
-    * Lua scripting
+    * Audio
+    * Networking
+    * Resource manager
+    * GUIDs
+    * Memory allocators
+    * Time
 
-Debugging stuff:
+Features
+    * Model loading
+        * Proper VBO indexing
+    * Shading
+        * Multiple light sources?
+
+Debugging
     * Debug logging (with streams)
     * Debug draw
+    * Debug camera controls
     * Tweakables?
 
 Fix-up stuff
     * Engine needs a name!
     * Rewrite matrix inversion. Currently just copied from CS488 provided code
     * Add missing matrix maths (e.g. addition)
-
-Things to understand better:
-    - which calculations are done in vertex vs. fragment shader

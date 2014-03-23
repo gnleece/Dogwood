@@ -90,34 +90,17 @@ void Primitive::Cleanup()
     glDeleteBuffers(1, &m_ebo);
 }
 
-
-GLuint cube_elementData[] =
-{
-    0, 1, 2,
-    3, 4, 5,
-    6, 7, 8,
-    9, 10, 11,
-    12, 13, 14,
-    15, 16, 17,
-    18, 19, 20,
-    21, 22, 23,
-    24, 25, 26,
-    27, 28, 29,
-    30, 31, 32,
-    33, 34, 35
-};
-
 Cube::Cube(const ShaderProgram & shaderProgram)
 {
     Model cubeModel("Engine\\Assets\\Models\\cube.obj");
-    m_vertexPositionData = cubeModel.vertices[0].Start();
+    m_vertexPositionData = cubeModel.positions[0].Start();
     m_vertexNormalData = cubeModel.normals[0].Start();
     m_vertexUVData = cubeModel.uvs[0].Start();
 
     m_vertexCount = 36;
 
-    m_elementData = cube_elementData;
-    m_elementDataCount = 3*6*2;
+    m_elementData = cubeModel.indices.data();
+    m_elementDataCount = cubeModel.indices.size();
 
     m_drawMode = GL_TRIANGLES;
 
@@ -168,19 +151,14 @@ Triangle::Triangle(const ShaderProgram & shaderProgram)
 Sphere::Sphere(const ShaderProgram & shaderProgram)
 {
     Model sphereModel("Engine\\Assets\\Models\\sphere.obj");
-    m_vertexPositionData = sphereModel.vertices[0].Start();
+    m_vertexPositionData = sphereModel.positions[0].Start();
     m_vertexNormalData = sphereModel.normals[0].Start();
     m_vertexUVData = sphereModel.uvs[0].Start();
 
-    m_vertexCount = sphereModel.vertices.size();
+    m_vertexCount = sphereModel.positions.size();
 
-    // TODO fix this properly
-    m_elementData = new GLuint[m_vertexCount];
-    for (int i = 0; i < m_vertexCount; i++)
-    {
-        m_elementData[i] = i;
-    }
-    m_elementDataCount = m_vertexCount;
+    m_elementData = sphereModel.indices.data();
+    m_elementDataCount = sphereModel.indices.size();
 
     m_drawMode = GL_TRIANGLES;
 

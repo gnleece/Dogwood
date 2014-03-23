@@ -73,6 +73,8 @@ int main(void)
     Matrix4x4 rot;
     Matrix4x4 scale;
 
+    double startTime = glfwGetTime();
+    printf("Start time %f\n", startTime);
     Triangle triangle(shaderProgram);
     trans = Translation(Vector3(0,1,-5));
     scale = UniformScaling(0.5f);
@@ -103,17 +105,17 @@ int main(void)
     */
 
     Sphere sphere(shaderProgram);
-    trans = Translation(Vector3(-1.0, -0.6, -5));
+    trans = Translation(Vector3(-1.0f, -0.6f, -5.0f));
     rot = Rotation(45, AXIS_Y);
     rot = rot*Rotation(45, AXIS_X);
     scale = UniformScaling(0.8f);
     trans = trans*rot*scale;
     sphere.SetTransform(trans);
     sphere.SetColour(ColourRGB::White);
-    sphere.SetTexture(&tex);
+    sphere.SetColour(ColourRGB::Yellow);
 
     Cube cube2(shaderProgram);
-    trans = Translation(Vector3(1.2,-0.5,-5));
+    trans = Translation(Vector3(1.2f,-0.5f,-5.0f));
     rot = Rotation(45, AXIS_Y);
     rot = rot*Rotation(45, AXIS_X);
     scale = UniformScaling(0.45f);
@@ -123,7 +125,7 @@ int main(void)
     cube2.SetColour(ColourRGB::Green);
 
     double prevTime = glfwGetTime();
-
+    printf("Done time %f\n", prevTime);
     while (!glfwWindowShouldClose(window))
     {
         // Clear the screen to black

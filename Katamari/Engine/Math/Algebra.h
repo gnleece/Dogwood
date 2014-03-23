@@ -26,6 +26,7 @@ public:
     Vector2(const Vector2& other);
     Vector2(float x, float y);
     Vector2& operator =(const Vector2 other);
+    bool operator ==(const Vector2 &other) const;
 
     float& operator[](int i);
     float operator[](int i) const;
@@ -44,6 +45,7 @@ public:
     Vector3(const Vector3& other);
     Vector3(float x, float y, float z);
     Vector3& operator =(const Vector3 other);
+    bool operator ==(const Vector3 &other) const;
 
     float& operator[](int i);
     float operator[](int i) const;

@@ -92,6 +92,7 @@
     <ClInclude Include="Engine\Math\Transformations.h" />
     <ClInclude Include="Engine\Model.h" />
     <ClInclude Include="Engine\Primitive.h" />
+    <ClInclude Include="Engine\Rendering\Vertex.h" />
     <ClInclude Include="Engine\SceneNode.h" />
     <ClInclude Include="Engine\ShaderProgram.h" />
     <ClInclude Include="Engine\Texture.h" />
@@ -106,6 +107,7 @@
     <ClCompile Include="Engine\Math\Transformations.cpp" />
     <ClCompile Include="Engine\Model.cpp" />
     <ClCompile Include="Engine\Primitive.cpp" />
+    <ClCompile Include="Engine\Rendering\Vertex.cpp" />
     <ClCompile Include="Engine\SceneNode.cpp" />
     <ClCompile Include="Engine\ShaderProgram.cpp" />
     <ClCompile Include="Engine\Texture.cpp" />

@@ -9,7 +9,6 @@ ShaderProgram::ShaderProgram(std::string vertexShaderPath, std::string fragmentS
 
     m_attribLocations[ATTRIB_POS]		= glGetAttribLocation(m_programID, "position");
     m_attribLocations[ATTRIB_NORMAL]    = glGetAttribLocation(m_programID, "normal");
-    m_attribLocations[ATTRIB_COLOR]		= glGetAttribLocation(m_programID, "color");
     m_attribLocations[ATTRIB_TEXCOORD]	= glGetAttribLocation(m_programID, "texcoord");
 }
 

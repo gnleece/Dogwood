@@ -3,6 +3,7 @@
 /ipch
 
 *.swp
+*~
 
 *.opensdf
 *.sdf
@@ -10,3 +11,5 @@
 
 *.db
 
+*.psess
+*.vspx
