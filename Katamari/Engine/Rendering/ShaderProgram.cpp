@@ -2,14 +2,20 @@
 
 ShaderProgram::ShaderProgram(std::string vertexShaderPath, std::string fragmentShaderPath)
 {
+    Load(vertexShaderPath, fragmentShaderPath);
+}
+
+void ShaderProgram::Load(std::string vertexShaderPath, std::string fragmentShaderPath)
+{
+    //TODO check if already loaded and delete
     m_vertexID = LoadShaderFromFile(vertexShaderPath, GL_VERTEX_SHADER);
     m_fragmentID = LoadShaderFromFile(fragmentShaderPath, GL_FRAGMENT_SHADER);
 
     m_programID = LinkProgram(m_vertexID, m_fragmentID);
 
-    m_attribLocations[ATTRIB_POS]		= glGetAttribLocation(m_programID, "position");
+    m_attribLocations[ATTRIB_POS]       = glGetAttribLocation(m_programID, "position");
     m_attribLocations[ATTRIB_NORMAL]    = glGetAttribLocation(m_programID, "normal");
-    m_attribLocations[ATTRIB_TEXCOORD]	= glGetAttribLocation(m_programID, "texcoord");
+    m_attribLocations[ATTRIB_TEXCOORD]  = glGetAttribLocation(m_programID, "texcoord");
 }
 
 GLint ShaderProgram::GetAttribLocation(eAttribType attrib) const

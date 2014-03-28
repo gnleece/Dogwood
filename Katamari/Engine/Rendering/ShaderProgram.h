@@ -11,7 +11,9 @@ public:
     // TODO list uniform names as enum?
     enum eAttribType { ATTRIB_POS, ATTRIB_NORMAL, ATTRIB_TEXCOORD, NUM_ATTRIBS };
 	
+    ShaderProgram() {}
     ShaderProgram(std::string vertexShaderPath, std::string fragmentShaderPath);
+    void Load(std::string vertexShaderPath, std::string fragmentShaderPath);
 	
     GLuint	GetID()	const	{ return m_programID; }
     GLint	GetAttribLocation(eAttribType attrib) const;

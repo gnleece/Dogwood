@@ -83,6 +83,9 @@
     <ClInclude Include="Engine\Rendering\ShaderProgram.h">
       <Filter>Engine\Headers\Rendering</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Game.h">
+      <Filter>Engine\Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -123,6 +126,9 @@
     </ClCompile>
     <ClCompile Include="Engine\Rendering\ShaderProgram.cpp">
       <Filter>Engine\Source\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Game.cpp">
+      <Filter>Engine\Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
