@@ -47,9 +47,6 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\SceneNode.h">
-      <Filter>Engine\Headers</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Primitive.h">
       <Filter>Engine\Headers</Filter>
     </ClInclude>
@@ -86,13 +83,16 @@
     <ClInclude Include="Engine\Game.h">
       <Filter>Engine\Headers</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\GameObject.h">
+      <Filter>Engine\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GameComponent.h">
+      <Filter>Engine\Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\SceneNode.cpp">
-      <Filter>Engine\Source</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Primitive.cpp">
       <Filter>Engine\Source</Filter>
@@ -128,6 +128,9 @@
       <Filter>Engine\Source\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Game.cpp">
+      <Filter>Engine\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameObject.cpp">
       <Filter>Engine\Source</Filter>
     </ClCompile>
   </ItemGroup>

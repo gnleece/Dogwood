@@ -86,6 +86,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Game.h" />
+    <ClInclude Include="Engine\GameComponent.h" />
     <ClInclude Include="Engine\Image.h" />
     <ClInclude Include="Engine\Math\Algebra.h" />
     <ClInclude Include="Engine\Math\Transformations.h" />
@@ -95,7 +96,7 @@
     <ClInclude Include="Engine\Rendering\Light.h" />
     <ClInclude Include="Engine\Rendering\ShaderProgram.h" />
     <ClInclude Include="Engine\Rendering\Vertex.h" />
-    <ClInclude Include="Engine\SceneNode.h" />
+    <ClInclude Include="Engine\GameObject.h" />
     <ClInclude Include="Engine\Texture.h" />
     <ClInclude Include="Engine\Util.h" />
     <ClInclude Include="targetver.h" />
@@ -111,7 +112,7 @@
     <ClCompile Include="Engine\Rendering\Light.cpp" />
     <ClCompile Include="Engine\Rendering\ShaderProgram.cpp" />
     <ClCompile Include="Engine\Rendering\Vertex.cpp" />
-    <ClCompile Include="Engine\SceneNode.cpp" />
+    <ClCompile Include="Engine\GameObject.cpp" />
     <ClCompile Include="Engine\Texture.cpp" />
     <ClCompile Include="Engine\Util.cpp" />
     <ClCompile Include="main.cpp" />
