@@ -1,5 +1,7 @@
 #include "GameObject.h"
 
+#include "GameComponent.h"
+
 void GameObject::Start()
 {
     // start all components
@@ -8,14 +10,6 @@ void GameObject::Start()
     {
         GameComponent* component = *compIter;
         component->Start();
-    }
-
-    // start children
-    std::list<GameObject*>::iterator childIter;
-    for (childIter = m_children.begin(); childIter != m_children.end(); childIter++)
-    {
-        GameObject* child = *childIter;
-        child->Start();
     }
 }
 
@@ -27,26 +21,5 @@ void GameObject::Update(float deltaTime)
     {
         GameComponent* component = *compIter;
         component->Update(deltaTime);
-    }
-    
-    // update children
-    std::list<GameObject*>::iterator childIter;
-    for (childIter = m_children.begin(); childIter != m_children.end(); childIter++)
-    {
-        GameObject* child = *childIter;
-        child->Update(deltaTime);
-    }
-}
-
-void GameObject::Render()
-{
-    // TODO render self
-
-    // render children
-    std::list<GameObject*>::iterator iter;
-    for (iter = m_children.begin(); iter != m_children.end(); iter++)
-    {
-        GameObject* child = *iter;
-        child->Render();
     }
 }

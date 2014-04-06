@@ -1,7 +1,17 @@
-#include "Mesh.h"
+#include "ModelLoading.h"
 
-Mesh::Mesh(std::string path)
+#include "Vertex.h"
+
+bool FindIndex(Vertex & vertex, std::unordered_map<Vertex, GLuint> & map, GLuint &index);
+
+bool LoadIndexedModel(std::string path, 
+    std::vector<Vector3> & positions,
+    std::vector<Vector3> & normals,
+    std::vector<Vector2> & uvs,
+    std::vector<GLuint>  & indices)
 {
+    // TODO check if file extension is .obj
+
     std::vector<Vector3> tempPositions;
     std::vector<Vector3> tempNormals;
     std::vector<Vector2> tempUVs;
@@ -12,10 +22,12 @@ Mesh::Mesh(std::string path)
         IndexVBO(tempPositions, tempNormals, tempUVs, positions, normals, uvs, indices);
         printf("Num vertices after indexing: %d\n", positions.size());
     }
+    return success;
 }
 
+
 // Based on OBJ loading tutorial from: http://www.opengl-tutorial.org/beginners-tutorials/tutorial-7-model-loading/
-bool Mesh::LoadOBJ(std::string path,
+bool LoadOBJ(std::string path,
     std::vector<Vector3> & positions,
     std::vector<Vector3> & normals,
     std::vector<Vector2> & uvs)
@@ -27,7 +39,7 @@ bool Mesh::LoadOBJ(std::string path,
         printf("Could not open mesh file: %s\n", path.c_str());
         return false;
     }
-    
+
     std::vector< unsigned int > positionsIndices, normalIndices, uvIndices;
     std::vector<Vector3> tempPositions;
     std::vector<Vector3> tempNormals;
@@ -51,13 +63,13 @@ bool Mesh::LoadOBJ(std::string path,
         else if (strcmp(lineHeader, "vn") == 0)     // normal
         {
             Vector3 normal;
-            fscanf_s(file, "%f %f %f\n", normal.Start(), normal.Start()+1, normal.Start()+2);
+            fscanf_s(file, "%f %f %f\n", normal.Start(), normal.Start() + 1, normal.Start() + 2);
             tempNormals.push_back(normal);
         }
         else if (strcmp(lineHeader, "vt") == 0)     // uv
         {
             Vector2 uv;
-            fscanf_s(file, "%f %f\n", uv.Start(), uv.Start()+1);
+            fscanf_s(file, "%f %f\n", uv.Start(), uv.Start() + 1);
             tempUVs.push_back(uv);
         }
         else if (strcmp(lineHeader, "f") == 0)      // face
@@ -106,13 +118,13 @@ bool Mesh::LoadOBJ(std::string path,
     return true;
 }
 
-bool Mesh::IndexVBO(std::vector<Vector3> & in_positions,
-                     std::vector<Vector3> & in_normals,
-                     std::vector<Vector2> & in_uvs,
-                     std::vector<Vector3> & out_positions,
-                     std::vector<Vector3> & out_normals,
-                     std::vector<Vector2> & out_uvs,
-                     std::vector<GLuint>  & out_indices)
+bool IndexVBO(std::vector<Vector3> & in_positions,
+    std::vector<Vector3> & in_normals,
+    std::vector<Vector2> & in_uvs,
+    std::vector<Vector3> & out_positions,
+    std::vector<Vector3> & out_normals,
+    std::vector<Vector2> & out_uvs,
+    std::vector<GLuint>  & out_indices)
 {
     std::unordered_map<Vertex, GLuint> vertexToIndexMap;
     for (unsigned int i = 0; i < in_positions.size(); i++)
@@ -141,7 +153,7 @@ bool Mesh::IndexVBO(std::vector<Vector3> & in_positions,
     return true;
 }
 
-bool Mesh::FindIndex(Vertex & vertex, std::unordered_map<Vertex, GLuint> & map, GLuint & index)
+bool FindIndex(Vertex & vertex, std::unordered_map<Vertex, GLuint> & map, GLuint & index)
 {
     std::unordered_map<Vertex, GLuint>::iterator it = map.find(vertex);
     if (it != map.end())

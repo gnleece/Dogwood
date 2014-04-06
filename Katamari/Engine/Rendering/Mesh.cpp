@@ -1,4 +1,8 @@
-#include "Primitive.h"
+#include "Mesh.h"
+
+#include "ModelLoading.h"
+#include "Image.h"
+#include "Texture.h"
 
 #define GLEW_STATIC
 #include <GL/glew.h>
@@ -6,12 +10,20 @@
 #define GLFW_INCLUDE_GLU
 #include <GLFW/glfw3.h>
 
-#include "Image.h"
-#include "Mesh.h"
-#include "Texture.h"
-
-void Primitive::Init(const ShaderProgram & shaderProgram)
+Mesh::Mesh(std::string path, const ShaderProgram & shaderProgram)
 {
+    LoadIndexedModel(path, positions, normals, uvs, indices);
+    m_vertexPositionData = positions[0].Start();
+    m_vertexNormalData = normals[0].Start();
+    m_vertexUVData = uvs[0].Start();
+
+    m_vertexCount = positions.size();
+
+    m_elementData = indices.data();
+    m_elementDataCount = indices.size();
+
+    m_drawMode = GL_TRIANGLES;
+
     m_shaderProgramID = shaderProgram.GetID();
 
     // prepare buffers
@@ -20,15 +32,15 @@ void Primitive::Init(const ShaderProgram & shaderProgram)
 
     glGenBuffers(1, &m_vboPosition);
     glBindBuffer(GL_ARRAY_BUFFER, m_vboPosition);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*m_vertexCount*3, m_vertexPositionData, GL_STATIC_DRAW);
-    
+    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*m_vertexCount * 3, m_vertexPositionData, GL_STATIC_DRAW);
+
     glGenBuffers(1, &m_vboNormal);
     glBindBuffer(GL_ARRAY_BUFFER, m_vboNormal);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*m_vertexCount*3, m_vertexNormalData, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*m_vertexCount * 3, m_vertexNormalData, GL_STATIC_DRAW);
 
     glGenBuffers(1, &m_vboUV);
     glBindBuffer(GL_ARRAY_BUFFER, m_vboUV);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*m_vertexCount*2, m_vertexUVData, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*m_vertexCount * 2, m_vertexUVData, GL_STATIC_DRAW);
 
     glGenBuffers(1, &m_ebo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
@@ -37,24 +49,24 @@ void Primitive::Init(const ShaderProgram & shaderProgram)
     m_positionAttrib = shaderProgram.GetAttribLocation(ShaderProgram::ATTRIB_POS);
     glEnableVertexAttribArray(m_positionAttrib);
     glBindBuffer(GL_ARRAY_BUFFER, m_vboPosition);
-    glVertexAttribPointer(m_positionAttrib, 3, GL_FLOAT, GL_FALSE, 3*sizeof(float), 0);
- 
+    glVertexAttribPointer(m_positionAttrib, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
+
     m_normalAttrib = shaderProgram.GetAttribLocation(ShaderProgram::ATTRIB_NORMAL);
     glEnableVertexAttribArray(m_normalAttrib);
     glBindBuffer(GL_ARRAY_BUFFER, m_vboNormal);
-    glVertexAttribPointer(m_normalAttrib, 3, GL_FLOAT, GL_FALSE, 3*sizeof(float), 0);
+    glVertexAttribPointer(m_normalAttrib, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
 
     m_texAttrib = shaderProgram.GetAttribLocation(ShaderProgram::ATTRIB_TEXCOORD);
     glEnableVertexAttribArray(m_texAttrib);
     glBindBuffer(GL_ARRAY_BUFFER, m_vboUV);
     glVertexAttribPointer(m_texAttrib, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0);
-    
+
     glUseProgram(m_shaderProgramID);
     m_uniModel = glGetUniformLocation(m_shaderProgramID, "model");
     m_uniColour = glGetUniformLocation(m_shaderProgramID, "materialColor");
 }
 
-void Primitive::Render()
+void Mesh::Render()
 {
     if (m_texture == NULL)
     {
@@ -77,7 +89,7 @@ void Primitive::Render()
     glDrawElements(m_drawMode, m_elementDataCount, GL_UNSIGNED_INT, 0);
 }
 
-void Primitive::Cleanup()
+void Mesh::Delete()
 {
     glDisableVertexAttribArray(m_positionAttrib);
     glDisableVertexAttribArray(m_normalAttrib);
@@ -88,79 +100,4 @@ void Primitive::Cleanup()
     glDeleteBuffers(1, &m_vboNormal);
     glDeleteBuffers(1, &m_vboUV);
     glDeleteBuffers(1, &m_ebo);
-}
-
-Cube::Cube(const ShaderProgram & shaderProgram)
-{
-    Mesh cubeModel("Engine\\Assets\\Models\\cube.obj");
-    m_vertexPositionData = cubeModel.positions[0].Start();
-    m_vertexNormalData = cubeModel.normals[0].Start();
-    m_vertexUVData = cubeModel.uvs[0].Start();
-
-    m_vertexCount = 36;
-
-    m_elementData = cubeModel.indices.data();
-    m_elementDataCount = cubeModel.indices.size();
-
-    m_drawMode = GL_TRIANGLES;
-
-    Init(shaderProgram);
-}
-
-GLfloat triangle_vertexData[] = 
-{
-     0.0f,  0.5f, 0.f,
-     0.5f, -0.5f, 0.f,
-    -0.5f, -0.5f, 0.f,
-};
-
-GLfloat triangle_UVdata[] =
-{
-    0.5f, 0.5f,
-    1.0f, 1.0f,
-    0.f, 1.0f
-};
-
-GLfloat triagnle_normalData[] =
-{
-    0.0f, 0.0f, 1.f,
-    0.0f, 0.0f, 1.f,
-    0.0f, 0.0f, 1.f,
-};
-
-GLuint triangle_elementData[] =
-{
-    0, 1, 2
-};
-
-Triangle::Triangle(const ShaderProgram & shaderProgram)
-{
-    m_vertexPositionData = triangle_vertexData;
-    m_vertexNormalData = triagnle_normalData;
-    m_vertexUVData = triangle_UVdata;
-    m_vertexCount = 3;
-
-    m_elementData = triangle_elementData;
-    m_elementDataCount = 3;
-
-    m_drawMode = GL_TRIANGLES;
-
-    Init(shaderProgram);
-}
-
-Sphere::Sphere(const ShaderProgram & shaderProgram)
-{
-    Mesh sphereModel("Engine\\Assets\\Models\\sphere.obj");
-    m_vertexPositionData = sphereModel.positions[0].Start();
-    m_vertexNormalData = sphereModel.normals[0].Start();
-    m_vertexUVData = sphereModel.uvs[0].Start();
-
-    m_vertexCount = sphereModel.positions.size();
-
-    m_elementData = sphereModel.indices.data();
-    m_elementDataCount = sphereModel.indices.size();
-
-    m_drawMode = GL_TRIANGLES;
-
-    Init(shaderProgram);
 }

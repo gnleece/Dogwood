@@ -1,30 +1,33 @@
 #pragma once
 
+#include "..\Math\Algebra.h"
+#include "Colour.h"
+#include "ShaderProgram.h"
+
 #define GLEW_STATIC
 #include <GL/glew.h>
 
-#include "Math\Algebra.h"
-#include "Rendering\Colour.h"
-#include "Rendering\ShaderProgram.h"
+#include <vector>
 
-class Texture;
+class Texture;      // TODO should be specific per material, not per mesh
 
-class Primitive
+class Mesh
 {
 public:
-    virtual void Render();
-    virtual void Cleanup();
+    Mesh(std::string filename, const ShaderProgram & shaderProgram);
+
+    void Render();
+    void Delete();
 
     void SetTransform(Matrix4x4 transform)  { m_transform = transform; }
     void SetTexture(Texture* texture)       { m_texture = texture; }
     void SetColour(ColourRGB colour)        { m_colour = colour; }
 
-protected:
-    void Init(const ShaderProgram & shaderProgram);
+private:
 
-    Matrix4x4   m_transform;        // TODO this should go in SceneNode
-    Texture*    m_texture;          // TODO this should go in SceneNode
-    ColourRGB   m_colour;           // TODO this should be per material?
+    Matrix4x4   m_transform;        // TODO this should go in GameObject
+    Texture*    m_texture;          // TODO this should go in GameObject
+    ColourRGB   m_colour;           // TODO this should be per material
 
     GLint       m_uniModel;
     GLint       m_uniColour;
@@ -49,26 +52,9 @@ protected:
     GLsizei     m_elementDataCount;
 
     GLenum      m_drawMode;
-};
 
-class Cube : public Primitive
-{
-public:
-    Cube(const ShaderProgram & shaderProgram);
-};
-
-class Triangle : public Primitive
-{
-public:
-    Triangle(const ShaderProgram & shaderProgram);
-};
-
-class Sphere : public Primitive
-{
-public:
-    Sphere(const ShaderProgram & shaderProgram);
-};
-
-class Cylinder : public Primitive
-{
+    std::vector<Vector3> positions; // TODO don't need to store these
+    std::vector<Vector3> normals;
+    std::vector<Vector2> uvs;
+    std::vector<GLuint>  indices;
 };

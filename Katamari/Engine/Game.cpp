@@ -7,10 +7,9 @@
 #include "Math\Algebra.h"
 #include "Math\Transformations.h"
 #include "Rendering\Light.h"
+#include "Rendering\Mesh.h"
 #include "Rendering\ShaderProgram.h"
-#include "Mesh.h"
-#include "Primitive.h"
-#include "Texture.h"
+#include "Rendering\Texture.h"
 #include "Util.h"
 
 // TODO ugh temp hack
@@ -63,25 +62,8 @@ void Game::Run()
 
     double startTime = glfwGetTime();
     printf("Start time %f\n", startTime);
-    Triangle triangle(m_shaderProgram);
-    trans = Translation(Vector3(0, 1, -5));
-    scale = UniformScaling(0.5f);
-    triangle.SetTransform(trans*scale);
-    triangle.SetColour(ColourRGB::Cyan);
 
-    Triangle triangle2(m_shaderProgram);
-    trans = Translation(Vector3(1, 1, -5));
-    scale = UniformScaling(0.5f);
-    triangle2.SetTransform(trans*scale);
-    triangle2.SetColour(ColourRGB::Yellow);
-
-    Triangle triangle3(m_shaderProgram);
-    trans = Translation(Vector3(2, 1, -5));
-    scale = UniformScaling(0.5f);
-    triangle3.SetTransform(trans*scale);
-    triangle3.SetColour(ColourRGB::Magenta);
-
-    Sphere sphere(m_shaderProgram);
+    Mesh sphere("Engine\\Assets\\Models\\sphere.obj", m_shaderProgram);
     trans = Translation(Vector3(-1.0f, -0.5f, -5.0f));
     rot = Rotation(45, AXIS_Y);
     rot = rot*Rotation(45, AXIS_X);
@@ -91,18 +73,19 @@ void Game::Run()
     sphere.SetColour(ColourRGB::White);
     sphere.SetColour(ColourRGB::Yellow);
 
-    Cube cube2(m_shaderProgram);
+    Mesh cube("Engine\\Assets\\Models\\cube.obj", m_shaderProgram);
     trans = Translation(Vector3(1.2f, -0.5f, -5.0f));
     rot = Rotation(45, AXIS_Y);
     rot = rot*Rotation(45, AXIS_X);
     scale = UniformScaling(0.45f);
     trans = trans*rot*scale;
-    cube2.SetTransform(trans);
-    cube2.SetTexture(&tex2);
-    cube2.SetColour(ColourRGB::Green);
+    cube.SetTransform(trans);
+    cube.SetTexture(&tex2);
+    cube.SetColour(ColourRGB::Green);
 
     double prevTime = glfwGetTime();
     printf("Done time %f\n", prevTime);
+
     while (!glfwWindowShouldClose(m_window))
     {
         // Clear the screen to black
@@ -110,11 +93,8 @@ void Game::Run()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         // Draw test objects
-        triangle.Render();
-        triangle2.Render();
-        triangle3.Render();
         sphere.Render();
-        cube2.Render();
+        cube.Render();
 
         glfwSwapBuffers(m_window);
         glfwPollEvents();
@@ -126,11 +106,8 @@ void Game::Run()
         prevTime = currentTime;
     }
 
-    triangle.Cleanup();     // TODO objects need to auto-cleaup
-    triangle2.Cleanup();
-    triangle3.Cleanup();
-    sphere.Cleanup();
-    cube2.Cleanup();
+    sphere.Delete();    // TODO objects need to auto cleanup
+    cube.Delete();
 
     tex.FreeTexture();
     tex2.FreeTexture();

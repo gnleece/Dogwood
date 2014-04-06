@@ -4,10 +4,11 @@
 #include <string>
 
 #include "Math\Algebra.h"
-#include "GameComponent.h"
 
 using std::string;
 using std::list;
+
+class GameComponent;
 
 class GameObject
 {
@@ -20,7 +21,9 @@ public:
 
     void Start();
     void Update(float deltaTime);
-    void Render();
+    
+    void OnEnable();
+    void OnDisable();
 
 private:
     int     m_id;
