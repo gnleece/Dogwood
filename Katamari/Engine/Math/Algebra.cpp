@@ -356,6 +356,7 @@ Matrix4x4 Matrix4x4::Transpose() const
                      Column(2), Column(3));
 }
 
+Matrix4x4 Matrix4x4::Identity = Matrix4x4();
 
 /*
  * Define some helper functions for matrix inversion.

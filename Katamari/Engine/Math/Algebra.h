@@ -116,6 +116,8 @@ public:
 
     void DebugPrint();
 
+    static Matrix4x4 Identity;
+
 private:
     static const int m_size = 16;
     float m_values[m_size];

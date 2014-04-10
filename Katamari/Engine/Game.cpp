@@ -58,7 +58,7 @@ void Game::Run()
         // TODO call Update() on all GameObjects
 
         // Update systems (physics, animation, rendering, etc)
-        m_rootObject->Render(identity, false);
+        m_renderManager.RenderScene(m_rootObject);
 
         glfwSwapBuffers(m_window);
         glfwPollEvents();
