@@ -57,7 +57,7 @@ void GameObject::Render(Matrix4x4 parentWorldTransform, bool dirty)
     if (dirty)
     {
         // hierarchy has changed so recompute world transform (and cache it)
-        m_worldTransform = m_localTransform;// *parentWorldTransform;
+        m_worldTransform = parentWorldTransform*m_localTransform;
         m_dirty = false;
     }
 
