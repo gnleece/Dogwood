@@ -10,7 +10,7 @@
 #define GLFW_INCLUDE_GLU
 #include <GLFW/glfw3.h>
 
-Mesh::Mesh(std::string path, const ShaderProgram & shaderProgram)
+Mesh::Mesh(std::string path, const ShaderProgram & shaderProgram) : m_texture(NULL)
 {
     LoadIndexedModel(path, positions, normals, uvs, indices);
     m_vertexPositionData = positions[0].Start();
@@ -66,7 +66,7 @@ Mesh::Mesh(std::string path, const ShaderProgram & shaderProgram)
     m_uniColour = glGetUniformLocation(m_shaderProgramID, "materialColor");
 }
 
-void Mesh::Render()
+void Mesh::Render(Matrix4x4& transform)
 {
     if (m_texture == NULL)
     {
@@ -82,7 +82,7 @@ void Mesh::Render()
         glUseProgram(m_shaderProgramID);
     }
 
-    glUniformMatrix4fv(m_uniModel, 1, GL_FALSE, m_transform.Transpose().Start());
+    glUniformMatrix4fv(m_uniModel, 1, GL_FALSE, transform.Transpose().Start());
     glUniform3fv(m_uniColour, 1, m_colour.Start());
     glBindVertexArray(m_vao);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);

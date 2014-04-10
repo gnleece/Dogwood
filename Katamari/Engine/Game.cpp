@@ -8,8 +8,10 @@
 #include "Math\Transformations.h"
 #include "Rendering\Light.h"
 #include "Rendering\Mesh.h"
+#include "Rendering\MeshInstance.h"
 #include "Rendering\ShaderProgram.h"
 #include "Rendering\Texture.h"
+#include "GameObject.h"
 #include "Util.h"
 
 // TODO ugh temp hack
@@ -44,73 +46,25 @@ Game::Game(std::string name, int windowWidth, int windowHeight) :
 
 void Game::Run()
 {
-    // LIGHT SETUP
-    Vector3 lightPosition(0.0f, 0.0f, 0.0f);
-    ColourRGB lightColor(1.0f, 1.0f, 1.0f);
-    GLfloat lightPower = 15.0f;
-    Light light(lightPosition, lightColor, lightPower);
-    light.SetLightForShader(m_shaderProgram.GetID());
+    BuildTestScene();
 
-    // Test textures
-    Texture tex("Engine\\Assets\\test_texture.bmp");
-    Texture tex2("Engine\\Assets\\test_texture2.bmp");
-
-    // Test objects
-    Matrix4x4 trans;
-    Matrix4x4 rot;
-    Matrix4x4 scale;
-
-    double startTime = glfwGetTime();
-    printf("Start time %f\n", startTime);
-
-    Mesh sphere("Engine\\Assets\\Models\\sphere.obj", m_shaderProgram);
-    trans = Translation(Vector3(-1.0f, -0.5f, -5.0f));
-    rot = Rotation(45, AXIS_Y);
-    rot = rot*Rotation(45, AXIS_X);
-    scale = UniformScaling(0.8f);
-    trans = trans*rot*scale;
-    sphere.SetTransform(trans);
-    sphere.SetColour(ColourRGB::White);
-    sphere.SetColour(ColourRGB::Yellow);
-
-    Mesh cube("Engine\\Assets\\Models\\cube.obj", m_shaderProgram);
-    trans = Translation(Vector3(1.2f, -0.5f, -5.0f));
-    rot = Rotation(45, AXIS_Y);
-    rot = rot*Rotation(45, AXIS_X);
-    scale = UniformScaling(0.45f);
-    trans = trans*rot*scale;
-    cube.SetTransform(trans);
-    cube.SetTexture(&tex2);
-    cube.SetColour(ColourRGB::Green);
-
-    double prevTime = glfwGetTime();
-    printf("Done time %f\n", prevTime);
-
+    Matrix4x4 identity;
     while (!glfwWindowShouldClose(m_window))
     {
         // Clear the screen to black
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        // Draw test objects
-        sphere.Render();
-        cube.Render();
+        // TODO call Update() on all GameObjects
+
+        // Update systems (physics, animation, rendering, etc)
+        m_rootObject->Render(identity, false);
 
         glfwSwapBuffers(m_window);
         glfwPollEvents();
-
-        double currentTime = glfwGetTime();
-        double frameTime = currentTime - prevTime;
-        double FPS = 1 / frameTime;
-        //printf("Frame time: %f\t\tFPS: %3.f\n", frameTime, FPS);
-        prevTime = currentTime;
     }
 
-    sphere.Delete();    // TODO objects need to auto cleanup
-    cube.Delete();
-
-    tex.FreeTexture();
-    tex2.FreeTexture();
+    DeleteTestScene();
 }
 
 void Game::Shutdown()
@@ -172,6 +126,75 @@ void Game::WindowCleanup()
 {
     glfwDestroyWindow(m_window);
     glfwTerminate();
+}
+
+void Game::BuildTestScene()
+{
+    m_rootObject = new GameObject();
+    m_rootObject->SetName("root");
+    
+    // Light setup
+    Vector3 lightPosition(0.0f, 0.0f, 0.0f);
+    ColourRGB lightColor(1.0f, 1.0f, 1.0f);
+    GLfloat lightPower = 15.0f;
+    Light light(lightPosition, lightColor, lightPower);
+    light.SetLightForShader(m_shaderProgram.GetID());
+    
+    // Test textures
+    Texture* tex =  new Texture("Engine\\Assets\\test_texture.bmp");
+    Texture* tex2 = new Texture("Engine\\Assets\\test_texture2.bmp");
+
+    // Test meshes
+    Mesh* cubeMesh = new Mesh("Engine\\Assets\\Models\\cube.obj", m_shaderProgram);
+    cubeMesh->SetColour(ColourRGB::Green);
+    cubeMesh->SetTexture(tex);
+
+    Mesh* sphereMesh = new Mesh("Engine\\Assets\\Models\\sphere.obj", m_shaderProgram);
+    sphereMesh->SetColour(ColourRGB::Yellow);
+
+    Matrix4x4 trans;
+    Matrix4x4 rot;
+    Matrix4x4 scale;
+
+    // TODO oh good clean up all these allocations
+
+    // Test objects
+    GameObject* cubeGO = new GameObject();
+    cubeGO->SetName("cube");
+    cubeGO->SetParent(m_rootObject);
+    MeshInstance* cubeMeshIns = new MeshInstance(*cubeGO);     // TODO clean up set component
+    cubeMeshIns->SetMesh(cubeMesh);
+    cubeGO->SetMesh(cubeMeshIns);
+
+    trans = Translation(Vector3(1.2f, -0.5f, -5.0f));
+    rot = Rotation(45, AXIS_Y);
+    rot = rot*Rotation(45, AXIS_X);
+    scale = UniformScaling(0.45f);
+    trans = trans*rot*scale;
+    cubeGO->SetLocalTransform(trans);
+
+    GameObject* sphereGO = new GameObject();
+    sphereGO->SetName("sphere");
+    sphereGO->SetParent(m_rootObject);
+    MeshInstance* sphereMeshIns = new MeshInstance(*sphereGO);   // TODO clean up set component
+    sphereMeshIns->SetMesh(sphereMesh);
+    sphereGO->SetMesh(sphereMeshIns);
+
+    trans = Translation(Vector3(-1.0f, -0.5f, -5.0f));
+    rot = Rotation(45, AXIS_Y);
+    rot = rot*Rotation(45, AXIS_X);
+    scale = UniformScaling(0.8f);
+    trans = trans*rot*scale;
+    sphereGO->SetLocalTransform(trans);
+
+    //tex.FreeTexture();
+    //tex2.FreeTexture();
+}
+
+void Game::DeleteTestScene()
+{
+    delete m_rootObject;
+    // TODO iterate through list of gameobjects & delete
 }
 
 static void error_callback(int error, const char* description)

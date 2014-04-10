@@ -16,17 +16,15 @@ class Mesh
 public:
     Mesh(std::string filename, const ShaderProgram & shaderProgram);
 
-    void Render();
+    void Render(Matrix4x4& transform);
     void Delete();
 
-    void SetTransform(Matrix4x4 transform)  { m_transform = transform; }
     void SetTexture(Texture* texture)       { m_texture = texture; }
     void SetColour(ColourRGB colour)        { m_colour = colour; }
 
 private:
 
-    Matrix4x4   m_transform;        // TODO this should go in GameObject
-    Texture*    m_texture;          // TODO this should go in GameObject
+    Texture*    m_texture;          // TODO this should be per material
     ColourRGB   m_colour;           // TODO this should be per material
 
     GLint       m_uniModel;

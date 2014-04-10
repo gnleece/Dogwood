@@ -39,11 +39,12 @@ void Texture::FreeTexture()
 
 Texture* Texture::DefaultTexture()
 {
+    printf("Grabbing default texture\n");
     if (m_defaultTexture)
     {
         return m_defaultTexture;
     }
-
+    printf("Didn't exist, creating now...\n");
     m_defaultTexture = new Texture("Engine\\Assets\\default_texture.bmp");
     return m_defaultTexture;
 }

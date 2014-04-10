@@ -1,20 +1,22 @@
 TODO
-    * Move setup code out of Main
+    * Clean up test code in Game.cpp
 
 Systems
-    * Scene graph
+    * Game object/component system
+    * Resource manager
+    * Materials
+    * Lua scripting
+    * Time
+    * GUIDs
+
     * Particles
     * Shadows
     * Text (2D)
-    * Lua scripting
     * Physics
     * Animation
     * Audio
     * Networking
-    * Resource manager
-    * GUIDs
     * Memory allocators
-    * Time
 
 Features (second pass)
     * Shading
