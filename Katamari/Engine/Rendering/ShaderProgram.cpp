@@ -58,16 +58,29 @@ GLuint ShaderProgram::LoadShaderFromFile(std::string path, GLenum shaderType)
         // Compile shader source
         glCompileShader(shaderID);
 
-        // Check shader for errors
+        // Check compile log
+        GLint bufflen;
+        glGetShaderiv(shaderID, GL_INFO_LOG_LENGTH, &bufflen);
+        if (bufflen > 1)
+        {
+            GLchar* log_string = new char[bufflen + 1];
+            glGetShaderInfoLog(shaderID, bufflen, 0, log_string);
+            printf("Compile Log found for shader %d :\n%s", shaderID, log_string);
+
+            delete log_string;
+        }
+
+        // Check shader compile status
         GLint shaderCompiled = GL_FALSE;
         glGetShaderiv(shaderID, GL_COMPILE_STATUS, &shaderCompiled);
         if (shaderCompiled != GL_TRUE)
         {
-            printf("Unable to compile shader %d!\n\nSource:\n%s\n", shaderID, shaderSource);
+            printf("Unable to compile shader %d!\n", shaderID);
             glDeleteShader(shaderID);
-            shaderID = 0;
+            return 0;
         }
-        printf("Shader load success!\n");
+
+        printf("Shader load success!\n\n");
     }
     else
     {
