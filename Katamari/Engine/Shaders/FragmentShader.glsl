@@ -20,7 +20,7 @@ void main()
 {
     // material colors
     vec4 MaterialDiffuseColor	= texture(tex, Texcoord)*vec4(materialColor, 1.0);
-    vec4 MaterialAmbientColor	= vec3(0.1,0.1,0.1) * MaterialDiffuseColor;
+    vec4 MaterialAmbientColor	= vec4(0.1,0.1,0.1,1.0) * MaterialDiffuseColor;
     vec4 MaterialSpecularColor	= vec4(1.0,1.0,1.0,1.0);
 
     // cosine of angle between normal and light direction, for diffuse lighting:
@@ -39,6 +39,6 @@ void main()
     // combine all lighting types for final color
     //TODO light color, light power, ambient as parameter
     outColor =	MaterialAmbientColor + 
-                lightPower * MaterialDiffuseColor * lightColor * cosTheta / distanceSqrd + 
-                lightPower/4 * MaterialSpecularColor * lightColor * pow(cosAlpha,5) / distanceSqrd;
+                lightPower * MaterialDiffuseColor * vec4(lightColor,1.0) * cosTheta / distanceSqrd + 
+                lightPower/4 * MaterialSpecularColor * vec4(lightColor,1.0) * pow(cosAlpha,5) / distanceSqrd;
 }
