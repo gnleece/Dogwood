@@ -92,6 +92,7 @@
     <ClInclude Include="Engine\Rendering\Colour.h" />
     <ClInclude Include="Engine\Rendering\Image.h" />
     <ClInclude Include="Engine\Rendering\Light.h" />
+    <ClInclude Include="Engine\Rendering\Material.h" />
     <ClInclude Include="Engine\Rendering\Mesh.h" />
     <ClInclude Include="Engine\Rendering\MeshInstance.h" />
     <ClInclude Include="Engine\Rendering\ModelLoading.h" />
@@ -111,6 +112,7 @@
     <ClCompile Include="Engine\Rendering\Colour.cpp" />
     <ClCompile Include="Engine\Rendering\Image.cpp" />
     <ClCompile Include="Engine\Rendering\Light.cpp" />
+    <ClCompile Include="Engine\Rendering\Material.cpp" />
     <ClCompile Include="Engine\Rendering\Mesh.cpp" />
     <ClCompile Include="Engine\Rendering\MeshInstance.cpp" />
     <ClCompile Include="Engine\Rendering\ModelLoading.cpp" />

@@ -7,6 +7,7 @@
 #include "Math\Algebra.h"
 #include "Math\Transformations.h"
 #include "Rendering\Light.h"
+#include "Rendering\Material.h"
 #include "Rendering\Mesh.h"
 #include "Rendering\MeshInstance.h"
 #include "Rendering\ShaderProgram.h"
@@ -144,13 +145,16 @@ void Game::BuildTestScene()
     Texture* tex =  new Texture("Engine\\Assets\\test_texture.bmp");
     Texture* tex2 = new Texture("Engine\\Assets\\test_texture2.bmp");
 
+    // Test materials
+    Material* mat = new Material();
+    mat->SetTexture(tex);
+    mat->SetColour(Material::MAT_COLOUR_DIFFUSE, ColourRGB::Green);
+    Material* mat2 = new Material();
+    mat2->SetColour(Material::MAT_COLOUR_DIFFUSE, ColourRGB::Yellow);
+
     // Test meshes
     Mesh* cubeMesh = new Mesh("Engine\\Assets\\Models\\cube.obj", m_shaderProgram);
-    cubeMesh->SetColour(ColourRGB::Green);
-    cubeMesh->SetTexture(tex);
-
     Mesh* sphereMesh = new Mesh("Engine\\Assets\\Models\\sphere.obj", m_shaderProgram);
-    sphereMesh->SetColour(ColourRGB::Yellow);
 
     Matrix4x4 trans;
     Matrix4x4 rot;
@@ -164,6 +168,7 @@ void Game::BuildTestScene()
     cubeGO->SetParent(m_rootObject);
     MeshInstance* cubeMeshIns = new MeshInstance(*cubeGO);     // TODO clean up set component
     cubeMeshIns->SetMesh(cubeMesh);
+    cubeMeshIns->SetMaterial(mat);
     cubeGO->SetMesh(cubeMeshIns);
 
     trans = Translation(Vector3(1.2f, -0.5f, -5.0f));
@@ -178,6 +183,7 @@ void Game::BuildTestScene()
     sphereGO->SetParent(m_rootObject);
     MeshInstance* sphereMeshIns = new MeshInstance(*sphereGO);   // TODO clean up set component
     sphereMeshIns->SetMesh(sphereMesh);
+    sphereMeshIns->SetMaterial(mat2);
     sphereGO->SetMesh(sphereMeshIns);
 
     trans = Translation(Vector3(-1.0f, -0.5f, -5.0f));
@@ -261,7 +267,7 @@ static void mouse_callback(GLFWwindow* window, int button, int action, int mods)
 
 static void cursor_callback(GLFWwindow* window, double x, double y)
 {
-    float rotAmt = 0.07;
+    double rotAmt = 0.07;
     if (mouseDragging)
     {
         double deltaX = x - prevX;

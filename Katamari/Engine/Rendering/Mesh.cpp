@@ -1,8 +1,8 @@
 #include "Mesh.h"
 
-#include "ModelLoading.h"
 #include "Image.h"
-#include "Texture.h"
+#include "Material.h"
+#include "ModelLoading.h"
 
 #define GLEW_STATIC
 #include <GL/glew.h>
@@ -10,7 +10,7 @@
 #define GLFW_INCLUDE_GLU
 #include <GLFW/glfw3.h>
 
-Mesh::Mesh(std::string path, const ShaderProgram & shaderProgram) : m_texture(NULL)
+Mesh::Mesh(std::string path, const ShaderProgram & shaderProgram)
 {
     LoadIndexedModel(path, positions, normals, uvs, indices);
     m_vertexPositionData = positions[0].Start();
@@ -63,16 +63,15 @@ Mesh::Mesh(std::string path, const ShaderProgram & shaderProgram) : m_texture(NU
 
     glUseProgram(m_shaderProgramID);
     m_uniModel = glGetUniformLocation(m_shaderProgramID, "model");
-    m_uniColour = glGetUniformLocation(m_shaderProgramID, "materialColor");
+    m_uniColour = glGetUniformLocation(m_shaderProgramID, "materialColor"); // TODO not sure if this should be here anymore
 }
 
-void Mesh::Render(Matrix4x4& transform)
+void Mesh::Render(Matrix4x4& transform, Material* material)
 {
-    if (m_texture == NULL)
+    if (material)
     {
-        m_texture = Texture::DefaultTexture();
+        material->ApplyMaterial(m_uniColour);
     }
-    m_texture->BindTexture();
 
     // enable shader if not already active
     GLint currentProgram;
@@ -83,7 +82,6 @@ void Mesh::Render(Matrix4x4& transform)
     }
 
     glUniformMatrix4fv(m_uniModel, 1, GL_FALSE, transform.Transpose().Start());
-    glUniform3fv(m_uniColour, 1, m_colour.Start());
     glBindVertexArray(m_vao);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
     glDrawElements(m_drawMode, m_elementDataCount, GL_UNSIGNED_INT, 0);

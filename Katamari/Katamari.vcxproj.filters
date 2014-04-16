@@ -95,6 +95,9 @@
     <ClInclude Include="Engine\Rendering\Texture.h">
       <Filter>Engine\Headers\Rendering</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Rendering\Material.h">
+      <Filter>Engine\Headers\Rendering</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -146,6 +149,9 @@
       <Filter>Engine\Source\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Rendering\Texture.cpp">
+      <Filter>Engine\Source\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Rendering\Material.cpp">
       <Filter>Engine\Source\Rendering</Filter>
     </ClCompile>
   </ItemGroup>
