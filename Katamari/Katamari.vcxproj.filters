@@ -65,9 +65,6 @@
     <ClInclude Include="Engine\Rendering\Light.h">
       <Filter>Engine\Headers\Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Rendering\ShaderProgram.h">
-      <Filter>Engine\Headers\Rendering</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Game.h">
       <Filter>Engine\Headers</Filter>
     </ClInclude>
@@ -96,6 +93,9 @@
       <Filter>Engine\Headers\Rendering</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Rendering\Material.h">
+      <Filter>Engine\Headers\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Rendering\ShaderProgram.h">
       <Filter>Engine\Headers\Rendering</Filter>
     </ClInclude>
   </ItemGroup>

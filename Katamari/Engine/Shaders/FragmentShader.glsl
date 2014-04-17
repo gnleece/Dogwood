@@ -14,14 +14,17 @@ out vec4 outColor;
 uniform sampler2D tex;
 uniform vec3 lightColor;
 uniform float lightPower;
-uniform vec3 materialColor;
+
+uniform vec3 matColorDiffuse;
+uniform vec3 matColorAmbient;
+uniform vec3 matColorSpecular;
 
 void main() 
 {
     // material colors
-    vec4 MaterialDiffuseColor	= texture(tex, Texcoord)*vec4(materialColor, 1.0);
-    vec4 MaterialAmbientColor	= vec4(0.1,0.1,0.1,1.0) * MaterialDiffuseColor;
-    vec4 MaterialSpecularColor	= vec4(1.0,1.0,1.0,1.0);
+    vec4 MaterialDiffuseColor	= texture(tex, Texcoord)*vec4(matColorDiffuse, 1.0);
+    vec4 MaterialAmbientColor	= vec4(matColorAmbient, 1.0) * MaterialDiffuseColor;
+    vec4 MaterialSpecularColor	= vec4(matColorSpecular, 1.0);
 
     // cosine of angle between normal and light direction, for diffuse lighting:
     vec3 n = normalize(Normal_cameraspace);
@@ -39,6 +42,6 @@ void main()
     // combine all lighting types for final color
     //TODO light color, light power, ambient as parameter
     outColor =	MaterialAmbientColor + 
-                lightPower * MaterialDiffuseColor * vec4(lightColor,1.0) * cosTheta / distanceSqrd + 
+                lightPower * MaterialDiffuseColor * vec4(lightColor,1.0) * cosTheta / distanceSqrd +
                 lightPower/4 * MaterialSpecularColor * vec4(lightColor,1.0) * pow(cosAlpha,5) / distanceSqrd;
 }

@@ -4,10 +4,9 @@
 
 Material::Material()
 {
-    for (int i = 0; i < NUM_MAT_COLOURS; i++)
-    {
-        m_colours[i] = ColourRGB::White;
-    }
+    m_colours[MAT_COLOUR_DIFFUSE] = ColourRGB::White;
+    m_colours[MAT_COLOUR_AMBIENT] = ColourRGB(0.1f, 0.1f, 0.1f);
+    m_colours[MAT_COLOUR_SPECULAR] = ColourRGB::White;
 }
 
 void Material::SetTexture(Texture* texture)
@@ -23,7 +22,7 @@ void Material::SetColour(eMatColourType type, ColourRGB colour)
     }
 }
 
-void Material::ApplyMaterial(GLint uniColour)
+void Material::ApplyMaterial(GLint uniDiffuse, GLint uniAmbient, GLint uniSpecular)
 {
     if (m_texture == NULL)
     {
@@ -31,5 +30,7 @@ void Material::ApplyMaterial(GLint uniColour)
     }
     m_texture->BindTexture();
 
-    glUniform3fv(uniColour, 1, m_colours[MAT_COLOUR_DIFFUSE].Start()); // TODO expose ambient and specular colours
+    glUniform3fv(uniDiffuse,  1, m_colours[MAT_COLOUR_DIFFUSE].Start());
+    glUniform3fv(uniAmbient,  1, m_colours[MAT_COLOUR_AMBIENT].Start());
+    glUniform3fv(uniSpecular, 1, m_colours[MAT_COLOUR_SPECULAR].Start());
 }

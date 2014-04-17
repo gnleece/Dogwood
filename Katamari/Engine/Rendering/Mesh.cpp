@@ -46,31 +46,34 @@ Mesh::Mesh(std::string path, const ShaderProgram & shaderProgram)
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)*m_elementDataCount, m_elementData, GL_STATIC_DRAW);
 
-    m_positionAttrib = shaderProgram.GetAttribLocation(ShaderProgram::ATTRIB_POS);
+    m_positionAttrib = shaderProgram.GetParamLocation(ShaderProgram::ATTRIB_POS);
     glEnableVertexAttribArray(m_positionAttrib);
     glBindBuffer(GL_ARRAY_BUFFER, m_vboPosition);
     glVertexAttribPointer(m_positionAttrib, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
 
-    m_normalAttrib = shaderProgram.GetAttribLocation(ShaderProgram::ATTRIB_NORMAL);
+    m_normalAttrib = shaderProgram.GetParamLocation(ShaderProgram::ATTRIB_NORMAL);
     glEnableVertexAttribArray(m_normalAttrib);
     glBindBuffer(GL_ARRAY_BUFFER, m_vboNormal);
     glVertexAttribPointer(m_normalAttrib, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
 
-    m_texAttrib = shaderProgram.GetAttribLocation(ShaderProgram::ATTRIB_TEXCOORD);
+    m_texAttrib = shaderProgram.GetParamLocation(ShaderProgram::ATTRIB_TEXCOORD);
     glEnableVertexAttribArray(m_texAttrib);
     glBindBuffer(GL_ARRAY_BUFFER, m_vboUV);
     glVertexAttribPointer(m_texAttrib, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0);
 
     glUseProgram(m_shaderProgramID);
-    m_uniModel = glGetUniformLocation(m_shaderProgramID, "model");
-    m_uniColour = glGetUniformLocation(m_shaderProgramID, "materialColor"); // TODO not sure if this should be here anymore
+    m_uniModel = shaderProgram.GetParamLocation(ShaderProgram::UNI_MODEL);
+
+    m_uniColourDiffuse = shaderProgram.GetParamLocation(ShaderProgram::UNI_COLOUR_DIFFUSE); // TODO this should be on the material
+    m_uniColourAmbient = shaderProgram.GetParamLocation(ShaderProgram::UNI_COLOUR_AMBIENT);
+    m_uniColourSpecular = shaderProgram.GetParamLocation(ShaderProgram::UNI_COLOUR_SPECULAR);
 }
 
 void Mesh::Render(Matrix4x4& transform, Material* material)
 {
     if (material)
     {
-        material->ApplyMaterial(m_uniColour);
+        material->ApplyMaterial(m_uniColourDiffuse, m_uniColourAmbient, m_uniColourSpecular);   // TODO material should have shader
     }
 
     // enable shader if not already active

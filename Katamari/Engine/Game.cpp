@@ -110,12 +110,12 @@ void Game::RenderingSetup()
     MainCamera.direction = Vector3(0.0, 0.0, -1.0);
     MainCamera.up = Vector3(0.0, 1.0, 0.0);
     viewMatrix = LookAt(MainCamera);
-    uniView = glGetUniformLocation(m_shaderProgram.GetID(), "view");
+    uniView = m_shaderProgram.GetParamLocation(ShaderProgram::UNI_VIEW);
     glUniformMatrix4fv(uniView, 1, GL_FALSE, viewMatrix.Transpose().Start());
 
     // Prepare projection matrix
     Matrix4x4 proj = PerspectiveProjection(45.0f, (float)m_windowWidth/m_windowHeight, 0.1f, 1000.0f);
-    GLint uniProj = glGetUniformLocation(m_shaderProgram.GetID(), "proj");
+    GLint uniProj = m_shaderProgram.GetParamLocation(ShaderProgram::UNI_PROJ);
     glUniformMatrix4fv(uniProj, 1, GL_FALSE, proj.Transpose().Start());
 
     // Enable depth test
@@ -139,7 +139,7 @@ void Game::BuildTestScene()
     ColourRGB lightColor(1.0f, 1.0f, 1.0f);
     GLfloat lightPower = 15.0f;
     Light light(lightPosition, lightColor, lightPower);
-    light.SetLightForShader(m_shaderProgram.GetID());
+    light.SetLightForShader(&m_shaderProgram);
     
     // Test textures
     Texture* tex =  new Texture("Engine\\Assets\\test_texture.bmp");

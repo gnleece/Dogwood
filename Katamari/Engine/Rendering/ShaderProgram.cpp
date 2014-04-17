@@ -13,16 +13,26 @@ void ShaderProgram::Load(std::string vertexShaderPath, std::string fragmentShade
 
     m_programID = LinkProgram(m_vertexID, m_fragmentID);
 
-    m_attribLocations[ATTRIB_POS]       = glGetAttribLocation(m_programID, "position");
-    m_attribLocations[ATTRIB_NORMAL]    = glGetAttribLocation(m_programID, "normal");
-    m_attribLocations[ATTRIB_TEXCOORD]  = glGetAttribLocation(m_programID, "texcoord");
+    m_paramLocations[ATTRIB_POS]            = glGetAttribLocation(m_programID, "position");
+    m_paramLocations[ATTRIB_NORMAL]         = glGetAttribLocation(m_programID, "normal");
+    m_paramLocations[ATTRIB_TEXCOORD]       = glGetAttribLocation(m_programID, "texcoord");
+
+    m_paramLocations[UNI_MODEL]             = glGetUniformLocation(m_programID, "model");
+    m_paramLocations[UNI_VIEW]              = glGetUniformLocation(m_programID, "view");
+    m_paramLocations[UNI_PROJ]              = glGetUniformLocation(m_programID, "proj");
+    m_paramLocations[UNI_LIGHT_POS]         = glGetUniformLocation(m_programID, "lightPos");
+    m_paramLocations[UNI_LIGHT_COLOUR]      = glGetUniformLocation(m_programID, "lightColor");
+    m_paramLocations[UNI_LIGHT_POWER]       = glGetUniformLocation(m_programID, "lightPower");
+    m_paramLocations[UNI_COLOUR_DIFFUSE]    = glGetUniformLocation(m_programID, "matColorDiffuse");
+    m_paramLocations[UNI_COLOUR_AMBIENT]    = glGetUniformLocation(m_programID, "matColorAmbient");
+    m_paramLocations[UNI_COLOUR_SPECULAR]   = glGetUniformLocation(m_programID, "matColorSpecular");
 }
 
-GLint ShaderProgram::GetAttribLocation(eAttribType attrib) const
+GLint ShaderProgram::GetParamLocation(eShaderParam param) const
 {
-    if (attrib < NUM_ATTRIBS)
+    if (param < NUM_PARAMS)
     {
-        return m_attribLocations[attrib];
+        return m_paramLocations[param];
     }
     return 0;
 }

@@ -26,7 +26,7 @@ public:
     void SetTexture(Texture* texture);
     void SetColour(eMatColourType type, ColourRGB colour);
 
-    void ApplyMaterial(GLint uniColour);
+    void ApplyMaterial(GLint uniDiffuse, GLint uniAmbient, GLint uniSpecular);
 
 private:
     Texture*    m_texture;
