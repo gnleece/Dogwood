@@ -63,17 +63,13 @@ Mesh::Mesh(std::string path, const ShaderProgram & shaderProgram)
 
     glUseProgram(m_shaderProgramID);
     m_uniModel = shaderProgram.GetParamLocation(ShaderProgram::UNI_MODEL);
-
-    m_uniColourDiffuse = shaderProgram.GetParamLocation(ShaderProgram::UNI_COLOUR_DIFFUSE); // TODO this should be on the material
-    m_uniColourAmbient = shaderProgram.GetParamLocation(ShaderProgram::UNI_COLOUR_AMBIENT);
-    m_uniColourSpecular = shaderProgram.GetParamLocation(ShaderProgram::UNI_COLOUR_SPECULAR);
 }
 
 void Mesh::Render(Matrix4x4& transform, Material* material)
 {
     if (material)
     {
-        material->ApplyMaterial(m_uniColourDiffuse, m_uniColourAmbient, m_uniColourSpecular);   // TODO material should have shader
+        material->ApplyMaterial();
     }
 
     // enable shader if not already active

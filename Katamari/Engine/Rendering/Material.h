@@ -8,6 +8,7 @@
 #define GLFW_INCLUDE_GLU
 #include <GLFW/glfw3.h>
 
+class ShaderProgram;
 class Texture;
 
 class Material
@@ -23,12 +24,18 @@ public:
 
     Material();
 
+    void SetShader(ShaderProgram* shader);
     void SetTexture(Texture* texture);
     void SetColour(eMatColourType type, ColourRGB colour);
 
-    void ApplyMaterial(GLint uniDiffuse, GLint uniAmbient, GLint uniSpecular);
+    void ApplyMaterial();
 
 private:
-    Texture*    m_texture;
-    ColourRGB   m_colours[NUM_MAT_COLOURS];
+    ShaderProgram*  m_shader;
+    Texture*        m_texture;
+    ColourRGB       m_colours[NUM_MAT_COLOURS];
+
+    GLint           m_uniColourDiffuse;
+    GLint           m_uniColourAmbient;
+    GLint           m_uniColourSpecular;
 };

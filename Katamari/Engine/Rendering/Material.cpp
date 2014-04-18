@@ -1,5 +1,6 @@
 #include "Material.h"
 
+#include "ShaderProgram.h"
 #include "Texture.h"
 
 Material::Material()
@@ -7,6 +8,15 @@ Material::Material()
     m_colours[MAT_COLOUR_DIFFUSE] = ColourRGB::White;
     m_colours[MAT_COLOUR_AMBIENT] = ColourRGB(0.1f, 0.1f, 0.1f);
     m_colours[MAT_COLOUR_SPECULAR] = ColourRGB::White;
+}
+
+void Material::SetShader(ShaderProgram* shader)
+{
+    m_shader = shader;
+
+    m_uniColourDiffuse = m_shader->GetParamLocation(ShaderProgram::UNI_COLOUR_DIFFUSE);
+    m_uniColourAmbient = m_shader->GetParamLocation(ShaderProgram::UNI_COLOUR_AMBIENT);
+    m_uniColourSpecular = m_shader->GetParamLocation(ShaderProgram::UNI_COLOUR_SPECULAR);
 }
 
 void Material::SetTexture(Texture* texture)
@@ -22,7 +32,7 @@ void Material::SetColour(eMatColourType type, ColourRGB colour)
     }
 }
 
-void Material::ApplyMaterial(GLint uniDiffuse, GLint uniAmbient, GLint uniSpecular)
+void Material::ApplyMaterial()
 {
     if (m_texture == NULL)
     {
@@ -30,7 +40,7 @@ void Material::ApplyMaterial(GLint uniDiffuse, GLint uniAmbient, GLint uniSpecul
     }
     m_texture->BindTexture();
 
-    glUniform3fv(uniDiffuse,  1, m_colours[MAT_COLOUR_DIFFUSE].Start());
-    glUniform3fv(uniAmbient,  1, m_colours[MAT_COLOUR_AMBIENT].Start());
-    glUniform3fv(uniSpecular, 1, m_colours[MAT_COLOUR_SPECULAR].Start());
+    glUniform3fv(m_uniColourDiffuse,  1, m_colours[MAT_COLOUR_DIFFUSE].Start());
+    glUniform3fv(m_uniColourAmbient,  1, m_colours[MAT_COLOUR_AMBIENT].Start());
+    glUniform3fv(m_uniColourSpecular, 1, m_colours[MAT_COLOUR_SPECULAR].Start());
 }

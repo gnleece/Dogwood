@@ -22,10 +22,6 @@ private:
 
     GLint       m_uniModel;
 
-    GLint       m_uniColourDiffuse; // TODO these should live on the material
-    GLint       m_uniColourAmbient;
-    GLint       m_uniColourSpecular;
-
     GLuint      m_vao;
     GLuint      m_vboPosition;
     GLuint      m_vboNormal;

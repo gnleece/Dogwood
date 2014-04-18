@@ -147,9 +147,11 @@ void Game::BuildTestScene()
 
     // Test materials
     Material* mat = new Material();
+    mat->SetShader(&m_shaderProgram);
     mat->SetTexture(tex);
     mat->SetColour(Material::MAT_COLOUR_DIFFUSE, ColourRGB::Green);
     Material* mat2 = new Material();
+    mat2->SetShader(&m_shaderProgram);
     mat2->SetColour(Material::MAT_COLOUR_DIFFUSE, ColourRGB::Yellow);
 
     // Test meshes
