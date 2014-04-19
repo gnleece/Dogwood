@@ -49,7 +49,6 @@ void Game::Run()
 {
     BuildTestScene();
 
-    Matrix4x4 identity;
     while (!glfwWindowShouldClose(m_window))
     {
         // Clear the screen to black
@@ -155,8 +154,8 @@ void Game::BuildTestScene()
     mat2->SetColour(Material::MAT_COLOUR_DIFFUSE, ColourRGB::Yellow);
 
     // Test meshes
-    Mesh* cubeMesh = new Mesh("Engine\\Assets\\Models\\cube.obj", m_shaderProgram);
-    Mesh* sphereMesh = new Mesh("Engine\\Assets\\Models\\sphere.obj", m_shaderProgram);
+    Mesh* cubeMesh = new Mesh("Engine\\Assets\\Models\\cube.obj");
+    Mesh* sphereMesh = new Mesh("Engine\\Assets\\Models\\sphere.obj");
 
     Matrix4x4 trans;
     Matrix4x4 rot;
@@ -165,6 +164,7 @@ void Game::BuildTestScene()
     // TODO oh good clean up all these allocations
 
     // Test objects
+
     GameObject* cubeGO = new GameObject();
     cubeGO->SetName("cube");
     cubeGO->SetParent(m_rootObject);

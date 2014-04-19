@@ -13,13 +13,12 @@ class Material;
 class Mesh
 {
 public:
-    Mesh(std::string filename, const ShaderProgram & shaderProgram);
+    Mesh(std::string filename);
 
     void Render(Matrix4x4& transform, Material* material);
     void Delete();
 
 private:
-
     GLint       m_uniModel;
 
     GLuint      m_vao;
@@ -27,11 +26,6 @@ private:
     GLuint      m_vboNormal;
     GLuint      m_vboUV;
     GLuint      m_ebo;
-
-    GLuint      m_shaderProgramID;
-    GLint       m_positionAttrib;
-    GLint       m_normalAttrib;
-    GLint       m_texAttrib;
 
     GLfloat*    m_vertexPositionData;
     GLfloat*    m_vertexNormalData;

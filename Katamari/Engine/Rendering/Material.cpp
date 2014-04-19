@@ -13,10 +13,6 @@ Material::Material()
 void Material::SetShader(ShaderProgram* shader)
 {
     m_shader = shader;
-
-    m_uniColourDiffuse = m_shader->GetParamLocation(ShaderProgram::UNI_COLOUR_DIFFUSE);
-    m_uniColourAmbient = m_shader->GetParamLocation(ShaderProgram::UNI_COLOUR_AMBIENT);
-    m_uniColourSpecular = m_shader->GetParamLocation(ShaderProgram::UNI_COLOUR_SPECULAR);
 }
 
 void Material::SetTexture(Texture* texture)
@@ -32,15 +28,61 @@ void Material::SetColour(eMatColourType type, ColourRGB colour)
     }
 }
 
-void Material::ApplyMaterial()
+void Material::ApplyMaterial(GLint posVBO, GLint normVBO, GLint uvVBO, Matrix4x4& transform)
 {
+    // enable shader if not already active
+    GLint currentProgram;
+    glGetIntegerv(GL_CURRENT_PROGRAM, (GLint*)&currentProgram);
+    if (currentProgram != m_shader->GetID())
+    {
+        glUseProgram(m_shader->GetID());
+    }
+
+    // bind texture
     if (m_texture == NULL)
     {
         m_texture = Texture::DefaultTexture();
     }
     m_texture->BindTexture();
 
-    glUniform3fv(m_uniColourDiffuse,  1, m_colours[MAT_COLOUR_DIFFUSE].Start());
-    glUniform3fv(m_uniColourAmbient,  1, m_colours[MAT_COLOUR_AMBIENT].Start());
-    glUniform3fv(m_uniColourSpecular, 1, m_colours[MAT_COLOUR_SPECULAR].Start());
+    // set uniform colour values for shader
+    SetUniformParam(ShaderProgram::UNI_COLOUR_DIFFUSE,  MAT_COLOUR_DIFFUSE);
+    SetUniformParam(ShaderProgram::UNI_COLOUR_AMBIENT,  MAT_COLOUR_AMBIENT);
+    SetUniformParam(ShaderProgram::UNI_COLOUR_SPECULAR, MAT_COLOUR_SPECULAR);
+
+    // set vertex values for shader
+    SetAttribParam(ShaderProgram::ATTRIB_POS,      posVBO,  3);
+    SetAttribParam(ShaderProgram::ATTRIB_NORMAL,   normVBO, 3);
+    SetAttribParam(ShaderProgram::ATTRIB_TEXCOORD, uvVBO,   2);
+
+    // set model matrix value for shader        // TODO not sure this should be here
+    GLint uniModel = m_shader->GetParamLocation(ShaderProgram::UNI_MODEL);
+    glUniformMatrix4fv(uniModel, 1, GL_FALSE, transform.Transpose().Start());
+}
+
+void Material::UnapplyMaterial()
+{
+    DisableAttribArray(ShaderProgram::ATTRIB_POS);
+    DisableAttribArray(ShaderProgram::ATTRIB_NORMAL);
+    DisableAttribArray(ShaderProgram::ATTRIB_TEXCOORD);
+}
+
+void Material::SetUniformParam(ShaderProgram::eShaderParam param, eMatColourType colour)
+{
+    GLint paramLocation = m_shader->GetParamLocation(param);
+    glUniform3fv(paramLocation, 1, m_colours[colour].Start());
+}
+
+void Material::SetAttribParam(ShaderProgram::eShaderParam param, GLint buffer, int size)
+{
+    GLint paramLocation = m_shader->GetParamLocation(param);
+    glEnableVertexAttribArray(paramLocation);
+    glBindBuffer(GL_ARRAY_BUFFER, buffer);
+    glVertexAttribPointer(paramLocation, size, GL_FLOAT, GL_FALSE, size * sizeof(float), 0);
+}
+
+void Material::DisableAttribArray(ShaderProgram::eShaderParam param)
+{
+    GLint paramLocation = m_shader->GetParamLocation(param);
+    glDisableVertexAttribArray(paramLocation);
 }
