@@ -18,5 +18,5 @@ public:
     Light();
     Light(Vector3 p, ColourRGB c, GLfloat pow);
 
-    void SetLightForShader(ShaderProgram* shader);
+    void ApplyLight(ShaderProgram* shader);
 };

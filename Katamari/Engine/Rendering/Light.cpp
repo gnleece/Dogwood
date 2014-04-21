@@ -16,7 +16,7 @@ Light::Light(Vector3 p, ColourRGB c, GLfloat pow)
     power = pow;
 }
 
-void Light::SetLightForShader(ShaderProgram* shader)
+void Light::ApplyLight(ShaderProgram* shader)
 {
     if (shader)
     {

@@ -41,35 +41,39 @@ static void cursor_callback(GLFWwindow* window, double x, double y);
 Game::Game(std::string name, int windowWidth, int windowHeight) : 
     m_name(name), m_windowWidth(windowWidth), m_windowHeight(windowHeight)
 {
+    // TODO move this out of Game into some separate manager
     WindowSetup();
-    RenderingSetup();
+
+    // Manager setup
+    RenderManager::Singleton().Startup(m_window);
+
+    // Game loading/setup
+    BuildTestScene();
 }
 
 void Game::Run()
 {
-    BuildTestScene();
-
+    // Game loop!
     while (!glfwWindowShouldClose(m_window))
     {
-        // Clear the screen to black
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
         // TODO call Update() on all GameObjects
 
         // Update systems (physics, animation, rendering, etc)
-        m_renderManager.RenderScene(m_rootObject);
+        RenderManager::Singleton().RenderScene(m_rootObject);
 
-        glfwSwapBuffers(m_window);
-        glfwPollEvents();
+        glfwPollEvents();           // TODO this should be in InputManager
     }
-
-    DeleteTestScene();
 }
 
 void Game::Shutdown()
 {
-    m_shaderProgram.Delete();
+    // Game unloading/shutdown
+    DeleteTestScene();
+
+    // Manager shutdown
+    RenderManager::Singleton().Shutdown();
+
+    // TODO move this out of Game into some separate manager
     WindowCleanup();
     exit(EXIT_SUCCESS);
 }
@@ -98,30 +102,6 @@ void Game::WindowSetup()
     glewInit();
 }
 
-void Game::RenderingSetup()
-{
-    // Load common vertex and fragment shaders
-    m_shaderProgram.Load("Engine\\Shaders\\VertexShader.glsl", "Engine\\Shaders\\FragmentShader.glsl");
-    glUseProgram(m_shaderProgram.GetID());
-
-    // Prepare view matrix
-    MainCamera.position = Vector3(0.0, 0.0, 0.0);
-    MainCamera.direction = Vector3(0.0, 0.0, -1.0);
-    MainCamera.up = Vector3(0.0, 1.0, 0.0);
-    viewMatrix = LookAt(MainCamera);
-    uniView = m_shaderProgram.GetParamLocation(ShaderProgram::UNI_VIEW);
-    glUniformMatrix4fv(uniView, 1, GL_FALSE, viewMatrix.Transpose().Start());
-
-    // Prepare projection matrix
-    Matrix4x4 proj = PerspectiveProjection(45.0f, (float)m_windowWidth/m_windowHeight, 0.1f, 1000.0f);
-    GLint uniProj = m_shaderProgram.GetParamLocation(ShaderProgram::UNI_PROJ);
-    glUniformMatrix4fv(uniProj, 1, GL_FALSE, proj.Transpose().Start());
-
-    // Enable depth test
-    glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LESS);
-}
-
 void Game::WindowCleanup()
 {
     glfwDestroyWindow(m_window);
@@ -133,12 +113,21 @@ void Game::BuildTestScene()
     m_rootObject = new GameObject();
     m_rootObject->SetName("root");
     
+    // Load default shader program
+    ShaderProgram* defaultShader = new ShaderProgram();
+    defaultShader->Load("Engine\\Shaders\\VertexShader.glsl", "Engine\\Shaders\\FragmentShader.glsl");
+
+    // Main camera setup
+    MainCamera.position     = Vector3(0.0, 0.0, 0.0);
+    MainCamera.direction    = Vector3(0.0, 0.0, -1.0);
+    MainCamera.up           = Vector3(0.0, 1.0, 0.0);
+    RenderManager::Singleton().SetCamera(MainCamera);
+
     // Light setup
     Vector3 lightPosition(0.0f, 0.0f, 0.0f);
     ColourRGB lightColor(1.0f, 1.0f, 1.0f);
     GLfloat lightPower = 15.0f;
     Light light(lightPosition, lightColor, lightPower);
-    light.SetLightForShader(&m_shaderProgram);
     
     // Test textures
     Texture* tex =  new Texture("Engine\\Assets\\test_texture.bmp");
@@ -146,11 +135,11 @@ void Game::BuildTestScene()
 
     // Test materials
     Material* mat = new Material();
-    mat->SetShader(&m_shaderProgram);
+    mat->SetShader(defaultShader);
     mat->SetTexture(tex);
     mat->SetColour(Material::MAT_COLOUR_DIFFUSE, ColourRGB::Green);
     Material* mat2 = new Material();
-    mat2->SetShader(&m_shaderProgram);
+    mat2->SetShader(defaultShader);
     mat2->SetColour(Material::MAT_COLOUR_DIFFUSE, ColourRGB::Yellow);
 
     // Test meshes

@@ -1,5 +1,6 @@
 #include "Material.h"
 
+#include "RenderManager.h"
 #include "ShaderProgram.h"
 #include "Texture.h"
 
@@ -30,12 +31,15 @@ void Material::SetColour(eMatColourType type, ColourRGB colour)
 
 void Material::ApplyMaterial(GLint posVBO, GLint normVBO, GLint uvVBO, Matrix4x4& transform)
 {
-    // enable shader if not already active
+    // enable shader if not already active      // TODO put this in shader
     GLint currentProgram;
     glGetIntegerv(GL_CURRENT_PROGRAM, (GLint*)&currentProgram);
     if (currentProgram != m_shader->GetID())
     {
         glUseProgram(m_shader->GetID());
+
+        // apply global params (light, camera)
+        RenderManager::Singleton().ApplyGlobalParams(m_shader);
     }
 
     // bind texture

@@ -10,7 +10,6 @@
 #include <string>
 
 #include "Rendering\RenderManager.h"
-#include "Rendering\ShaderProgram.h"
 
 using std::list;
 
@@ -26,7 +25,6 @@ public:
 
 private:
     void WindowSetup();
-    void RenderingSetup();
     void WindowCleanup();
 
     void BuildTestScene();      // TODO just for testing, remove me
@@ -38,10 +36,6 @@ private:
     int             m_windowWidth;
     int             m_windowHeight;
 
-    ShaderProgram   m_shaderProgram;    // TODO this should be per-material
-
     list<GameObject*> m_gameObjects;
     GameObject*       m_rootObject;
-
-    RenderManager     m_renderManager;
 };
