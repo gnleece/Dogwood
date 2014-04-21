@@ -23,27 +23,32 @@ public:
     }
     RenderManager() {}
 
-    void Startup(GLFWwindow* gameWindow);
-    void Shutdown();
+    void        Startup(GLFWwindow* gameWindow);
+    void        Shutdown();
 
-    void SetLight(Light light);
-    void SetCamera(Camera camera);
+    void        SetLight(Light light);
 
-    void RenderScene(GameObject* rootObject);
-    void ApplyGlobalParams(ShaderProgram* shader);
+    void        SetCamera(Camera camera);
+    void        SetView(Matrix4x4& view);
+    Matrix4x4&  GetView();
+
+    void        RenderScene(GameObject* rootObject);
+    void        ApplyGlobalParams(ShaderProgram* shader);
+
+    bool        SettingsDirty();
 
 private:
     RenderManager(RenderManager const&);
     void operator=(RenderManager const&);
 
-    void SetUniformMatrix(ShaderProgram* shader, ShaderProgram::eShaderParam param, Matrix4x4 & matrix);
+    void        SetUniformMatrix(ShaderProgram* shader, ShaderProgram::eShaderParam param, Matrix4x4& matrix);
 
     GLFWwindow* m_gameWindow;
 
     Light       m_light;        // TODO support mutiple light sources
-    Camera      m_mainCamera;
-    //Camera    m_debugCamera;  // TODO add separate debug camera rendering mode
 
     Matrix4x4   m_viewMatrix;
     Matrix4x4   m_projMatrix;
+
+    bool        m_dirty;
 };

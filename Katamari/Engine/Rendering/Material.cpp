@@ -31,35 +31,27 @@ void Material::SetColour(eMatColourType type, ColourRGB colour)
 
 void Material::ApplyMaterial(GLint posVBO, GLint normVBO, GLint uvVBO, Matrix4x4& transform)
 {
-    // enable shader if not already active      // TODO put this in shader
-    GLint currentProgram;
-    glGetIntegerv(GL_CURRENT_PROGRAM, (GLint*)&currentProgram);
-    if (currentProgram != m_shader->GetID())
-    {
-        glUseProgram(m_shader->GetID());
+    // Apply shader
+    m_shader->ApplyShader();
 
-        // apply global params (light, camera)
-        RenderManager::Singleton().ApplyGlobalParams(m_shader);
-    }
-
-    // bind texture
+    // Bind texture
     if (m_texture == NULL)
     {
         m_texture = Texture::DefaultTexture();
     }
     m_texture->BindTexture();
 
-    // set uniform colour values for shader
+    // Set uniform colour values for shader
     SetUniformParam(ShaderProgram::UNI_COLOUR_DIFFUSE,  MAT_COLOUR_DIFFUSE);
     SetUniformParam(ShaderProgram::UNI_COLOUR_AMBIENT,  MAT_COLOUR_AMBIENT);
     SetUniformParam(ShaderProgram::UNI_COLOUR_SPECULAR, MAT_COLOUR_SPECULAR);
 
-    // set vertex values for shader
+    // Set vertex values for shader
     SetAttribParam(ShaderProgram::ATTRIB_POS,      posVBO,  3);
     SetAttribParam(ShaderProgram::ATTRIB_NORMAL,   normVBO, 3);
     SetAttribParam(ShaderProgram::ATTRIB_TEXCOORD, uvVBO,   2);
 
-    // set model matrix value for shader        // TODO not sure this should be here
+    // Set model matrix value for shader        // TODO not sure this should be here
     GLint uniModel = m_shader->GetParamLocation(ShaderProgram::UNI_MODEL);
     glUniformMatrix4fv(uniModel, 1, GL_FALSE, transform.Transpose().Start());
 }

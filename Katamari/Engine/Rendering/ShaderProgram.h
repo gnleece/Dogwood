@@ -29,7 +29,8 @@ public:
     ShaderProgram() {}
     ShaderProgram(std::string vertexShaderPath, std::string fragmentShaderPath);
 
-    void Load(std::string vertexShaderPath, std::string fragmentShaderPath);
+    void    Load(std::string vertexShaderPath, std::string fragmentShaderPath);
+    void    ApplyShader();
 	
     GLuint	GetID()	const	{ return m_programID; }
     GLint	GetParamLocation(eShaderParam param) const;

@@ -22,14 +22,16 @@ Matrix4x4 viewMatrix;
 
 void MoveCamera(Vector3 localSpaceOffset)
 {
-    viewMatrix = Translation(localSpaceOffset)*viewMatrix;
-    glUniformMatrix4fv(uniView, 1, GL_FALSE, viewMatrix.Transpose().Start());
+    Matrix4x4 view = RenderManager::Singleton().GetView();
+    view = Translation(localSpaceOffset)*view;
+    RenderManager::Singleton().SetView(view);
 }
 
 void RotateCamera(eAXIS axis, float degrees)
 {
-    viewMatrix = Rotation(degrees, axis)*viewMatrix;
-    glUniformMatrix4fv(uniView, 1, GL_FALSE, viewMatrix.Transpose().Start());
+    Matrix4x4 view = RenderManager::Singleton().GetView();
+    view = Rotation(degrees, axis)*view;
+    RenderManager::Singleton().SetView(view);
 }
 
 // TODO move this somewhere better

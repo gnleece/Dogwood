@@ -5,6 +5,7 @@
 void RenderManager::Startup(GLFWwindow* gameWindow)
 {
     m_gameWindow = gameWindow;
+    m_dirty = true;
 
     // Prepare projection matrix
     // TODO pass params in properly
@@ -22,12 +23,24 @@ void RenderManager::Shutdown()
 void RenderManager::SetLight(Light light)
 {
     m_light = light;
+    m_dirty = true;
 }
 
 void RenderManager::SetCamera(Camera camera)
 {
-    m_mainCamera = camera;
-    m_viewMatrix = LookAt(m_mainCamera);
+    m_viewMatrix = LookAt(camera);
+    m_dirty = true;
+}
+
+void RenderManager::SetView(Matrix4x4& view)
+{
+    m_viewMatrix = view;
+    m_dirty = true;
+}
+
+Matrix4x4& RenderManager::GetView()
+{
+    return m_viewMatrix;
 }
 
 void RenderManager::RenderScene(GameObject* rootObject)
@@ -49,6 +62,13 @@ void RenderManager::ApplyGlobalParams(ShaderProgram* shader)
 
     SetUniformMatrix(shader, ShaderProgram::UNI_VIEW, m_viewMatrix);
     SetUniformMatrix(shader, ShaderProgram::UNI_PROJ, m_projMatrix);
+
+    m_dirty = false;
+}
+
+bool RenderManager::SettingsDirty()
+{
+    return m_dirty;
 }
 
 void RenderManager::SetUniformMatrix(ShaderProgram* shader, ShaderProgram::eShaderParam param, Matrix4x4 & matrix)

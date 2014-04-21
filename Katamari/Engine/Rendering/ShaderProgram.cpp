@@ -1,5 +1,7 @@
 #include "ShaderProgram.h"
 
+#include "RenderManager.h"
+
 ShaderProgram::ShaderProgram(std::string vertexShaderPath, std::string fragmentShaderPath)
 {
     Load(vertexShaderPath, fragmentShaderPath);
@@ -26,6 +28,24 @@ void ShaderProgram::Load(std::string vertexShaderPath, std::string fragmentShade
     m_paramLocations[UNI_COLOUR_DIFFUSE]    = glGetUniformLocation(m_programID, "matColorDiffuse");
     m_paramLocations[UNI_COLOUR_AMBIENT]    = glGetUniformLocation(m_programID, "matColorAmbient");
     m_paramLocations[UNI_COLOUR_SPECULAR]   = glGetUniformLocation(m_programID, "matColorSpecular");
+}
+
+void ShaderProgram::ApplyShader()
+{
+    // Enable shader program if not already active
+    bool changedProgram = false;
+    GLint currentProgram;
+    glGetIntegerv(GL_CURRENT_PROGRAM, (GLint*)&currentProgram);
+    if (currentProgram != GetID())
+    {
+        glUseProgram(GetID());
+        changedProgram = true;
+    }
+
+    if (changedProgram || RenderManager::Singleton().SettingsDirty())
+    {
+        RenderManager::Singleton().ApplyGlobalParams(this);
+    }
 }
 
 GLint ShaderProgram::GetParamLocation(eShaderParam param) const
