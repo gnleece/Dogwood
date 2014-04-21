@@ -15,11 +15,6 @@
 #include "GameObject.h"
 #include "Util.h"
 
-// TODO ugh temp hack
-Camera MainCamera;
-GLint uniView;
-Matrix4x4 viewMatrix;
-
 void MoveCamera(Vector3 localSpaceOffset)
 {
     Matrix4x4 view = RenderManager::Singleton().GetView();
@@ -120,16 +115,18 @@ void Game::BuildTestScene()
     defaultShader->Load("Engine\\Shaders\\VertexShader.glsl", "Engine\\Shaders\\FragmentShader.glsl");
 
     // Main camera setup
-    MainCamera.position     = Vector3(0.0, 0.0, 0.0);
-    MainCamera.direction    = Vector3(0.0, 0.0, -1.0);
-    MainCamera.up           = Vector3(0.0, 1.0, 0.0);
-    RenderManager::Singleton().SetCamera(MainCamera);
+    Camera mainCamera;
+    mainCamera.position     = Vector3(0.0, 0.0, 0.0);
+    mainCamera.direction    = Vector3(0.0, 0.0, -1.0);
+    mainCamera.up           = Vector3(0.0, 1.0, 0.0);
+    RenderManager::Singleton().SetCamera(mainCamera);
 
     // Light setup
     Vector3 lightPosition(0.0f, 0.0f, 0.0f);
     ColourRGB lightColor(1.0f, 1.0f, 1.0f);
     GLfloat lightPower = 15.0f;
     Light light(lightPosition, lightColor, lightPower);
+    RenderManager::Singleton().SetLight(light);
     
     // Test textures
     Texture* tex =  new Texture("Engine\\Assets\\test_texture.bmp");
