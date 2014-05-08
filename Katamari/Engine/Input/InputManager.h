@@ -6,6 +6,8 @@
 #define GLFW_INCLUDE_GLU
 #include <GLFW/glfw3.h>
 
+class GameWindow;
+
 class InputManager
 {
 public:
@@ -16,6 +18,12 @@ public:
     }
     InputManager() {}
 
-    void        Startup(GLFWwindow* gameWindow);
-    void        Shutdown();
+    void Startup(GameWindow* gameWindow);
+    void Shutdown();
+
+    void EnableDebugCameraControls(bool enable);
+
+private:
+    GameWindow* m_gameWindow;
+    bool        m_debugCameraControls;
 };

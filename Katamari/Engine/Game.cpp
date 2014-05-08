@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <time.h>
 
+#include "Input\InputManager.h"
 #include "Math\Algebra.h"
 #include "Math\Transformations.h"
 #include "Rendering\Light.h"
@@ -22,6 +23,7 @@ Game::Game(std::string name, int windowWidth, int windowHeight)
 
     // Manager setup
     RenderManager::Singleton().Startup(&m_gameWindow);
+    InputManager::Singleton().Startup(&m_gameWindow);
 
     // Game loading/setup
     BuildTestScene();
@@ -47,6 +49,7 @@ void Game::Shutdown()
     DeleteTestScene();
 
     // Manager shutdown
+    InputManager::Singleton().Shutdown();
     RenderManager::Singleton().Shutdown();
 
     // Window cleanup

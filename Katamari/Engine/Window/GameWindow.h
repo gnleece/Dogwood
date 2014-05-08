@@ -19,7 +19,13 @@ public:
     void SwapBuffers();
     bool ShouldClose();
 
+    void SetKeyCallback(GLFWkeyfun callback);
+    void SetMouseButtonCallback(GLFWmousebuttonfun callback);
+    void SetCursorPositionCallback(GLFWcursorposfun callback);
+
 private:
+    static void ErrorCallback(int error, const char* description);
+
     GLFWwindow* m_window;
 
     string      m_name;
