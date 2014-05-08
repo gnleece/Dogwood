@@ -10,6 +10,7 @@
 #include <string>
 
 #include "Rendering\RenderManager.h"
+#include "Window\GameWindow.h"
 
 using std::list;
 
@@ -24,17 +25,10 @@ public:
     void Shutdown();
 
 private:
-    void WindowSetup();
-    void WindowCleanup();
-
     void BuildTestScene();      // TODO just for testing, remove me
     void DeleteTestScene();     // TODO just for testing, remove me
 
-    std::string     m_name;
-
-    GLFWwindow*     m_window;
-    int             m_windowWidth;
-    int             m_windowHeight;
+    GameWindow        m_gameWindow;
 
     list<GameObject*> m_gameObjects;
     GameObject*       m_rootObject;

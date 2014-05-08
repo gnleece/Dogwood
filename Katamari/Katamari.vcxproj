@@ -87,6 +87,7 @@
   <ItemGroup>
     <ClInclude Include="Engine\Game.h" />
     <ClInclude Include="Engine\GameComponent.h" />
+    <ClInclude Include="Engine\Input\InputManager.h" />
     <ClInclude Include="Engine\Math\Algebra.h" />
     <ClInclude Include="Engine\Math\Transformations.h" />
     <ClInclude Include="Engine\Rendering\Colour.h" />
@@ -102,11 +103,13 @@
     <ClInclude Include="Engine\Rendering\Vertex.h" />
     <ClInclude Include="Engine\GameObject.h" />
     <ClInclude Include="Engine\Util.h" />
+    <ClInclude Include="Engine\Window\GameWindow.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Game.cpp" />
     <ClCompile Include="Engine\GameComponent.cpp" />
+    <ClCompile Include="Engine\Input\InputManager.cpp" />
     <ClCompile Include="Engine\Math\Algebra.cpp" />
     <ClCompile Include="Engine\Math\Transformations.cpp" />
     <ClCompile Include="Engine\Rendering\Colour.cpp" />
@@ -122,6 +125,7 @@
     <ClCompile Include="Engine\Rendering\Vertex.cpp" />
     <ClCompile Include="Engine\GameObject.cpp" />
     <ClCompile Include="Engine\Util.cpp" />
+    <ClCompile Include="Engine\Window\GameWindow.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>

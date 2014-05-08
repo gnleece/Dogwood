@@ -12,6 +12,7 @@
 #include <GLFW/glfw3.h>
 
 class GameObject;
+class GameWindow;
 
 class RenderManager
 {
@@ -23,7 +24,7 @@ public:
     }
     RenderManager() {}
 
-    void        Startup(GLFWwindow* gameWindow);
+    void        Startup(GameWindow* gameWindow);
     void        Shutdown();
 
     void        SetLight(Light light);
@@ -43,7 +44,7 @@ private:
 
     void        SetUniformMatrix(ShaderProgram* shader, ShaderProgram::eShaderParam param, Matrix4x4& matrix);
 
-    GLFWwindow* m_gameWindow;
+    GameWindow* m_gameWindow;
 
     Light       m_light;        // TODO support mutiple light sources
 

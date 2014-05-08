@@ -1,8 +1,9 @@
 #include "RenderManager.h"
 
 #include "..\GameObject.h"
+#include "..\Window\GameWindow.h"
 
-void RenderManager::Startup(GLFWwindow* gameWindow)
+void RenderManager::Startup(GameWindow* gameWindow)
 {
     m_gameWindow = gameWindow;
     m_dirty = true;
@@ -14,6 +15,9 @@ void RenderManager::Startup(GLFWwindow* gameWindow)
     // Enable depth test
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
+
+    glewExperimental = GL_TRUE;
+    glewInit();
 }
 
 void RenderManager::Shutdown()
@@ -53,7 +57,7 @@ void RenderManager::RenderScene(GameObject* rootObject)
     rootObject->Render(Matrix4x4::Identity, false);
 
     // Swap buffers
-    glfwSwapBuffers(m_gameWindow);
+    m_gameWindow->SwapBuffers();
 }
 
 void RenderManager::ApplyGlobalParams(ShaderProgram* shader)

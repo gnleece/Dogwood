@@ -31,11 +31,23 @@
     <Filter Include="Engine\Source\Shaders">
       <UniqueIdentifier>{04d7aff8-7fb0-4ca6-be84-d3fc94085135}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Source\Rendering">
+      <UniqueIdentifier>{dadb511c-0947-4170-b719-648ed8ebe152}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Headers\Input">
+      <UniqueIdentifier>{76c83ee5-e802-4036-b712-93adbc17fa70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Source\Input">
+      <UniqueIdentifier>{7dd72b4d-4770-4a9a-85c4-95881b75bae0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Headers\Window">
+      <UniqueIdentifier>{53536dc0-75f3-4a0b-9bfa-833b6fe6697f}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Engine\Headers\Rendering">
       <UniqueIdentifier>{9723b093-dfc4-487f-9bc5-a6bb8ff6ecce}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\Source\Rendering">
-      <UniqueIdentifier>{dadb511c-0947-4170-b719-648ed8ebe152}</UniqueIdentifier>
+    <Filter Include="Engine\Source\Window">
+      <UniqueIdentifier>{b786f87f-dabb-418c-84df-d8be97a330aa}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -98,6 +110,12 @@
     <ClInclude Include="Engine\Rendering\ShaderProgram.h">
       <Filter>Engine\Headers\Rendering</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Input\InputManager.h">
+      <Filter>Engine\Headers\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Window\GameWindow.h">
+      <Filter>Engine\Headers\Window</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -153,6 +171,12 @@
     </ClCompile>
     <ClCompile Include="Engine\Rendering\Material.cpp">
       <Filter>Engine\Source\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Input\InputManager.cpp">
+      <Filter>Engine\Source\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Window\GameWindow.cpp">
+      <Filter>Engine\Source\Window</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
