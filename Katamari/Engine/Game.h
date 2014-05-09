@@ -9,24 +9,28 @@
 #include <list>
 #include <string>
 
-#include "Rendering\RenderManager.h"
 #include "Window\GameWindow.h"
 
 using std::list;
+using std::string;
 
 class GameObject;
-class Texture;
 
 class Game
 {
 public:
-    Game(std::string name, int windowWidth, int windowHeight);
-    void Run();
-    void Shutdown();
+    static Game& Singleton()
+    {
+        static Game singleton;
+        return singleton;
+    }
+    Game() {}
 
+    void Init(string name, int windowWidth, int windowHeight);
+    void Run(GameObject* sceneRoot);
+    
 private:
-    void BuildTestScene();      // TODO just for testing, remove me
-    void DeleteTestScene();     // TODO just for testing, remove me
+    void Shutdown();
 
     GameWindow        m_gameWindow;
 

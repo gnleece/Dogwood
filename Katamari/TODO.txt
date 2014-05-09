@@ -1,10 +1,10 @@
 TODO
-    * Clean up test code in Game.cpp
+    * Move test scene out of Engine code (Game.cpp)
 
 Systems
     * Game object/component system
+    * Input manager
     * Resource manager
-    * Materials
     * Lua scripting
     * Time
     * GUIDs

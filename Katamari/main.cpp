@@ -2,10 +2,12 @@
 //
 
 #include "Engine\Game.h"
+#include "TestScene\BuildTestScene.h"
 
 int main(void)
 {
-    Game game("Katamari", 1024, 768);
-    game.Run();
-    game.Shutdown();
+    Game::Singleton().Init("Katamari", 1024, 768);
+
+    GameObject* sceneRoot = BuildTestScene();
+    Game::Singleton().Run(sceneRoot);
 }

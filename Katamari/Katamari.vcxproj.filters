@@ -49,6 +49,12 @@
     <Filter Include="Engine\Source\Window">
       <UniqueIdentifier>{b786f87f-dabb-418c-84df-d8be97a330aa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\TestScene">
+      <UniqueIdentifier>{cb2d2ded-4828-40eb-ba8e-382a76e54af3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\TestScene">
+      <UniqueIdentifier>{cd242924-e507-49cf-aca8-668b7d67af38}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="TODO.txt">
@@ -116,6 +122,12 @@
     <ClInclude Include="Engine\Window\GameWindow.h">
       <Filter>Engine\Headers\Window</Filter>
     </ClInclude>
+    <ClInclude Include="TestScene\TestComponent.h">
+      <Filter>Header Files\TestScene</Filter>
+    </ClInclude>
+    <ClInclude Include="TestScene\BuildTestScene.h">
+      <Filter>Header Files\TestScene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -177,6 +189,12 @@
     </ClCompile>
     <ClCompile Include="Engine\Window\GameWindow.cpp">
       <Filter>Engine\Source\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="TestScene\TestComponent.cpp">
+      <Filter>Source Files\TestScene</Filter>
+    </ClCompile>
+    <ClCompile Include="TestScene\BuildTestScene.cpp">
+      <Filter>Source Files\TestScene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
