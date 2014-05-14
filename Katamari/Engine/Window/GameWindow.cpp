@@ -54,3 +54,13 @@ void GameWindow::SetCursorPositionCallback(GLFWcursorposfun callback)
 {
     glfwSetCursorPosCallback(m_window, callback);
 }
+
+int GameWindow::GetWidth()
+{
+    return m_width;
+}
+
+int GameWindow::GetHeight()
+{
+    return m_height;
+}

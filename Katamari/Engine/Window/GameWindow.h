@@ -23,6 +23,9 @@ public:
     void SetMouseButtonCallback(GLFWmousebuttonfun callback);
     void SetCursorPositionCallback(GLFWcursorposfun callback);
 
+    int GetWidth();
+    int GetHeight();
+
 private:
     static void ErrorCallback(int error, const char* description);
 

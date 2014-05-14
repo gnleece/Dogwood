@@ -10,7 +10,8 @@ void RenderManager::Startup(GameWindow* gameWindow)
 
     // Prepare projection matrix
     // TODO pass params in properly
-    m_projMatrix = PerspectiveProjection(45.0f, (float)1024 / 768, 0.1f, 1000.0f);
+    float aspect = (float)m_gameWindow->GetWidth() / m_gameWindow->GetHeight();
+    m_projMatrix = PerspectiveProjection(45.0f, aspect, 0.1f, 1000.0f);
 
     // Enable depth test
     glEnable(GL_DEPTH_TEST);
