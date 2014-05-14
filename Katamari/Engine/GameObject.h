@@ -24,6 +24,7 @@ public:
     void SetName(string name)                   { m_name = name; }
 
     void SetParent(GameObject* parent);
+    void AddComponent(GameComponent* component);
 
     void Start();
     void Update(float deltaTime);
@@ -35,6 +36,8 @@ public:
 
     void SetMesh(MeshInstance* mesh); 
     MeshInstance* GetMesh();
+
+    static list<GameObject*> ActiveGameObjects;
 
 private:
     void AddChild(GameObject* child);

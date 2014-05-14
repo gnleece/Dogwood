@@ -1,5 +1,6 @@
 #include "GameComponent.h"
 
-GameComponent::GameComponent(GameObject& gameObject) : m_gameObject(gameObject)
+void GameComponent::SetGameObject(GameObject* gameObject)
 {
+    m_gameObject = gameObject;
 }

@@ -24,7 +24,13 @@ void Game::Run(GameObject* sceneRoot)
     // Game loop!
     while (!m_gameWindow.ShouldClose())
     {
-        // TODO call Update() on all GameObjects
+        // call Update() on all active GameObjects
+        std::list<GameObject*>::iterator goIter;
+        for (goIter = GameObject::ActiveGameObjects.begin(); goIter != GameObject::ActiveGameObjects.end(); goIter++)
+        {
+            GameObject* GO = *goIter;
+            GO->Update(0.f);      // TODO time
+        }
 
         // Update systems (physics, animation, rendering, etc)
         RenderManager::Singleton().RenderScene(m_rootObject);

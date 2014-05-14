@@ -2,7 +2,9 @@
 
 #include "..\Engine\GameComponent.h"
 
-class TestComponent : GameComponent
+class TestComponent : public GameComponent
 {
-
+public:
+    
+    void Update(float deltaTime);
 };

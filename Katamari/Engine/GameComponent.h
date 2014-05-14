@@ -5,14 +5,14 @@
 class GameComponent
 {
 public:
-    GameComponent(GameObject& gameObject);
-
     virtual void Start() {}
     virtual void Update(float deltaTime) {}
 
     virtual void OnEnable() {}
     virtual void OnDisable() {}
 
+    void SetGameObject(GameObject* gameObject);
+
 protected:
-    GameObject m_gameObject;
+    GameObject* m_gameObject = NULL;
 };

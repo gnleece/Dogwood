@@ -8,6 +8,7 @@ Systems
     * Lua scripting
     * Time
     * GUIDs
+    * Transform math helpers
 
     * Particles
     * Shadows

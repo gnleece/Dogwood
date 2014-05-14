@@ -33,7 +33,5 @@ private:
     void Shutdown();
 
     GameWindow        m_gameWindow;
-
-    list<GameObject*> m_gameObjects;
     GameObject*       m_rootObject;
 };

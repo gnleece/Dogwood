@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 
+#include "TestComponent.h"
 #include "..\Engine\GameObject.h"
 #include "..\Engine\Math\Transformations.h"
 #include "..\Engine\Rendering\Material.h"
@@ -64,10 +65,13 @@ GameObject* BuildTestScene()
     GameObject* cubeGO = new GameObject();
     cubeGO->SetName("cube");
     cubeGO->SetParent(rootObject);
-    MeshInstance* cubeMeshIns = new MeshInstance(*cubeGO);     // TODO clean up set component
+    MeshInstance* cubeMeshIns = new MeshInstance();     // TODO clean up set component
     cubeMeshIns->SetMesh(cubeMesh);
     cubeMeshIns->SetMaterial(mat);
     cubeGO->SetMesh(cubeMeshIns);
+
+    TestComponent* testComp = new TestComponent();
+    cubeGO->AddComponent(testComp);
 
     trans = Translation(Vector3(1.2f, -0.5f, -5.0f));
     rot = Rotation(45, AXIS_Y);
@@ -79,7 +83,7 @@ GameObject* BuildTestScene()
     GameObject* sphereGO = new GameObject();
     sphereGO->SetName("sphere");
     sphereGO->SetParent(rootObject);
-    MeshInstance* sphereMeshIns = new MeshInstance(*sphereGO);   // TODO clean up set component
+    MeshInstance* sphereMeshIns = new MeshInstance();   // TODO clean up set component
     sphereMeshIns->SetMesh(sphereMesh);
     sphereMeshIns->SetMaterial(mat2);
     sphereGO->SetMesh(sphereMeshIns);

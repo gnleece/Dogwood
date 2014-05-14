@@ -8,8 +8,6 @@ class Mesh;
 class MeshInstance : public GameComponent
 {
 public:
-    MeshInstance(GameObject& gameObject);
-
     void Render(Matrix4x4& transform);
 
     void SetMesh(Mesh* mesh)                { m_mesh = mesh; }

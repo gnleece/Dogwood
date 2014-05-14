@@ -3,8 +3,13 @@
 #include "Rendering\MeshInstance.h"
 #include "GameComponent.h"
 
+list<GameObject*> GameObject::ActiveGameObjects = list<GameObject*>();
+
 GameObject::GameObject() : m_dirty(true)
-{ }
+{
+    // TODO unregister on destroy
+    ActiveGameObjects.push_back(this);
+}
 
 void GameObject::SetLocalTransform(const Matrix4x4& m)
 {
@@ -26,6 +31,15 @@ void GameObject::SetParent(GameObject* parent)
     if (m_parent)
     {
         m_parent->AddChild(this);
+    }
+}
+
+void GameObject::AddComponent(GameComponent* component)
+{
+    if (component)
+    {
+        component->SetGameObject(this);
+        m_components.push_back(component);
     }
 }
 
