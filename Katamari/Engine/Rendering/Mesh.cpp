@@ -46,7 +46,7 @@ Mesh::Mesh(std::string path)
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)*m_indexedVertexCount, indices.data(), GL_STATIC_DRAW);
 }
 
-void Mesh::Render(Matrix4x4& transform, Material* material)
+void Mesh::Render(Transform& transform, Material* material)
 {
     if (material)
     {

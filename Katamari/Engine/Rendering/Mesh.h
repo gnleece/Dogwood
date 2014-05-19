@@ -1,6 +1,6 @@
 #pragma once
 
-#include "..\Math\Algebra.h"
+#include "..\Math\Transform.h"
 #include "ShaderProgram.h"
 
 #define GLEW_STATIC
@@ -15,7 +15,7 @@ class Mesh
 public:
     Mesh(std::string filename);
 
-    void Render(Matrix4x4& transform, Material* material);
+    void Render(Transform& transform, Material* material);
     void Delete();
 
 private:

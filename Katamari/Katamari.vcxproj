@@ -89,6 +89,7 @@
     <ClInclude Include="Engine\GameComponent.h" />
     <ClInclude Include="Engine\Input\InputManager.h" />
     <ClInclude Include="Engine\Math\Algebra.h" />
+    <ClInclude Include="Engine\Math\Transform.h" />
     <ClInclude Include="Engine\Math\Transformations.h" />
     <ClInclude Include="Engine\Rendering\Camera.h" />
     <ClInclude Include="Engine\Rendering\Colour.h" />
@@ -114,6 +115,7 @@
     <ClCompile Include="Engine\GameComponent.cpp" />
     <ClCompile Include="Engine\Input\InputManager.cpp" />
     <ClCompile Include="Engine\Math\Algebra.cpp" />
+    <ClCompile Include="Engine\Math\Transform.cpp" />
     <ClCompile Include="Engine\Math\Transformations.cpp" />
     <ClCompile Include="Engine\Rendering\Camera.cpp" />
     <ClCompile Include="Engine\Rendering\Colour.cpp" />

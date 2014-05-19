@@ -55,7 +55,7 @@ void RenderManager::RenderScene(GameObject* rootObject)
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // Render game objects
-    rootObject->Render(Matrix4x4::Identity, false);
+    rootObject->Render(Transform::Identity, false);
 
     // Swap buffers
     m_gameWindow->SwapBuffers();

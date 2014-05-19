@@ -1,6 +1,6 @@
 #pragma once
 
-#include "..\Math\Algebra.h"
+#include "..\Math\Transform.h"
 #include "Colour.h"
 #include "ShaderProgram.h"
 
@@ -29,7 +29,7 @@ public:
     void SetTexture(Texture* texture);
     void SetColour(eMatColourType type, ColourRGB colour);
 
-    void ApplyMaterial(GLint posVBO, GLint normVBO, GLint uvVBO, Matrix4x4& transform);
+    void ApplyMaterial(GLint posVBO, GLint normVBO, GLint uvVBO, Transform& transform);
     void UnapplyMaterial();
 
 private:

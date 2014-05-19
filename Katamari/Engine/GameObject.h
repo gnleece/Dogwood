@@ -4,6 +4,7 @@
 #include <string>
 
 #include "Math\Algebra.h"
+#include "Math\Transform.h"
 
 using std::string;
 using std::list;
@@ -16,8 +17,9 @@ class GameObject
 public:
     GameObject();
 
-    const Matrix4x4& GetLocalTransform()        { return m_localTransform; }
-    void SetLocalTransform(const Matrix4x4& m);
+    Transform& GetLocalTransform()        { return m_localTransform; }
+    void SetLocalTransform(Transform& t);
+    void SetLocalTransform(Matrix4x4& m);
 
     int GetID()                                 { return m_id; }
     string GetName()                            { return m_name; }
@@ -32,7 +34,7 @@ public:
     void OnEnable();
     void OnDisable();
 
-    void Render(Matrix4x4 parentWorldTransform, bool dirty);
+    void Render(Transform& parentWorldTransform, bool dirty);
 
     void SetMesh(MeshInstance* mesh); 
     MeshInstance* GetMesh();
@@ -46,8 +48,8 @@ private:
     int     m_id;
     string  m_name;
 
-    Matrix4x4               m_localTransform;
-    Matrix4x4               m_worldTransform;
+    Transform               m_localTransform;
+    Transform               m_worldTransform;
     bool                    m_dirty;
 
     MeshInstance*           m_mesh;         // TODO this should be part of regular component list

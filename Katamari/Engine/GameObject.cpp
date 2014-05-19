@@ -11,9 +11,15 @@ GameObject::GameObject() : m_dirty(true)
     ActiveGameObjects.push_back(this);
 }
 
-void GameObject::SetLocalTransform(const Matrix4x4& m)
+void GameObject::SetLocalTransform(Transform& t)
 {
-    m_localTransform = m;
+    m_localTransform = t;
+    m_dirty = true;
+}
+
+void GameObject::SetLocalTransform(Matrix4x4& m)
+{
+    m_localTransform.SetMatrix(m);
     m_dirty = true;
 }
 
@@ -65,7 +71,7 @@ void GameObject::Update(float deltaTime)
     }
 }
 
-void GameObject::Render(Matrix4x4 parentWorldTransform, bool dirty)
+void GameObject::Render(Transform& parentWorldTransform, bool dirty)
 {
     dirty |= m_dirty;
     if (dirty)

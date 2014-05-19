@@ -1,6 +1,7 @@
 #pragma once
 
 #include "..\GameComponent.h"
+#include "..\Math\Transform.h"
 
 class Material;
 class Mesh;
@@ -8,7 +9,7 @@ class Mesh;
 class MeshInstance : public GameComponent
 {
 public:
-    void Render(Matrix4x4& transform);
+    void Render(Transform& transform);
 
     void SetMesh(Mesh* mesh)                { m_mesh = mesh; }
     Mesh* GetMesh()                         { return m_mesh; }

@@ -29,7 +29,7 @@ void Material::SetColour(eMatColourType type, ColourRGB colour)
     }
 }
 
-void Material::ApplyMaterial(GLint posVBO, GLint normVBO, GLint uvVBO, Matrix4x4& transform)
+void Material::ApplyMaterial(GLint posVBO, GLint normVBO, GLint uvVBO, Transform& transform)
 {
     // Apply shader
     m_shader->ApplyShader();
@@ -53,7 +53,7 @@ void Material::ApplyMaterial(GLint posVBO, GLint normVBO, GLint uvVBO, Matrix4x4
 
     // Set model matrix value for shader        // TODO not sure this should be here
     GLint uniModel = m_shader->GetParamLocation(ShaderProgram::UNI_MODEL);
-    glUniformMatrix4fv(uniModel, 1, GL_FALSE, transform.Transpose().Start());
+    glUniformMatrix4fv(uniModel, 1, GL_FALSE, transform.GetMatrix().Transpose().Start());
 }
 
 void Material::UnapplyMaterial()

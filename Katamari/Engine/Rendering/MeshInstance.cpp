@@ -1,7 +1,7 @@
 #include "MeshInstance.h"
 #include "Mesh.h"
 
-void MeshInstance::Render(Matrix4x4& transform)
+void MeshInstance::Render(Transform& transform)
 {
     if (m_mesh)
     {
