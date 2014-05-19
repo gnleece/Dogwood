@@ -128,6 +128,9 @@
     <ClInclude Include="TestScene\BuildTestScene.h">
       <Filter>Header Files\TestScene</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Rendering\Camera.h">
+      <Filter>Engine\Headers\Rendering</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -195,6 +198,9 @@
     </ClCompile>
     <ClCompile Include="TestScene\BuildTestScene.cpp">
       <Filter>Source Files\TestScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Rendering\Camera.cpp">
+      <Filter>Engine\Source\Rendering</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

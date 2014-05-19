@@ -90,6 +90,7 @@
     <ClInclude Include="Engine\Input\InputManager.h" />
     <ClInclude Include="Engine\Math\Algebra.h" />
     <ClInclude Include="Engine\Math\Transformations.h" />
+    <ClInclude Include="Engine\Rendering\Camera.h" />
     <ClInclude Include="Engine\Rendering\Colour.h" />
     <ClInclude Include="Engine\Rendering\Image.h" />
     <ClInclude Include="Engine\Rendering\Light.h" />
@@ -114,6 +115,7 @@
     <ClCompile Include="Engine\Input\InputManager.cpp" />
     <ClCompile Include="Engine\Math\Algebra.cpp" />
     <ClCompile Include="Engine\Math\Transformations.cpp" />
+    <ClCompile Include="Engine\Rendering\Camera.cpp" />
     <ClCompile Include="Engine\Rendering\Colour.cpp" />
     <ClCompile Include="Engine\Rendering\Image.cpp" />
     <ClCompile Include="Engine\Rendering\Light.cpp" />

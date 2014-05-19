@@ -40,7 +40,6 @@ void main()
     float distanceSqrd = pow(distance(Position_worldspace, LightPosition_worldspace),2);
 
     // combine all lighting types for final color
-    //TODO light color, light power, ambient as parameter
     outColor =	MaterialAmbientColor + 
                 lightPower * MaterialDiffuseColor * vec4(lightColor,1.0) * cosTheta / distanceSqrd +
                 lightPower/4 * MaterialSpecularColor * vec4(lightColor,1.0) * pow(cosAlpha,5) / distanceSqrd;
