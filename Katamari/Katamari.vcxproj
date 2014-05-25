@@ -85,6 +85,7 @@
     <Text Include="TODO.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\Debugging\DebugCameraControls.h" />
     <ClInclude Include="Engine\Game.h" />
     <ClInclude Include="Engine\GameComponent.h" />
     <ClInclude Include="Engine\Input\InputManager.h" />
@@ -111,6 +112,7 @@
     <ClInclude Include="TestScene\TestComponent.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\Debugging\DebugCameraControls.cpp" />
     <ClCompile Include="Engine\Game.cpp" />
     <ClCompile Include="Engine\GameComponent.cpp" />
     <ClCompile Include="Engine\Input\InputManager.cpp" />

@@ -40,21 +40,6 @@ bool GameWindow::ShouldClose()
     return glfwWindowShouldClose(m_window);
 }
 
-void GameWindow::SetKeyCallback(GLFWkeyfun callback)
-{
-    glfwSetKeyCallback(m_window, callback);
-}
-
-void GameWindow::SetMouseButtonCallback(GLFWmousebuttonfun callback)
-{
-    glfwSetMouseButtonCallback(m_window, callback);
-}
-
-void GameWindow::SetCursorPositionCallback(GLFWcursorposfun callback)
-{
-    glfwSetCursorPosCallback(m_window, callback);
-}
-
 int GameWindow::GetWidth()
 {
     return m_width;
@@ -63,4 +48,14 @@ int GameWindow::GetWidth()
 int GameWindow::GetHeight()
 {
     return m_height;
+}
+
+GLFWwindow* GameWindow::GetGLFWWindow()
+{
+    return m_window;
+}
+
+void GameWindow::ErrorCallback(int error, const char* description)
+{
+    fputs(description, stderr);
 }

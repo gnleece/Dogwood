@@ -55,6 +55,12 @@
     <Filter Include="Header Files\TestScene">
       <UniqueIdentifier>{cd242924-e507-49cf-aca8-668b7d67af38}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Headers\Debugging">
+      <UniqueIdentifier>{181aa519-8041-47d9-957d-ad4565c34a60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Source\Debugging">
+      <UniqueIdentifier>{515894f2-f315-468f-be2d-525b4f12f4b3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="TODO.txt">
@@ -134,6 +140,9 @@
     <ClInclude Include="Engine\Math\Transform.h">
       <Filter>Engine\Headers\Math</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Debugging\DebugCameraControls.h">
+      <Filter>Engine\Headers\Debugging</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -207,6 +216,9 @@
     </ClCompile>
     <ClCompile Include="Engine\Math\Transform.cpp">
       <Filter>Engine\Source\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Debugging\DebugCameraControls.cpp">
+      <Filter>Engine\Source\Debugging</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

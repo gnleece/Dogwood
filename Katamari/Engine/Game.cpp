@@ -24,7 +24,7 @@ void Game::Run(GameObject* sceneRoot)
     // Game loop!
     while (!m_gameWindow.ShouldClose())
     {
-        // call Update() on all active GameObjects
+        // call Update on all active GameObjects
         std::list<GameObject*>::iterator goIter;
         for (goIter = GameObject::ActiveGameObjects.begin(); goIter != GameObject::ActiveGameObjects.end(); goIter++)
         {
@@ -34,8 +34,7 @@ void Game::Run(GameObject* sceneRoot)
 
         // Update systems (physics, animation, rendering, etc)
         RenderManager::Singleton().RenderScene(m_rootObject);
-
-        glfwPollEvents();           // TODO this should be in InputManager
+        InputManager::Singleton().PollEvents();
     }
 
     Shutdown();
