@@ -18,6 +18,7 @@ void ShaderProgram::Load(std::string vertexShaderPath, std::string fragmentShade
     m_paramLocations[ATTRIB_POS]            = glGetAttribLocation(m_programID, "position");
     m_paramLocations[ATTRIB_NORMAL]         = glGetAttribLocation(m_programID, "normal");
     m_paramLocations[ATTRIB_TEXCOORD]       = glGetAttribLocation(m_programID, "texcoord");
+    m_paramLocations[ATTRIB_COLOUR]         = glGetAttribLocation(m_programID, "color");
 
     m_paramLocations[UNI_MODEL]             = glGetUniformLocation(m_programID, "model");
     m_paramLocations[UNI_VIEW]              = glGetUniformLocation(m_programID, "view");

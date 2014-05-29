@@ -143,6 +143,9 @@
     <ClInclude Include="Engine\Debugging\DebugCameraControls.h">
       <Filter>Engine\Headers\Debugging</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Debugging\DebugDraw.h">
+      <Filter>Engine\Headers\Debugging</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -220,12 +223,21 @@
     <ClCompile Include="Engine\Debugging\DebugCameraControls.cpp">
       <Filter>Engine\Source\Debugging</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Debugging\DebugDraw.cpp">
+      <Filter>Engine\Source\Debugging</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Shaders\FragmentShader.glsl">
       <Filter>Engine\Source\Shaders</Filter>
     </None>
     <None Include="Engine\Shaders\VertexShader.glsl">
+      <Filter>Engine\Source\Shaders</Filter>
+    </None>
+    <None Include="Engine\Shaders\DebugDrawFragmentShader.glsl">
+      <Filter>Engine\Source\Shaders</Filter>
+    </None>
+    <None Include="Engine\Shaders\DebugDrawVertexShader.glsl">
       <Filter>Engine\Source\Shaders</Filter>
     </None>
   </ItemGroup>

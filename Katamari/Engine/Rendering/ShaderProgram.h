@@ -14,6 +14,7 @@ public:
         ATTRIB_POS,
         ATTRIB_NORMAL,
         ATTRIB_TEXCOORD,
+        ATTRIB_COLOUR,
         UNI_MODEL,
         UNI_VIEW,
         UNI_PROJ,

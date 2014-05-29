@@ -1,9 +1,7 @@
 TODO
-    * Transform class
 
 Systems
     * Game object/component system
-    * Input manager
     * Resource manager
     * Lua scripting
     * Time
@@ -26,7 +24,6 @@ Features (second pass)
 Debugging
     * Debug logging (with streams)
     * Debug draw
-    * Debug camera controls
     * Tweakables?
 
 Fix-up stuff

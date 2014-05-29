@@ -1,6 +1,7 @@
 #include "RenderManager.h"
 
 #include "..\GameObject.h"
+#include "..\Debugging\DebugDraw.h"
 #include "..\Window\GameWindow.h"
 
 void RenderManager::Startup(GameWindow* gameWindow)
@@ -19,10 +20,13 @@ void RenderManager::Startup(GameWindow* gameWindow)
 
     glewExperimental = GL_TRUE;
     glewInit();
+
+    DebugDraw::Singleton().Startup();
 }
 
 void RenderManager::Shutdown()
 {
+    DebugDraw::Singleton().Shutdown();
 }
 
 void RenderManager::SetLight(Light light)
@@ -56,6 +60,13 @@ void RenderManager::RenderScene(GameObject* rootObject)
 
     // Render game objects
     rootObject->Render(Transform::Identity, false);
+
+    // Draw debug gnomon. TODO remove me
+    DebugDraw::Singleton().DrawLine(Vector3(-1.5f, -1.f, -3.f), Vector3(-0.5f, -1.f, -3.f), ColourRGB::Red);
+    DebugDraw::Singleton().DrawLine(Vector3(-1.5f, -1.f, -3.f), Vector3(-1.5f, 0.f, -3.f), ColourRGB::Green);
+    DebugDraw::Singleton().DrawLine(Vector3(-1.5f, -1.f, -3.f), Vector3(-1.5f, -1.f, -4.f), ColourRGB::Blue);
+
+    DebugDraw::Singleton().RenderLines();
 
     // Swap buffers
     m_gameWindow->SwapBuffers();

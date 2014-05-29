@@ -86,6 +86,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Debugging\DebugCameraControls.h" />
+    <ClInclude Include="Engine\Debugging\DebugDraw.h" />
     <ClInclude Include="Engine\Game.h" />
     <ClInclude Include="Engine\GameComponent.h" />
     <ClInclude Include="Engine\Input\InputManager.h" />
@@ -113,6 +114,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Debugging\DebugCameraControls.cpp" />
+    <ClCompile Include="Engine\Debugging\DebugDraw.cpp" />
     <ClCompile Include="Engine\Game.cpp" />
     <ClCompile Include="Engine\GameComponent.cpp" />
     <ClCompile Include="Engine\Input\InputManager.cpp" />
@@ -139,6 +141,8 @@
     <ClCompile Include="TestScene\TestComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Engine\Shaders\DebugDrawFragmentShader.glsl" />
+    <None Include="Engine\Shaders\DebugDrawVertexShader.glsl" />
     <None Include="Engine\Shaders\FragmentShader.glsl" />
     <None Include="Engine\Shaders\VertexShader.glsl" />
   </ItemGroup>
