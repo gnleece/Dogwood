@@ -5,6 +5,6 @@
 void TestComponent::Update(float deltaTime)
 {    
     Matrix4x4 trans = m_gameObject->GetLocalTransform().GetMatrix();
-    Matrix4x4 rot = Rotation(0.05f, AXIS_Z);
+    Matrix4x4 rot = Rotation(50*deltaTime, AXIS_Z);
     m_gameObject->SetLocalTransform(trans*rot);
 }

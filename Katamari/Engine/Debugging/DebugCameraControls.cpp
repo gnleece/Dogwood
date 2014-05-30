@@ -2,49 +2,49 @@
 #include "..\Input\InputManager.h"
 #include "..\Rendering\RenderManager.h"
 
-void DebugCameraControls::Update()
+void DebugCameraControls::Update(float deltaTime)
 {
-    CheckKeys();
-    CheckMouse();
+    CheckKeys(deltaTime);
+    CheckMouse(deltaTime);
 }
 
-void DebugCameraControls::CheckKeys()
+void DebugCameraControls::CheckKeys(float deltaTime)
 {
     if (InputManager::Singleton().GetKeyPressed(GLFW_KEY_UP))
     {
-        RotateCamera(AXIS_X, -KEY_ROT_AMOUNT);
+        RotateCamera(AXIS_X, -KEY_ROT_AMOUNT*deltaTime);
     }
     if (InputManager::Singleton().GetKeyPressed(GLFW_KEY_DOWN))
     {
-        RotateCamera(AXIS_X, KEY_ROT_AMOUNT);
+        RotateCamera(AXIS_X, KEY_ROT_AMOUNT*deltaTime);
     }
     if (InputManager::Singleton().GetKeyPressed(GLFW_KEY_LEFT))
     {
-        RotateCamera(AXIS_Y, -KEY_ROT_AMOUNT);
+        RotateCamera(AXIS_Y, -KEY_ROT_AMOUNT*deltaTime);
     }
     if (InputManager::Singleton().GetKeyPressed(GLFW_KEY_RIGHT))
     {
-        RotateCamera(AXIS_Y, KEY_ROT_AMOUNT);
+        RotateCamera(AXIS_Y, KEY_ROT_AMOUNT*deltaTime);
     }
     if (InputManager::Singleton().GetKeyPressed(GLFW_KEY_W))
     {
-        MoveCamera(Vector3(0, 0, KEY_TRANS_AMOUNT));
+        MoveCamera(Vector3(0, 0, KEY_TRANS_AMOUNT*deltaTime));
     }
     if (InputManager::Singleton().GetKeyPressed(GLFW_KEY_S))
     {
-        MoveCamera(Vector3(0, 0, -KEY_TRANS_AMOUNT));
+        MoveCamera(Vector3(0, 0, -KEY_TRANS_AMOUNT*deltaTime));
     }
     if (InputManager::Singleton().GetKeyPressed(GLFW_KEY_A))
     {
-        MoveCamera(Vector3(KEY_TRANS_AMOUNT, 0, 0));
+        MoveCamera(Vector3(KEY_TRANS_AMOUNT*deltaTime, 0, 0));
     }
     if (InputManager::Singleton().GetKeyPressed(GLFW_KEY_D))
     {
-        MoveCamera(Vector3(-KEY_TRANS_AMOUNT, 0, 0));
+        MoveCamera(Vector3(-KEY_TRANS_AMOUNT*deltaTime, 0, 0));
     }
 }
 
-void DebugCameraControls::CheckMouse()
+void DebugCameraControls::CheckMouse(float deltaTime)
 {
     if (InputManager::Singleton().GetMouseButtonPressed(GLFW_MOUSE_BUTTON_RIGHT))
     {
@@ -53,8 +53,8 @@ void DebugCameraControls::CheckMouse()
         {
             float deltaX = pos.first - m_prevXpos;
             float deltaY = pos.second - m_prevYpos;
-            RotateCamera(AXIS_Y, deltaX*MOUSE_ROT_AMOUNT);
-            RotateCamera(AXIS_X, deltaY*MOUSE_ROT_AMOUNT);
+            RotateCamera(AXIS_Y, deltaX*MOUSE_ROT_AMOUNT*deltaTime);
+            RotateCamera(AXIS_X, deltaY*MOUSE_ROT_AMOUNT*deltaTime);
         }
         m_prevXpos = pos.first;
         m_prevYpos = pos.second;

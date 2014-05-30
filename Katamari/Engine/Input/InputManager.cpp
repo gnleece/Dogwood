@@ -10,13 +10,13 @@ void InputManager::Startup(GameWindow* gameWindow)
 void InputManager::Shutdown()
 {}
 
-void InputManager::PollEvents()
+void InputManager::PollEvents(float deltaTime)
 {
     glfwPollEvents();
 
     if (m_enableDebugCameraControls)
     {
-        m_debugCameraControls.Update();
+        m_debugCameraControls.Update(deltaTime);
     }
 }
 

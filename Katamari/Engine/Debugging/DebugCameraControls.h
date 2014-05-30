@@ -5,15 +5,15 @@
 class DebugCameraControls
 {
 public:
-    const float KEY_TRANS_AMOUNT = 0.002f;
-    const float KEY_ROT_AMOUNT = 0.05f;
-    const float MOUSE_ROT_AMOUNT = 0.07f;
+    const float KEY_TRANS_AMOUNT = 2.f;
+    const float KEY_ROT_AMOUNT = 35.f;
+    const float MOUSE_ROT_AMOUNT = 7.f;
 
-    void Update();
+    void Update(float deltaTime);
 
 private:
-    void CheckKeys();
-    void CheckMouse();
+    void CheckKeys(float deltaTime);
+    void CheckMouse(float deltaTime);
     void MoveCamera(Vector3 localSpaceOffset);
     void RotateCamera(eAXIS axis, float degrees);
 

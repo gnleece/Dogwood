@@ -40,7 +40,7 @@ public:
     void Startup(GameWindow* gameWindow);
     void Shutdown();
 
-    void PollEvents();
+    void PollEvents(float deltaTime);
 
     // TODO: define own key enum so client code doesn't touch GLFW
     eKeyState           GetKey(int key);
