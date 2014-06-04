@@ -1,10 +1,9 @@
-TODO
+TODO / FEATURE ROADMAP
 
 Systems
     * Game object/component system
     * Resource manager
     * Lua scripting
-    * Time
     * GUIDs
     * Transform math helpers
 
@@ -17,7 +16,7 @@ Systems
     * Networking
     * Memory allocators
 
-Features (second pass)
+Features
     * Shading
         * Multiple light sources?
 
@@ -27,6 +26,34 @@ Debugging
     * Tweakables?
 
 Fix-up stuff
-    * Engine needs a name!
     * Rewrite matrix inversion. Currently just copied from CS488 provided code
     * Add missing matrix maths (e.g. addition)
+
+Engine name?
+    * Dogwood
+        * Tool names: lumber, grove, timber, sprout, rafter, joist, axe, hatchet,
+        thicket, shrubbery
+    * Katamari
+    * Koholint
+    * BSG related (Apollo, Caprica)
+
+-----------------------------------
+
+GAME OBJECT / SCENE SCRIPTING
+
+- Create game objects
+- Name game objects
+- Reparent game objects
+- Position, rotate, and scale game objects
+- Enable/disable game objects
+- Destroy game objects
+- Add built-in components to game objects
+	- Mesh, Material, Texture
+- Set the values of built in components to game objects
+	- Mesh, Material, Texture
+- Add user defined (C++) components to game objects
+- Set the values of user defined (C++) components of game objects
+- Instance/duplicate game objects
+
+- Position the camera
+- Position the light source(s), set parameters
