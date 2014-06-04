@@ -1,6 +1,8 @@
 /Debug
-/Katamari/Debug
+/Dogwood/Debug
 /ipch
+
+*.obj
 
 *.swp
 *~

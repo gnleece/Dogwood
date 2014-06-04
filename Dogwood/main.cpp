@@ -6,7 +6,7 @@
 
 int main(void)
 {
-    Game::Singleton().Init("Katamari", 1024, 768);
+    Game::Singleton().Init("Dogwood", 1024, 768);
 
     GameObject* sceneRoot = BuildTestScene();
     Game::Singleton().Run(sceneRoot);
