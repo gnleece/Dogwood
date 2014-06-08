@@ -70,6 +70,12 @@
     <Filter Include="Engine\Source\Scene">
       <UniqueIdentifier>{9c9b211d-3f04-466d-b45e-9ab33387d1f5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Libraries">
+      <UniqueIdentifier>{839c8487-4dbc-401c-b045-06c85a8abc26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Libraries\tinyxml2">
+      <UniqueIdentifier>{970345cf-3736-463e-b7ce-4a6ba3d6d35b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="TODO.txt">
@@ -158,6 +164,9 @@
     <ClInclude Include="Engine\Scene\ResourceManager.h">
       <Filter>Engine\Headers\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="..\Libraries\tinyxml2\tinyxml2.h">
+      <Filter>Libraries\tinyxml2</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -240,6 +249,9 @@
     </ClCompile>
     <ClCompile Include="Engine\Scene\ResourceManager.cpp">
       <Filter>Engine\Source\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\tinyxml2\tinyxml2.cpp">
+      <Filter>Libraries\tinyxml2</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
