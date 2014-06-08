@@ -64,6 +64,12 @@
     <Filter Include="Source Files\Scenes">
       <UniqueIdentifier>{7ab760a3-ccff-4401-9775-c4a31df2cd8b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Headers\Scene">
+      <UniqueIdentifier>{0c42ec2d-4a04-4602-b4d2-a843399a1b4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Source\Scene">
+      <UniqueIdentifier>{9c9b211d-3f04-466d-b45e-9ab33387d1f5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="TODO.txt">
@@ -149,6 +155,9 @@
     <ClInclude Include="TestScene\SpinningComponent.h">
       <Filter>Header Files\TestScene</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Scene\ResourceManager.h">
+      <Filter>Engine\Headers\Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -228,6 +237,9 @@
     </ClCompile>
     <ClCompile Include="TestScene\SpinningComponent.cpp">
       <Filter>Source Files\TestScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Scene\ResourceManager.cpp">
+      <Filter>Engine\Source\Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

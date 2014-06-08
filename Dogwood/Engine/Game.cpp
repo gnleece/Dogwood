@@ -7,6 +7,7 @@
 
 #include "Input\InputManager.h"
 #include "Rendering\RenderManager.h"
+#include "Scene\ResourceManager.h"
 #include "GameObject.h"
 
 void Game::Init(string name, int windowWidth, int windowHeight)
@@ -17,6 +18,7 @@ void Game::Init(string name, int windowWidth, int windowHeight)
     // Manager setup
     RenderManager::Singleton().Startup(&m_gameWindow);
     InputManager::Singleton().Startup(&m_gameWindow);
+    ResourceManager::Singleton().Startup();
 }
 
 void Game::Run(GameObject* sceneRoot)
@@ -52,6 +54,7 @@ void Game::Run(GameObject* sceneRoot)
 void Game::Shutdown()
 {
     // Manager shutdown
+    ResourceManager::Singleton().Shutdown();
     InputManager::Singleton().Shutdown();
     RenderManager::Singleton().Shutdown();
 
