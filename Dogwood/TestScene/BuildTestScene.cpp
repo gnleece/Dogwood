@@ -2,7 +2,7 @@
 
 #include <stdio.h>
 
-#include "TestComponent.h"
+#include "SpinningComponent.h"
 #include "..\Engine\GameObject.h"
 #include "..\Engine\Math\Transformations.h"
 #include "..\Engine\Rendering\Material.h"
@@ -70,8 +70,8 @@ GameObject* BuildTestScene()
     cubeMeshIns->SetMaterial(mat);
     cubeGO->SetMesh(cubeMeshIns);
 
-    TestComponent* testComp = new TestComponent();
-    cubeGO->AddComponent(testComp);
+    SpinningComponent* spinner = new SpinningComponent();
+    cubeGO->AddComponent(spinner);
 
     trans = Translation(Vector3(1.2f, -0.5f, -5.0f));
     rot = Rotation(45, AXIS_Y);

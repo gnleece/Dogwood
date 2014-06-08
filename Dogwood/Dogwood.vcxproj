@@ -111,7 +111,7 @@
     <ClInclude Include="Engine\Window\GameWindow.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TestScene\BuildTestScene.h" />
-    <ClInclude Include="TestScene\TestComponent.h" />
+    <ClInclude Include="TestScene\SpinningComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Debugging\DebugCameraControls.cpp" />
@@ -139,13 +139,17 @@
     <ClCompile Include="Engine\Window\GameWindow.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="TestScene\BuildTestScene.cpp" />
-    <ClCompile Include="TestScene\TestComponent.cpp" />
+    <ClCompile Include="TestScene\SpinningComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Shaders\DebugDrawFragmentShader.glsl" />
     <None Include="Engine\Shaders\DebugDrawVertexShader.glsl" />
     <None Include="Engine\Shaders\FragmentShader.glsl" />
     <None Include="Engine\Shaders\VertexShader.glsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="Scenes\Resources.xml" />
+    <Xml Include="Scenes\Scene0.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
