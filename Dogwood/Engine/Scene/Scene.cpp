@@ -1,6 +1,7 @@
 #include "Scene.h"
 
 #include "ResourceManager.h"
+#include "..\GameObject.h"
 #include "..\Util.h"
 #include "..\Rendering\Camera.h"
 #include "..\Rendering\RenderManager.h"
@@ -29,8 +30,10 @@ void Scene::LoadScene(string filename)
     }
     ResourceManager::Singleton().LoadSceneResources(resources);
 
-    // Build the hierarchy & global settings (camera, light, etc.)
+    // Apply global settings (camera, light, etc.)
     DoGlobalSetup(sceneXML);
+
+    // Build the game object hierarchy
     DoHierarchySetup(sceneXML);
 
     printf("DONE LOADING SCENE!\n");
@@ -43,10 +46,19 @@ void Scene::UnloadScene()
 
     // Tear down the hierachy
     // TODO implement me
+
+    m_rootObject = NULL;
+}
+
+GameObject* Scene::GetRootObject()
+{
+    return m_rootObject;
 }
 
 void Scene::DoGlobalSetup(XMLElement* sceneXML)
 {
+    printf("Doing camera & light setup...\n");
+
     XMLElement* cameraNode = sceneXML->FirstChildElement("Camera");
     if (cameraNode)
     {
@@ -62,7 +74,7 @@ void Scene::DoGlobalSetup(XMLElement* sceneXML)
     }
 
     XMLElement* lightNode = sceneXML->FirstChildElement("Light");
-    if (cameraNode)
+    if (lightNode)
     {
         Vector3 lightPosition = ReadVector3FromXML(lightNode->FirstChildElement("Position"));
         ColourRGB lightColor = ReadColourFromXML(lightNode->FirstChildElement("Color"));
@@ -76,7 +88,46 @@ void Scene::DoGlobalSetup(XMLElement* sceneXML)
     }
 }
 
-void Scene::DoHierarchySetup(XMLElement* sceneDoc)
+void Scene::DoHierarchySetup(XMLElement* sceneXML)
 {
-    // TODO implement me
+    printf("Building game object hierarchy...\n");
+
+    XMLElement* rootNode = sceneXML->FirstChildElement("GameObject");
+    if (rootNode == NULL)
+    {
+        printf("Warning: no gameobject hierarchy found in scene file!\n");
+        return;
+    }
+
+    // Process the tree of game objects (recursively, depth first)
+    m_rootObject = BuildSubtree(rootNode);
+}
+
+GameObject* Scene::BuildSubtree(XMLElement* xmlnode)
+{
+    if (xmlnode == NULL)
+    {
+        return NULL;
+    }
+
+    GameObject* go = new GameObject();
+
+    // Build & add components on this node
+    // TODO transform, mesh, material, shader, texture, etc
+    const char* name = xmlnode->Attribute("name");
+    if (name)
+    {
+        go->SetName(name);
+    }
+
+    // Recursively process child game objects
+    XMLElement* childxml = xmlnode->FirstChildElement("GameObject");
+    while (childxml)
+    {
+        GameObject* childgo = BuildSubtree(childxml);
+        childgo->SetParent(go);
+        childxml = childxml->NextSiblingElement("GameObject");
+    }
+
+    return go;
 }

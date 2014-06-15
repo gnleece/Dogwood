@@ -32,8 +32,8 @@
     </Shaders>
   </Resources>
   
-  <Hierarchy>
-    <GameObject guid="0" name="Yellow Sphere">
+  <GameObject name="ROOT">
+    <GameObject name="Yellow Sphere">
       <Transform>
         <Position x="-1.0" y="-0.5" z="5.0" />
         <Rotation x="45.0" y="45.0"  z="0.0" />
@@ -47,7 +47,7 @@
       </Mesh>
     </GameObject>
   
-    <GameObject guid="1" name="Green Cube">
+    <GameObject name="Green Cube">
       <Transform>
         <Position x="1.2" y="-0.5" z="-5.0" />
         <Rotation x="45.0" y="45.0" z="0.0" />
@@ -66,6 +66,6 @@
         </GameComponent>
       </GameComponents>
     </GameObject>
-  </Hierarchy>
+  </GameObject>
 
 </Scene>
