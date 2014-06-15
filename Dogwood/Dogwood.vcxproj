@@ -108,6 +108,7 @@
     <ClInclude Include="Engine\Rendering\Texture.h" />
     <ClInclude Include="Engine\Rendering\Vertex.h" />
     <ClInclude Include="Engine\GameObject.h" />
+    <ClInclude Include="Engine\Scene\Resource.h" />
     <ClInclude Include="Engine\Scene\ResourceManager.h" />
     <ClInclude Include="Engine\Util.h" />
     <ClInclude Include="Engine\Window\GameWindow.h" />

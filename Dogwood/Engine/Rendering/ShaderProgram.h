@@ -5,7 +5,9 @@
 
 #include <fstream>
 
-class ShaderProgram
+#include "..\Scene\Resource.h"
+
+class ShaderProgram : Resource
 {
 public:
 

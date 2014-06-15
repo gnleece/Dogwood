@@ -167,6 +167,9 @@
     <ClInclude Include="..\Libraries\tinyxml2\tinyxml2.h">
       <Filter>Libraries\tinyxml2</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Scene\Resource.h">
+      <Filter>Engine\Headers\Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">

@@ -23,10 +23,10 @@
       <Texture guid="1001" />
       <Texture guid="1002" />
     </Textures>
-    <Messhes>
+    <Meshes>
       <Mesh guid="2001" />
       <Mesh guid="2002" />
-    </Messhes>
+    </Meshes>
     <Shaders>
       <Shader guid="3001" />
     </Shaders>

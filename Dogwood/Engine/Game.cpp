@@ -19,6 +19,9 @@ void Game::Init(string name, int windowWidth, int windowHeight)
     RenderManager::Singleton().Startup(&m_gameWindow);
     InputManager::Singleton().Startup(&m_gameWindow);
     ResourceManager::Singleton().Startup();
+
+    // TODO temp hack for testing
+    ResourceManager::Singleton().LoadSceneResources("Scenes\\Scene0.xml");
 }
 
 void Game::Run(GameObject* sceneRoot)

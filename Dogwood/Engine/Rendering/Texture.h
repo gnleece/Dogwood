@@ -5,7 +5,9 @@
 
 #include <fstream>
 
-class Texture
+#include "..\Scene\Resource.h"
+
+class Texture : Resource
 {
 public:
     Texture(std::string filename);
