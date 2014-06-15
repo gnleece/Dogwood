@@ -170,6 +170,9 @@
     <ClInclude Include="Engine\Scene\Resource.h">
       <Filter>Engine\Headers\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Scene\Scene.h">
+      <Filter>Engine\Headers\Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -255,6 +258,9 @@
     </ClCompile>
     <ClCompile Include="..\Libraries\tinyxml2\tinyxml2.cpp">
       <Filter>Libraries\tinyxml2</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Scene\Scene.cpp">
+      <Filter>Engine\Source\Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

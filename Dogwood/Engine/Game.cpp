@@ -8,6 +8,7 @@
 #include "Input\InputManager.h"
 #include "Rendering\RenderManager.h"
 #include "Scene\ResourceManager.h"
+#include "Scene\Scene.h"
 #include "GameObject.h"
 
 void Game::Init(string name, int windowWidth, int windowHeight)
@@ -19,13 +20,14 @@ void Game::Init(string name, int windowWidth, int windowHeight)
     RenderManager::Singleton().Startup(&m_gameWindow);
     InputManager::Singleton().Startup(&m_gameWindow);
     ResourceManager::Singleton().Startup();
-
-    // TODO temp hack for testing
-    ResourceManager::Singleton().LoadSceneResources("Scenes\\Scene0.xml");
 }
 
 void Game::Run(GameObject* sceneRoot)
 {
+    // TODO temp hack for testing
+    Scene scene;
+    scene.LoadScene("Scenes\\Scene0.xml");
+
     m_rootObject = sceneRoot;
     
     // Frame time setup

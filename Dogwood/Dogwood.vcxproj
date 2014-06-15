@@ -110,6 +110,7 @@
     <ClInclude Include="Engine\GameObject.h" />
     <ClInclude Include="Engine\Scene\Resource.h" />
     <ClInclude Include="Engine\Scene\ResourceManager.h" />
+    <ClInclude Include="Engine\Scene\Scene.h" />
     <ClInclude Include="Engine\Util.h" />
     <ClInclude Include="Engine\Window\GameWindow.h" />
     <ClInclude Include="targetver.h" />
@@ -140,6 +141,7 @@
     <ClCompile Include="Engine\Rendering\Vertex.cpp" />
     <ClCompile Include="Engine\GameObject.cpp" />
     <ClCompile Include="Engine\Scene\ResourceManager.cpp" />
+    <ClCompile Include="Engine\Scene\Scene.cpp" />
     <ClCompile Include="Engine\Util.cpp" />
     <ClCompile Include="Engine\Window\GameWindow.cpp" />
     <ClCompile Include="main.cpp" />

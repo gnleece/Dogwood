@@ -59,25 +59,8 @@ void ResourceManager::Shutdown()
     ClearResourceLookupTable();
 }
 
-void ResourceManager::LoadSceneResources(string filepath)
+void ResourceManager::LoadSceneResources(XMLElement* resources)
 {
-    // Load the scene XML file
-    XMLDocument sceneDoc;
-    XMLError result = sceneDoc.LoadFile(filepath.c_str());
-    if (result != XML_SUCCESS)
-    {
-        printf("Error reading scene file. XMLError %d\n", result);
-        return;
-    }
-
-    XMLElement* resources = sceneDoc.FirstChildElement("Scene")->FirstChildElement("Resources");
-    if (resources == NULL)
-    {
-        printf("Error parsing scene file. Could not find resource list.\n");
-        return;
-    }
-
-    // Do load for each resource type
     LoadResourcesOfType(resources, "Textures");
     LoadResourcesOfType(resources, "Meshes");
     LoadResourcesOfType(resources, "Shaders");

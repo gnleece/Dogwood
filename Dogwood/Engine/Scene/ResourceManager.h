@@ -36,7 +36,7 @@ public:
     void            Startup();
     void            Shutdown();
 
-    void            LoadSceneResources(string filepath);    // TODO file should be loaded elsewhere and this should be given an XMLElement*
+    void            LoadSceneResources(XMLElement* resources);
     void            UnloadSceneResources();
 
     Resource*       GetResource(int guid);
