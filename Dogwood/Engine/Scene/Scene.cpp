@@ -65,7 +65,7 @@ void Scene::DoGlobalSetup(XMLElement* sceneXML)
     if (cameraNode)
     {
         Vector3 lightPosition = ReadVector3FromXML(lightNode->FirstChildElement("Position"));
-        ColourRGB lightColor = ReadVector3FromXML(lightNode->FirstChildElement("Color"));
+        ColourRGB lightColor = ReadColourFromXML(lightNode->FirstChildElement("Color"));
         GLfloat lightPower = lightNode->FirstChildElement("Power")->FloatAttribute("value");
         Light light(lightPosition, lightColor, lightPower);
         RenderManager::Singleton().SetLight(light);

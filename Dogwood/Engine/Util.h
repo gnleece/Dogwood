@@ -10,4 +10,4 @@
 using namespace tinyxml2;
 
 Vector3 ReadVector3FromXML(XMLElement* xmlnode);
-ColourRGB VectorToColour(Vector3 v);
+ColourRGB ReadColourFromXML(XMLElement* xmlnode);

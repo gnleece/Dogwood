@@ -12,7 +12,7 @@
 
   <Light>
     <Position x="0.0" y="0.0" z="0.0" />
-    <Color x="1.0" y="1.0" z="1.0" />
+    <Color r="1.0" g="1.0" b="1.0" />
     <Power value="15.0" />
   </Light>
 
@@ -35,29 +35,29 @@
   <Hierarchy>
     <GameObject guid="0" name="Yellow Sphere">
       <Transform>
-        <Position>-1.0, -0.5, -5.0</Position>
-        <Rotation>45.0, 45.0, 0</Rotation>
-        <Scale>0.8, 0.8, 0.8</Scale>
+        <Position x="-1.0" y="-0.5" z="5.0" />
+        <Rotation x="45.0" y="45.0"  z="0.0" />
+        <Scale x="0.8" y="0.8" z="0.8" />
       </Transform>
       <Mesh guid="2002">
         <Material>
           <Shader guid="3001" />
-          <ColorDiffuse>1.0, 1.0, 0.0</ColorDiffuse>
+          <ColorDiffuse r="1.0" g="1.0" b="0.0" />
         </Material>
       </Mesh>
     </GameObject>
   
     <GameObject guid="1" name="Green Cube">
       <Transform>
-        <Position>1.2, -0.5, -5.0</Position>
-        <Rotation>45.0, 45.0, 0</Rotation>
-        <Scale>0.45, 0.45, 0.45</Scale>
+        <Position x="1.2" y="-0.5" z="-5.0" />
+        <Rotation x="45.0" y="45.0" z="0.0" />
+        <Scale x="0.45" y="0.45" z="0.45" />
       </Transform>
       <Mesh guid="2001">
         <Material>
           <Shader guid="3001" />
           <Texture guid="1001" />
-          <ColorDiffuse>0.0, 1.0, 0.0</ColorDiffuse>
+          <ColorDiffuse r="0.0" g="1.0" b="0.0" />
         </Material>
       </Mesh>
       <GameComponents>

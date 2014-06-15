@@ -11,3 +11,15 @@ Vector3 ReadVector3FromXML(XMLElement* xmlnode)
     }
     return v;
 }
+
+ColourRGB ReadColourFromXML(XMLElement* xmlnode)
+{
+    ColourRGB c;
+    if (xmlnode)
+    {
+        c.r = xmlnode->FloatAttribute("r");
+        c.g = xmlnode->FloatAttribute("g");
+        c.b = xmlnode->FloatAttribute("b");
+    }
+    return c;
+}
