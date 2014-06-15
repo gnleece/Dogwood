@@ -13,6 +13,8 @@
 
 void Game::Init(string name, int windowWidth, int windowHeight)
 {
+    printf("=============== GAME INIT ===============\n");
+
     // Window setup
     m_gameWindow.Setup(name, windowWidth, windowHeight);
 
@@ -24,6 +26,8 @@ void Game::Init(string name, int windowWidth, int windowHeight)
 
 void Game::Run(GameObject* sceneRoot)
 {
+    printf("\n=============== GAME RUN ===============\n");
+
     // TODO temp hack for testing
     Scene scene;
     scene.LoadScene("Scenes\\Scene0.xml");

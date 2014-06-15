@@ -4,6 +4,8 @@
 
 void Scene::LoadScene(string filename)
 {
+    printf("LOADING SCENE: %s\n", filename.c_str());
+
     // Open the scene XML file
     XMLDocument sceneDoc;
     XMLError result = sceneDoc.LoadFile(filename.c_str());
@@ -14,6 +16,7 @@ void Scene::LoadScene(string filename)
     }
 
     // Load the required resources
+    printf("Loading scene resources...\n");
     XMLElement* resources = sceneDoc.FirstChildElement("Scene")->FirstChildElement("Resources");
     if (resources == NULL)
     {
@@ -24,6 +27,8 @@ void Scene::LoadScene(string filename)
 
     // Build the hierarchy
     // TODO implement me
+
+    printf("DONE LOADING SCENE!\n");
 }
 
 void Scene::UnloadScene()

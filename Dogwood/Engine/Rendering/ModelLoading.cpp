@@ -16,11 +16,12 @@ bool LoadIndexedModel(std::string path,
     std::vector<Vector3> tempNormals;
     std::vector<Vector2> tempUVs;
     bool success = LoadOBJ(path, tempPositions, tempNormals, tempUVs);
-    printf("Num vertices before indexing: %d\n", tempPositions.size());
+    int originalVertexCount = tempPositions.size();
     if (success)
     {
         IndexVBO(tempPositions, tempNormals, tempUVs, positions, normals, uvs, indices);
-        printf("Num vertices after indexing: %d\n", positions.size());
+        printf("* Successfully loaded model: %s\n", path.c_str());
+        printf("* Indexing reduced vertex count from %d to %d\n", originalVertexCount, positions.size());
     }
     return success;
 }
@@ -79,7 +80,7 @@ bool LoadOBJ(std::string path,
             int matches = fscanf_s(file, "%d/%d/%d %d/%d/%d %d/%d/%d\n", &positionIndex[0], &uvIndex[0], &normalIndex[0], &positionIndex[1], &uvIndex[1], &normalIndex[1], &positionIndex[2], &uvIndex[2], &normalIndex[2]);
             if (matches != 9)
             {
-                printf("File can't be read by our simple parser : ( Try exporting with other options\n");
+                printf("File can't be read by parser. Check README for format requirements.\n");
                 return false;
             }
             positionsIndices.push_back(positionIndex[0]);

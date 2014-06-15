@@ -111,7 +111,7 @@ GLuint ShaderProgram::LoadShaderFromFile(std::string path, GLenum shaderType)
             return 0;
         }
 
-        printf("Shader load success!\n\n");
+        printf("* Successfully compiled shader: %s\n", path.c_str());
     }
     else
     {

@@ -149,8 +149,8 @@ void ResourceManager::LoadResourcesOfType(XMLElement* resources, string typeName
             ResourceInfo* info = m_resourceLookup[guid];
             if (info)
             {
+                printf("Loading guid %d of type %s\n", guid, typeName.c_str());
                 m_loadedResources[guid] = info->Load();
-                printf("Loaded guid %d of type %s\n", guid, typeName.c_str());
             }
             else
             {
