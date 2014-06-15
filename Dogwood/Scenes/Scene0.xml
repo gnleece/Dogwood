@@ -5,15 +5,15 @@
 <Scene name="Scene Zero">
 
   <Camera>
-    <Position>0.0, 0.0, 0.0</Position>
-    <Direction>0.0, 0.0, -1.0</Direction>
-    <Up>0.0, 1.0, 0.0</Up>
+    <Position x="0.0" y="0.0" z="0.0" />
+    <Direction x="0.0" y="0.0" z="-1.0" />
+    <Up x="0.0" y="1.0" z="0.0" />
   </Camera>
 
   <Light>
-    <Position>0.0, 0.0, 0.0</Position>
-    <Color>1.0, 1.0, 1.0</Color>
-    <Power>15.0</Power>
+    <Position x="0.0" y="0.0" z="0.0" />
+    <Color x="1.0" y="1.0" z="1.0" />
+    <Power value="15.0" />
   </Light>
 
   <!-- This is a list of all the resources referenced in the hierarchy. 
