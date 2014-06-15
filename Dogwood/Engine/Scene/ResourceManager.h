@@ -16,11 +16,11 @@ using namespace tinyxml2;
 
 struct ResourceInfo
 {
-    virtual void    AddToMap(XMLElement* element, unordered_map<int, ResourceInfo*> & map);
-    Resource*       Load();
-    void            Unload();
+    virtual void        AddToMap(XMLElement* element, unordered_map<int, ResourceInfo*> & map);
+    virtual Resource*   Load() = 0;
+    void                Unload();
 
-    string          path;
+    string path;
 };
 
 class ResourceManager
@@ -45,8 +45,8 @@ public:
     ShaderProgram*  GetShader(int guid);
 
 private:
-    void LoadResourceLookupTable();
-    void UnloadResourceLookupTable();
+    void BuildResourceLookupTable();
+    void ClearResourceLookupTable();
 
     void LoadResourcesOfType(XMLElement* resources, string typeName);
 

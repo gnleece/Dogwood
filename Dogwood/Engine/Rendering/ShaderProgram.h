@@ -7,7 +7,7 @@
 
 #include "..\Scene\Resource.h"
 
-class ShaderProgram : Resource
+class ShaderProgram : public Resource
 {
 public:
 

@@ -11,7 +11,7 @@
 
 class Material;
 
-class Mesh : Resource
+class Mesh : public Resource
 {
 public:
     Mesh(std::string filename);

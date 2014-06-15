@@ -7,7 +7,7 @@
 
 #include "..\Scene\Resource.h"
 
-class Texture : Resource
+class Texture : public Resource
 {
 public:
     Texture(std::string filename);

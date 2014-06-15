@@ -1,6 +1,46 @@
 #include "ResourceManager.h"
+#include "..\Rendering\Mesh.h"
+#include "..\Rendering\Texture.h"
 
 #include "tinyxml2.h"
+
+struct TextureResourceInfo : ResourceInfo
+{ 
+    virtual Resource* Load()
+    {
+        Texture* texture = new Texture(path);
+        return texture;
+    }
+};
+
+struct MeshResourceInfo : ResourceInfo
+{
+    virtual Resource* Load()
+    {
+        Mesh* mesh = new Mesh(path);
+        return mesh;
+    }
+};
+
+struct ShaderResourceInfo : ResourceInfo
+{
+    string vertexpath;
+    string fragmentpath;
+
+    virtual Resource* Load()
+    {
+        ShaderProgram* shader = new ShaderProgram(vertexpath, fragmentpath);
+        return shader;
+    }
+
+    void AddToMap(XMLElement* element, unordered_map<int, ResourceInfo*> & map)
+    {
+        vertexpath = element->Attribute("vertex-path");
+        fragmentpath = element->Attribute("fragment-path");
+        int guid = element->IntAttribute("guid");
+        map[guid] = this;
+    }
+};
 
 void ResourceInfo::AddToMap(XMLElement* element, unordered_map<int, ResourceInfo*> & map)
 {
@@ -9,32 +49,14 @@ void ResourceInfo::AddToMap(XMLElement* element, unordered_map<int, ResourceInfo
     map[guid] = this;
 }
 
-Resource* ResourceInfo::Load()
-{
-    // TODO implement me
-    return NULL;
-}
-
-struct TextureResourceInfo  : ResourceInfo   { };
-struct MeshResourceInfo     : ResourceInfo   { };
-struct ShaderResourceInfo   : ResourceInfo   { string vertexpath; string fragmentpath; void AddToMap(XMLElement* element, unordered_map<int, ResourceInfo*> & map); };
-
-void ShaderResourceInfo::AddToMap(XMLElement* element, unordered_map<int, ResourceInfo*> & map)
-{
-    vertexpath = element->Attribute("vertex-path");
-    fragmentpath = element->Attribute("fragment-path");
-    int guid = element->IntAttribute("guid");
-    map[guid] = this;
-}
-
 void ResourceManager::Startup()
 {
-    LoadResourceLookupTable();
+    BuildResourceLookupTable();
 }
 
 void ResourceManager::Shutdown()
 {
-    UnloadResourceLookupTable();
+    ClearResourceLookupTable();
 }
 
 void ResourceManager::LoadSceneResources(string filepath)
@@ -59,31 +81,32 @@ void ResourceManager::LoadSceneResources(string filepath)
     LoadResourcesOfType(resources, "Shaders");
 }
 
-void ResourceManager::LoadResourcesOfType(XMLElement* resources, string typeName)
+void ResourceManager::UnloadSceneResources()
 {
-    XMLElement* resourceSubtree = resources->FirstChildElement(typeName.c_str());
-    if (resourceSubtree)
-    {
-        XMLElement* element = resourceSubtree->FirstChildElement();
-        while (element)
-        {
-            int guid = element->IntAttribute("guid");
-            ResourceInfo* info = m_resourceLookup[guid];
-            if (info)
-            {
-                m_loadedResources[guid] = info->Load();
-                printf("Loaded guid %d of type %s\n", guid, typeName.c_str());
-            }
-            else
-            {
-                printf("Error! Could not find guid %d in database\n", guid);
-            }
-            element = element->NextSiblingElement();
-        }
-    }
+    // TODO implement me
 }
 
-void ResourceManager::LoadResourceLookupTable()
+Resource* ResourceManager::GetResource(int guid)
+{
+    return m_loadedResources[guid];
+}
+
+Texture* ResourceManager::GetTexture(int guid)
+{
+    return (Texture*)m_loadedResources[guid];
+}
+
+Mesh* ResourceManager::GetMesh(int guid)
+{
+    return (Mesh*)m_loadedResources[guid];
+}
+
+ShaderProgram* ResourceManager::GetShader(int guid)
+{
+    return (ShaderProgram*)m_loadedResources[guid];
+}
+
+void ResourceManager::BuildResourceLookupTable()
 {
     // Load the resources XML file
     string resourcesFilepath = "Scenes\\Resources.xml";
@@ -140,7 +163,31 @@ void ResourceManager::LoadResourceLookupTable()
     }
 }
 
-void ResourceManager::UnloadResourceLookupTable()
+void ResourceManager::ClearResourceLookupTable()
 {
     // TODO implement me
+}
+
+void ResourceManager::LoadResourcesOfType(XMLElement* resources, string typeName)
+{
+    XMLElement* resourceSubtree = resources->FirstChildElement(typeName.c_str());
+    if (resourceSubtree)
+    {
+        XMLElement* element = resourceSubtree->FirstChildElement();
+        while (element)
+        {
+            int guid = element->IntAttribute("guid");
+            ResourceInfo* info = m_resourceLookup[guid];
+            if (info)
+            {
+                m_loadedResources[guid] = info->Load();
+                printf("Loaded guid %d of type %s\n", guid, typeName.c_str());
+            }
+            else
+            {
+                printf("Error! Could not find guid %d in database\n", guid);
+            }
+            element = element->NextSiblingElement();
+        }
+    }
 }
