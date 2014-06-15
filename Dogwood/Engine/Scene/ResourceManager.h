@@ -48,6 +48,9 @@ private:
     void BuildResourceLookupTable();
     void ClearResourceLookupTable();
 
+    template<typename T>
+    void AddResourcesToMap(XMLElement* resources, string typeName);
+
     void LoadResourcesOfType(XMLElement* resources, string typeName);
 
     unordered_map<int, ResourceInfo*> m_resourceLookup;

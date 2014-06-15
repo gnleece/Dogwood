@@ -61,6 +61,7 @@ void ResourceManager::Shutdown()
 
 void ResourceManager::LoadSceneResources(string filepath)
 {
+    // Load the scene XML file
     XMLDocument sceneDoc;
     XMLError result = sceneDoc.LoadFile(filepath.c_str());
     if (result != XML_SUCCESS)
@@ -76,6 +77,7 @@ void ResourceManager::LoadSceneResources(string filepath)
         return;
     }
 
+    // Do load for each resource type
     LoadResourcesOfType(resources, "Textures");
     LoadResourcesOfType(resources, "Meshes");
     LoadResourcesOfType(resources, "Shaders");
@@ -125,48 +127,32 @@ void ResourceManager::BuildResourceLookupTable()
         return;
     }
 
-    // Process each resource type       TODO clean this up with templates or something
-    XMLElement* textures = resourceList->FirstChildElement("Textures");
-    if (textures)
-    {
-        XMLElement* textureElement = textures->FirstChildElement();
-        while (textureElement)
-        {
-            TextureResourceInfo* info = new TextureResourceInfo();
-            info->AddToMap(textureElement, m_resourceLookup);
-            textureElement = textureElement->NextSiblingElement();
-        }
-    }
-
-    XMLElement* meshes = resourceList->FirstChildElement("Meshes");
-    if (meshes)
-    {
-        XMLElement* meshElement = meshes->FirstChildElement();
-        while (meshElement)
-        {
-            MeshResourceInfo* info = new MeshResourceInfo();
-            info->AddToMap(meshElement, m_resourceLookup);
-            meshElement = meshElement->NextSiblingElement();
-        }
-    }
-
-    XMLElement* shaders = resourceList->FirstChildElement("Shaders");
-    if (shaders)
-    {
-        XMLElement* shaderElement = shaders->FirstChildElement();
-        while (shaderElement)
-        {
-            ShaderResourceInfo* info = new ShaderResourceInfo();
-            info->AddToMap(shaderElement, m_resourceLookup);
-            shaderElement = shaderElement->NextSiblingElement();
-        }
-    }
+    // Process each resource type
+    AddResourcesToMap<TextureResourceInfo>(resourceList, "Textures");
+    AddResourcesToMap<MeshResourceInfo>(resourceList, "Meshes");
+    AddResourcesToMap<ShaderResourceInfo>(resourceList, "Shaders");
 }
 
 void ResourceManager::ClearResourceLookupTable()
 {
     // TODO implement me
 }
+
+template<typename T>
+void ResourceManager::AddResourcesToMap(XMLElement* resources, string typeName)
+{
+    XMLElement* elements = resources->FirstChildElement(typeName.c_str());
+    if (elements)
+    {
+        XMLElement* element = elements->FirstChildElement();
+        while (element)
+        {
+            T* info = new T();
+            info->AddToMap(element, m_resourceLookup);
+            element = element->NextSiblingElement();
+        }
+    }
+};
 
 void ResourceManager::LoadResourcesOfType(XMLElement* resources, string typeName)
 {
