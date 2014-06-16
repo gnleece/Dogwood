@@ -18,6 +18,6 @@ public:
     Material* GetMaterial()                 { return m_material; }
 
 private:
-    Mesh*       m_mesh;         // TODO should be shared through ResourceManager
-    Material*   m_material;     // TODO should be shared through ResourceManager
+    Mesh*       m_mesh;
+    Material*   m_material;
 };

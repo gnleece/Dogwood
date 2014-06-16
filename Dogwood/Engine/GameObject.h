@@ -24,6 +24,7 @@ public:
     int GetID()                                 { return m_id; }
     string GetName()                            { return m_name; }
     void SetName(string name)                   { m_name = name; }
+    void SetName(const char* name)              { if (name) m_name = name; }
 
     void SetParent(GameObject* parent);
     void AddComponent(GameComponent* component);
@@ -45,8 +46,8 @@ private:
     void AddChild(GameObject* child);
     void RemoveChild(GameObject* child);
 
-    int     m_id;
-    string  m_name;
+    int                     m_id;
+    string                  m_name;
 
     Transform               m_localTransform;
     Transform               m_worldTransform;

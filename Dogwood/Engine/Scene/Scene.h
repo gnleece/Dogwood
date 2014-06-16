@@ -3,10 +3,13 @@
 #include <string>
 #include <tinyxml2.h>
 
+#include "..\Rendering\Material.h"
+
 using std::string;
 using namespace tinyxml2;
 
 class GameObject;
+class MeshInstance;
 
 class Scene
 {
@@ -21,6 +24,12 @@ private:
     void DoHierarchySetup(XMLElement* sceneXML);
 
     GameObject* BuildSubtree(XMLElement* xmlnode);
+    void AddTransform(GameObject* go, XMLElement* xmlnode);
+    void AddMesh(GameObject* go, XMLElement* xmlnode);
+    void AddMaterial(MeshInstance* meshInstance, XMLElement* xmlnode);
+    void AddGameComponents(GameObject* go, XMLElement* xmlnode);
+
+    void ApplyMaterialColor(XMLElement* xmlnode, Material* material, string colorName, Material::eMatColourType type);
 
     GameObject* m_rootObject = NULL;
 };

@@ -12,6 +12,9 @@
 #include "..\Engine\Rendering\ShaderProgram.h"
 #include "..\Engine\Rendering\Texture.h"
 
+// TODO this entire file is going away once proper scene loading is done in Scene.cpp!
+// This is hacky test code!
+
 GameObject* BuildTestScene()
 {
     printf("Building test scene...\n");

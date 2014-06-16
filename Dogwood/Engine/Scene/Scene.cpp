@@ -4,6 +4,7 @@
 #include "..\GameObject.h"
 #include "..\Util.h"
 #include "..\Rendering\Camera.h"
+#include "..\Rendering\MeshInstance.h"
 #include "..\Rendering\RenderManager.h"
 
 void Scene::LoadScene(string filename)
@@ -106,28 +107,109 @@ void Scene::DoHierarchySetup(XMLElement* sceneXML)
 GameObject* Scene::BuildSubtree(XMLElement* xmlnode)
 {
     if (xmlnode == NULL)
-    {
         return NULL;
-    }
-
-    GameObject* go = new GameObject();
 
     // Build & add components on this node
-    // TODO transform, mesh, material, shader, texture, etc
-    const char* name = xmlnode->Attribute("name");
-    if (name)
-    {
-        go->SetName(name);
-    }
+    GameObject* go = new GameObject();
+    go->SetName(xmlnode->Attribute("name"));
+    AddTransform(go, xmlnode);
+    AddMesh(go, xmlnode);
+    AddGameComponents(go, xmlnode);
 
     // Recursively process child game objects
-    XMLElement* childxml = xmlnode->FirstChildElement("GameObject");
-    while (childxml)
+    XMLElement* childXML = xmlnode->FirstChildElement("GameObject");
+    while (childXML)
     {
-        GameObject* childgo = BuildSubtree(childxml);
+        GameObject* childgo = BuildSubtree(childXML);
         childgo->SetParent(go);
-        childxml = childxml->NextSiblingElement("GameObject");
+        childXML = childXML->NextSiblingElement("GameObject");
     }
 
     return go;
+}
+
+void Scene::AddTransform(GameObject* go, XMLElement* xmlnode)
+{
+    // TODO implement me
+}
+
+void Scene::AddMesh(GameObject* go, XMLElement* xmlnode)
+{
+    XMLElement* meshXML = xmlnode->FirstChildElement("Mesh");
+    if (meshXML)
+    {
+        // Find the mesh resource by guid
+        int guid = meshXML->IntAttribute("guid");
+        Mesh* mesh = ResourceManager::Singleton().GetMesh(guid);
+        if (mesh == NULL)
+        {
+            printf("Warning: mesh referenced by game object is not loaded\n");
+            return;
+        }
+
+        // Attach the mesh instance component & do material setup
+        MeshInstance* meshInstance = new MeshInstance();
+        meshInstance->SetMesh(mesh);
+        AddMaterial(meshInstance, meshXML);
+        go->SetMesh(meshInstance);
+    }
+}
+
+void Scene::AddMaterial(MeshInstance* meshInstance, XMLElement* xmlnode)
+{
+    XMLElement* materialXML = xmlnode->FirstChildElement("Material");
+    if (materialXML && meshInstance)
+    {
+        // Create material component
+        Material* material = new Material();
+        meshInstance->SetMaterial(material);
+
+        // Attach shader
+        XMLElement* shaderXML = materialXML->FirstChildElement("Shader");
+        if (shaderXML)
+        {
+            int guid = shaderXML->IntAttribute("guid");
+            ShaderProgram* shader = ResourceManager::Singleton().GetShader(guid);
+            if (shader == NULL)
+            {
+                printf("Warning: shader referenced by game object is not loaded\n");
+            }
+            material->SetShader(shader);
+        }
+
+        // Attach texture
+        XMLElement* textureXML = materialXML->FirstChildElement("Texture");
+        if (textureXML)
+        {
+            int guid = textureXML->IntAttribute("guid");
+            Texture* texture = ResourceManager::Singleton().GetTexture(guid);
+            if (texture == NULL)
+            {
+                printf("Warning: texture referenced by game object is not loaded\n");
+                return;
+            }
+            material->SetTexture(texture);
+        }
+
+        // Apply colours
+        ApplyMaterialColor(materialXML, material, "ColorDiffuse", Material::MAT_COLOUR_DIFFUSE);
+        ApplyMaterialColor(materialXML, material, "ColorAmbient", Material::MAT_COLOUR_AMBIENT);
+        ApplyMaterialColor(materialXML, material, "ColorSpecular", Material::MAT_COLOUR_SPECULAR);
+    }
+}
+
+void Scene::ApplyMaterialColor(XMLElement* xmlnode, Material* material, string colorName, Material::eMatColourType type)
+{
+    ColourRGB color = ColourRGB::White;
+    XMLElement* colorXML = xmlnode->FirstChildElement(colorName.c_str());
+    if (colorXML)
+    {
+        color = ReadColourFromXML(colorXML);
+    }
+    material->SetColour(type, color);
+}
+
+void Scene::AddGameComponents(GameObject* go, XMLElement* xmlnode)
+{
+    // TODO implement me
 }

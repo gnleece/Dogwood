@@ -47,12 +47,12 @@ void Game::Run(GameObject* sceneRoot)
         for (goIter = GameObject::ActiveGameObjects.begin(); goIter != GameObject::ActiveGameObjects.end(); goIter++)
         {
             GameObject* GO = *goIter;
-            GO->Update(m_deltaTime);
+            GO->Update((float)m_deltaTime);
         }
 
         // Update systems (physics, animation, rendering, etc)
         RenderManager::Singleton().RenderScene(m_rootObject);
-        InputManager::Singleton().PollEvents(m_deltaTime);
+        InputManager::Singleton().PollEvents((float)m_deltaTime);
 
         UpdateTime();
     }
