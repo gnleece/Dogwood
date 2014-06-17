@@ -2,12 +2,12 @@
 //
 
 #include "Engine\Game.h"
-#include "TestScene\BuildTestScene.h"
+#include "Engine\Scene\Scene.h"
 
 int main(void)
 {
     Game::Singleton().Init("Dogwood", 1024, 768);
 
-    GameObject* sceneRoot = BuildTestScene();
-    Game::Singleton().Run(sceneRoot);
+    Scene scene("Scenes\\Scene0.xml");
+    Game::Singleton().Run(scene.GetRootObject());
 }

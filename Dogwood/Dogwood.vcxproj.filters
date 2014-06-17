@@ -143,9 +143,6 @@
     <ClInclude Include="Engine\Window\GameWindow.h">
       <Filter>Engine\Headers\Window</Filter>
     </ClInclude>
-    <ClInclude Include="TestScene\BuildTestScene.h">
-      <Filter>Header Files\TestScene</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Rendering\Camera.h">
       <Filter>Engine\Headers\Rendering</Filter>
     </ClInclude>
@@ -234,9 +231,6 @@
     </ClCompile>
     <ClCompile Include="Engine\Window\GameWindow.cpp">
       <Filter>Engine\Source\Window</Filter>
-    </ClCompile>
-    <ClCompile Include="TestScene\BuildTestScene.cpp">
-      <Filter>Source Files\TestScene</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Rendering\Camera.cpp">
       <Filter>Engine\Source\Rendering</Filter>

@@ -114,7 +114,6 @@
     <ClInclude Include="Engine\Util.h" />
     <ClInclude Include="Engine\Window\GameWindow.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="TestScene\BuildTestScene.h" />
     <ClInclude Include="TestScene\SpinningComponent.h" />
   </ItemGroup>
   <ItemGroup>
@@ -145,7 +144,6 @@
     <ClCompile Include="Engine\Util.cpp" />
     <ClCompile Include="Engine\Window\GameWindow.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="TestScene\BuildTestScene.cpp" />
     <ClCompile Include="TestScene\SpinningComponent.cpp" />
   </ItemGroup>
   <ItemGroup>

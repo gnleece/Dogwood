@@ -33,6 +33,14 @@ Matrix4x4 Rotation(float angle, eAXIS axis)
   return r;
 }
 
+Matrix4x4 RotationEulerAngles(Vector3& euler)
+{
+    Matrix4x4 r = Rotation(euler[0], AXIS_X);
+    r = r*Rotation(euler[1], AXIS_Y);
+    r = r*Rotation(euler[2], AXIS_Z);
+    return r;
+}
+
 // Return a matrix to represent a displacement of the given vector.
 Matrix4x4 Translation(const Vector3& displacement)
 {

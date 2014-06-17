@@ -14,6 +14,9 @@ class MeshInstance;
 class Scene
 {
 public:
+    Scene();
+    Scene(string filename);
+
     void LoadScene(string filename);
     void UnloadScene();
 
@@ -29,7 +32,7 @@ private:
     void AddMaterial(MeshInstance* meshInstance, XMLElement* xmlnode);
     void AddGameComponents(GameObject* go, XMLElement* xmlnode);
 
-    void ApplyMaterialColor(XMLElement* xmlnode, Material* material, string colorName, Material::eMatColourType type);
+    void ApplyMaterialColor(XMLElement* xmlnode, Material* material, string colorName, Material::eMatColourType type, ColourRGB defaultColor);
 
     GameObject* m_rootObject = NULL;
 };

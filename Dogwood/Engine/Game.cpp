@@ -28,10 +28,6 @@ void Game::Run(GameObject* sceneRoot)
 {
     printf("\n=============== GAME RUN ===============\n");
 
-    // TODO temp hack for testing
-    Scene scene;
-    scene.LoadScene("Scenes\\Scene0.xml");
-
     m_rootObject = sceneRoot;
     
     // Frame time setup

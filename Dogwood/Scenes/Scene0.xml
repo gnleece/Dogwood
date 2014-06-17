@@ -35,7 +35,7 @@
   <GameObject name="ROOT">
     <GameObject name="Yellow Sphere">
       <Transform>
-        <Position x="-1.0" y="-0.5" z="5.0" />
+        <Position x="-1.0" y="-0.5" z="-5.0" />
         <Rotation x="45.0" y="45.0"  z="0.0" />
         <Scale x="0.8" y="0.8" z="0.8" />
       </Transform>

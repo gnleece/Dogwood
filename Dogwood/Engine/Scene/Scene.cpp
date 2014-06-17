@@ -7,6 +7,14 @@
 #include "..\Rendering\MeshInstance.h"
 #include "..\Rendering\RenderManager.h"
 
+Scene::Scene()
+{ }
+
+Scene::Scene(string filename)
+{
+    LoadScene(filename);
+}
+
 void Scene::LoadScene(string filename)
 {
     printf("LOADING SCENE: %s\n", filename.c_str());
@@ -130,7 +138,21 @@ GameObject* Scene::BuildSubtree(XMLElement* xmlnode)
 
 void Scene::AddTransform(GameObject* go, XMLElement* xmlnode)
 {
-    // TODO implement me
+    XMLElement* transformXML = xmlnode->FirstChildElement("Transform");
+    if (transformXML == NULL)
+    {
+        return;
+    }
+
+    Vector3 position = ReadVector3FromXML(transformXML->FirstChildElement("Position"));
+    Vector3 rotation = ReadVector3FromXML(transformXML->FirstChildElement("Rotation"));
+    Vector3 scale = ReadVector3FromXML(transformXML->FirstChildElement("Scale"));
+
+    Matrix4x4 matrix = Translation(position);
+    matrix = matrix*RotationEulerAngles(rotation);
+    matrix = matrix*Scaling(scale);
+
+    go->SetLocalTransform(matrix);
 }
 
 void Scene::AddMesh(GameObject* go, XMLElement* xmlnode)
@@ -192,15 +214,15 @@ void Scene::AddMaterial(MeshInstance* meshInstance, XMLElement* xmlnode)
         }
 
         // Apply colours
-        ApplyMaterialColor(materialXML, material, "ColorDiffuse", Material::MAT_COLOUR_DIFFUSE);
-        ApplyMaterialColor(materialXML, material, "ColorAmbient", Material::MAT_COLOUR_AMBIENT);
-        ApplyMaterialColor(materialXML, material, "ColorSpecular", Material::MAT_COLOUR_SPECULAR);
+        ApplyMaterialColor(materialXML, material, "ColorDiffuse", Material::MAT_COLOUR_DIFFUSE, ColourRGB::White);
+        ApplyMaterialColor(materialXML, material, "ColorAmbient", Material::MAT_COLOUR_AMBIENT, ColourRGB(0.1f, 0.1f, 0.1f));
+        ApplyMaterialColor(materialXML, material, "ColorSpecular", Material::MAT_COLOUR_SPECULAR, ColourRGB::White);
     }
 }
 
-void Scene::ApplyMaterialColor(XMLElement* xmlnode, Material* material, string colorName, Material::eMatColourType type)
+void Scene::ApplyMaterialColor(XMLElement* xmlnode, Material* material, string colorName, Material::eMatColourType type, ColourRGB defaultColor)
 {
-    ColourRGB color = ColourRGB::White;
+    ColourRGB color = defaultColor;
     XMLElement* colorXML = xmlnode->FirstChildElement(colorName.c_str());
     if (colorXML)
     {
