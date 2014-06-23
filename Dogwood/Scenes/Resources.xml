@@ -21,6 +21,7 @@
 
   <GameComponents>
     <GameComponent guid="4001" path="TestScene\\SpinningComponent.h"/>
+    <GameComponent guid="4002" path="TestScene\\FooComponent.h" />
   </GameComponents>
   
 </Resources>

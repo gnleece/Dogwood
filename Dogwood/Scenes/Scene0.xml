@@ -62,7 +62,13 @@
       </Mesh>
       <GameComponents>
         <GameComponent guid="4001">
-          <Speed>50.0</Speed>
+          <Param name="Speed" type="float" value="50" />
+          <Param name="Label" type="string" value="Spinner!" />
+          <Param name="EnableSpinning" type="bool" value="true" />
+        </GameComponent>
+        <GameComponent guid="4002">
+          <Param name="BarParam" type="float" value="133.7" />
+          <Param name="BazParam" type="bool" value="false" />
         </GameComponent>
       </GameComponents>
     </GameObject>

@@ -6,6 +6,7 @@
 #include "..\Rendering\Camera.h"
 #include "..\Rendering\MeshInstance.h"
 #include "..\Rendering\RenderManager.h"
+#include "..\..\Generated\GameComponentBindings.h"
 
 Scene::Scene()
 { }
@@ -233,5 +234,26 @@ void Scene::ApplyMaterialColor(XMLElement* xmlnode, Material* material, string c
 
 void Scene::AddGameComponents(GameObject* go, XMLElement* xmlnode)
 {
-    // TODO implement me
+    XMLElement* gameComponents = xmlnode->FirstChildElement("GameComponents");
+    if (gameComponents)
+    {
+        XMLElement* gameComponentXML = gameComponents->FirstChildElement("GameComponent");
+        while (gameComponentXML)
+        {
+            // create & attach component
+            int guid = gameComponentXML->IntAttribute("guid");
+            GameComponent* comp = CreateComponentByGUID(guid);
+            go->AddComponent(comp);
+
+            // set component parameters
+            XMLElement* paramXML = gameComponentXML->FirstChildElement("Param");
+            while (paramXML)
+            {
+                SetComponentParameter(guid, comp, paramXML);
+                paramXML = paramXML->NextSiblingElement("Param");
+            }
+
+            gameComponentXML = gameComponentXML->NextSiblingElement("GameComponent");
+        }
+    }
 }

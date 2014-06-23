@@ -76,6 +76,9 @@
     <Filter Include="Libraries\tinyxml2">
       <UniqueIdentifier>{970345cf-3736-463e-b7ce-4a6ba3d6d35b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Generated">
+      <UniqueIdentifier>{df731d4f-fe4b-43f6-81ed-0b6b3fc8f713}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="TODO.txt">
@@ -169,6 +172,12 @@
     </ClInclude>
     <ClInclude Include="Engine\Scene\Scene.h">
       <Filter>Engine\Headers\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Generated\GameComponentBindings.h">
+      <Filter>Generated</Filter>
+    </ClInclude>
+    <ClInclude Include="TestScene\FooComponent.h">
+      <Filter>Source Files\TestScene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
