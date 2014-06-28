@@ -1,0 +1,99 @@
+---------------------------------------------------------------------------
+|                       FEATURE ROADMAP / TODO LIST                       |
+---------------------------------------------------------------------------
+
+ENGINE (Dogwood)
+    * Game object/component system
+        * Proper awake/start/enable/disable/destroy/etc.
+        * Fix custom component bindings
+    * GUIDs
+    
+    * Text (2D)
+    * Particles
+    * Shadows
+    * Physics
+    * Animation
+    * Audio
+    * Networking
+    * Memory allocators
+    * Prefabs
+
+    * Shading
+        * Multiple light sources?
+    * Transform math helpers
+
+    * Debugging
+        * Debug logging (with streams)
+        * Tweakables?
+
+    * Fix-up stuff
+        * Colour -> Color everywhere for consistency
+        * Rewrite matrix inversion. Currently just copied from CS488 provided code
+        * Add missing matrix maths (e.g. addition)
+        * Engine provided assets (e.g. default shaders)
+
+---------------------------------------------------------------------------
+
+EDITOR (Thicket)
+    * Choose/install UI framework
+        * Qt dll paths?
+    * Load scene file
+    * Save scene file
+    * Render scene
+    * Display hierarchy
+
+    * Prefabs
+    * "Project" files?
+
+---------------------------------------------------------------------------
+
+GAME (Katamari?)
+
+
+---------------------------------------------------------------------------
+
+SCENE/EDITOR REQUIREMENTS
+
+    - Create game objects
+    - Name game objects
+    - Reparent game objects
+    - Position, rotate, and scale game objects
+    - Enable/disable game objects
+    - Delete game objects
+    - Add built-in components to game objects
+	    - Mesh, Material, Texture
+    - Set the values of built in components to game objects
+	    - Mesh, Material, Texture
+    - Add user defined (C++) components to game objects
+    - Set the values of user defined (C++) components of game objects
+    - Instance/duplicate game objects
+
+    - Position the camera
+    - Position the light source(s), set parameters
+
+
+RUN-TIME GAME OBJECT REQUIREMENTS
+
+    - Create/spawn game objects
+    - Trigger Awake/Start/etc. functions
+    - Name game objects
+    - Reparent game objects
+    - Position, rotate, and scale game objects
+    - Enable/disable game objects
+    - Destroy game objects
+    - Add/remove components
+
+---------------------------------------------------------------------------
+
+DESIGN DECISIONS
+
+    Scene files
+     - Format: XML
+        - Mergeable/diffable
+        - Human readable
+        - Human writeable (before tool is ready)
+
+    Editor
+    - Start early! Build in lockstep with Engine features
+    - Put Engine code in separate project that builds static lib
+        - Linked to Game exe and Editor exe
