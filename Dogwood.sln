@@ -8,7 +8,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Performance1.psess = Performance1.psess
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Dogwood", "Dogwood\Dogwood.vcxproj", "{15A870E0-30AD-4006-90D1-2FC93EBFF49B}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Game", "Game\Game.vcxproj", "{15A870E0-30AD-4006-90D1-2FC93EBFF49B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4B10D975-447F-4CFE-A0E7-82ED87E6D3F1} = {4B10D975-447F-4CFE-A0E7-82ED87E6D3F1}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DogwoodEngine", "Engine\DogwoodEngine.vcxproj", "{4B10D975-447F-4CFE-A0E7-82ED87E6D3F1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,6 +49,24 @@ Global
 		{15A870E0-30AD-4006-90D1-2FC93EBFF49B}.Release-Lib|Win32.ActiveCfg = Release|Win32
 		{15A870E0-30AD-4006-90D1-2FC93EBFF49B}.Release-Lib|Win32.Build.0 = Release|Win32
 		{15A870E0-30AD-4006-90D1-2FC93EBFF49B}.Release-Lib|x64.ActiveCfg = Release|Win32
+		{4B10D975-447F-4CFE-A0E7-82ED87E6D3F1}.Debug|Win32.ActiveCfg = Debug|Win32
+		{4B10D975-447F-4CFE-A0E7-82ED87E6D3F1}.Debug|Win32.Build.0 = Debug|Win32
+		{4B10D975-447F-4CFE-A0E7-82ED87E6D3F1}.Debug|x64.ActiveCfg = Debug|Win32
+		{4B10D975-447F-4CFE-A0E7-82ED87E6D3F1}.Debug-Dll|Win32.ActiveCfg = Debug|Win32
+		{4B10D975-447F-4CFE-A0E7-82ED87E6D3F1}.Debug-Dll|Win32.Build.0 = Debug|Win32
+		{4B10D975-447F-4CFE-A0E7-82ED87E6D3F1}.Debug-Dll|x64.ActiveCfg = Debug|Win32
+		{4B10D975-447F-4CFE-A0E7-82ED87E6D3F1}.Debug-Lib|Win32.ActiveCfg = Debug|Win32
+		{4B10D975-447F-4CFE-A0E7-82ED87E6D3F1}.Debug-Lib|Win32.Build.0 = Debug|Win32
+		{4B10D975-447F-4CFE-A0E7-82ED87E6D3F1}.Debug-Lib|x64.ActiveCfg = Debug|Win32
+		{4B10D975-447F-4CFE-A0E7-82ED87E6D3F1}.Release|Win32.ActiveCfg = Release|Win32
+		{4B10D975-447F-4CFE-A0E7-82ED87E6D3F1}.Release|Win32.Build.0 = Release|Win32
+		{4B10D975-447F-4CFE-A0E7-82ED87E6D3F1}.Release|x64.ActiveCfg = Release|Win32
+		{4B10D975-447F-4CFE-A0E7-82ED87E6D3F1}.Release-Dll|Win32.ActiveCfg = Release|Win32
+		{4B10D975-447F-4CFE-A0E7-82ED87E6D3F1}.Release-Dll|Win32.Build.0 = Release|Win32
+		{4B10D975-447F-4CFE-A0E7-82ED87E6D3F1}.Release-Dll|x64.ActiveCfg = Release|Win32
+		{4B10D975-447F-4CFE-A0E7-82ED87E6D3F1}.Release-Lib|Win32.ActiveCfg = Release|Win32
+		{4B10D975-447F-4CFE-A0E7-82ED87E6D3F1}.Release-Lib|Win32.Build.0 = Release|Win32
+		{4B10D975-447F-4CFE-A0E7-82ED87E6D3F1}.Release-Lib|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

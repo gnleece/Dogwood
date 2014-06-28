@@ -1,8 +1,7 @@
 /Debug
-/Dogwood/Debug
+/Engine/Debug
+/Game/Debug
 /ipch
-
-*.obj
 
 *.swp
 *~
