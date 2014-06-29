@@ -31,16 +31,17 @@ ENGINE (Dogwood)
         * Rewrite matrix inversion. Currently just copied from CS488 provided code
         * Add missing matrix maths (e.g. addition)
         * Engine provided assets (e.g. default shaders)
+        * Asset path formatting
 
 ---------------------------------------------------------------------------
 
 EDITOR (Thicket)
-    * Choose/install UI framework
-        * Qt dll paths?
     * Load scene file
     * Save scene file
     * Render scene
     * Display hierarchy
+
+    * Window resizing
 
     * Prefabs
     * "Project" files?

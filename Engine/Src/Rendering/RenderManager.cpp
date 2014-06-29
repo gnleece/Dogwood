@@ -11,7 +11,7 @@ void RenderManager::Startup(GameWindow* gameWindow)
 
     // Prepare projection matrix
     // TODO pass params in properly
-    float aspect = (float)1024 / 768;       // TODO fixme qt-opengl-convert
+    float aspect = (float) 640 / 480;       // TODO fixme qt-opengl-convert
     m_projMatrix = PerspectiveProjection(45.0f, aspect, 0.1f, 1000.0f);
 
     // Enable depth test

@@ -42,7 +42,7 @@ void ShaderProgram::ApplyShader()
         glUseProgram(GetID());
         changedProgram = true;
     }
-
+    changedProgram = true;
     if (changedProgram || RenderManager::Singleton().SettingsDirty())
     {
         RenderManager::Singleton().ApplyGlobalParams(this);

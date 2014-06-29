@@ -20,12 +20,18 @@ GLWidget::~GLWidget()
 
 QSize GLWidget::minimumSizeHint() const
 {
-    return QSize(50, 50);
+    return QSize(640, 480);
 }
+
+QSize GLWidget::maximumSizeHint() const
+{
+    return QSize(640, 480);
+}
+
 
 QSize GLWidget::sizeHint() const
 {
-    return QSize(400, 400);
+    return QSize(640, 480);
 }
 
 void GLWidget::SetRoot(GameObject* root)
@@ -37,6 +43,8 @@ void GLWidget::initializeGL()
 {
     QColor clearColor = QColor::fromCmykF(1.0, 0.0, 0.0, 0.0);
     qglClearColor(clearColor.dark());
+
+    glViewport(0, 0, 640, 480);
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
@@ -50,10 +58,14 @@ void GLWidget::paintGL()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     RenderManager::Singleton().RenderScene(m_root);
+
+    //this->swapBuffers();
 }
 
 void GLWidget::resizeGL(int width, int height)
-{}
+{
+    printf("resize");
+}
 
 void GLWidget::mousePressEvent(QMouseEvent *event)
 {}

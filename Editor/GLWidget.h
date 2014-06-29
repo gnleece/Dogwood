@@ -18,6 +18,7 @@ public:
     ~GLWidget();
 
     QSize minimumSizeHint() const;
+    QSize maximumSizeHint() const;
     QSize sizeHint() const;
 
     void SetRoot(GameObject* root);
