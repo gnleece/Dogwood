@@ -83,9 +83,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <Text Include="TODO.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="Generated\GameComponentBindings.h" />
     <ClInclude Include="Include\Components\FooComponent.h" />
     <ClInclude Include="Include\Components\SpinningComponent.h" />
@@ -99,6 +96,9 @@
     <ProjectReference Include="..\Engine\DogwoodEngine.vcxproj">
       <Project>{4b10d975-447f-4cfe-a0e7-82ed87e6d3f1}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\TODO.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

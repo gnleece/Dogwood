@@ -1,4 +1,7 @@
 /Debug
+/Editor/debug
+/Editor/GeneratedFiles
+/Editor/Win32
 /Engine/Debug
 /Game/Debug
 /ipch
