@@ -9,7 +9,7 @@ MainEditorWindow::MainEditorWindow(QWidget *parent)
   m_ui(new Ui::MainEditorWindow)
 {
     m_glWidget = new GLWidget;
-
+ 
     m_ui->setupUi(this);
     m_ui->verticalLayout->addWidget(m_glWidget);
 
@@ -20,4 +20,9 @@ MainEditorWindow::~MainEditorWindow()
 {
     delete m_ui;
     delete m_glWidget;
+}
+
+void MainEditorWindow::SetRoot(GameObject* root)
+{
+    m_glWidget->SetRoot(root);
 }

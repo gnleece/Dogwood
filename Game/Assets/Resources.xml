@@ -4,20 +4,20 @@
      from the scene files via GUID. -->
 
 <Resources>
-
+<!--TODO fixme qt-opengl-convert-->
   <Textures>
-    <Texture guid="1001" path="Assets\\Textures\\test_texture.bmp" />
-    <Texture guid="1002" path="Assets\\Textures\\test_texture2.bmp" />
+    <Texture guid="1001" path="..\\Game\\Assets\\Textures\\test_texture.bmp" />
+    <Texture guid="1002" path="..\\Game\\Assets\\Textures\\test_texture2.bmp" />
   </Textures>
 
   <Meshes>
-    <Mesh guid="2001" path="Assets\\Models\\cube.obj" />
-    <Mesh guid="2002" path="Assets\\Models\\sphere.obj" />
+    <Mesh guid="2001" path="..\\Game\\Assets\\Models\\cube.obj" />
+    <Mesh guid="2002" path="..\\Game\\Assets\\Models\\sphere.obj" />
   </Meshes>
 
   <!-- TODO put standard shaders in Engine -->
   <Shaders>
-    <Shader guid="3001" vertex-path="Assets\\Shaders\\VertexShader.glsl" fragment-path="Assets\\Shaders\\FragmentShader.glsl" />
+    <Shader guid="3001" vertex-path="..\\Game\\Assets\\Shaders\\VertexShader.glsl" fragment-path="..\\Game\\Assets\\Shaders\\FragmentShader.glsl" />
   </Shaders>
 
   <GameComponents>

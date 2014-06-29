@@ -11,22 +11,22 @@ void RenderManager::Startup(GameWindow* gameWindow)
 
     // Prepare projection matrix
     // TODO pass params in properly
-    float aspect = (float)m_gameWindow->GetWidth() / m_gameWindow->GetHeight();
+    float aspect = (float)1024 / 768;       // TODO fixme qt-opengl-convert
     m_projMatrix = PerspectiveProjection(45.0f, aspect, 0.1f, 1000.0f);
 
     // Enable depth test
-    glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LESS);
+    //glEnable(GL_DEPTH_TEST);
+    //glDepthFunc(GL_LESS);
 
-    glewExperimental = GL_TRUE;
-    glewInit();
+    //glewExperimental = GL_TRUE;
+    //glewInit();
 
-    DebugDraw::Singleton().Startup();
+    //DebugDraw::Singleton().Startup();     // TODO fixme qt-opengl-convert
 }
 
 void RenderManager::Shutdown()
 {
-    DebugDraw::Singleton().Shutdown();
+    //DebugDraw::Singleton().Shutdown();
 }
 
 void RenderManager::SetLight(Light light)
@@ -62,14 +62,14 @@ void RenderManager::RenderScene(GameObject* rootObject)
     rootObject->Render(Transform::Identity, false);
 
     // Draw debug gnomon. TODO remove me
-    DebugDraw::Singleton().DrawLine(Vector3(-1.5f, -1.f, -3.f), Vector3(-0.5f, -1.f, -3.f), ColourRGB::Red);
-    DebugDraw::Singleton().DrawLine(Vector3(-1.5f, -1.f, -3.f), Vector3(-1.5f, 0.f, -3.f), ColourRGB::Green);
-    DebugDraw::Singleton().DrawLine(Vector3(-1.5f, -1.f, -3.f), Vector3(-1.5f, -1.f, -4.f), ColourRGB::Blue);
+    //DebugDraw::Singleton().DrawLine(Vector3(-1.5f, -1.f, -3.f), Vector3(-0.5f, -1.f, -3.f), ColourRGB::Red);
+    //DebugDraw::Singleton().DrawLine(Vector3(-1.5f, -1.f, -3.f), Vector3(-1.5f, 0.f, -3.f), ColourRGB::Green);
+    //DebugDraw::Singleton().DrawLine(Vector3(-1.5f, -1.f, -3.f), Vector3(-1.5f, -1.f, -4.f), ColourRGB::Blue);
 
-    DebugDraw::Singleton().RenderLines();
+    //DebugDraw::Singleton().RenderLines();
 
     // Swap buffers
-    m_gameWindow->SwapBuffers();
+    //m_gameWindow->SwapBuffers();  // TODO fixme qt-opengl-convert
 }
 
 void RenderManager::ApplyGlobalParams(ShaderProgram* shader)

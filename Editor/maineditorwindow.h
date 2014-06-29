@@ -3,6 +3,7 @@
 #include <QMainWindow>
 
 class GLWidget;
+class GameObject;
 
 namespace Ui
 {
@@ -16,6 +17,8 @@ class MainEditorWindow : public QMainWindow
 public:
     explicit MainEditorWindow(QWidget *parent = 0);
     ~MainEditorWindow();
+
+    void SetRoot(GameObject* root);
 
 private:
     Ui::MainEditorWindow*   m_ui;
