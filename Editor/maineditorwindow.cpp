@@ -1,21 +1,23 @@
 #include "maineditorwindow.h"
 #include "ui_maineditorwindow.h"
+#include "GLWidget.h"
 
-MainEditorWindow::MainEditorWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainEditorWindow)
+#include <QtWidgets>
+
+MainEditorWindow::MainEditorWindow(QWidget *parent)
+: QMainWindow(parent),
+  m_ui(new Ui::MainEditorWindow)
 {
-    ui->setupUi(this);
+    m_glWidget = new GLWidget;
 
-    glwidget = new MyGLWidget(this);
+    m_ui->setupUi(this);
+    m_ui->verticalLayout->addWidget(m_glWidget);
 
-    // using the this pointer to emphase the location of the
-    // member variable used.
-    // NOTE: In the UI we defined a layout names verticalLayout
-    ui->verticalLayout->addWidget(glwidget);
+    setWindowTitle(tr("Dogwood Editor!"));
 }
 
 MainEditorWindow::~MainEditorWindow()
 {
-    delete ui;
+    delete m_ui;
+    delete m_glWidget;
 }

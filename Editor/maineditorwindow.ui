@@ -6,39 +6,21 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>667</width>
-    <height>451</height>
+    <width>803</width>
+    <height>621</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dogwood Editor</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QPushButton" name="pushButton">
-    <property name="geometry">
-     <rect>
-      <x>520</x>
-      <y>350</y>
-      <width>131</width>
-      <height>71</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>14</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>Button!</string>
-    </property>
-   </widget>
    <widget class="QWidget" name="verticalLayoutWidget">
     <property name="geometry">
      <rect>
       <x>10</x>
       <y>10</y>
-      <width>641</width>
-      <height>331</height>
+      <width>781</width>
+      <height>471</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout"/>
@@ -47,9 +29,9 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>350</y>
-      <width>501</width>
-      <height>71</height>
+      <y>490</y>
+      <width>641</width>
+      <height>101</height>
      </rect>
     </property>
     <property name="font">
@@ -62,13 +44,26 @@
      <string>&gt; Console output</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>660</x>
+      <y>490</y>
+      <width>131</width>
+      <height>101</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Button!</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>667</width>
+     <width>803</width>
      <height>21</height>
     </rect>
    </property>

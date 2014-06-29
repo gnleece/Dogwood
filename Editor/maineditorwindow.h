@@ -1,12 +1,12 @@
-#ifndef MAINEDITORWINDOW_H
-#define MAINEDITORWINDOW_H
+#pragma once
 
 #include <QMainWindow>
 
-#include "MyGLWidget.h"
+class GLWidget;
 
-namespace Ui {
-class MainEditorWindow;
+namespace Ui
+{
+    class MainEditorWindow;
 }
 
 class MainEditorWindow : public QMainWindow
@@ -17,11 +17,7 @@ public:
     explicit MainEditorWindow(QWidget *parent = 0);
     ~MainEditorWindow();
 
-protected:
-    MyGLWidget *glwidget;
-
 private:
-    Ui::MainEditorWindow *ui;
+    Ui::MainEditorWindow*   m_ui;
+    GLWidget*               m_glWidget;
 };
-
-#endif // MAINEDITORWINDOW_H
