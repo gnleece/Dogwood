@@ -23,7 +23,7 @@ MainEditorWindow::~MainEditorWindow()
     delete m_glWidget;
 }
 
-void MainEditorWindow::SetRoot(GameObject* root)
+void MainEditorWindow::Paint()
 {
-    m_glWidget->SetRoot(root);
+    m_glWidget->update();
 }

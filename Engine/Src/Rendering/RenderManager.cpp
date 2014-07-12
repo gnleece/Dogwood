@@ -2,24 +2,22 @@
 
 #include "GameObject.h"
 #include "Debugging\DebugDraw.h"
-#include "Window\GameWindow.h"
 
-void RenderManager::Startup(GameWindow* gameWindow)
+void RenderManager::Startup(RenderConfig& config)
 {
-    m_gameWindow = gameWindow;
     m_dirty = true;
 
     // Prepare projection matrix
-    // TODO pass params in properly
-    float aspect = (float) 640 / 480;       // TODO fixme qt-opengl-convert
-    m_projMatrix = PerspectiveProjection(45.0f, aspect, 0.1f, 1000.0f);
+    float aspect = (float)config.width / config.height;
+    m_projMatrix = PerspectiveProjection(config.FOV, aspect, config.nearPlane, config.farPlane);
+    glViewport(0, 0, config.width, config.height);
 
-    // Enable depth test
-    //glEnable(GL_DEPTH_TEST);
-    //glDepthFunc(GL_LESS);
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
+    glDepthFunc(GL_LESS);
 
-    //glewExperimental = GL_TRUE;
-    //glewInit();
+    glewExperimental = GL_TRUE;
+    glewInit();
 
     //DebugDraw::Singleton().Startup();     // TODO fixme qt-opengl-convert
 }
@@ -55,7 +53,6 @@ Matrix4x4& RenderManager::GetView()
 void RenderManager::RenderScene(GameObject* rootObject)
 {
     // Clear the screen to black
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // Render game objects

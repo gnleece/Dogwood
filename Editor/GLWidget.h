@@ -3,7 +3,7 @@
 #define GLEW_STATIC
 #include <GL/glew.h>
 
-// This define is needed to make Qt play nice with GLEW
+// This define is needed to make Qt play nice with GLEW. It must come before the QGLWidget include!
 #define QT_NO_OPENGL_ES_2
 #include <QGLWidget>
 
@@ -21,9 +21,7 @@ public:
     QSize maximumSizeHint() const;
     QSize sizeHint() const;
 
-    void SetRoot(GameObject* root);
-
-protected:
+//protected:
     void initializeGL();
     void paintGL();
     void resizeGL(int width, int height);

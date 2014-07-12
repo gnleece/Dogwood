@@ -6,7 +6,7 @@
 
 int main(void)
 {
-    Game::Singleton().Init("Dogwood Engine : Game", 1024, 768, "Assets\\Resources.xml");
+    Game::Singleton().Init("Dogwood Engine : Game", 640, 480, "Assets\\Resources.xml");
 
     Scene scene("Assets\\Scenes\\Scene0.xml");
     Game::Singleton().Run(scene.GetRootObject());

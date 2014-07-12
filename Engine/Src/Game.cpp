@@ -19,7 +19,11 @@ void Game::Init(string name, int windowWidth, int windowHeight, string resources
     m_gameWindow.Setup(name, windowWidth, windowHeight);
 
     // Manager setup
-    RenderManager::Singleton().Startup(&m_gameWindow);
+    RenderConfig renderConfig;
+    renderConfig.width = windowWidth;
+    renderConfig.height = windowHeight;
+    RenderManager::Singleton().Startup(renderConfig);
+
     InputManager::Singleton().Startup(&m_gameWindow);
     ResourceManager::Singleton().Startup(resourcesFilepath);
 }
@@ -51,6 +55,8 @@ void Game::Run(GameObject* sceneRoot)
         InputManager::Singleton().PollEvents((float)m_deltaTime);
 
         UpdateTime();
+
+        m_gameWindow.SwapBuffers();
     }
 
     Shutdown();

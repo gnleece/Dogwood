@@ -2,6 +2,7 @@
 #include <GL/glew.h>
 
 #include <QApplication>
+#include <QTime>
 
 #include "maineditorwindow.h"
 #include "Rendering\RenderManager.h"
@@ -16,13 +17,33 @@ int main(int argc, char *argv[])
     MainEditorWindow w;
     w.show();
 
-    RenderManager::Singleton().Startup(0);
+    RenderConfig renderConfig;
+    renderConfig.width = 640;
+    renderConfig.height = 480;
+    RenderManager::Singleton().Startup(renderConfig);
+    
     ResourceManager::Singleton().Startup("..\\Game\\Assets\\Resources.xml");        // TODO fix these paths!!
     Scene scene("..\\Game\\Assets\\Scenes\\Scene0.xml");
 
-    w.SetRoot(scene.GetRootObject());
+    QTime lastUpdate;
+    int updateTimeStep = 1000 / 60;
+    while (true)
+    {
+        a.processEvents();
+        
+        QTime currentTime = QTime::currentTime();
+        int timeSinceLastUpdate = lastUpdate.msecsTo(currentTime);
+        while (timeSinceLastUpdate > updateTimeStep)
+        {
+            // DO GAME UPDATE
+            timeSinceLastUpdate -= updateTimeStep;
+            lastUpdate = lastUpdate.addMSecs(updateTimeStep);
+        }
 
-    return a.exec();
+        RenderManager::Singleton().RenderScene(scene.GetRootObject());
+        w.Paint();
+    }
+    a.exit();
 
 }
 

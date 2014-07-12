@@ -32,6 +32,7 @@ ENGINE (Dogwood)
         * Add missing matrix maths (e.g. addition)
         * Engine provided assets (e.g. default shaders)
         * Asset path formatting
+        * Input wrappers
 
 ---------------------------------------------------------------------------
 
@@ -98,3 +99,8 @@ DESIGN DECISIONS
     - Start early! Build in lockstep with Engine features
     - Put Engine code in separate project that builds static lib
         - Linked to Game exe and Editor exe
+
+    Windowing/UI Library
+    - QT for Editor but GLFW for game
+        - QT needed for UI for Editor, but can't control game loop as easily, slower
+        - Can build game without Qt dependency

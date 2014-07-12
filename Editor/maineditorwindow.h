@@ -18,7 +18,7 @@ public:
     explicit MainEditorWindow(QWidget *parent = 0);
     ~MainEditorWindow();
 
-    void SetRoot(GameObject* root);
+    void Paint();
 
 private:
     Ui::MainEditorWindow*   m_ui;

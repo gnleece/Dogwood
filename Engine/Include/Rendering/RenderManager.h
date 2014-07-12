@@ -12,7 +12,16 @@
 #include <GLFW/glfw3.h>
 
 class GameObject;
-class GameWindow;
+
+struct RenderConfig
+{
+public:
+    int width = 640;
+    int height = 480;
+    float FOV = 45.0f;
+    float nearPlane = 0.1f;
+    float farPlane = 1000.0f;
+};
 
 class RenderManager
 {
@@ -24,7 +33,7 @@ public:
     }
     RenderManager() {}
 
-    void        Startup(GameWindow* gameWindow);
+    void        Startup(RenderConfig& config);
     void        Shutdown();
 
     void        SetLight(Light light);
@@ -43,8 +52,6 @@ private:
     void operator=(RenderManager const&);
 
     void        SetUniformMatrix(ShaderProgram* shader, ShaderProgram::eShaderParam param, Matrix4x4& matrix);
-
-    GameWindow* m_gameWindow;
 
     Light       m_light;        // TODO support mutiple light sources
 
