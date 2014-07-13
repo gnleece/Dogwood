@@ -45,6 +45,7 @@ EDITOR (Thicket)
     * Show world space gnomon
     * Show local space gnomon on selected object
 
+    * UNDO STACK!
     * Object picking (from scene view)
 
     * Save scene to file

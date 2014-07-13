@@ -6,6 +6,7 @@
 class GLWidget;
 class GameObject;
 class HierarchyModel;
+class QTreeView;
 
 using std::string;
 
@@ -30,8 +31,11 @@ public:
 private:
     Ui::MainEditorWindow*   m_ui;
     GLWidget*               m_glWidget;
+
+    QTreeView*              m_view;
     HierarchyModel*         m_model;
 
 private slots:
     void CreateGameObject();
+    void DeleteGameObject();
 };
