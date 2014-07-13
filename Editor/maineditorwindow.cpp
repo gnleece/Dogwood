@@ -1,4 +1,5 @@
 #include "maineditorwindow.h"
+#include "HierarchyModel.h"
 #include "ui_maineditorwindow.h"
 #include "GLWidget.h"
 
@@ -13,6 +14,10 @@ MainEditorWindow::MainEditorWindow(QWidget *parent)
  
     m_ui->setupUi(this);
     m_ui->verticalLayout->addWidget(m_glWidget);
+
+    // TODO actual GO hierarchy should be passed in here
+    HierarchyModel* model = new HierarchyModel();
+    m_ui->treeView->setModel(model);
 
     setWindowTitle(tr("Dogwood Editor!"));
 }

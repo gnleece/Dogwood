@@ -39,23 +39,10 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>30</y>
-      <width>361</width>
-      <height>471</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
       <y>10</y>
-      <width>46</width>
-      <height>13</height>
+      <width>361</width>
+      <height>491</height>
      </rect>
-    </property>
-    <property name="text">
-     <string>Hierarchy</string>
     </property>
    </widget>
    <widget class="QTextEdit" name="textEdit">
