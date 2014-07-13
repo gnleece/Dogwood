@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1043</width>
-    <height>590</height>
+    <height>665</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -45,13 +45,16 @@
      </rect>
     </property>
    </widget>
-   <widget class="QTextEdit" name="textEdit">
+   <widget class="QTextEdit" name="textEdit_DebugOutput">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>10</x>
       <y>510</y>
       <width>1021</width>
-      <height>51</height>
+      <height>121</height>
      </rect>
     </property>
     <property name="font">
@@ -60,8 +63,11 @@
       <pointsize>10</pointsize>
      </font>
     </property>
+    <property name="readOnly">
+     <bool>true</bool>
+    </property>
     <property name="placeholderText">
-     <string>&gt; Console output</string>
+     <string/>
     </property>
    </widget>
   </widget>
@@ -76,13 +82,28 @@
    </property>
    <widget class="QMenu" name="menuFIle">
     <property name="title">
-     <string>File</string>
+     <string>Scene</string>
     </property>
     <addaction name="actionNew_Scene"/>
     <addaction name="actionOpen_Scene"/>
     <addaction name="actionSave_Scene"/>
    </widget>
+   <widget class="QMenu" name="menuGame_Object">
+    <property name="title">
+     <string>Game Object</string>
+    </property>
+    <addaction name="actionCreate_Game_Object"/>
+    <addaction name="actionDelete_Game_Object"/>
+   </widget>
+   <widget class="QMenu" name="menuFIle_2">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionQuit"/>
+   </widget>
+   <addaction name="menuFIle_2"/>
    <addaction name="menuFIle"/>
+   <addaction name="menuGame_Object"/>
   </widget>
   <action name="actionNew_Scene">
    <property name="text">
@@ -97,6 +118,24 @@
   <action name="actionSave_Scene">
    <property name="text">
     <string>Save Scene</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionCreate_Game_Object">
+   <property name="text">
+    <string>Create Game Object</string>
+   </property>
+  </action>
+  <action name="actionDelete_Game_Object">
+   <property name="text">
+    <string>Delete Game Object</string>
+   </property>
+  </action>
+  <action name="actionQuit">
+   <property name="text">
+    <string>Quit</string>
    </property>
   </action>
  </widget>

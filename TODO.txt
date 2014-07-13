@@ -37,10 +37,17 @@ ENGINE (Dogwood)
 ---------------------------------------------------------------------------
 
 EDITOR (Thicket)
-    * Load scene file
-    * Save scene file
-    * Render scene
-    * Display hierarchy
+    * Modify scene
+        * Create game objects
+        * Delete game objects
+        * Reparent game objects
+    * Add Transform editing widget
+    * Show world space gnomon
+    * Show local space gnomon on selected object
+
+    * Object picking (from scene view)
+
+    * Save scene to file
 
     * Window resizing
 
