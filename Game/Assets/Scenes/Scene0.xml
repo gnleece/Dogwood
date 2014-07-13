@@ -35,8 +35,8 @@
   <GameObject name="ROOT">
     <GameObject name="Yellow Sphere">
       <Transform>
-        <Position x="-1.0" y="-0.5" z="-5.0" />
-        <Rotation x="45.0" y="45.0"  z="0.0" />
+        <Position x="-1.0" y="-1.0" z="-5.0" />
+        <Rotation x="0.0" y="0.0"  z="0.0" />
         <Scale x="0.8" y="0.8" z="0.8" />
       </Transform>
       <Mesh guid="2002">
@@ -45,6 +45,32 @@
           <ColorDiffuse r="1.0" g="1.0" b="0.0" />
         </Material>
       </Mesh>
+      <GameObject name="Red Sphere">
+        <Transform>
+          <Position x="0.0" y="1.5" z="0" />
+          <Rotation x="0" y="0"  z="0.0" />
+          <Scale x="0.8" y="0.8" z="0.8" />
+        </Transform>
+        <Mesh guid="2002">
+          <Material>
+            <Shader guid="3001" />
+            <ColorDiffuse r="1.0" g="0.0" b="0.0" />
+          </Material>
+        </Mesh>
+        <GameObject name="Blue Sphere">
+          <Transform>
+            <Position x="0.0" y="1.5" z="0" />
+            <Rotation x="0" y="0"  z="0.0" />
+            <Scale x="0.8" y="0.8" z="0.8" />
+          </Transform>
+          <Mesh guid="2002">
+            <Material>
+              <Shader guid="3001" />
+              <ColorDiffuse r="0.0" g="0.0" b="1.0" />
+            </Material>
+          </Mesh>
+        </GameObject>
+      </GameObject>
     </GameObject>
   
     <GameObject name="Green Cube">

@@ -4,6 +4,7 @@
 #include <QApplication>
 #include <QTime>
 
+#include "HierarchyModel.h"
 #include "maineditorwindow.h"
 #include "Rendering\RenderManager.h"
 #include "Scene\ResourceManager.h"
@@ -13,9 +14,9 @@
 int main(int argc, char *argv[])
 {
     // QT setup
-    QApplication a(argc, argv);
-    MainEditorWindow w;
-    w.show();
+    QApplication app(argc, argv);
+    MainEditorWindow window;
+    window.show();
 
     RenderConfig renderConfig;
     renderConfig.width = 640;
@@ -25,11 +26,14 @@ int main(int argc, char *argv[])
     ResourceManager::Singleton().Startup("..\\Game\\Assets\\Resources.xml");        // TODO fix these paths!!
     Scene scene("..\\Game\\Assets\\Scenes\\Scene0.xml");
 
+    HierarchyModel* model = new HierarchyModel(scene.GetRootObject());
+    window.SetHierarchyModel(model);
+
     QTime lastUpdate;
     int updateTimeStep = 1000 / 60;
-    while (true)
+    while (true)        // TODO handle quit / close window
     {
-        a.processEvents();
+        app.processEvents();
         
         QTime currentTime = QTime::currentTime();
         int timeSinceLastUpdate = lastUpdate.msecsTo(currentTime);
@@ -41,9 +45,9 @@ int main(int argc, char *argv[])
         }
 
         RenderManager::Singleton().RenderScene(scene.GetRootObject());
-        w.Paint();
+        window.Paint();
     }
-    a.exit();
+    app.exit();
 
 }
 

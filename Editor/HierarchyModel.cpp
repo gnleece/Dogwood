@@ -1,18 +1,16 @@
 #include "HierarchyModel.h"
-#include "HierarchyItem.h"
 
 #include <QtWidgets>
 #include <string>
 
 using std::string;
 
-HierarchyModel::HierarchyModel(QObject *parent)
-: QAbstractItemModel(parent)
+HierarchyModel::HierarchyModel(GameObject* root, QObject *parent)
+: m_rootItem(root),
+  QAbstractItemModel(parent)
 {
-    string rootData = "Game Object Hierarchy";
-
-    m_rootItem = new HierarchyItem(rootData);
-    modelSetup(m_rootItem);
+    m_rootItem = new GameObject("Game Object Hierarchy");
+    root->SetParent(m_rootItem);
 }
 
 HierarchyModel::~HierarchyModel()
@@ -25,9 +23,9 @@ QModelIndex HierarchyModel::index(int row, int column, const QModelIndex &parent
     if (parent.isValid() && parent.column() != 0)
         return QModelIndex();
 
-    HierarchyItem *parentItem = getItem(parent);
+    GameObject* parentItem = getItem(parent);
 
-    HierarchyItem *childItem = parentItem->child(row);
+    GameObject* childItem = parentItem->GetChild(row);
     if (childItem)
         return createIndex(row, column, childItem);
     else
@@ -39,13 +37,13 @@ QModelIndex HierarchyModel::parent(const QModelIndex &index) const
     if (!index.isValid())
         return QModelIndex();
 
-    HierarchyItem *childItem = getItem(index);
-    HierarchyItem *parentItem = childItem->parent();
+    GameObject *childItem = getItem(index);
+    GameObject *parentItem = childItem->GetParent();
 
     if (parentItem == m_rootItem)
         return QModelIndex();
 
-    return createIndex(parentItem->childNumber(), 0, parentItem);
+    return createIndex(parentItem->GetChildNumber(), 0, parentItem);
 }
 
 QVariant HierarchyModel::data(const QModelIndex &index, int role) const
@@ -56,14 +54,14 @@ QVariant HierarchyModel::data(const QModelIndex &index, int role) const
     if (role != Qt::DisplayRole && role != Qt::EditRole)
         return QVariant();
 
-    HierarchyItem *item = getItem(index);
-    return QVariant(item->getData().c_str());
+    GameObject *item = getItem(index);
+    return QVariant(item->GetName().c_str());
 }
 
 QVariant HierarchyModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
     if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
-        return QVariant(m_rootItem->getData().c_str());
+        return QVariant(m_rootItem->GetName().c_str());
 
     return QVariant();
 }
@@ -73,13 +71,12 @@ bool HierarchyModel::setData(const QModelIndex &index, const QVariant &value, in
     if (role != Qt::EditRole)
         return false;
 
-    HierarchyItem *item = getItem(index);
-    bool result = item->setData(value.toString().toStdString());
+    GameObject *item = getItem(index);
+    item->SetName(value.toString().toStdString());
 
-    if (result)
-        emit dataChanged(index, index);
+    emit dataChanged(index, index);     // TODO do we need to test a return value here?
 
-    return result;
+    return true;
 }
 
 Qt::ItemFlags HierarchyModel::flags(const QModelIndex &index) const
@@ -97,17 +94,17 @@ int HierarchyModel::columnCount(const QModelIndex & /* parent */) const
 
 int HierarchyModel::rowCount(const QModelIndex &parent) const
 {
-    HierarchyItem *parentItem = getItem(parent);
-    return parentItem->childCount();
+    GameObject *parentItem = getItem(parent);
+    return parentItem->GetChildCount();
 }
 
 bool HierarchyModel::insertRows(int position, int rows, const QModelIndex &parent)
 {
-    HierarchyItem *parentItem = getItem(parent);
+    GameObject *parentItem = getItem(parent);
     bool success;
 
     beginInsertRows(parent, position, position + rows - 1);
-    success = parentItem->insertChildren(position, rows);
+    success = parentItem->InsertChildren(position, rows);
     endInsertRows();
 
     return success;
@@ -115,36 +112,23 @@ bool HierarchyModel::insertRows(int position, int rows, const QModelIndex &paren
 
 bool HierarchyModel::removeRows(int position, int rows, const QModelIndex &parent)
 {
-    HierarchyItem *parentItem = getItem(parent);
+    GameObject *parentItem = getItem(parent);
     bool success = true;
 
     beginRemoveRows(parent, position, position + rows - 1);
-    success = parentItem->removeChildren(position, rows);
+    success = parentItem->RemoveChildren(position, rows);
     endRemoveRows();
 
     return success;
 }
 
-HierarchyItem *HierarchyModel::getItem(const QModelIndex &index) const
+GameObject* HierarchyModel::getItem(const QModelIndex &index) const
 {
     if (index.isValid())
     {
-        HierarchyItem *item = static_cast<HierarchyItem*>(index.internalPointer());
+        GameObject *item = static_cast<GameObject*>(index.internalPointer());
         if (item)
             return item;
     }
     return m_rootItem;
-}
-
-void HierarchyModel::modelSetup(HierarchyItem *parent)
-{
-    // TEST DATA SETUP
-    for (int i = 0; i < 3; i++)
-    {
-        parent->insertChildren(parent->childCount(), 1);
-        parent->child(parent->childCount() - 1)->setData("child");
-        HierarchyItem* next = parent->child(parent->childCount() - 1);
-        next->insertChildren(next->childCount(), 1);
-        next->child(next->childCount() - 1)->setData("sub child");
-    }
 }

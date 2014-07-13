@@ -4,6 +4,7 @@
 
 class GLWidget;
 class GameObject;
+class HierarchyModel;
 
 namespace Ui
 {
@@ -19,6 +20,8 @@ public:
     ~MainEditorWindow();
 
     void Paint();
+
+    void SetHierarchyModel(HierarchyModel* model);
 
 private:
     Ui::MainEditorWindow*   m_ui;

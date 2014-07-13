@@ -43,7 +43,7 @@ void Game::Run(GameObject* sceneRoot)
     while (!m_gameWindow.ShouldClose())
     {
         // Call Update on all active GameObjects
-        std::list<GameObject*>::iterator goIter;
+        std::vector<GameObject*>::iterator goIter;
         for (goIter = GameObject::ActiveGameObjects.begin(); goIter != GameObject::ActiveGameObjects.end(); goIter++)
         {
             GameObject* GO = *goIter;

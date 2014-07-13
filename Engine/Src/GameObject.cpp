@@ -3,10 +3,14 @@
 #include "Rendering\MeshInstance.h"
 #include "GameComponent.h"
 
-list<GameObject*> GameObject::ActiveGameObjects = list<GameObject*>();
+vector<GameObject*> GameObject::ActiveGameObjects = vector<GameObject*>();
 
-GameObject::GameObject() : m_dirty(true)
+GameObject::GameObject(string name, GameObject* parent)
+ : m_dirty(true)
 {
+    m_name = name;
+    SetParent(parent);
+
     // TODO unregister on destroy
     ActiveGameObjects.push_back(this);
 }
@@ -23,7 +27,7 @@ void GameObject::SetLocalTransform(Matrix4x4& m)
     m_dirty = true;
 }
 
-void GameObject::SetParent(GameObject* parent)
+void GameObject::SetParent(GameObject* parent, int index)
 {
     // if this object had a parent already, remove it from that parent's list of children
     if (m_parent)
@@ -36,7 +40,7 @@ void GameObject::SetParent(GameObject* parent)
     // add this object to the new parent's list of children
     if (m_parent)
     {
-        m_parent->AddChild(this);
+        m_parent->AddChild(this, index);
     }
 }
 
@@ -49,10 +53,58 @@ void GameObject::AddComponent(GameComponent* component)
     }
 }
 
+GameObject* GameObject::GetChild(int index)
+{
+    if (index >= m_children.size())
+        return NULL;
+
+    return m_children[index];
+}
+
+int GameObject::GetChildNumber()
+{
+    // determine the index of this game object in the parent's list of children
+    if (m_parent)
+    {
+        std::vector<GameObject*>::iterator iter = std::find(m_parent->m_children.begin(), m_parent->m_children.end(), const_cast<GameObject*>(this));
+        return std::distance(m_parent->m_children.begin(), iter);
+    }
+
+    return 0;
+}
+
+int GameObject::GetChildCount()
+{
+    return m_children.size();
+}
+
+bool GameObject::InsertChildren(int position, int count)
+{
+    if (position < 0 || position > m_children.size())
+        return false;
+
+    for (int i = 0; i < count; i++)
+    {
+        GameObject* child = new GameObject("", NULL);
+        child->SetParent(this, position);
+    }
+
+    return true;
+}
+
+bool GameObject::RemoveChildren(int position, int count)
+{
+    if (position < 0 || position + count > m_children.size())
+        return false;
+
+    m_children.erase(m_children.begin() + position, m_children.begin() + position + count);
+    return true;
+}
+
 void GameObject::Start()
 {
     // start all components
-    std::list<GameComponent*>::iterator compIter;
+    std::vector<GameComponent*>::iterator compIter;
     for (compIter = m_components.begin(); compIter != m_components.end(); compIter++)
     {
         GameComponent* component = *compIter;
@@ -63,7 +115,7 @@ void GameObject::Start()
 void GameObject::Update(float deltaTime)
 {
     // update all components
-    std::list<GameComponent*>::iterator compIter;
+    std::vector<GameComponent*>::iterator compIter;
     for (compIter = m_components.begin(); compIter != m_components.end(); compIter++)
     {
         GameComponent* component = *compIter;
@@ -88,7 +140,7 @@ void GameObject::Render(Transform& parentWorldTransform, bool dirty)
     }
 
     // render children
-    std::list<GameObject*>::iterator childIter;
+    std::vector<GameObject*>::iterator childIter;
     for (childIter = m_children.begin(); childIter != m_children.end(); childIter++)
     {
         GameObject* child = *childIter;
@@ -106,12 +158,20 @@ MeshInstance* GameObject::GetMesh()
     return m_mesh;
 }
 
-void GameObject::AddChild(GameObject* child)
+void GameObject::AddChild(GameObject* child, int index)
 {
-    m_children.push_back(child);
+    if (index >= 0)
+    {
+        m_children.insert(m_children.begin() + index, child);
+    }
+    else
+    {
+        m_children.push_back(child);
+    }
 }
 
 void GameObject::RemoveChild(GameObject* child)
 {
-    m_children.remove(child);
+    // TODO fixme
+    //m_children.remove(child);
 }

@@ -1,14 +1,14 @@
 #pragma once
 
 #include <QAbstractItemModel>
-#include "HierarchyItem.h"
+#include "GameObject.h"
 
 class HierarchyModel : public QAbstractItemModel
 {
     Q_OBJECT
 
 public:
-    HierarchyModel(QObject *parent = 0);
+    HierarchyModel(GameObject* root, QObject *parent = 0);
     ~HierarchyModel();
 
     QModelIndex     index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
@@ -26,8 +26,7 @@ public:
     bool            removeRows(int position, int rows, const QModelIndex &parent = QModelIndex());
 
 private:
-    HierarchyItem*   getItem(const QModelIndex &index) const;
-    void             modelSetup(HierarchyItem *parent);
+    GameObject*   getItem(const QModelIndex &index) const;
 
-    HierarchyItem*   m_rootItem;
+    GameObject*   m_rootItem;
 };

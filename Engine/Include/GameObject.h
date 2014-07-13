@@ -1,13 +1,13 @@
 #pragma once
 
-#include <list>
 #include <string>
+#include <vector>
 
 #include "Math\Algebra.h"
 #include "Math\Transform.h"
 
 using std::string;
-using std::list;
+using std::vector;
 
 class GameComponent;
 class MeshInstance;
@@ -15,7 +15,7 @@ class MeshInstance;
 class GameObject
 {
 public:
-    GameObject();
+    GameObject(string name = "", GameObject* parent = NULL);
 
     Transform& GetLocalTransform()        { return m_localTransform; }
     void SetLocalTransform(Transform& t);
@@ -26,12 +26,19 @@ public:
     void SetName(string name)                   { m_name = name; }
     void SetName(const char* name)              { if (name) m_name = name; }
 
-    void SetParent(GameObject* parent);
+    GameObject* GetParent()                     { return m_parent; }
+    void SetParent(GameObject* parent, int index = -1);
     void AddComponent(GameComponent* component);
+
+    GameObject* GetChild(int index);
+    int GetChildNumber();
+    int GetChildCount();
+
+    bool InsertChildren(int position, int count);
+    bool RemoveChildren(int position, int count);
 
     void Start();
     void Update(float deltaTime);
-    
     void OnEnable();
     void OnDisable();
 
@@ -40,10 +47,10 @@ public:
     void SetMesh(MeshInstance* mesh); 
     MeshInstance* GetMesh();
 
-    static list<GameObject*> ActiveGameObjects;
+    static vector<GameObject*> ActiveGameObjects;
 
 private:
-    void AddChild(GameObject* child);
+    void AddChild(GameObject* child, int index = -1);
     void RemoveChild(GameObject* child);
 
     int                     m_id;
@@ -56,7 +63,7 @@ private:
     MeshInstance*           m_mesh;         // TODO this should be part of regular component list
 
     GameObject*             m_parent;
-    list<GameObject*>       m_children;
+    vector<GameObject*>     m_children;
 
-    list<GameComponent*>    m_components;
+    vector<GameComponent*>  m_components;
 };
