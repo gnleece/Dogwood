@@ -101,10 +101,18 @@ int HierarchyModel::rowCount(const QModelIndex &parent) const
 bool HierarchyModel::insertRows(int position, int rows, const QModelIndex &parent)
 {
     GameObject *parentItem = getItem(parent);
-    bool success;
 
     beginInsertRows(parent, position, position + rows - 1);
-    success = parentItem->InsertChildren(position, rows);
+    bool success = parentItem->InsertChildren(position, rows);
+    endInsertRows();
+
+    return success;
+}
+
+bool HierarchyModel::insertChild(QModelIndex parentIndex, GameObject* parent, GameObject* child, int position)
+{
+    beginInsertRows(parentIndex, position, position);
+    bool success = parent->InsertChild(position, child);
     endInsertRows();
 
     return success;

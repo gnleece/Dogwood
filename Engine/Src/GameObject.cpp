@@ -87,9 +87,18 @@ bool GameObject::InsertChildren(int position, int count)
     {
         GameObject* child = new GameObject("", NULL);
         child->SetParent(this, position);
+        child->SetName("GameObject");
     }
 
     return true;
+}
+
+bool GameObject::InsertChild(int position, GameObject* child)
+{
+    if (child == NULL || position < 0 || position > m_children.size())
+        return false;
+
+    child->SetParent(this, position);
 }
 
 bool GameObject::RemoveChildren(int position, int count)
@@ -98,6 +107,7 @@ bool GameObject::RemoveChildren(int position, int count)
         return false;
 
     m_children.erase(m_children.begin() + position, m_children.begin() + position + count);
+
     return true;
 }
 

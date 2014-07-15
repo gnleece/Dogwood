@@ -23,6 +23,7 @@ public:
     
     int             rowCount(const QModelIndex &parent = QModelIndex()) const;
     bool            insertRows(int position, int rows, const QModelIndex &parent = QModelIndex());
+    bool            insertChild(QModelIndex parentIndex, GameObject* parent, GameObject* child, int position);
     bool            removeRows(int position, int rows, const QModelIndex &parent = QModelIndex());
 
 private:

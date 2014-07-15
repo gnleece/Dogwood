@@ -112,3 +112,7 @@ DESIGN DECISIONS
     - QT for Editor but GLFW for game
         - QT needed for UI for Editor, but can't control game loop as easily, slower
         - Can build game without Qt dependency
+
+    Undo/redo 
+    - Added undo stack right after first editor commands were implemented (create and delete)
+    - Would be extremely painful to add in later after lots of commands were implemented

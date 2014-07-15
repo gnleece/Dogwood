@@ -35,6 +35,7 @@ public:
     int GetChildCount();
 
     bool InsertChildren(int position, int count);
+    bool InsertChild(int position, GameObject* child);  // TODO this needs some cleanup
     bool RemoveChildren(int position, int count);
 
     void Start();
