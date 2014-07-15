@@ -140,6 +140,9 @@
    <property name="text">
     <string>Delete Game Object</string>
    </property>
+   <property name="shortcut">
+    <string>Del</string>
+   </property>
   </action>
   <action name="actionQuit">
    <property name="text">
@@ -160,6 +163,11 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Y</string>
+   </property>
+  </action>
+  <action name="actionFoo">
+   <property name="text">
+    <string>Foo</string>
    </property>
   </action>
  </widget>

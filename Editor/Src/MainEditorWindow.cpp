@@ -1,7 +1,7 @@
 #include "maineditorwindow.h"
 #include "HierarchyModel.h"
 #include "ui_maineditorwindow.h"
-#include "GLWidget.h"
+#include "Widgets\GLWidget.h"
 
 #include <QtWidgets>
 
