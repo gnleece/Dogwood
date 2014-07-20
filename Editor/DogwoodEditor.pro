@@ -13,8 +13,10 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        maineditorwindow.cpp
+        maineditorwindow.cpp \
+        vectoredit.cpp
 
 HEADERS  += maineditorwindow.h
 
-FORMS    += maineditorwindow.ui
+FORMS    += maineditorwindow.ui \
+    vectoredit.ui

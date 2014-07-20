@@ -2,6 +2,7 @@
 #include "HierarchyModel.h"
 #include "ui_maineditorwindow.h"
 #include "Widgets\GLWidget.h"
+#include "Widgets\VectorEdit.h"
 
 #include <QtWidgets>
 
@@ -20,6 +21,11 @@ MainEditorWindow::MainEditorWindow(QWidget *parent)
     m_ui->textEdit_DebugOutput->append("Loading scene...");
 
     m_view = m_ui->treeView;
+
+    // TODO move into "Transform" widget?
+    m_vectorEdit = new VectorEdit();
+    m_vectorEdit->SetTitle("Position");
+    m_ui->componentLayout->addWidget(m_vectorEdit);
 
     // Edit menu
     connect(m_ui->actionUndo, SIGNAL(triggered()), this, SLOT(Undo()));

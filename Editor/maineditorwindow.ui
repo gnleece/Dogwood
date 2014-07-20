@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1043</width>
-    <height>665</height>
+    <width>1292</width>
+    <height>661</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -23,10 +23,10 @@
    <widget class="QWidget" name="verticalLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>390</x>
+      <x>640</x>
       <y>10</y>
       <width>641</width>
-      <height>491</height>
+      <height>481</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
@@ -41,7 +41,7 @@
       <x>10</x>
       <y>10</y>
       <width>361</width>
-      <height>491</height>
+      <height>481</height>
      </rect>
     </property>
    </widget>
@@ -52,9 +52,9 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>510</y>
-      <width>1021</width>
-      <height>121</height>
+      <y>500</y>
+      <width>1271</width>
+      <height>131</height>
      </rect>
     </property>
     <property name="font">
@@ -70,13 +70,24 @@
      <string/>
     </property>
    </widget>
+   <widget class="QWidget" name="verticalLayoutWidget_2">
+    <property name="geometry">
+     <rect>
+      <x>380</x>
+      <y>10</y>
+      <width>251</width>
+      <height>481</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="componentLayout"/>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1043</width>
+     <width>1292</width>
      <height>21</height>
     </rect>
    </property>
