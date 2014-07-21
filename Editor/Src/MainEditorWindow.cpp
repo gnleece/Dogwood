@@ -2,7 +2,7 @@
 #include "HierarchyModel.h"
 #include "ui_maineditorwindow.h"
 #include "Widgets\GLWidget.h"
-#include "Widgets\VectorEdit.h"
+#include "Widgets\TransformWidget.h"
 
 #include <QtWidgets>
 
@@ -11,21 +11,20 @@ using namespace EditorCommands;
 MainEditorWindow::MainEditorWindow(QWidget *parent)
 : m_ui(new Ui::MainEditorWindow)
 {
-    m_glWidget = new GLWidget;
-    m_glWidget->setFixedSize(640, 480);
- 
+    // Window setup
     m_ui->setupUi(this);
-    m_ui->verticalLayout->addWidget(m_glWidget);
-
     setWindowTitle(tr("Dogwood Editor!"));
     m_ui->textEdit_DebugOutput->append("Loading scene...");
-
     m_view = m_ui->treeView;
 
-    // TODO move into "Transform" widget?
-    m_vectorEdit = new VectorEdit();
-    m_vectorEdit->SetTitle("Position");
-    m_ui->componentLayout->addWidget(m_vectorEdit);
+    // OpenGL widget setup
+    m_glWidget = new GLWidget;
+    m_glWidget->setFixedSize(640, 480);
+    m_ui->verticalLayout->addWidget(m_glWidget);
+
+    // Component widgets
+    m_transformWidget = new TransformWidget(this);
+    m_ui->componentLayout->addWidget(m_transformWidget);
 
     // Edit menu
     connect(m_ui->actionUndo, SIGNAL(triggered()), this, SLOT(Undo()));

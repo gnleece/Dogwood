@@ -19,4 +19,5 @@ SOURCES += main.cpp\
 HEADERS  += maineditorwindow.h
 
 FORMS    += maineditorwindow.ui \
-    vectoredit.ui
+    vectoredit.ui \
+    transformwidget.ui
