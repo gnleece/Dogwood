@@ -3,6 +3,7 @@
 #include <QtWidgets>
 #include "Math\Algebra.h"
 
+class GameObject;
 class VectorEdit;
 
 namespace Ui
@@ -16,6 +17,8 @@ class TransformWidget : public QWidget
 
 public:
     TransformWidget(QWidget* parent = 0);
+
+    void SetValues(GameObject* gameObject);
 
 public slots:
     void UpdatePosition(Vector3& position);

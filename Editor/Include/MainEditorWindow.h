@@ -1,6 +1,7 @@
 #pragma once
 
 #include <qabstractitemmodel.h>
+#include <QItemSelection>
 #include <QMainWindow>
 #include <string>
 
@@ -47,6 +48,7 @@ private slots:
     void DeleteGameObject();
     void Undo();
     void Redo();
+    void OnSelectionChanged(const QItemSelection & selected, const QItemSelection & deselected);
 };
 
 // TODO clean this up

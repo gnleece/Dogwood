@@ -127,3 +127,4 @@ private:
 Matrix4x4 operator *(const Matrix4x4& a, const Matrix4x4& b);
 
 float DegreesToRadians(float degrees);
+float RadiansToDegrees(float radians);

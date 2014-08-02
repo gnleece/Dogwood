@@ -21,12 +21,12 @@ public:
     VectorEdit(QWidget* parent = 0);
 
     void SetTitle(string title);
+    void SetVector(Vector3& vector);
 
 public slots:
     void setX();
     void setY();
     void setZ();
-    //void setVector(Vector3& vector);
 
 signals:
     void VectorChanged(Vector3& vector);

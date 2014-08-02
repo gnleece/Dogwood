@@ -1,6 +1,8 @@
 #include "Widgets\TransformWidget.h"
 #include "Widgets\VectorEdit.h"
 
+#include "GameObject.h"
+
 #include "..\GeneratedFiles\ui_transformwidget.h"
 
 TransformWidget::TransformWidget(QWidget* parent)
@@ -25,6 +27,16 @@ TransformWidget::TransformWidget(QWidget* parent)
     connect(m_positionWidget, SIGNAL(VectorChanged(Vector3&)), this, SLOT(UpdatePosition(Vector3&)));
     connect(m_rotationWidget, SIGNAL(VectorChanged(Vector3&)), this, SLOT(UpdateRotation(Vector3&)));
     connect(m_scaleWidget, SIGNAL(VectorChanged(Vector3&)), this, SLOT(UpdateScale(Vector3&)));
+}
+
+void TransformWidget::SetValues(GameObject* gameObject)
+{
+    if (gameObject != NULL)
+    {
+        m_positionWidget->SetVector(gameObject->GetLocalTransform().GetPosition());
+        m_rotationWidget->SetVector(gameObject->GetLocalTransform().GetRotation());
+        m_scaleWidget->SetVector(gameObject->GetLocalTransform().GetScale());
+    }
 }
 
 void TransformWidget::UpdatePosition(Vector3& position)

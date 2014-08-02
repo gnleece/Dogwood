@@ -41,6 +41,14 @@ void VectorEdit::setZ()
     emit VectorChanged(m_vector);
 }
 
+void VectorEdit::SetVector(Vector3& vector)
+{
+    m_vector = vector;
+    m_ui->textEdit_x->setPlainText(QString::number(m_vector[0]));
+    m_ui->textEdit_y->setPlainText(QString::number(m_vector[1]));
+    m_ui->textEdit_z->setPlainText(QString::number(m_vector[2]));
+}
+
 float VectorEdit::GetFloatFromTextEdit(QPlainTextEdit* textEdit)
 {
     // TODO error checking

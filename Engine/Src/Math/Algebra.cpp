@@ -473,5 +473,10 @@ Matrix4x4 operator *(const Matrix4x4& a, const Matrix4x4& b)
 
 float DegreesToRadians(float degrees)
 {
-    return degrees*M_PI/180.0f;
+    return degrees * M_PI / 180.0f;
+}
+
+float RadiansToDegrees(float radians)
+{
+    return radians * 180.0f / M_PI;
 }

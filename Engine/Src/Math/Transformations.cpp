@@ -36,8 +36,8 @@ Matrix4x4 Rotation(float angle, eAXIS axis)
 Matrix4x4 RotationEulerAngles(Vector3& euler)
 {
     Matrix4x4 r = Rotation(euler[0], AXIS_X);
-    r = r*Rotation(euler[1], AXIS_Y);
-    r = r*Rotation(euler[2], AXIS_Z);
+    r = Rotation(euler[1], AXIS_Y)*r;
+    r = Rotation(euler[2], AXIS_Z)*r;
     return r;
 }
 
@@ -64,6 +64,31 @@ Matrix4x4 Scaling(const Vector3& scale)
 Matrix4x4 UniformScaling(float scale)
 {
     return Scaling(Vector3(scale, scale, scale));
+}
+
+// rotation decomposition formula from http://nghiaho.com/?page_id=846
+void DecomposeMatrix(Matrix4x4& matrix, Vector3& position, Vector3& rotation, Vector3& scale)
+{
+    // extract position (4th column)
+    position = Vector3(matrix[0][3], matrix[1][3], matrix[2][3]);
+
+    // extract scale
+    Vector3 x = Vector3(matrix[0][0], matrix[1][0], matrix[2][0]);
+    Vector3 y = Vector3(matrix[0][1], matrix[1][1], matrix[2][1]);
+    Vector3 z = Vector3(matrix[0][2], matrix[1][2], matrix[2][2]);
+    float scaleX = x.Magnitude();
+    float scaleY = y.Magnitude();
+    float scaleZ = z.Magnitude();
+    scale = Vector3(scaleX, scaleY, scaleZ);
+
+    // extract rotation
+    x = x.Normalized();
+    y = y.Normalized();
+    z = z.Normalized();
+    float rotX = RadiansToDegrees(atan2(y[2], z[2]));
+    float rotY = RadiansToDegrees(atan2(-x[2], sqrtf(pow(y[2], 2) + pow(z[2], 2))));
+    float rotZ = RadiansToDegrees(atan2(x[1], x[0]));
+    rotation = Vector3(rotX, rotY, rotZ);
 }
 
 // based on pseudocode from 

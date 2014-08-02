@@ -1,5 +1,6 @@
 #include "maineditorwindow.h"
 #include "HierarchyModel.h"
+#include "GameObject.h"
 #include "ui_maineditorwindow.h"
 #include "Widgets\GLWidget.h"
 #include "Widgets\TransformWidget.h"
@@ -15,6 +16,8 @@ MainEditorWindow::MainEditorWindow(QWidget *parent)
     m_ui->setupUi(this);
     setWindowTitle(tr("Dogwood Editor!"));
     m_ui->textEdit_DebugOutput->append("Loading scene...");
+
+    // Tree view setup
     m_view = m_ui->treeView;
 
     // OpenGL widget setup
@@ -25,6 +28,7 @@ MainEditorWindow::MainEditorWindow(QWidget *parent)
     // Component widgets
     m_transformWidget = new TransformWidget(this);
     m_ui->componentLayout->addWidget(m_transformWidget);
+    m_transformWidget->hide();
 
     // Edit menu
     connect(m_ui->actionUndo, SIGNAL(triggered()), this, SLOT(Undo()));
@@ -49,8 +53,10 @@ void MainEditorWindow::Paint()
 void MainEditorWindow::SetHierarchyModel(HierarchyModel* model)
 {
     m_model = model;
-    m_ui->treeView->setModel(m_model);
+    m_view->setModel(m_model);
     DebugLog("Scene loaded!");
+    connect(m_view->selectionModel(), SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)), this, SLOT(OnSelectionChanged(const QItemSelection &, const QItemSelection &)));
+    m_view->expandAll();
 }
 
 void MainEditorWindow::DebugLog(string text)
@@ -90,6 +96,27 @@ void MainEditorWindow::DeleteGameObject()
     HierarchyModel* model = (HierarchyModel*)(m_view->model());
     DeleteGameObjectCommand* command = new DeleteGameObjectCommand(model, index);
     m_commandManager.ExecuteCommand(command);
+}
+
+void MainEditorWindow::OnSelectionChanged(const QItemSelection & selected, const QItemSelection & deselected)
+{
+    // TODO enforce selection of only one object at a time?
+
+    // Get the selected game object
+    const QModelIndex index = m_view->selectionModel()->currentIndex();
+    GameObject* go = (GameObject*)index.internalPointer();
+
+    if (go != NULL)
+    {
+        // Show the components for the selected game object
+        m_transformWidget->SetValues(go);
+        m_transformWidget->show();
+    }
+    else
+    {
+        // Nothing is selected, so hide widgets
+        m_transformWidget->hide();
+    }
 }
 
 namespace EditorCommands

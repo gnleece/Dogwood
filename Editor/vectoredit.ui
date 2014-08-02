@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>233</width>
-    <height>60</height>
+    <width>218</width>
+    <height>55</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,10 +16,10 @@
   <widget class="QLabel" name="label_x">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>30</y>
+     <x>10</x>
+     <y>20</y>
      <width>21</width>
-     <height>21</height>
+     <height>31</height>
     </rect>
    </property>
    <property name="text">
@@ -29,10 +29,10 @@
   <widget class="QLabel" name="label_y">
    <property name="geometry">
     <rect>
-     <x>90</x>
-     <y>30</y>
+     <x>80</x>
+     <y>20</y>
      <width>31</width>
-     <height>21</height>
+     <height>31</height>
     </rect>
    </property>
    <property name="text">
@@ -42,16 +42,16 @@
   <widget class="QPlainTextEdit" name="textEdit_x">
    <property name="geometry">
     <rect>
-     <x>30</x>
-     <y>30</y>
+     <x>20</x>
+     <y>20</y>
      <width>51</width>
-     <height>21</height>
+     <height>31</height>
     </rect>
    </property>
    <property name="font">
     <font>
      <family>Consolas</family>
-     <pointsize>10</pointsize>
+     <pointsize>11</pointsize>
     </font>
    </property>
    <property name="layoutDirection">
@@ -70,16 +70,16 @@
   <widget class="QPlainTextEdit" name="textEdit_y">
    <property name="geometry">
     <rect>
-     <x>100</x>
-     <y>30</y>
+     <x>90</x>
+     <y>20</y>
      <width>51</width>
-     <height>21</height>
+     <height>31</height>
     </rect>
    </property>
    <property name="font">
     <font>
      <family>Consolas</family>
-     <pointsize>10</pointsize>
+     <pointsize>11</pointsize>
     </font>
    </property>
    <property name="layoutDirection">
@@ -98,16 +98,16 @@
   <widget class="QPlainTextEdit" name="textEdit_z">
    <property name="geometry">
     <rect>
-     <x>170</x>
-     <y>30</y>
+     <x>160</x>
+     <y>20</y>
      <width>51</width>
-     <height>21</height>
+     <height>31</height>
     </rect>
    </property>
    <property name="font">
     <font>
      <family>Consolas</family>
-     <pointsize>10</pointsize>
+     <pointsize>11</pointsize>
     </font>
    </property>
    <property name="layoutDirection">
@@ -126,10 +126,10 @@
   <widget class="QLabel" name="label_z">
    <property name="geometry">
     <rect>
-     <x>160</x>
-     <y>30</y>
+     <x>150</x>
+     <y>20</y>
      <width>31</width>
-     <height>21</height>
+     <height>31</height>
     </rect>
    </property>
    <property name="text">
@@ -139,8 +139,8 @@
   <widget class="QLabel" name="label_title">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>10</y>
+     <x>0</x>
+     <y>0</y>
      <width>46</width>
      <height>13</height>
     </rect>

@@ -149,6 +149,7 @@ void Scene::AddTransform(GameObject* go, XMLElement* xmlnode)
     Vector3 rotation = ReadVector3FromXML(transformXML->FirstChildElement("Rotation"));
     Vector3 scale = ReadVector3FromXML(transformXML->FirstChildElement("Scale"));
 
+    // TODO cleanup with transform functions
     Matrix4x4 matrix = Translation(position);
     matrix = matrix*RotationEulerAngles(rotation);
     matrix = matrix*Scaling(scale);
