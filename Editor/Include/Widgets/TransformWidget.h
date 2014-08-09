@@ -18,7 +18,7 @@ class TransformWidget : public QWidget
 public:
     TransformWidget(QWidget* parent = 0);
 
-    void SetValues(GameObject* gameObject);
+    void SetGameObject(GameObject* gameObject);
 
 public slots:
     void UpdatePosition(Vector3& position);
@@ -27,6 +27,7 @@ public slots:
 
 private:
     Ui::TransformWidget*    m_ui;
+    GameObject*             m_gameObject;
 
     VectorEdit*             m_positionWidget;
     VectorEdit*             m_rotationWidget;

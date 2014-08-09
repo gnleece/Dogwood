@@ -29,27 +29,42 @@ TransformWidget::TransformWidget(QWidget* parent)
     connect(m_scaleWidget, SIGNAL(VectorChanged(Vector3&)), this, SLOT(UpdateScale(Vector3&)));
 }
 
-void TransformWidget::SetValues(GameObject* gameObject)
+void TransformWidget::SetGameObject(GameObject* gameObject)
 {
-    if (gameObject != NULL)
+    m_gameObject = gameObject;
+    if (m_gameObject != NULL)
     {
-        m_positionWidget->SetVector(gameObject->GetLocalTransform().GetPosition());
-        m_rotationWidget->SetVector(gameObject->GetLocalTransform().GetRotation());
-        m_scaleWidget->SetVector(gameObject->GetLocalTransform().GetScale());
+        // Display the position, rotation, and scale values of this game object
+        m_positionWidget->SetVector(m_gameObject->GetLocalTransform().GetPosition());
+        m_rotationWidget->SetVector(m_gameObject->GetLocalTransform().GetRotation());
+        m_scaleWidget->SetVector(m_gameObject->GetLocalTransform().GetScale());
+    }
+    else
+    {
+        // TODO clear the vector fields
     }
 }
 
 void TransformWidget::UpdatePosition(Vector3& position)
 {
-    // TODO implement me
+    if (m_gameObject != NULL)
+    {
+        m_gameObject->GetLocalTransform().SetPosition(position);
+    }
 }
 
 void TransformWidget::UpdateRotation(Vector3& rotation)
 {
-    // TODO implement me
+    if (m_gameObject != NULL)
+    {
+        m_gameObject->GetLocalTransform().SetRotation(rotation);
+    }
 }
 
 void TransformWidget::UpdateScale(Vector3& scale)
 {
-    // TODO implement me
+    if (m_gameObject != NULL)
+    {
+        m_gameObject->GetLocalTransform().SetScale(scale);
+    }
 }

@@ -61,6 +61,11 @@ Vector3& Transform::GetScale()
     return m_scale;
 }
 
+bool Transform::IsDirty()
+{
+    return m_dirty;
+}
+
 void Transform::ComputeMatrixFromComponents()
 {
     // Combine: T*R*S
@@ -73,6 +78,16 @@ void Transform::ComputeMatrixFromComponents()
 
 Transform operator *(Transform& a, Transform& b)
 {
+    // TODO clean up
+    if (a.IsDirty())
+    {
+        a.ComputeMatrixFromComponents();
+    }
+    if (b.IsDirty())
+    {
+        b.ComputeMatrixFromComponents();
+    }
+    
     Transform ret;
     ret.SetMatrix(a.GetMatrix() * b.GetMatrix());
     return ret;

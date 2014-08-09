@@ -19,11 +19,12 @@ public:
 
     static Transform Identity;
 
+    bool IsDirty();
+    void ComputeMatrixFromComponents();
+
     // TODO implement math convenience functions
 
 private:
-    void ComputeMatrixFromComponents();
-
     Matrix4x4   m_matrix;
     Vector3     m_position;
     Vector3     m_rotation;

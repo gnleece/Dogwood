@@ -109,12 +109,13 @@ void MainEditorWindow::OnSelectionChanged(const QItemSelection & selected, const
     if (go != NULL)
     {
         // Show the components for the selected game object
-        m_transformWidget->SetValues(go);
+        m_transformWidget->SetGameObject(go);
         m_transformWidget->show();
     }
     else
     {
         // Nothing is selected, so hide widgets
+        m_transformWidget->SetGameObject(NULL);
         m_transformWidget->hide();
     }
 }
