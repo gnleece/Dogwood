@@ -100,6 +100,7 @@ void MainEditorWindow::DeleteGameObject()
     m_commandManager.ExecuteCommand(command);
 }
 
+// TODO: discard trivial updates that don't actually modify values
 void MainEditorWindow::UpdateGameObjectTransform(Vector3 vector, VectorType type)
 {
     DebugLog("Updating gameobject transform");

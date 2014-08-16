@@ -12,6 +12,11 @@ VectorEdit::VectorEdit(QWidget* parent)
     m_ui->textEdit_y->setInputMethodHints(Qt::ImhDigitsOnly);
     m_ui->textEdit_z->setInputMethodHints(Qt::ImhDigitsOnly);
 
+    // disable built-in undo/redo, since the engine will handle this
+    m_ui->textEdit_x->setUndoRedoEnabled(false);
+    m_ui->textEdit_y->setUndoRedoEnabled(false);
+    m_ui->textEdit_z->setUndoRedoEnabled(false);
+
     // connect to text edit signals (so that we know when the values get changed)
     connect(m_ui->textEdit_x, SIGNAL(textChanged()), this, SLOT(setX()));
     connect(m_ui->textEdit_y, SIGNAL(textChanged()), this, SLOT(setY()));
