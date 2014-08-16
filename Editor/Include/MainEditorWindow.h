@@ -6,6 +6,7 @@
 #include <string>
 
 #include "CommandManager.h"
+#include "Math\Algebra.h"
 
 class GLWidget;
 class GameObject;
@@ -14,6 +15,8 @@ class QTreeView;
 class TransformWidget;
 
 using std::string;
+
+enum VectorType { eVector_Position, eVector_Rotation, eVector_Scale };
 
 namespace Ui
 {
@@ -32,6 +35,8 @@ public:
 
     void SetHierarchyModel(HierarchyModel* model);
     void DebugLog(string text);
+
+    void UpdateGameObjectTransform(Vector3 vector, VectorType type);
 
 private:
     Ui::MainEditorWindow*   m_ui;
@@ -78,4 +83,20 @@ namespace EditorCommands
         QModelIndex m_index;
         GameObject* m_parent;
     };
+
+    class ModifyTransformCommand : public ICommand
+    {
+    public:
+        ModifyTransformCommand(HierarchyModel* model, QModelIndex index, Vector3 vector, VectorType type);
+        void Execute();
+        void Undo();
+
+    private:
+        VectorType m_type;
+        Vector3 m_vector;
+        Vector3 m_previousVector;
+        HierarchyModel* m_model;
+        GameObject* m_gameObject;
+    };
+
 }

@@ -4,6 +4,7 @@
 #include "Math\Algebra.h"
 
 class GameObject;
+class MainEditorWindow;
 class VectorEdit;
 
 namespace Ui
@@ -16,7 +17,7 @@ class TransformWidget : public QWidget
     Q_OBJECT
 
 public:
-    TransformWidget(QWidget* parent = 0);
+    TransformWidget(QWidget* parent = 0, MainEditorWindow* window = 0);
 
     void SetGameObject(GameObject* gameObject);
 
@@ -27,6 +28,7 @@ public slots:
 
 private:
     Ui::TransformWidget*    m_ui;
+    MainEditorWindow*       m_window;
     GameObject*             m_gameObject;
 
     VectorEdit*             m_positionWidget;

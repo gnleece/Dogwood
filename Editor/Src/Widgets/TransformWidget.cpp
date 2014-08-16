@@ -1,12 +1,14 @@
 #include "Widgets\TransformWidget.h"
 #include "Widgets\VectorEdit.h"
+#include "MainEditorWindow.h"
 
 #include "GameObject.h"
 
 #include "..\GeneratedFiles\ui_transformwidget.h"
 
-TransformWidget::TransformWidget(QWidget* parent)
-: m_ui(new Ui::TransformWidget)
+TransformWidget::TransformWidget(QWidget* parent, MainEditorWindow* window)
+: m_ui(new Ui::TransformWidget),
+  m_window(window)
 {
     m_ui->setupUi(this);
 
@@ -47,24 +49,15 @@ void TransformWidget::SetGameObject(GameObject* gameObject)
 
 void TransformWidget::UpdatePosition(Vector3& position)
 {
-    if (m_gameObject != NULL)
-    {
-        m_gameObject->GetLocalTransform().SetPosition(position);
-    }
+    m_window->UpdateGameObjectTransform(position, eVector_Position);
 }
 
 void TransformWidget::UpdateRotation(Vector3& rotation)
 {
-    if (m_gameObject != NULL)
-    {
-        m_gameObject->GetLocalTransform().SetRotation(rotation);
-    }
+    m_window->UpdateGameObjectTransform(rotation, eVector_Rotation);
 }
 
 void TransformWidget::UpdateScale(Vector3& scale)
 {
-    if (m_gameObject != NULL)
-    {
-        m_gameObject->GetLocalTransform().SetScale(scale);
-    }
+    m_window->UpdateGameObjectTransform(scale, eVector_Scale);
 }

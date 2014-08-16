@@ -26,7 +26,7 @@ MainEditorWindow::MainEditorWindow(QWidget *parent)
     m_ui->verticalLayout->addWidget(m_glWidget);
 
     // Component widgets
-    m_transformWidget = new TransformWidget(this);
+    m_transformWidget = new TransformWidget(this, this);
     m_ui->componentLayout->addWidget(m_transformWidget);
     m_transformWidget->hide();
 
@@ -64,6 +64,8 @@ void MainEditorWindow::DebugLog(string text)
     m_ui->textEdit_DebugOutput->append(QString(text.c_str()));
 }
 
+// TODO: Qt textboxes seem to capture ctrl + z and do their own undo. stop that!
+// TODO: just selecting a game object counts as a bunch of update commands. fix that!
 void MainEditorWindow::Undo()
 {
     // TODO disable menu option if undo is not currently available
@@ -95,6 +97,16 @@ void MainEditorWindow::DeleteGameObject()
     QModelIndex index = m_view->selectionModel()->currentIndex();
     HierarchyModel* model = (HierarchyModel*)(m_view->model());
     DeleteGameObjectCommand* command = new DeleteGameObjectCommand(model, index);
+    m_commandManager.ExecuteCommand(command);
+}
+
+void MainEditorWindow::UpdateGameObjectTransform(Vector3 vector, VectorType type)
+{
+    DebugLog("Updating gameobject transform");
+
+    QModelIndex index = m_view->selectionModel()->currentIndex();
+    HierarchyModel* model = (HierarchyModel*)(m_view->model());
+    ModifyTransformCommand* command = new ModifyTransformCommand(model, index, vector, type);
     m_commandManager.ExecuteCommand(command);
 }
 
@@ -157,5 +169,54 @@ namespace EditorCommands
     void DeleteGameObjectCommand::Undo()
     {
         m_model->insertChild(m_index.parent(), m_parent, m_gameObject, m_position);
+    }
+
+    ModifyTransformCommand::ModifyTransformCommand(HierarchyModel* model, QModelIndex index, Vector3 vector, VectorType type)
+    {
+        m_model = model;
+        m_gameObject = (GameObject*)index.internalPointer();
+        m_vector = vector;
+        m_type = type;
+    }
+
+    void ModifyTransformCommand::Execute()
+    {
+        if (m_gameObject != NULL)
+        {
+            switch (m_type)
+            {
+            case eVector_Position:
+                m_previousVector = m_gameObject->GetLocalTransform().GetPosition();
+                m_gameObject->GetLocalTransform().SetPosition(m_vector);
+                break;
+            case eVector_Rotation:
+                m_previousVector = m_gameObject->GetLocalTransform().GetRotation();
+                m_gameObject->GetLocalTransform().SetRotation(m_vector);
+                break;
+            case eVector_Scale:
+                m_previousVector = m_gameObject->GetLocalTransform().GetScale();
+                m_gameObject->GetLocalTransform().SetScale(m_vector);
+                break;
+            }
+        }
+    }
+
+    void ModifyTransformCommand::Undo()
+    {
+        if (m_gameObject != NULL)
+        {
+            switch (m_type)
+            {
+            case eVector_Position:
+                m_gameObject->GetLocalTransform().SetPosition(m_previousVector);
+                break;
+            case eVector_Rotation:
+                m_gameObject->GetLocalTransform().SetRotation(m_previousVector);
+                break;
+            case eVector_Scale:
+                m_gameObject->GetLocalTransform().SetScale(m_previousVector);
+                break;
+            }
+        }
     }
 }
