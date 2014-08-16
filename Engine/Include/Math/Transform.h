@@ -20,6 +20,9 @@ public:
     static Transform Identity;
 
     bool IsDirty();
+    bool HasChanged();
+    void ClearChangedFlag();
+
     void ComputeMatrixFromComponents();
 
     // TODO implement math convenience functions
@@ -31,6 +34,7 @@ private:
     Vector3     m_scale;
 
     bool        m_dirty;        // specifies whether matrix needs to be recomputed because components have changed
+    bool        m_changed;      // specifies whether matrix has changed since last frame
 };
 
 Transform operator *(Transform& a, Transform& b);

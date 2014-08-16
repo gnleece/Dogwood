@@ -9,6 +9,7 @@ Transform::Transform()
     m_rotation  = Vector3(0.0f, 0.0f, 0.0f);
     m_scale     = Vector3(1.0f, 1.0f, 1.0f);
     ComputeMatrixFromComponents();
+    m_changed = true;
 }
 
 void Transform::SetMatrix(Matrix4x4& m)
@@ -16,24 +17,28 @@ void Transform::SetMatrix(Matrix4x4& m)
     m_matrix = m;
     DecomposeMatrix(m_matrix, m_position, m_rotation, m_scale);
     m_dirty = false;
+    m_changed = true;
 }
 
 void Transform::SetPosition(Vector3& position)
 {
     m_position = position;
     m_dirty = true;
+    m_changed = true;
 }
 
 void Transform::SetRotation(Vector3& rotation)
 {
     m_rotation = rotation;
     m_dirty = true;
+    m_changed = true;
 }
 
 void Transform::SetScale(Vector3& scale)
 {
     m_scale = scale;
     m_dirty = true;
+    m_changed = true;
 }
 
 Matrix4x4& Transform::GetMatrix()
@@ -64,6 +69,16 @@ Vector3& Transform::GetScale()
 bool Transform::IsDirty()
 {
     return m_dirty;
+}
+
+bool Transform::HasChanged()
+{
+    return m_changed;
+}
+
+void Transform::ClearChangedFlag()
+{
+    m_changed = false;
 }
 
 void Transform::ComputeMatrixFromComponents()

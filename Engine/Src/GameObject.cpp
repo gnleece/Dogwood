@@ -135,12 +135,13 @@ void GameObject::Update(float deltaTime)
 
 void GameObject::Render(Transform& parentWorldTransform, bool dirty)
 {
-    dirty |= m_dirty;
+    dirty |= m_dirty | m_localTransform.HasChanged();
     if (dirty)
     {
         // hierarchy has changed so recompute world transform (and cache it)
         m_worldTransform = parentWorldTransform*m_localTransform;
         m_dirty = false;
+        m_localTransform.ClearChangedFlag();
     }
 
     // render the mesh, if there is one
