@@ -8,6 +8,8 @@
 
 using std::string;
 
+class MainEditorWindow;
+
 namespace Ui
 {
     class VectorEdit;
@@ -18,7 +20,7 @@ class VectorEdit : public QWidget
     Q_OBJECT
 
 public:
-    VectorEdit(QWidget* parent = 0);
+    VectorEdit(QWidget* parent = 0, MainEditorWindow* window = 0);
 
     void SetTitle(string title);
     void SetVector(Vector3& vector);
@@ -34,7 +36,8 @@ signals:
 private:
     float GetFloatFromTextEdit(QPlainTextEdit* textEdit);
 
-    Ui::VectorEdit* m_ui;
+    Ui::VectorEdit*     m_ui;
+    MainEditorWindow*   m_window;
 
-    Vector3         m_vector;
+    Vector3             m_vector;
 };

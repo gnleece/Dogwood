@@ -1,9 +1,11 @@
 #include "Widgets\VectorEdit.h"
 
 #include "..\GeneratedFiles\ui_vectoredit.h"
+#include "MainEditorWindow.h"
 
-VectorEdit::VectorEdit(QWidget* parent)
-: m_ui(new Ui::VectorEdit)
+VectorEdit::VectorEdit(QWidget* parent, MainEditorWindow* window)
+: m_ui(new Ui::VectorEdit),
+  m_window(window)
 {
     m_ui->setupUi(this);
 
@@ -49,9 +51,13 @@ void VectorEdit::setZ()
 void VectorEdit::SetVector(Vector3& vector)
 {
     m_vector = vector;
+
+    // block "vector changed" signals, because we are just displaying new values, not changing them
+    this->blockSignals(true);
     m_ui->textEdit_x->setPlainText(QString::number(m_vector[0]));
     m_ui->textEdit_y->setPlainText(QString::number(m_vector[1]));
     m_ui->textEdit_z->setPlainText(QString::number(m_vector[2]));
+    this->blockSignals(false);
 }
 
 float VectorEdit::GetFloatFromTextEdit(QPlainTextEdit* textEdit)
