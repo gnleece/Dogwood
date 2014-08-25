@@ -91,6 +91,9 @@
     <ClInclude Include="GeneratedFiles\ui_vectorwidget.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
+    <ClInclude Include="Include\EditorCommands.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GeneratedFiles\Debug\moc_HierarchyModel.cpp">
@@ -143,6 +146,9 @@
     </ClCompile>
     <ClCompile Include="Src\Widgets\VectorWidget.cpp">
       <Filter>Source Files\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\EditorCommands.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

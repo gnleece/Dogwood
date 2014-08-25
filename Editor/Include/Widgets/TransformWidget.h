@@ -31,7 +31,7 @@ private:
     MainEditorWindow*       m_window;
     GameObject*             m_gameObject;
 
-    VectorWidget*             m_positionWidget;
-    VectorWidget*             m_rotationWidget;
-    VectorWidget*             m_scaleWidget;
+    VectorWidget*           m_positionWidget;
+    VectorWidget*           m_rotationWidget;
+    VectorWidget*           m_scaleWidget;
 };

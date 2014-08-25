@@ -154,6 +154,7 @@
     <ClInclude Include="GeneratedFiles\ui_transformwidget.h" />
     <ClInclude Include="GeneratedFiles\ui_vectorwidget.h" />
     <ClInclude Include="Include\CommandManager.h" />
+    <ClInclude Include="Include\EditorCommands.h" />
     <CustomBuild Include="Include\Widgets\TransformWidget.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing TransformWidget.h...</Message>
@@ -242,6 +243,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Src\CommandManager.cpp" />
+    <ClCompile Include="Src\EditorCommands.cpp" />
     <ClCompile Include="Src\HierarchyModel.cpp" />
     <ClCompile Include="Src\main.cpp" />
     <ClCompile Include="Src\MainEditorWindow.cpp" />

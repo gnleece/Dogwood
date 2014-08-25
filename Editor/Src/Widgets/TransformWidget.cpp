@@ -12,7 +12,7 @@ TransformWidget::TransformWidget(QWidget* parent, MainEditorWindow* window)
 {
     m_ui->setupUi(this);
 
-    // Create vector edit widgets
+    // Create vector widgets
     m_positionWidget = new VectorWidget(this, window);
     m_positionWidget->SetTitle("Position");
     m_ui->verticalLayout->addWidget(m_positionWidget);
@@ -28,7 +28,7 @@ TransformWidget::TransformWidget(QWidget* parent, MainEditorWindow* window)
     // Connect to vector edit signals
     connect(m_positionWidget, SIGNAL(VectorChanged(Vector3&)), this, SLOT(UpdatePosition(Vector3&)));
     connect(m_rotationWidget, SIGNAL(VectorChanged(Vector3&)), this, SLOT(UpdateRotation(Vector3&)));
-    connect(m_scaleWidget, SIGNAL(VectorChanged(Vector3&)), this, SLOT(UpdateScale(Vector3&)));
+    connect(m_scaleWidget,    SIGNAL(VectorChanged(Vector3&)), this, SLOT(UpdateScale(Vector3&)));
 }
 
 void TransformWidget::SetGameObject(GameObject* gameObject)
