@@ -24,32 +24,34 @@ void CommandManager::ExecuteCommand(ICommand* command)
     }
 }
 
-void CommandManager::Undo(int numCommands)
+bool CommandManager::Undo(int numCommands)
 {
     for (int i = 0; i < numCommands; i++)
     {
         if (!CanUndo())
-            return;
+            return false;
         
         ICommand* command = m_commandStack.back();
         command->Undo();
         m_commandStack.pop_back();
         m_undoStack.push_back(command);
     }
+    return true;
 }
 
-void CommandManager::Redo(int numCommands)
+bool CommandManager::Redo(int numCommands)
 {
     for (int i = 0; i < numCommands; i++)
     {
         if (!CanRedo())
-            return;
+            return false;
 
         ICommand* command = m_undoStack.back();
         command->Execute();
         m_undoStack.pop_back();
         m_commandStack.push_back(command);
     }
+    return true;
 }
 
 bool CommandManager::CanUndo()

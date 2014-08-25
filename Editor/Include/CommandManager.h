@@ -19,8 +19,8 @@ public:
     const int MAX_STACK_SIZE = 20;
 
     void ExecuteCommand(ICommand* command);
-    void Undo(int numCommands = 1);
-    void Redo(int numCommands = 1);
+    bool Undo(int numCommands = 1);
+    bool Redo(int numCommands = 1);
 
     bool CanUndo();
     bool CanRedo();

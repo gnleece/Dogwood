@@ -27,10 +27,11 @@ class MainEditorWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainEditorWindow(QWidget *parent = 0);
+    explicit MainEditorWindow(QWidget* parent = 0);
     ~MainEditorWindow();
 
     void Paint();
+    virtual void resizeEvent(QResizeEvent* resizeEvent);
 
     void SetHierarchyModel(HierarchyModel* model);
     void DebugLog(string text);

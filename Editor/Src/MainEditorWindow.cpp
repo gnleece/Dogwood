@@ -69,15 +69,31 @@ void MainEditorWindow::DebugLog(string text)
 void MainEditorWindow::Undo()
 {
     // TODO disable menu option if undo is not currently available
-    DebugLog("Undo");
-    m_commandManager.Undo();
+    bool success = m_commandManager.Undo();
+
+    if (success)
+    {
+        DebugLog("Undo");
+    }
+    else
+    {
+        DebugLog("Can't undo. Stack is empty.");
+    }
 }
 
 void MainEditorWindow::Redo()
 {
     // TODO disable menu option if redo is not currently available
-    DebugLog("Redo");
-    m_commandManager.Redo();
+    bool success = m_commandManager.Redo();
+
+    if (success)
+    {
+        DebugLog("Redo");
+    }
+    else
+    {
+        DebugLog("Can't redo. Stack is empty.");
+    }
 }
 
 void MainEditorWindow::CreateGameObject()
@@ -131,4 +147,15 @@ void MainEditorWindow::OnSelectionChanged(const QItemSelection & selected, const
         m_transformWidget->SetGameObject(NULL);
         m_transformWidget->hide();
     }
+}
+
+void MainEditorWindow::resizeEvent(QResizeEvent* resizeEvent)
+{
+    QSize newSize = resizeEvent->size();
+    int width = newSize.width();
+    int height = newSize.height();
+
+    DebugLog("Window resize!");
+
+    //TODO: scale/reposition widgets
 }
