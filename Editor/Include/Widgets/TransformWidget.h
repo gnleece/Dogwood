@@ -5,7 +5,7 @@
 
 class GameObject;
 class MainEditorWindow;
-class VectorEdit;
+class VectorWidget;
 
 namespace Ui
 {
@@ -31,7 +31,7 @@ private:
     MainEditorWindow*       m_window;
     GameObject*             m_gameObject;
 
-    VectorEdit*             m_positionWidget;
-    VectorEdit*             m_rotationWidget;
-    VectorEdit*             m_scaleWidget;
+    VectorWidget*             m_positionWidget;
+    VectorWidget*             m_rotationWidget;
+    VectorWidget*             m_scaleWidget;
 };

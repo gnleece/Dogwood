@@ -152,7 +152,7 @@
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_maineditorwindow.h" />
     <ClInclude Include="GeneratedFiles\ui_transformwidget.h" />
-    <ClInclude Include="GeneratedFiles\ui_vectoredit.h" />
+    <ClInclude Include="GeneratedFiles\ui_vectorwidget.h" />
     <ClInclude Include="Include\CommandManager.h" />
     <CustomBuild Include="Include\Widgets\TransformWidget.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
@@ -164,13 +164,13 @@
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DNDEBUG -DQT_OPENGL_LIB "-I$(ProjectDir)\Include" "-I$(ProjectDir)\..\Libraries\tinyxml2" "-I$(ProjectDir)\..\Libraries\GLEW\include" "-I$(ProjectDir)\..\Libraries\GLFW\include" "-I$(ProjectDir)\..\Engine\Include" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtOpenGL"</Command>
     </CustomBuild>
-    <CustomBuild Include="Include\Widgets\VectorEdit.h">
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing VectorEdit.h...</Message>
+    <CustomBuild Include="Include\Widgets\VectorWidget.h">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing VectorWidget.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_LIB "-I$(ProjectDir)\Include" "-I$(ProjectDir)\..\Libraries\tinyxml2" "-I$(ProjectDir)\..\Libraries\GLEW\include" "-I$(ProjectDir)\..\Libraries\GLFW\include" "-I$(ProjectDir)\..\Engine\Include" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtOpenGL"</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing VectorEdit.h...</Message>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing VectorWidget.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DNDEBUG -DQT_OPENGL_LIB "-I$(ProjectDir)\Include" "-I$(ProjectDir)\..\Libraries\tinyxml2" "-I$(ProjectDir)\..\Libraries\GLEW\include" "-I$(ProjectDir)\..\Libraries\GLFW\include" "-I$(ProjectDir)\..\Engine\Include" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I." "-I$(QTDIR)\mkspecs\win32-msvc2013" "-I.\GeneratedFiles" "-I$(QTDIR)\include\QtOpenGL"</Command>
     </CustomBuild>
@@ -223,7 +223,7 @@
     <ClCompile Include="GeneratedFiles\Debug\moc_TransformWidget.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_VectorEdit.cpp">
+    <ClCompile Include="GeneratedFiles\Debug\moc_VectorWidget.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_GLWidget.cpp">
@@ -238,7 +238,7 @@
     <ClCompile Include="GeneratedFiles\Release\moc_TransformWidget.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_VectorEdit.cpp">
+    <ClCompile Include="GeneratedFiles\Release\moc_VectorWidget.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Src\CommandManager.cpp" />
@@ -247,10 +247,10 @@
     <ClCompile Include="Src\MainEditorWindow.cpp" />
     <ClCompile Include="Src\Widgets\GLWidget.cpp" />
     <ClCompile Include="Src\Widgets\TransformWidget.cpp" />
-    <ClCompile Include="Src\Widgets\VectorEdit.cpp" />
+    <ClCompile Include="Src\Widgets\VectorWidget.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="vectoredit.ui">
+    <CustomBuild Include="transformwidget.ui">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe;%(AdditionalInputs)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Uic%27ing %(Identity)...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\GeneratedFiles\ui_%(Filename).h;%(Outputs)</Outputs>
@@ -262,7 +262,7 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="transformwidget.ui">
+    <CustomBuild Include="vectorwidget.ui">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\uic.exe;%(AdditionalInputs)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Uic%27ing %(Identity)...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\GeneratedFiles\ui_%(Filename).h;%(Outputs)</Outputs>

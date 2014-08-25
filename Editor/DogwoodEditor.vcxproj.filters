@@ -65,17 +65,17 @@
     <CustomBuild Include="Include\Widgets\GLWidget.h">
       <Filter>Header Files\Widgets</Filter>
     </CustomBuild>
-    <CustomBuild Include="Include\Widgets\VectorEdit.h">
-      <Filter>Header Files\Widgets</Filter>
-    </CustomBuild>
-    <CustomBuild Include="vectoredit.ui">
-      <Filter>Form Files</Filter>
-    </CustomBuild>
     <CustomBuild Include="transformwidget.ui">
       <Filter>Form Files</Filter>
     </CustomBuild>
     <CustomBuild Include="Include\Widgets\TransformWidget.h">
       <Filter>Header Files\Widgets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Include\Widgets\VectorWidget.h">
+      <Filter>Header Files\Widgets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="vectorwidget.ui">
+      <Filter>Form Files</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
@@ -85,10 +85,10 @@
     <ClInclude Include="Include\CommandManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GeneratedFiles\ui_vectoredit.h">
+    <ClInclude Include="GeneratedFiles\ui_transformwidget.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
-    <ClInclude Include="GeneratedFiles\ui_transformwidget.h">
+    <ClInclude Include="GeneratedFiles\ui_vectorwidget.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -126,15 +126,6 @@
     <ClCompile Include="Src\Widgets\GLWidget.cpp">
       <Filter>Source Files\Widgets</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Widgets\VectorEdit.cpp">
-      <Filter>Source Files\Widgets</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_VectorEdit.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_VectorEdit.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
     <ClCompile Include="Src\Widgets\TransformWidget.cpp">
       <Filter>Source Files\Widgets</Filter>
     </ClCompile>
@@ -143,6 +134,15 @@
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_TransformWidget.cpp">
       <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_VectorWidget.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_VectorWidget.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Widgets\VectorWidget.cpp">
+      <Filter>Source Files\Widgets</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

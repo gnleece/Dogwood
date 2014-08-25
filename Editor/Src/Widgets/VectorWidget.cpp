@@ -1,10 +1,10 @@
-#include "Widgets\VectorEdit.h"
+#include "Widgets\VectorWidget.h"
 
-#include "..\GeneratedFiles\ui_vectoredit.h"
+#include "..\GeneratedFiles\ui_VectorWidget.h"
 #include "MainEditorWindow.h"
 
-VectorEdit::VectorEdit(QWidget* parent, MainEditorWindow* window)
-: m_ui(new Ui::VectorEdit),
+VectorWidget::VectorWidget(QWidget* parent, MainEditorWindow* window)
+: m_ui(new Ui::VectorWidget),
   m_window(window)
 {
     m_ui->setupUi(this);
@@ -25,30 +25,30 @@ VectorEdit::VectorEdit(QWidget* parent, MainEditorWindow* window)
     connect(m_ui->textEdit_z, SIGNAL(textChanged()), this, SLOT(setZ()));
 }
 
-void VectorEdit::SetTitle(string title)
+void VectorWidget::SetTitle(string title)
 {
     m_ui->label_title->setText(QString(title.c_str()));
 }
 
-void VectorEdit::setX()
+void VectorWidget::setX()
 {
     m_vector[0] = GetFloatFromTextEdit(m_ui->textEdit_x);
     emit VectorChanged(m_vector);
 }
 
-void VectorEdit::setY()
+void VectorWidget::setY()
 {
     m_vector[1] = GetFloatFromTextEdit(m_ui->textEdit_y);
     emit VectorChanged(m_vector);
 }
 
-void VectorEdit::setZ()
+void VectorWidget::setZ()
 {
     m_vector[2] = GetFloatFromTextEdit(m_ui->textEdit_z);
     emit VectorChanged(m_vector);
 }
 
-void VectorEdit::SetVector(Vector3& vector)
+void VectorWidget::SetVector(Vector3& vector)
 {
     m_vector = vector;
 
@@ -60,7 +60,7 @@ void VectorEdit::SetVector(Vector3& vector)
     this->blockSignals(false);
 }
 
-float VectorEdit::GetFloatFromTextEdit(QPlainTextEdit* textEdit)
+float VectorWidget::GetFloatFromTextEdit(QPlainTextEdit* textEdit)
 {
     // TODO error checking
     QString str = textEdit->toPlainText();

@@ -1,5 +1,5 @@
 #include "Widgets\TransformWidget.h"
-#include "Widgets\VectorEdit.h"
+#include "Widgets\VectorWidget.h"
 #include "MainEditorWindow.h"
 
 #include "GameObject.h"
@@ -13,15 +13,15 @@ TransformWidget::TransformWidget(QWidget* parent, MainEditorWindow* window)
     m_ui->setupUi(this);
 
     // Create vector edit widgets
-    m_positionWidget = new VectorEdit(this, window);
+    m_positionWidget = new VectorWidget(this, window);
     m_positionWidget->SetTitle("Position");
     m_ui->verticalLayout->addWidget(m_positionWidget);
 
-    m_rotationWidget = new VectorEdit(this, window);
+    m_rotationWidget = new VectorWidget(this, window);
     m_rotationWidget->SetTitle("Rotation");
     m_ui->verticalLayout->addWidget(m_rotationWidget);
 
-    m_scaleWidget = new VectorEdit(this, window);
+    m_scaleWidget = new VectorWidget(this, window);
     m_scaleWidget->SetTitle("Scale");
     m_ui->verticalLayout->addWidget(m_scaleWidget);
 
