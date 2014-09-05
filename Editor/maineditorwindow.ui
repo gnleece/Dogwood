@@ -44,6 +44,15 @@
       <height>481</height>
      </rect>
     </property>
+    <property name="dragEnabled">
+     <bool>true</bool>
+    </property>
+    <property name="dragDropMode">
+     <enum>QAbstractItemView::InternalMove</enum>
+    </property>
+    <property name="defaultDropAction">
+     <enum>Qt::MoveAction</enum>
+    </property>
    </widget>
    <widget class="QTextEdit" name="textEdit_DebugOutput">
     <property name="enabled">

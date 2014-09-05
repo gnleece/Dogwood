@@ -81,10 +81,12 @@ bool HierarchyModel::setData(const QModelIndex &index, const QVariant &value, in
 
 Qt::ItemFlags HierarchyModel::flags(const QModelIndex &index) const
 {
-    if (!index.isValid())
-        return 0;
+    Qt::ItemFlags defaultFlags = QAbstractItemModel::flags(index);
 
-    return Qt::ItemIsEditable | QAbstractItemModel::flags(index);
+    if (index.isValid())
+        return Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | Qt::ItemIsEditable |defaultFlags;
+    else
+        return Qt::ItemIsDropEnabled | defaultFlags;
 }
 
 int HierarchyModel::columnCount(const QModelIndex & /* parent */) const
@@ -139,4 +141,9 @@ GameObject* HierarchyModel::getItem(const QModelIndex &index) const
             return item;
     }
     return m_rootItem;
+}
+
+Qt::DropActions HierarchyModel::supportedDropActions() const
+{
+    return Qt::CopyAction | Qt::MoveAction;
 }

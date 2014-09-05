@@ -26,6 +26,8 @@ public:
     bool            insertChild(QModelIndex parentIndex, GameObject* parent, GameObject* child, int position);
     bool            removeRows(int position, int rows, const QModelIndex &parent = QModelIndex());
 
+    Qt::DropActions supportedDropActions() const;
+
 private:
     GameObject*   getItem(const QModelIndex &index) const;
 
