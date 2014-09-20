@@ -80,7 +80,7 @@ int GameObject::GetChildCount()
 
 bool GameObject::InsertChildren(int position, int count)
 {
-    if (position < 0 || position > m_children.size())
+    if (position < 0)
         return false;
 
     for (int i = 0; i < count; i++)
@@ -95,7 +95,7 @@ bool GameObject::InsertChildren(int position, int count)
 
 bool GameObject::InsertChild(int position, GameObject* child)
 {
-    if (child == NULL || position < 0 || position > m_children.size())
+    if (child == NULL || position < 0)
         return false;
 
     child->SetParent(this, position);
@@ -171,7 +171,7 @@ MeshInstance* GameObject::GetMesh()
 
 void GameObject::AddChild(GameObject* child, int index)
 {
-    if (index >= 0)
+    if (index >= 0 && index < m_children.size())
     {
         m_children.insert(m_children.begin() + index, child);
     }

@@ -148,6 +148,13 @@ Qt::DropActions HierarchyModel::supportedDropActions() const
     return Qt::CopyAction | Qt::MoveAction;
 }
 
+QStringList HierarchyModel::mimeTypes() const
+{
+    QStringList types;
+    types << "application/vnd.text.list";
+    return types;
+}
+
 QMimeData* HierarchyModel::mimeData(const QModelIndexList &indexes) const
 {
     QMimeData *mimeData = new QMimeData();

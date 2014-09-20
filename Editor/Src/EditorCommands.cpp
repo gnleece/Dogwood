@@ -12,12 +12,12 @@ namespace EditorCommands
 
     void CreateGameObjectCommand::Execute()
     {
-        m_model->insertRow(m_index.row() + 1, m_index.parent());
+        m_model->insertRow(0, m_index);
     }
 
     void CreateGameObjectCommand::Undo()
     {
-        m_model->removeRow(m_index.row() + 1, m_index.parent());
+        m_model->removeRow(0, m_index);
     }
 
     //-----------------------------------------------------------------------------------------------
