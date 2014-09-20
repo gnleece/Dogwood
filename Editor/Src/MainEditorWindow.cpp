@@ -69,7 +69,7 @@ void MainEditorWindow::DebugLog(string text)
 void MainEditorWindow::Undo()
 {
     // TODO disable menu option if undo is not currently available
-    bool success = m_commandManager.Undo();
+    bool success = CommandManager::Singleton().Undo();
 
     if (success)
     {
@@ -84,7 +84,7 @@ void MainEditorWindow::Undo()
 void MainEditorWindow::Redo()
 {
     // TODO disable menu option if redo is not currently available
-    bool success = m_commandManager.Redo();
+    bool success = CommandManager::Singleton().Redo();
 
     if (success)
     {
@@ -103,7 +103,7 @@ void MainEditorWindow::CreateGameObject()
     QModelIndex index = m_view->selectionModel()->currentIndex();
     HierarchyModel* model = (HierarchyModel*)(m_view->model());
     CreateGameObjectCommand* command = new CreateGameObjectCommand(model, index);
-    m_commandManager.ExecuteCommand(command);
+    CommandManager::Singleton().ExecuteCommand(command);
 }
 
 void MainEditorWindow::DeleteGameObject()
@@ -113,7 +113,7 @@ void MainEditorWindow::DeleteGameObject()
     QModelIndex index = m_view->selectionModel()->currentIndex();
     HierarchyModel* model = (HierarchyModel*)(m_view->model());
     DeleteGameObjectCommand* command = new DeleteGameObjectCommand(model, index);
-    m_commandManager.ExecuteCommand(command);
+    CommandManager::Singleton().ExecuteCommand(command);
 }
 
 // TODO: discard trivial updates that don't actually modify values
@@ -124,7 +124,7 @@ void MainEditorWindow::UpdateGameObjectTransform(Vector3 vector, VectorType type
     QModelIndex index = m_view->selectionModel()->currentIndex();
     HierarchyModel* model = (HierarchyModel*)(m_view->model());
     ModifyTransformCommand* command = new ModifyTransformCommand(model, index, vector, type);
-    m_commandManager.ExecuteCommand(command);
+    CommandManager::Singleton().ExecuteCommand(command);
 }
 
 void MainEditorWindow::OnSelectionChanged(const QItemSelection & selected, const QItemSelection & deselected)

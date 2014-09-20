@@ -46,8 +46,6 @@ private:
     QTreeView*              m_view;
     HierarchyModel*         m_model;
 
-    CommandManager          m_commandManager;
-
 private slots:
     void CreateGameObject();
     void DeleteGameObject();

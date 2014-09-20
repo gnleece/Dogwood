@@ -40,7 +40,11 @@ EDITOR (Thicket)
     * Modify scene
         * Reparent game objects, with undo/redo
         * Undo/redo object rename
-        * Create object as children of selected object, not siblings
+        * Copy/paste game objects
+
+    * Save scene to file
+    * Open/load arbitrary scene file
+
     * Show world space gnomon
     * Show local space gnomon on selected object
     * Transform widgets
@@ -51,12 +55,13 @@ EDITOR (Thicket)
     * Object picking (from scene view)
     * Unit grid on x-z plane
 
-    * Save scene to file
-
     * Window resizing
 
     * Prefabs
     * "Project" files?
+
+    BUGS:
+        - Something wrong with redo stack (can't always redo all the way)
 
 ---------------------------------------------------------------------------
 

@@ -2,8 +2,10 @@
 
 #include <QtWidgets>
 #include <string>
+#include <EditorCommands.h>
 
 using std::string;
+using namespace EditorCommands;
 
 HierarchyModel::HierarchyModel(GameObject* root, QObject *parent)
 : m_rootItem(root),
@@ -66,17 +68,28 @@ QVariant HierarchyModel::headerData(int section, Qt::Orientation orientation, in
     return QVariant();
 }
 
+// This function is an implementation of a virtual function provided by QAbstractItemModel.
+// It is called automatically when the user edits the name of an object in the editor window.
+// Instead of actually setting the name here, we use a Command so that this action can be
+// undone/recond by the CommandManager. The Command will do the actual rename using setItemName()
 bool HierarchyModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
     if (role != Qt::EditRole)
         return false;
 
-    GameObject *item = getItem(index);
-    item->SetName(value.toString().toStdString());
-
-    emit dataChanged(index, index);     // TODO do we need to test a return value here?
+    RenameGameObjectCommand* command = new RenameGameObjectCommand(this, index, value.toString().toStdString());
+    CommandManager::Singleton().ExecuteCommand(command);
 
     return true;
+}
+
+// This is the function that ACTUALLY sets the name of an object. It is called by the Command
+// for renaming game objects.
+void HierarchyModel::setItemName(const QModelIndex &index, string name)
+{
+    GameObject *item = getItem(index);
+    item->SetName(name);
+    emit dataChanged(index, index);
 }
 
 Qt::ItemFlags HierarchyModel::flags(const QModelIndex &index) const

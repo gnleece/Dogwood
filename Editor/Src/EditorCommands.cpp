@@ -45,6 +45,26 @@ namespace EditorCommands
 
     //-----------------------------------------------------------------------------------------------
 
+    RenameGameObjectCommand::RenameGameObjectCommand(HierarchyModel* model, QModelIndex index, string name)
+    {
+        m_model = model;
+        m_index = index;
+        m_name = name;
+        m_previousName = m_model->getItem(index)->GetName();
+    }
+
+    void RenameGameObjectCommand::Execute()
+    {
+        m_model->setItemName(m_index, m_name);
+    }
+
+    void RenameGameObjectCommand::Undo()
+    {
+        m_model->setItemName(m_index, m_previousName);
+    }
+
+    //-----------------------------------------------------------------------------------------------
+
     ModifyTransformCommand::ModifyTransformCommand(HierarchyModel* model, QModelIndex index, Vector3 vector, VectorType type)
     {
         m_model = model;

@@ -61,7 +61,7 @@
           <Transform>
             <Position x="0.0" y="1.5" z="0" />
             <Rotation x="13.7" y="60"  z="70" />
-            <Scale x="1" y="1" z="1" />
+            <Scale x="0.8" y="0.8" z="0.8" />
           </Transform>
           <Mesh guid="2002">
             <Material>

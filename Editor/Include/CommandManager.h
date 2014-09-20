@@ -16,6 +16,13 @@ public:
 class CommandManager
 {
 public:
+    static CommandManager& Singleton()
+    {
+        static CommandManager singleton;
+        return singleton;
+    }
+    CommandManager() {}
+
     const int MAX_STACK_SIZE = 20;
 
     void ExecuteCommand(ICommand* command);
