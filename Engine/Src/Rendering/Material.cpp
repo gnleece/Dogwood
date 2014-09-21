@@ -11,6 +11,19 @@ Material::Material()
     m_colours[MAT_COLOUR_SPECULAR] = ColourRGB::White;
 }
 
+Material* Material::DeepCopy()
+{
+    Material* newMaterial = new Material();
+
+    newMaterial->m_shader = m_shader;
+    newMaterial->m_texture = m_texture;
+    newMaterial->m_colours[MAT_COLOUR_DIFFUSE] = m_colours[MAT_COLOUR_DIFFUSE];
+    newMaterial->m_colours[MAT_COLOUR_AMBIENT] = m_colours[MAT_COLOUR_AMBIENT];
+    newMaterial->m_colours[MAT_COLOUR_SPECULAR] = m_colours[MAT_COLOUR_SPECULAR];
+
+    return newMaterial;
+}
+
 void Material::SetShader(ShaderProgram* shader)
 {
     m_shader = shader;

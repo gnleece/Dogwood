@@ -111,6 +111,29 @@ bool GameObject::RemoveChildren(int position, int count)
     return true;
 }
 
+GameObject* GameObject::DeepCopy(GameObject* parent)
+{
+    GameObject* newGO = new GameObject(m_name, parent);
+    newGO->SetLocalTransform(m_localTransform);
+    // TODO set id
+
+    if (m_mesh != NULL)
+    {
+        newGO->SetMesh(m_mesh->DeepCopy());
+    }
+
+    // TODO copy other components
+
+    std::vector<GameObject*>::iterator childIter;
+    for (childIter = m_children.begin(); childIter != m_children.end(); childIter++)
+    {
+        GameObject* child = *childIter;
+        child->DeepCopy(newGO);
+    }
+
+    return newGO;
+}
+
 void GameObject::Start()
 {
     // start all components

@@ -38,6 +38,8 @@ public:
     bool InsertChild(int position, GameObject* child);  // TODO this needs some cleanup
     bool RemoveChildren(int position, int count);
 
+    GameObject* DeepCopy(GameObject* parent = NULL);
+
     void Start();
     void Update(float deltaTime);
     void OnEnable();

@@ -25,6 +25,8 @@ public:
 
     Material();
 
+    Material* DeepCopy();
+
     void SetShader(ShaderProgram* shader);
     void SetTexture(Texture* texture);
     void SetColour(eMatColourType type, ColourRGB colour);

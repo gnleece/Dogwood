@@ -77,6 +77,9 @@
     <CustomBuild Include="vectorwidget.ui">
       <Filter>Form Files</Filter>
     </CustomBuild>
+    <CustomBuild Include="Include\GameObjectMimeData.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_maineditorwindow.h">
@@ -148,6 +151,15 @@
       <Filter>Source Files\Widgets</Filter>
     </ClCompile>
     <ClCompile Include="Src\EditorCommands.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_GameObjectMimeData.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_GameObjectMimeData.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\GameObjectMimeData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

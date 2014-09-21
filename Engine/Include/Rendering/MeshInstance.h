@@ -17,6 +17,8 @@ public:
     void SetMaterial(Material* material)    { m_material = material; }
     Material* GetMaterial()                 { return m_material; }
 
+    MeshInstance* DeepCopy();
+
 private:
     Mesh*       m_mesh;
     Material*   m_material;

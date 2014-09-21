@@ -37,24 +37,27 @@ ENGINE (Dogwood)
 ---------------------------------------------------------------------------
 
 EDITOR (Thicket)
-    * Modify scene
+    * Hierarchy Modification
         * Reparent game objects, with undo/redo
-        * Undo/redo object rename
         * Copy/paste game objects
+        * Expand parent object when creating children (via create, drag/drop, or redo)
 
-    * Save scene to file
-    * Open/load arbitrary scene file
+    * Save/Load
+        * Save scene to file
+        * Open/load arbitrary scene file
 
-    * Show world space gnomon
-    * Show local space gnomon on selected object
-    * Transform widgets
-        * Translate
-        * Rotate
-        * Scale
+    * Visuals
+        * Show world space gnomon
+        * Show local space gnomon on selected object
+        * Unit grid on x-z plane
 
-    * Object picking (from scene view)
-    * Unit grid on x-z plane
-
+    * Object manipulation
+        * Transform widgets
+            * Translate
+            * Rotate
+            * Scale
+        * Object picking (from scene view)
+    
     * Window resizing
 
     * Prefabs
@@ -62,6 +65,7 @@ EDITOR (Thicket)
 
     BUGS:
         - Something wrong with redo stack (can't always redo all the way)
+        - Recompute world transform when reparenting
 
 ---------------------------------------------------------------------------
 

@@ -3,6 +3,7 @@
 #include <QtWidgets>
 #include <string>
 #include <EditorCommands.h>
+#include "GameObjectMimeData.h"
 
 using std::string;
 using namespace EditorCommands;
@@ -158,33 +159,30 @@ GameObject* HierarchyModel::getItem(const QModelIndex &index) const
 
 Qt::DropActions HierarchyModel::supportedDropActions() const
 {
-    return Qt::CopyAction | Qt::MoveAction;
+    return Qt::MoveAction;
 }
 
 QStringList HierarchyModel::mimeTypes() const
 {
     QStringList types;
-    types << "application/vnd.text.list";
+    types << "DogwoodEngine/GameObject";
     return types;
 }
 
 QMimeData* HierarchyModel::mimeData(const QModelIndexList &indexes) const
 {
-    QMimeData *mimeData = new QMimeData();
-    QByteArray encodedData;
-
-    QDataStream stream(&encodedData, QIODevice::WriteOnly);
-
+    // TODO support list of gameobjects
+    GameObjectMimeData *mimeData;
     foreach(const QModelIndex &index, indexes)
     {
         if (index.isValid())
         {
-            QString text = data(index, Qt::DisplayRole).toString();
-            stream << text;
+            GameObject* go = getItem(index);
+            mimeData = new GameObjectMimeData(go);
+            break;      // only grab first object TODO fix this
         }
     }
 
-    mimeData->setData("application/vnd.text.list", encodedData);
     return mimeData;
 }
 
@@ -193,42 +191,24 @@ bool HierarchyModel::dropMimeData(const QMimeData* data, Qt::DropAction action, 
     if (action == Qt::IgnoreAction)
         return true;
 
-    if (!data->hasFormat("application/vnd.text.list"))
+    if (!data->hasFormat("DogwoodEngine/GameObject"))
         return false;
 
     if (column > 0)
         return false;
 
-    int beginRow;
+    GameObjectMimeData* goData = (GameObjectMimeData*)(data);
 
-    if (row != -1)
-        beginRow = row;
-
-    else if (parent.isValid())
-        beginRow = parent.row();
-
-    else
-        beginRow = rowCount(QModelIndex());
-
-    QByteArray encodedData = data->data("application/vnd.text.list");
-    QDataStream stream(&encodedData, QIODevice::ReadOnly);
-    QStringList newItems;
-    int rows = 0;
-
-    while (!stream.atEnd())
+    // We copy the game object and insert the new version instead of just using the original,
+    // because the original will be deleted by an automatic call to removeRows
+    GameObject* go = goData->getGameObject()->DeepCopy();
+    if (parent.isValid())
     {
-        QString text;
-        stream >> text;
-        newItems << text;
-        ++rows;
+        insertChild(parent, getItem(parent), go, 0);
     }
-
-    insertRows(beginRow, rows, QModelIndex());
-    foreach(const QString &text, newItems)
+    else
     {
-        QModelIndex idx = index(beginRow, 0, QModelIndex());
-        setData(idx, text);
-        beginRow++;
+        // TODO handle dropping at top level (root)
     }
 
     return true;
