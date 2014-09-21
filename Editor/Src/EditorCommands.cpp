@@ -1,5 +1,6 @@
 #include "EditorCommands.h"
 #include "GameObject.h"
+#include "GameObjectMimeData.h"
 #include "HierarchyModel.h"
 
 namespace EditorCommands
@@ -28,8 +29,8 @@ namespace EditorCommands
         m_index = index;
 
         // TODO handle null parent (deleting the root)
-        m_gameObject = (GameObject*)m_index.internalPointer();
-        m_parent = (GameObject*)m_index.parent().internalPointer();
+        m_gameObject = m_model->getItem(m_index);
+        m_parent = m_model->getItem(m_index.parent());
         m_position = m_index.row();
     }
 
@@ -61,6 +62,46 @@ namespace EditorCommands
     void RenameGameObjectCommand::Undo()
     {
         m_model->setItemName(m_index, m_previousName);
+    }
+
+    //-----------------------------------------------------------------------------------------------
+
+    ReparentGameObjectCommand::ReparentGameObjectCommand(HierarchyModel* model, GameObjectMimeData* mimeData, const QModelIndex& newParentIndex)
+    {
+        m_model = model;
+        m_mimeData = mimeData;
+        m_newParentIndex = newParentIndex;
+    }
+
+    void ReparentGameObjectCommand::Execute()
+    {
+        // Remove the original version of the child. Removal must be done first or Qt gets confused
+        m_model->removeRow(m_mimeData->getOriginalRow(), m_mimeData->getOriginalParentIndex());
+
+        // Add the child to the new parent
+        if (m_newParentIndex.isValid())
+        {
+            m_model->insertChild(m_newParentIndex,
+                                 m_model->getItem(m_newParentIndex),
+                                 m_mimeData->getGameObject(),
+                                 0);
+        }
+        else
+        {
+            // TODO handle dropping at top level (root)
+        }
+    }
+
+    void ReparentGameObjectCommand::Undo()
+    {
+        // Remove the object from the new parent. Removal must be done first or Qt gets confused
+        m_model->removeRow(0, m_newParentIndex);
+
+        // Add the object back to the old parent
+        m_model->insertChild(m_mimeData->getOriginalParentIndex(),
+                             m_model->getItem(m_mimeData->getOriginalParentIndex()), 
+                             m_mimeData->getGameObject(),
+                             m_mimeData->getOriginalRow());
     }
 
     //-----------------------------------------------------------------------------------------------

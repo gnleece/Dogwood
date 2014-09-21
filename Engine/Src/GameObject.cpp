@@ -42,6 +42,8 @@ void GameObject::SetParent(GameObject* parent, int index)
     {
         m_parent->AddChild(this, index);
     }
+
+    m_dirty = true;
 }
 
 void GameObject::AddComponent(GameComponent* component)

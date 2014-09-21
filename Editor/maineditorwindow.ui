@@ -51,10 +51,13 @@
      <bool>true</bool>
     </property>
     <property name="dragDropMode">
-     <enum>QAbstractItemView::InternalMove</enum>
+     <enum>QAbstractItemView::DragDrop</enum>
     </property>
     <property name="defaultDropAction">
-     <enum>Qt::MoveAction</enum>
+     <enum>Qt::CopyAction</enum>
+    </property>
+    <property name="alternatingRowColors">
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="QTextEdit" name="textEdit_DebugOutput">

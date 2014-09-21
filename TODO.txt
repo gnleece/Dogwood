@@ -38,7 +38,6 @@ ENGINE (Dogwood)
 
 EDITOR (Thicket)
     * Hierarchy Modification
-        * Reparent game objects, with undo/redo
         * Copy/paste game objects
         * Expand parent object when creating children (via create, drag/drop, or redo)
 
@@ -65,7 +64,6 @@ EDITOR (Thicket)
 
     BUGS:
         - Something wrong with redo stack (can't always redo all the way)
-        - Recompute world transform when reparenting
 
 ---------------------------------------------------------------------------
 

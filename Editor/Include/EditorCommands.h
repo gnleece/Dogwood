@@ -14,6 +14,7 @@
 
 class GameObject;
 class HierarchyModel;
+class GameObjectMimeData;
 
 using std::string;
 
@@ -59,10 +60,17 @@ namespace EditorCommands
         string          m_previousName;
     };
 
-    // TODO: implement me
-    //class ReparentGameObjectCommand : public ICommand
-    //{
-    //};
+    class ReparentGameObjectCommand : public ICommand
+    {
+    public:
+        ReparentGameObjectCommand(HierarchyModel* model, GameObjectMimeData* mimeData, const QModelIndex& newParentIndex);
+        void Execute();
+        void Undo();
+    private:
+        HierarchyModel*     m_model;
+        GameObjectMimeData* m_mimeData;
+        QModelIndex         m_newParentIndex;
+    };
 
     class ModifyTransformCommand : public ICommand
     {

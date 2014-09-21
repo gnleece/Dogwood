@@ -157,9 +157,17 @@ GameObject* HierarchyModel::getItem(const QModelIndex &index) const
     return m_rootItem;
 }
 
+// We do a CopyAction instead of a MoveAction for drag & drop so that
+// removeRows() doesn't get called automatically by Qt. We want to manually do the
+// remove ourselves so that we can make it work with the undo/redo stack
+Qt::DropActions HierarchyModel::supportedDragActions() const
+{
+    return Qt::CopyAction;
+}
+
 Qt::DropActions HierarchyModel::supportedDropActions() const
 {
-    return Qt::MoveAction;
+    return Qt::CopyAction;
 }
 
 QStringList HierarchyModel::mimeTypes() const
@@ -177,8 +185,7 @@ QMimeData* HierarchyModel::mimeData(const QModelIndexList &indexes) const
     {
         if (index.isValid())
         {
-            GameObject* go = getItem(index);
-            mimeData = new GameObjectMimeData(go);
+            mimeData = new GameObjectMimeData(getItem(index), index.row(), index.parent());
             break;      // only grab first object TODO fix this
         }
     }
@@ -199,17 +206,8 @@ bool HierarchyModel::dropMimeData(const QMimeData* data, Qt::DropAction action, 
 
     GameObjectMimeData* goData = (GameObjectMimeData*)(data);
 
-    // We copy the game object and insert the new version instead of just using the original,
-    // because the original will be deleted by an automatic call to removeRows
-    GameObject* go = goData->getGameObject()->DeepCopy();
-    if (parent.isValid())
-    {
-        insertChild(parent, getItem(parent), go, 0);
-    }
-    else
-    {
-        // TODO handle dropping at top level (root)
-    }
+    ReparentGameObjectCommand* command = new ReparentGameObjectCommand(this, goData, parent);
+    CommandManager::Singleton().ExecuteCommand(command);
 
     return true;
 }
