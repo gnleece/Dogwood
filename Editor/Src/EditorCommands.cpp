@@ -3,17 +3,21 @@
 #include "GameObjectMimeData.h"
 #include "HierarchyModel.h"
 
+#include <QtWidgets>
+
 namespace EditorCommands
 {
-    CreateGameObjectCommand::CreateGameObjectCommand(HierarchyModel* model, QModelIndex index)
+    CreateGameObjectCommand::CreateGameObjectCommand(HierarchyModel* model, QTreeView* view, QModelIndex index)
     {
         m_model = model;
         m_index = index;
+        m_view = view;
     }
 
     void CreateGameObjectCommand::Execute()
     {
         m_model->insertRow(0, m_index);
+        m_view->setExpanded(m_index, true);
     }
 
     void CreateGameObjectCommand::Undo()
@@ -23,9 +27,10 @@ namespace EditorCommands
 
     //-----------------------------------------------------------------------------------------------
 
-    DeleteGameObjectCommand::DeleteGameObjectCommand(HierarchyModel* model, QModelIndex index)
+    DeleteGameObjectCommand::DeleteGameObjectCommand(HierarchyModel* model, QTreeView* view, QModelIndex index)
     {
         m_model = model;
+        m_view = view;
         m_index = index;
 
         // TODO handle null parent (deleting the root)
@@ -42,6 +47,7 @@ namespace EditorCommands
     void DeleteGameObjectCommand::Undo()
     {
         m_model->insertChild(m_index.parent(), m_parent, m_gameObject, m_position);
+        m_view->setExpanded(m_index.parent(), true);
     }
 
     //-----------------------------------------------------------------------------------------------
@@ -85,6 +91,8 @@ namespace EditorCommands
                                  m_model->getItem(m_newParentIndex),
                                  m_mimeData->getGameObject(),
                                  0);
+
+            // TODO make auto-expand work here
         }
         else
         {
@@ -102,13 +110,16 @@ namespace EditorCommands
                              m_model->getItem(m_mimeData->getOriginalParentIndex()), 
                              m_mimeData->getGameObject(),
                              m_mimeData->getOriginalRow());
+
+        // TODO make auto-expand work here
     }
 
     //-----------------------------------------------------------------------------------------------
 
-    PasteGameObjectCommand::PasteGameObjectCommand(HierarchyModel* model, QModelIndex index, GameObject* gameObject)
+    PasteGameObjectCommand::PasteGameObjectCommand(HierarchyModel* model, QTreeView* view, QModelIndex index, GameObject* gameObject)
     {
         m_model = model;
+        m_view = view;
         m_index = index;
         m_gameObject = gameObject->DeepCopy();
         m_parentObject = m_model->getItem(m_index);
@@ -117,6 +128,7 @@ namespace EditorCommands
     void PasteGameObjectCommand::Execute()
     {
         m_model->insertChild(m_index, m_parentObject, m_gameObject, 0);
+        m_view->setExpanded(m_index, true);
     }
 
     void PasteGameObjectCommand::Undo()

@@ -4,6 +4,7 @@
 #include <QModelIndex>
 
 class GameObject;
+class QTreeView;
 
 class GameObjectMimeData : public QMimeData
 {

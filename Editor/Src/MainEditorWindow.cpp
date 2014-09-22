@@ -104,8 +104,7 @@ void MainEditorWindow::CreateGameObject()
     DebugLog("Creating game object");
 
     QModelIndex index = m_view->selectionModel()->currentIndex();
-    HierarchyModel* model = (HierarchyModel*)(m_view->model());
-    CreateGameObjectCommand* command = new CreateGameObjectCommand(model, index);
+    CreateGameObjectCommand* command = new CreateGameObjectCommand(m_model, m_view, index);
     CommandManager::Singleton().ExecuteCommand(command);
 }
 
@@ -114,17 +113,15 @@ void MainEditorWindow::DeleteGameObject()
     DebugLog("Deleting game object");
 
     QModelIndex index = m_view->selectionModel()->currentIndex();
-    HierarchyModel* model = (HierarchyModel*)(m_view->model());
-    DeleteGameObjectCommand* command = new DeleteGameObjectCommand(model, index);
+    DeleteGameObjectCommand* command = new DeleteGameObjectCommand(m_model, m_view, index);
     CommandManager::Singleton().ExecuteCommand(command);
 }
 
 void MainEditorWindow::CopyGameObject()
 {
     QModelIndex index = m_view->selectionModel()->currentIndex();
-    HierarchyModel* model = (HierarchyModel*)(m_view->model());
 
-    m_copiedGameObject = index.isValid() ? model->getItem(index) : NULL;
+    m_copiedGameObject = index.isValid() ? m_model->getItem(index) : NULL;
 
     if (m_copiedGameObject != NULL)
     {
@@ -139,15 +136,14 @@ void MainEditorWindow::CopyGameObject()
 void MainEditorWindow::CutGameObject()
 {
     QModelIndex index = m_view->selectionModel()->currentIndex();
-    HierarchyModel* model = (HierarchyModel*)(m_view->model());
 
-    m_copiedGameObject = index.isValid() ? model->getItem(index) : NULL;
+    m_copiedGameObject = index.isValid() ? m_model->getItem(index) : NULL;
 
     if (m_copiedGameObject != NULL)
     {
         DebugLog("Cutting game object");
 
-        DeleteGameObjectCommand* command = new DeleteGameObjectCommand(model, index);
+        DeleteGameObjectCommand* command = new DeleteGameObjectCommand(m_model, m_view, index);
         CommandManager::Singleton().ExecuteCommand(command);
     }
     else
@@ -163,8 +159,7 @@ void MainEditorWindow::PasteGameObject()
         DebugLog("Pasting game object");
 
         QModelIndex index = m_view->selectionModel()->currentIndex();
-        HierarchyModel* model = (HierarchyModel*)(m_view->model());
-        PasteGameObjectCommand* command = new PasteGameObjectCommand(model, index, m_copiedGameObject);
+        PasteGameObjectCommand* command = new PasteGameObjectCommand(m_model, m_view, index, m_copiedGameObject);
         CommandManager::Singleton().ExecuteCommand(command);
     }
     else
@@ -179,8 +174,7 @@ void MainEditorWindow::UpdateGameObjectTransform(Vector3 vector, VectorType type
     DebugLog("Updating gameobject transform");
 
     QModelIndex index = m_view->selectionModel()->currentIndex();
-    HierarchyModel* model = (HierarchyModel*)(m_view->model());
-    ModifyTransformCommand* command = new ModifyTransformCommand(model, index, vector, type);
+    ModifyTransformCommand* command = new ModifyTransformCommand(m_model, index, vector, type);
     CommandManager::Singleton().ExecuteCommand(command);
 }
 
@@ -190,7 +184,7 @@ void MainEditorWindow::OnSelectionChanged(const QItemSelection & selected, const
 
     // Get the selected game object
     const QModelIndex index = m_view->selectionModel()->currentIndex();
-    GameObject* go = (GameObject*)index.internalPointer();
+    GameObject* go = m_model->getItem(index);
 
     if (go != NULL)
     {

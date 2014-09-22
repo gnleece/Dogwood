@@ -15,6 +15,7 @@
 class GameObject;
 class HierarchyModel;
 class GameObjectMimeData;
+class QTreeView;
 
 using std::string;
 
@@ -25,22 +26,24 @@ namespace EditorCommands
     class CreateGameObjectCommand : public ICommand
     {
     public:
-        CreateGameObjectCommand(HierarchyModel* model, QModelIndex index);
+        CreateGameObjectCommand(HierarchyModel* model, QTreeView* view, QModelIndex index);
         void Execute();
         void Undo();
     private:
         HierarchyModel* m_model;
+        QTreeView*      m_view;
         QModelIndex     m_index;
     };
 
     class DeleteGameObjectCommand : public ICommand
     {
     public:
-        DeleteGameObjectCommand(HierarchyModel* model, QModelIndex index);
+        DeleteGameObjectCommand(HierarchyModel* model, QTreeView* view, QModelIndex index);
         void Execute();
         void Undo();
     private:
         HierarchyModel* m_model;
+        QTreeView*      m_view;
         GameObject*     m_gameObject;
         int             m_position;
         QModelIndex     m_index;
@@ -75,11 +78,12 @@ namespace EditorCommands
     class PasteGameObjectCommand : public ICommand
     {
     public:
-        PasteGameObjectCommand(HierarchyModel* model, QModelIndex index, GameObject* gameObject);
+        PasteGameObjectCommand(HierarchyModel* model, QTreeView* view, QModelIndex index, GameObject* gameObject);
         void Execute();
         void Undo();
     private:
         HierarchyModel* m_model;
+        QTreeView*      m_view;
         QModelIndex     m_index;
         GameObject*     m_gameObject;
         GameObject*     m_parentObject;

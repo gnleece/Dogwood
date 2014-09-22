@@ -37,9 +37,6 @@ ENGINE (Dogwood)
 ---------------------------------------------------------------------------
 
 EDITOR (Thicket)
-    * Hierarchy Modification
-        * Copy/paste game objects
-        * Expand parent object when creating children (via create, drag/drop, or redo)
 
     * Save/Load
         * Save scene to file
@@ -64,6 +61,7 @@ EDITOR (Thicket)
 
     BUGS:
         - Something wrong with redo stack (can't always redo all the way)
+        - Items don't auto expand when reparented
 
 ---------------------------------------------------------------------------
 
