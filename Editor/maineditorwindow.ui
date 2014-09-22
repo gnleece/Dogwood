@@ -120,6 +120,9 @@
     </property>
     <addaction name="actionCreate_Game_Object"/>
     <addaction name="actionDelete_Game_Object"/>
+    <addaction name="actionCopy_Game_Object"/>
+    <addaction name="actionCut_Game_Object"/>
+    <addaction name="actionPaste_Game_Object"/>
    </widget>
    <widget class="QMenu" name="menuFIle_2">
     <property name="title">
@@ -159,12 +162,21 @@
   </action>
   <action name="actionCreate_Game_Object">
    <property name="text">
-    <string>Create Game Object</string>
+    <string>Create</string>
+   </property>
+   <property name="toolTip">
+    <string>Create a new empty GameObject</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
    </property>
   </action>
   <action name="actionDelete_Game_Object">
    <property name="text">
-    <string>Delete Game Object</string>
+    <string>Delete</string>
+   </property>
+   <property name="toolTip">
+    <string>Delete currently selected GameObject</string>
    </property>
    <property name="shortcut">
     <string>Del</string>
@@ -191,9 +203,28 @@
     <string>Ctrl+Y</string>
    </property>
   </action>
-  <action name="actionFoo">
+  <action name="actionCopy_Game_Object">
    <property name="text">
-    <string>Foo</string>
+    <string>Copy</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+C</string>
+   </property>
+  </action>
+  <action name="actionPaste_Game_Object">
+   <property name="text">
+    <string>Paste</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+V</string>
+   </property>
+  </action>
+  <action name="actionCut_Game_Object">
+   <property name="text">
+    <string>Cut</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+X</string>
    </property>
   </action>
  </widget>

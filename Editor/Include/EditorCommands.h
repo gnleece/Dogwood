@@ -72,6 +72,19 @@ namespace EditorCommands
         QModelIndex         m_newParentIndex;
     };
 
+    class PasteGameObjectCommand : public ICommand
+    {
+    public:
+        PasteGameObjectCommand(HierarchyModel* model, QModelIndex index, GameObject* gameObject);
+        void Execute();
+        void Undo();
+    private:
+        HierarchyModel* m_model;
+        QModelIndex     m_index;
+        GameObject*     m_gameObject;
+        GameObject*     m_parentObject;
+    };
+
     class ModifyTransformCommand : public ICommand
     {
     public:

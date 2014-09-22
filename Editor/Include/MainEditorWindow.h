@@ -46,9 +46,14 @@ private:
     QTreeView*              m_view;
     HierarchyModel*         m_model;
 
+    GameObject*             m_copiedGameObject;
+
 private slots:
     void CreateGameObject();
     void DeleteGameObject();
+    void CopyGameObject();
+    void CutGameObject();
+    void PasteGameObject();
     void Undo();
     void Redo();
     void OnSelectionChanged(const QItemSelection & selected, const QItemSelection & deselected);

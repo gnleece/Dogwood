@@ -106,6 +106,26 @@ namespace EditorCommands
 
     //-----------------------------------------------------------------------------------------------
 
+    PasteGameObjectCommand::PasteGameObjectCommand(HierarchyModel* model, QModelIndex index, GameObject* gameObject)
+    {
+        m_model = model;
+        m_index = index;
+        m_gameObject = gameObject->DeepCopy();
+        m_parentObject = m_model->getItem(m_index);
+    }
+
+    void PasteGameObjectCommand::Execute()
+    {
+        m_model->insertChild(m_index, m_parentObject, m_gameObject, 0);
+    }
+
+    void PasteGameObjectCommand::Undo()
+    {
+        m_model->removeRow(0, m_index);
+    }
+
+    //-----------------------------------------------------------------------------------------------
+
     ModifyTransformCommand::ModifyTransformCommand(HierarchyModel* model, QModelIndex index, Vector3 vector, VectorType type)
     {
         m_model = model;

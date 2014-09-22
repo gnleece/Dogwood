@@ -37,6 +37,9 @@ MainEditorWindow::MainEditorWindow(QWidget *parent)
     // Game Object menu
     connect(m_ui->actionCreate_Game_Object, SIGNAL(triggered()), this, SLOT(CreateGameObject()));
     connect(m_ui->actionDelete_Game_Object, SIGNAL(triggered()), this, SLOT(DeleteGameObject()));
+    connect(m_ui->actionCopy_Game_Object,   SIGNAL(triggered()), this, SLOT(CopyGameObject()));
+    connect(m_ui->actionCut_Game_Object,    SIGNAL(triggered()), this, SLOT(CutGameObject()));
+    connect(m_ui->actionPaste_Game_Object,  SIGNAL(triggered()), this, SLOT(PasteGameObject()));
 }
 
 MainEditorWindow::~MainEditorWindow()
@@ -114,6 +117,60 @@ void MainEditorWindow::DeleteGameObject()
     HierarchyModel* model = (HierarchyModel*)(m_view->model());
     DeleteGameObjectCommand* command = new DeleteGameObjectCommand(model, index);
     CommandManager::Singleton().ExecuteCommand(command);
+}
+
+void MainEditorWindow::CopyGameObject()
+{
+    QModelIndex index = m_view->selectionModel()->currentIndex();
+    HierarchyModel* model = (HierarchyModel*)(m_view->model());
+
+    m_copiedGameObject = index.isValid() ? model->getItem(index) : NULL;
+
+    if (m_copiedGameObject != NULL)
+    {
+        DebugLog("Copied game object");
+    }
+    else
+    {
+        DebugLog("Tried to copy game object but selection was invalid.");
+    }
+}
+
+void MainEditorWindow::CutGameObject()
+{
+    QModelIndex index = m_view->selectionModel()->currentIndex();
+    HierarchyModel* model = (HierarchyModel*)(m_view->model());
+
+    m_copiedGameObject = index.isValid() ? model->getItem(index) : NULL;
+
+    if (m_copiedGameObject != NULL)
+    {
+        DebugLog("Cutting game object");
+
+        DeleteGameObjectCommand* command = new DeleteGameObjectCommand(model, index);
+        CommandManager::Singleton().ExecuteCommand(command);
+    }
+    else
+    {
+        DebugLog("Tried to cut object but selection was invalid.");
+    }
+}
+
+void MainEditorWindow::PasteGameObject()
+{
+    if (m_copiedGameObject != NULL)
+    {
+        DebugLog("Pasting game object");
+
+        QModelIndex index = m_view->selectionModel()->currentIndex();
+        HierarchyModel* model = (HierarchyModel*)(m_view->model());
+        PasteGameObjectCommand* command = new PasteGameObjectCommand(model, index, m_copiedGameObject);
+        CommandManager::Singleton().ExecuteCommand(command);
+    }
+    else
+    {
+        DebugLog("Tried to paste but there was no copied object.");
+    }
 }
 
 // TODO: discard trivial updates that don't actually modify values
