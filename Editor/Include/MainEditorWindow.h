@@ -1,5 +1,6 @@
 #pragma once
 
+
 #include <qabstractitemmodel.h>
 #include <QItemSelection>
 #include <QMainWindow>
@@ -13,6 +14,7 @@ class GLWidget;
 class GameObject;
 class HierarchyModel;
 class QTreeView;
+class Scene;
 class TransformWidget;
 
 using std::string;
@@ -45,16 +47,23 @@ private:
 
     QTreeView*              m_view;
     HierarchyModel*         m_model;
+    Scene*                  m_scene;
 
     GameObject*             m_copiedGameObject;
 
 private slots:
+    void Undo();
+    void Redo();
+
+    void NewScene();
+    void OpenScene();
+    void SaveScene();
+
     void CreateGameObject();
     void DeleteGameObject();
     void CopyGameObject();
     void CutGameObject();
     void PasteGameObject();
-    void Undo();
-    void Redo();
+
     void OnSelectionChanged(const QItemSelection & selected, const QItemSelection & deselected);
 };

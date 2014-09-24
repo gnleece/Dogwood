@@ -1,12 +1,12 @@
 #pragma once
 
+#define GLEW_STATIC
+#include <GL/glew.h>
+
 #include "..\Math\Algebra.h"
 #include "..\Math\Transformations.h"
 #include "Light.h"
 #include "ShaderProgram.h"
-
-#define GLEW_STATIC
-#include <GL/glew.h>
 
 #define GLFW_INCLUDE_GLU
 #include <GLFW/glfw3.h>
@@ -36,13 +36,13 @@ public:
     void        Startup(RenderConfig& config);
     void        Shutdown();
 
+    void        SetRootObject(GameObject* rootObject);
     void        SetLight(Light light);
-
     void        SetCamera(Camera camera);
     void        SetView(Matrix4x4& view);
     Matrix4x4&  GetView();
 
-    void        RenderScene(GameObject* rootObject);
+    void        RenderScene();
     void        ApplyGlobalParams(ShaderProgram* shader);
 
     bool        SettingsDirty();
@@ -53,6 +53,7 @@ private:
 
     void        SetUniformMatrix(ShaderProgram* shader, ShaderProgram::eShaderParam param, Matrix4x4& matrix);
 
+    GameObject* m_rootObject;
     Light       m_light;        // TODO support mutiple light sources
 
     Matrix4x4   m_viewMatrix;

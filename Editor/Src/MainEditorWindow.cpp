@@ -1,7 +1,11 @@
+
+
 #include "maineditorwindow.h"
 #include "HierarchyModel.h"
 #include "GameObject.h"
 #include "ui_maineditorwindow.h"
+#include "Rendering\RenderManager.h"
+#include "Scene\Scene.h"
 #include "Widgets\GLWidget.h"
 #include "Widgets\TransformWidget.h"
 
@@ -34,6 +38,11 @@ MainEditorWindow::MainEditorWindow(QWidget *parent)
     connect(m_ui->actionUndo, SIGNAL(triggered()), this, SLOT(Undo()));
     connect(m_ui->actionRedo, SIGNAL(triggered()), this, SLOT(Redo()));
 
+    // Scene menu
+    connect(m_ui->actionNew_Scene,  SIGNAL(triggered()), this, SLOT(NewScene()));
+    connect(m_ui->actionOpen_Scene, SIGNAL(triggered()), this, SLOT(OpenScene()));
+    connect(m_ui->actionSave_Scene, SIGNAL(triggered()), this, SLOT(SaveScene()));
+
     // Game Object menu
     connect(m_ui->actionCreate_Game_Object, SIGNAL(triggered()), this, SLOT(CreateGameObject()));
     connect(m_ui->actionDelete_Game_Object, SIGNAL(triggered()), this, SLOT(DeleteGameObject()));
@@ -57,7 +66,7 @@ void MainEditorWindow::SetHierarchyModel(HierarchyModel* model)
 {
     m_model = model;
     m_view->setModel(m_model);
-    DebugLog("Scene loaded!");
+    DebugLog("Hierarchy model set!");
     connect(m_view->selectionModel(), SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)), this, SLOT(OnSelectionChanged(const QItemSelection &, const QItemSelection &)));
     m_view->expandAll();
 }
@@ -97,6 +106,29 @@ void MainEditorWindow::Redo()
     {
         DebugLog("Can't redo. Stack is empty.");
     }
+}
+
+void MainEditorWindow::NewScene()
+{
+    // TODO implement me
+    DebugLog("New scene: not implemented yet");
+}
+
+void MainEditorWindow::OpenScene()
+{
+    DebugLog("Open scene");
+
+    // TODO use QFileDialog to specify filename instead of hard coding it!
+    // TODO unload previous scene
+    m_scene = new Scene("..\\Game\\Assets\\Scenes\\Scene0.xml");
+    HierarchyModel* model = new HierarchyModel(m_scene->GetRootObject());
+    SetHierarchyModel(model);
+    RenderManager::Singleton().SetRootObject(m_scene->GetRootObject());
+}
+
+void MainEditorWindow::SaveScene()
+{
+    DebugLog("Save scene");
 }
 
 void MainEditorWindow::CreateGameObject()

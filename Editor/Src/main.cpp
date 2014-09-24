@@ -10,7 +10,6 @@
 #include "Scene\ResourceManager.h"
 #include "Scene\Scene.h"
 
-
 int main(int argc, char *argv[])
 {
     // QT setup
@@ -24,14 +23,11 @@ int main(int argc, char *argv[])
     RenderManager::Singleton().Startup(renderConfig);
     
     ResourceManager::Singleton().Startup("..\\Game\\Assets\\Resources.xml");        // TODO fix these paths!!
-    Scene scene("..\\Game\\Assets\\Scenes\\Scene0.xml");
 
-    HierarchyModel* model = new HierarchyModel(scene.GetRootObject());
-    window.SetHierarchyModel(model);
-
+    // Event & render loop
     QTime lastUpdate;
     int updateTimeStep = 1000 / 60;
-    while (true)        // TODO handle quit / close window
+    while (true)                        // TODO handle quit / close window
     {
         app.processEvents();
         
@@ -39,15 +35,13 @@ int main(int argc, char *argv[])
         int timeSinceLastUpdate = lastUpdate.msecsTo(currentTime);
         while (timeSinceLastUpdate > updateTimeStep)
         {
-            // DO GAME UPDATE
             timeSinceLastUpdate -= updateTimeStep;
             lastUpdate = lastUpdate.addMSecs(updateTimeStep);
         }
 
-        RenderManager::Singleton().RenderScene(scene.GetRootObject());
+        RenderManager::Singleton().RenderScene();
         window.Paint();
     }
     app.exit();
-
 }
 

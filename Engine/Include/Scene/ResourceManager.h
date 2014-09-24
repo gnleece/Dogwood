@@ -1,5 +1,10 @@
 #pragma once
 
+#define GLEW_STATIC
+#include <GL/glew.h>
+
+#define QT_NO_OPENGL_ES_2
+
 #include <string>
 #include <tinyxml2.h>
 #include <unordered_map>
@@ -20,6 +25,7 @@ struct ResourceInfo
     virtual Resource*   Load() = 0;
     void                Unload();
 
+    string typeName;
     string path;
 };
 
@@ -43,6 +49,8 @@ public:
     Texture*        GetTexture(int guid);
     Mesh*           GetMesh(int guid);
     ShaderProgram*  GetShader(int guid);
+
+    XMLElement*     SerializeLoadedResourceMap();
 
 private:
     void BuildResourceLookupTable(string resourcesFilepath);

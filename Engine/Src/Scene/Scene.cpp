@@ -49,6 +49,17 @@ void Scene::LoadScene(string filename)
     printf("DONE LOADING SCENE!\n");
 }
 
+void Scene::SaveScene(string filename)
+{
+    /*
+    XMLDocument sceneDoc;
+    XMLElement* newElement = sceneDoc.NewElement("Subelement");
+    sceneDoc.InsertEndChild(newElement);
+
+    sceneDoc.SaveFile(filename.c_str());
+    */
+}
+
 void Scene::UnloadScene()
 {
     // Unload resources

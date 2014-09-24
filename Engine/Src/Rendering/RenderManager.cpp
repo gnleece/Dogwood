@@ -6,6 +6,7 @@
 void RenderManager::Startup(RenderConfig& config)
 {
     m_dirty = true;
+    m_rootObject = NULL;
 
     // Prepare projection matrix
     float aspect = (float)config.width / config.height;
@@ -25,6 +26,12 @@ void RenderManager::Startup(RenderConfig& config)
 void RenderManager::Shutdown()
 {
     //DebugDraw::Singleton().Shutdown();
+}
+
+void RenderManager::SetRootObject(GameObject* rootObject)
+{
+    m_rootObject = rootObject;
+    m_dirty = true;
 }
 
 void RenderManager::SetLight(Light light)
@@ -50,13 +57,16 @@ Matrix4x4& RenderManager::GetView()
     return m_viewMatrix;
 }
 
-void RenderManager::RenderScene(GameObject* rootObject)
+void RenderManager::RenderScene()
 {
     // Clear the screen to black
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // Render game objects
-    rootObject->Render(Transform::Identity, false);
+    if (m_rootObject != NULL)
+    {
+        m_rootObject->Render(Transform::Identity, false);
+    }
 
     // Draw debug gnomon. TODO remove me
     //DebugDraw::Singleton().DrawLine(Vector3(-1.5f, -1.f, -3.f), Vector3(-0.5f, -1.f, -3.f), ColourRGB::Red);

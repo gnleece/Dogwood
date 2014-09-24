@@ -91,6 +91,12 @@ ShaderProgram* ResourceManager::GetShader(int guid)
     return (ShaderProgram*)m_loadedResources[guid];
 }
 
+XMLElement* ResourceManager::SerializeLoadedResourceMap()
+{
+    // TODO implement me
+    return NULL;
+}
+
 void ResourceManager::BuildResourceLookupTable(string resourcesFilepath)
 {
     // Load the resources XML file
@@ -130,6 +136,7 @@ void ResourceManager::AddResourcesToMap(XMLElement* resources, string typeName)
         while (element)
         {
             T* info = new T();
+            info->typeName = typeName;
             info->AddToMap(element, m_resourceLookup);
             element = element->NextSiblingElement();
         }

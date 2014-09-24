@@ -33,6 +33,7 @@ void Game::Run(GameObject* sceneRoot)
     printf("\n=============== GAME RUN ===============\n");
 
     m_rootObject = sceneRoot;
+    RenderManager::Singleton().SetRootObject(m_rootObject);
     
     // Frame time setup
     m_minFrameTime = 1 / (float)MAX_FPS;
@@ -51,7 +52,7 @@ void Game::Run(GameObject* sceneRoot)
         }
 
         // Update systems (physics, animation, rendering, etc)
-        RenderManager::Singleton().RenderScene(m_rootObject);
+        RenderManager::Singleton().RenderScene();
         InputManager::Singleton().PollEvents((float)m_deltaTime);
 
         UpdateTime();

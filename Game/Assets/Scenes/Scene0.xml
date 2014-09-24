@@ -1,6 +1,5 @@
-<!-- This is a sample of what a scene file might look like. Eventually 
-     there will be a scene editor tool that generates these files, but 
-     for now they will be (painfully) written by hand. -->
+<!-- A simple example scene. GUIDs and Resource List are hand generated right now,
+     but should eventually be managed by the Editor. -->
 
 <Scene name="Scene Zero">
 
