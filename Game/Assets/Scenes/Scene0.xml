@@ -1,7 +1,7 @@
 <!-- A simple example scene. GUIDs and Resource List are hand generated right now,
      but should eventually be managed by the Editor. -->
 
-<Scene name="Scene Zero">
+<Scene>
 
   <Camera>
     <Position x="0.0" y="0.0" z="0.0" />

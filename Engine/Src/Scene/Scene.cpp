@@ -18,14 +18,16 @@ Scene::Scene(string filename)
 
 void Scene::LoadScene(string filename)
 {
-    printf("LOADING SCENE: %s\n", filename.c_str());
+    m_filename = filename;
+
+    printf("LOADING SCENE: %s\n", m_filename.c_str());
 
     // Open the scene XML file
     XMLDocument sceneDoc;
-    XMLError result = sceneDoc.LoadFile(filename.c_str());
+    XMLError result = sceneDoc.LoadFile(m_filename.c_str());
     if (result != XML_SUCCESS)
     {
-        printf("Error reading scene file %s.\nXMLError %d\n", filename.c_str(), result);
+        printf("Error reading scene file %s.\nXMLError %d\n", m_filename.c_str(), result);
         return;
     }
     XMLElement* sceneXML = sceneDoc.FirstChildElement("Scene");
@@ -51,13 +53,25 @@ void Scene::LoadScene(string filename)
 
 void Scene::SaveScene(string filename)
 {
-    /*
-    XMLDocument sceneDoc;
-    XMLElement* newElement = sceneDoc.NewElement("Subelement");
-    sceneDoc.InsertEndChild(newElement);
+    // If a non-empty filename is provided, use it (for "Save As")
+    if (filename.compare("") != 0)
+    {
+        m_filename = filename;
+    }
 
-    sceneDoc.SaveFile(filename.c_str());
-    */
+    // Root setup
+    XMLDocument sceneDoc;
+    XMLElement* rootElement = sceneDoc.NewElement("Scene");
+    sceneDoc.InsertEndChild(rootElement);
+
+    // Serialize body
+    SerializeGlobalSettings(rootElement, sceneDoc);
+    ResourceManager::Singleton().SerializeLoadedResourceMap(rootElement, sceneDoc);
+    SerializeHierarchy(rootElement, sceneDoc);
+
+    // Save it!
+    sceneDoc.SaveFile("save_test.xml");
+    //sceneDoc.SaveFile(m_filename.c_str());
 }
 
 void Scene::UnloadScene()
@@ -83,11 +97,10 @@ void Scene::DoGlobalSetup(XMLElement* sceneXML)
     XMLElement* cameraNode = sceneXML->FirstChildElement("Camera");
     if (cameraNode)
     {
-        Camera mainCamera;
-        mainCamera.position = ReadVector3FromXML(cameraNode->FirstChildElement("Position"));
-        mainCamera.direction = ReadVector3FromXML(cameraNode->FirstChildElement("Direction"));
-        mainCamera.up = ReadVector3FromXML(cameraNode->FirstChildElement("Up"));
-        RenderManager::Singleton().SetCamera(mainCamera);
+        m_mainCamera.position = ReadVector3FromXML(cameraNode->FirstChildElement("Position"));
+        m_mainCamera.direction = ReadVector3FromXML(cameraNode->FirstChildElement("Direction"));
+        m_mainCamera.up = ReadVector3FromXML(cameraNode->FirstChildElement("Up"));
+        RenderManager::Singleton().SetCamera(m_mainCamera);
     }
     else
     {
@@ -102,6 +115,7 @@ void Scene::DoGlobalSetup(XMLElement* sceneXML)
         GLfloat lightPower = lightNode->FirstChildElement("Power")->FloatAttribute("value");
         Light light(lightPosition, lightColor, lightPower);
         RenderManager::Singleton().SetLight(light);
+        m_light = light;
     }
     else
     {
@@ -272,4 +286,24 @@ void Scene::AddGameComponents(GameObject* go, XMLElement* xmlnode)
         }
     }
     */
+}
+
+void Scene::SerializeGlobalSettings(tinyxml2::XMLElement* parentNode, XMLDocument& rootDoc)
+{
+    // Camera
+    XMLNode* cameraNode = parentNode->InsertEndChild(rootDoc.NewElement("Camera"));
+    cameraNode->InsertEndChild(WriteVector3ToXML(m_mainCamera.position, "Position", rootDoc));
+    cameraNode->InsertEndChild(WriteVector3ToXML(m_mainCamera.direction, "Direction", rootDoc));
+    cameraNode->InsertEndChild(WriteVector3ToXML(m_mainCamera.up, "Up", rootDoc));
+
+    // Light
+    XMLNode* lightNode = parentNode->InsertEndChild(rootDoc.NewElement("Light"));
+    lightNode->InsertEndChild(WriteVector3ToXML(m_light.position, "Position", rootDoc));
+    lightNode->InsertEndChild(WriteColourToXML(m_light.color, "Color", rootDoc));
+    lightNode->InsertEndChild(WriteFloatToXML(m_light.power, "Power", "value", rootDoc));
+}
+
+void Scene::SerializeHierarchy(tinyxml2::XMLElement* parentNode, XMLDocument& rootDoc)
+{
+    // TODO implement me
 }

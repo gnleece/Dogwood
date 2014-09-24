@@ -50,7 +50,7 @@ public:
     Mesh*           GetMesh(int guid);
     ShaderProgram*  GetShader(int guid);
 
-    XMLElement*     SerializeLoadedResourceMap();
+    void            SerializeLoadedResourceMap(XMLElement* parentNode, XMLDocument& rootDoc);
 
 private:
     void BuildResourceLookupTable(string resourcesFilepath);

@@ -129,6 +129,11 @@ void MainEditorWindow::OpenScene()
 void MainEditorWindow::SaveScene()
 {
     DebugLog("Save scene");
+
+    if (m_scene != NULL)
+    {
+        m_scene->SaveScene();
+    }
 }
 
 void MainEditorWindow::CreateGameObject()

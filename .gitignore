@@ -17,3 +17,6 @@
 
 *.psess
 *.vspx
+
+*.pro.user
+*.ui.autosave

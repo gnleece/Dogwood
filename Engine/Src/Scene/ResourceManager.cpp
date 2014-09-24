@@ -91,10 +91,9 @@ ShaderProgram* ResourceManager::GetShader(int guid)
     return (ShaderProgram*)m_loadedResources[guid];
 }
 
-XMLElement* ResourceManager::SerializeLoadedResourceMap()
+void ResourceManager::SerializeLoadedResourceMap(XMLElement* parentNode, XMLDocument& rootDoc)
 {
     // TODO implement me
-    return NULL;
 }
 
 void ResourceManager::BuildResourceLookupTable(string resourcesFilepath)
