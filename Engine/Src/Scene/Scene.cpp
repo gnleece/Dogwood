@@ -4,6 +4,7 @@
 #include "GameObject.h"
 #include "Util.h"
 #include "Rendering\Camera.h"
+#include "Rendering\Mesh.h"
 #include "Rendering\MeshInstance.h"
 #include "Rendering\RenderManager.h"
 //#include "..\..\Generated\GameComponentBindings.h"
@@ -67,7 +68,7 @@ void Scene::SaveScene(string filename)
     // Serialize body
     SerializeGlobalSettings(rootElement, sceneDoc);
     ResourceManager::Singleton().SerializeLoadedResourceMap(rootElement, sceneDoc);
-    SerializeHierarchy(rootElement, sceneDoc);
+    SerializeHierarchy(m_rootObject, rootElement, sceneDoc);
 
     // Save it!
     sceneDoc.SaveFile("save_test.xml");
@@ -303,7 +304,54 @@ void Scene::SerializeGlobalSettings(tinyxml2::XMLElement* parentNode, XMLDocumen
     lightNode->InsertEndChild(WriteFloatToXML(m_light.power, "Power", "value", rootDoc));
 }
 
-void Scene::SerializeHierarchy(tinyxml2::XMLElement* parentNode, XMLDocument& rootDoc)
+void Scene::SerializeHierarchy(GameObject* gameObject, tinyxml2::XMLNode* parentNode, XMLDocument& rootDoc)
+{
+    if (gameObject == NULL)
+        return;
+
+    // Create node
+    XMLNode* goNode = parentNode->InsertEndChild(WriteStringToXML(gameObject->GetName(), "GameObject", "name", rootDoc));
+
+    // Serialize components
+    SerializeTransform(gameObject, goNode, rootDoc);
+    SerializeMesh(gameObject, goNode, rootDoc);
+    SerializeComponents(gameObject, goNode, rootDoc);
+
+    // Serialize children
+    std::vector<GameObject*>::iterator childIter;
+    for (childIter = gameObject->GetChildren().begin(); childIter != gameObject->GetChildren().end(); childIter++)
+    {
+        GameObject* child = *childIter;
+        SerializeHierarchy(child, goNode, rootDoc);
+    }
+}
+void Scene::SerializeTransform(GameObject* gameObject, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc)
+{
+    if (gameObject == NULL)
+        return;
+
+    XMLNode* transformNode = parentNode->InsertEndChild(rootDoc.NewElement("Transform"));
+    transformNode->InsertEndChild(WriteVector3ToXML(gameObject->GetLocalTransform().GetPosition(), "Position", rootDoc));
+    transformNode->InsertEndChild(WriteVector3ToXML(gameObject->GetLocalTransform().GetRotation(), "Rotation", rootDoc));
+    transformNode->InsertEndChild(WriteVector3ToXML(gameObject->GetLocalTransform().GetScale(), "Scale", rootDoc));
+}
+
+void Scene::SerializeMesh(GameObject* gameObject, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc)
+{
+    if (gameObject == NULL || gameObject->GetMesh() == NULL)
+        return;
+
+    XMLElement* meshNode = rootDoc.NewElement("Mesh");
+    meshNode->SetAttribute("guid", gameObject->GetMesh()->GetMesh()->GetResourceInfo()->guid);
+    parentNode->InsertEndChild(meshNode);
+}
+
+void Scene::SerializeMaterial(GameObject* gameObject, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc)
+{
+
+}
+
+void Scene::SerializeComponents(GameObject* gameObject, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc)
 {
     // TODO implement me
 }

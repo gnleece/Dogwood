@@ -33,6 +33,7 @@ private:
     void        DoGlobalSetup(tinyxml2::XMLElement* sceneXML);
     void        DoHierarchySetup(tinyxml2::XMLElement* sceneXML);
 
+    // Scene loading helper functions
     GameObject* BuildSubtree(tinyxml2::XMLElement* xmlnode);
     void        AddTransform(GameObject* go, tinyxml2::XMLElement* xmlnode);
     void        AddMesh(GameObject* go, tinyxml2::XMLElement* xmlnode);
@@ -40,8 +41,13 @@ private:
     void        AddGameComponents(GameObject* go, tinyxml2::XMLElement* xmlnode);
     void        ApplyMaterialColor(tinyxml2::XMLElement* xmlnode, Material* material, string colorName, Material::eMatColourType type, ColourRGB defaultColor);
     
+    // Scene saving helper functions
     void        SerializeGlobalSettings(tinyxml2::XMLElement* parentNode, tinyxml2::XMLDocument& rootDoc);
-    void        SerializeHierarchy(tinyxml2::XMLElement* parentNode, tinyxml2::XMLDocument& rootDoc);
+    void        SerializeHierarchy(GameObject* gameObject, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc);
+    void        SerializeTransform(GameObject* gameObject, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc);
+    void        SerializeMesh(GameObject* gameObject, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc);
+    void        SerializeMaterial(GameObject* gameObject, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc);
+    void        SerializeComponents(GameObject* gameObject, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc);
 
     string      m_filename;
     Camera      m_mainCamera;

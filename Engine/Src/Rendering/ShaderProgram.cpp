@@ -2,8 +2,9 @@
 
 #include "Rendering\RenderManager.h"
 
-ShaderProgram::ShaderProgram(std::string vertexShaderPath, std::string fragmentShaderPath)
+ShaderProgram::ShaderProgram(std::string vertexShaderPath, std::string fragmentShaderPath, ResourceInfo* resourceInfo)
 {
+    m_resourceInfo = resourceInfo;
     Load(vertexShaderPath, fragmentShaderPath);
 }
 

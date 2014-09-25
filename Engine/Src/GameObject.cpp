@@ -63,6 +63,11 @@ GameObject* GameObject::GetChild(int index)
     return m_children[index];
 }
 
+vector<GameObject*>& GameObject::GetChildren()
+{
+    return m_children;
+}
+
 int GameObject::GetChildNumber()
 {
     // determine the index of this game object in the parent's list of children

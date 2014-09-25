@@ -8,7 +8,7 @@ struct TextureResourceInfo : ResourceInfo
 { 
     virtual Resource* Load()
     {
-        Texture* texture = new Texture(path);
+        Texture* texture = new Texture(path, this);
         return texture;
     }
 };
@@ -17,7 +17,7 @@ struct MeshResourceInfo : ResourceInfo
 {
     virtual Resource* Load()
     {
-        Mesh* mesh = new Mesh(path);
+        Mesh* mesh = new Mesh(path, this);
         return mesh;
     }
 };
@@ -29,7 +29,7 @@ struct ShaderResourceInfo : ResourceInfo
 
     virtual Resource* Load()
     {
-        ShaderProgram* shader = new ShaderProgram(vertexpath, fragmentpath);
+        ShaderProgram* shader = new ShaderProgram(vertexpath, fragmentpath, this);
         return shader;
     }
 
@@ -45,7 +45,7 @@ struct ShaderResourceInfo : ResourceInfo
 void ResourceInfo::AddToMap(XMLElement* element, unordered_map<int, ResourceInfo*> & map)
 {
     path = element->Attribute("path");
-    int guid = element->IntAttribute("guid");
+    guid = element->IntAttribute("guid");
     map[guid] = this;
 }
 

@@ -38,6 +38,8 @@ ENGINE (Dogwood)
 
 EDITOR (Thicket)
 
+    * Handle root properly
+
     * Save/Load
         * Save scene to file
         * Open/load arbitrary scene file

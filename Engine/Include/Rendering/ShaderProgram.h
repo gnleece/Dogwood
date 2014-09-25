@@ -7,6 +7,8 @@
 
 #include "..\Scene\Resource.h"
 
+struct ResourceInfo;
+
 class ShaderProgram : public Resource
 {
 public:
@@ -30,7 +32,7 @@ public:
     };
 	
     ShaderProgram() {}
-    ShaderProgram(std::string vertexShaderPath, std::string fragmentShaderPath);
+    ShaderProgram(std::string vertexShaderPath, std::string fragmentShaderPath, ResourceInfo* resourceInfo);
 
     void    Load(std::string vertexShaderPath, std::string fragmentShaderPath);
     void    ApplyShader();

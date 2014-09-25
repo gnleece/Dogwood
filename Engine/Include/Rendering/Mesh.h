@@ -10,11 +10,12 @@
 #include <vector>
 
 class Material;
+struct ResourceInfo;
 
 class Mesh : public Resource
 {
 public:
-    Mesh(std::string filename);
+    Mesh(std::string filename, ResourceInfo* resourceInfo);
 
     void Render(Transform& transform, Material* material);
     void Delete();

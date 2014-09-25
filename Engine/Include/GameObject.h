@@ -31,6 +31,7 @@ public:
     void AddComponent(GameComponent* component);
 
     GameObject* GetChild(int index);
+    vector<GameObject*>& GetChildren();
     int GetChildNumber();
     int GetChildCount();
 

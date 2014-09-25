@@ -70,3 +70,10 @@ XMLNode* WriteFloatToXML(float value, string nodeName, string attribName, XMLDoc
 
     return xmlnode;
 }
+
+XMLNode* WriteStringToXML(string str, string nodeName, string attribName, XMLDocument& doc)
+{
+    XMLElement* xmlnode = doc.NewElement(nodeName.c_str());
+    xmlnode->SetAttribute(attribName.c_str(), str.c_str());
+    return xmlnode;
+}

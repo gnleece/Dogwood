@@ -25,8 +25,9 @@ struct ResourceInfo
     virtual Resource*   Load() = 0;
     void                Unload();
 
-    string typeName;
-    string path;
+    int     guid;
+    string  typeName;
+    string  path;
 };
 
 class ResourceManager

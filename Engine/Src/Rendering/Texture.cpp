@@ -4,9 +4,10 @@
 
 Texture* Texture::m_defaultTexture = NULL;
 
-Texture::Texture(std::string filename)
+Texture::Texture(std::string filename, ResourceInfo* resourceInfo)
 {
     m_filename = filename;
+    m_resourceInfo = resourceInfo;
 
     ImageBMP image;
     image.Load(filename);
@@ -43,6 +44,6 @@ Texture* Texture::DefaultTexture()
     {
         return m_defaultTexture;
     }
-    m_defaultTexture = new Texture("..\\Engine\\Assets\\Textures\\default_texture.bmp");  // TODO fix me
+    m_defaultTexture = new Texture("..\\Engine\\Assets\\Textures\\default_texture.bmp", NULL);  // TODO fix me
     return m_defaultTexture;
 }

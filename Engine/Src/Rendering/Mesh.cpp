@@ -10,9 +10,10 @@
 #define GLFW_INCLUDE_GLU
 #include <GLFW/glfw3.h>
 
-Mesh::Mesh(std::string path)
+Mesh::Mesh(std::string path, ResourceInfo* resourceInfo)
 {
     m_drawMode = GL_TRIANGLES;
+    m_resourceInfo = resourceInfo;
 
     std::vector<Vector3> positions;
     std::vector<Vector3> normals;

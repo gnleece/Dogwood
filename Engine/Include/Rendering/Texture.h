@@ -7,10 +7,12 @@
 
 #include "..\Scene\Resource.h"
 
+struct ResourceInfo;
+
 class Texture : public Resource
 {
 public:
-    Texture(std::string filename);
+    Texture(std::string filename, ResourceInfo* resourceInfo);
 
     void BindTexture();
     void FreeTexture();
@@ -18,8 +20,8 @@ public:
     static Texture* DefaultTexture();
 
 private:
-    GLuint      m_id;
-    std::string m_filename;
+    GLuint          m_id;
+    std::string     m_filename;
 
     static Texture* m_defaultTexture;
 };
