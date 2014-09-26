@@ -47,6 +47,7 @@ private:
     void        SerializeTransform(GameObject* gameObject, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc);
     void        SerializeMesh(GameObject* gameObject, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc);
     void        SerializeMaterial(GameObject* gameObject, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc);
+    void        SerializeMaterialColor(Material* material, string colorName, Material::eMatColourType type, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument rootDoc);
     void        SerializeComponents(GameObject* gameObject, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc);
 
     string      m_filename;

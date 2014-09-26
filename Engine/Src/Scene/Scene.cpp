@@ -289,7 +289,7 @@ void Scene::AddGameComponents(GameObject* go, XMLElement* xmlnode)
     */
 }
 
-void Scene::SerializeGlobalSettings(tinyxml2::XMLElement* parentNode, XMLDocument& rootDoc)
+void Scene::SerializeGlobalSettings(XMLElement* parentNode, XMLDocument& rootDoc)
 {
     // Camera
     XMLNode* cameraNode = parentNode->InsertEndChild(rootDoc.NewElement("Camera"));
@@ -304,7 +304,7 @@ void Scene::SerializeGlobalSettings(tinyxml2::XMLElement* parentNode, XMLDocumen
     lightNode->InsertEndChild(WriteFloatToXML(m_light.power, "Power", "value", rootDoc));
 }
 
-void Scene::SerializeHierarchy(GameObject* gameObject, tinyxml2::XMLNode* parentNode, XMLDocument& rootDoc)
+void Scene::SerializeHierarchy(GameObject* gameObject, XMLNode* parentNode, XMLDocument& rootDoc)
 {
     if (gameObject == NULL)
         return;
@@ -325,7 +325,7 @@ void Scene::SerializeHierarchy(GameObject* gameObject, tinyxml2::XMLNode* parent
         SerializeHierarchy(child, goNode, rootDoc);
     }
 }
-void Scene::SerializeTransform(GameObject* gameObject, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc)
+void Scene::SerializeTransform(GameObject* gameObject, XMLNode* parentNode, XMLDocument& rootDoc)
 {
     if (gameObject == NULL)
         return;
@@ -336,7 +336,7 @@ void Scene::SerializeTransform(GameObject* gameObject, tinyxml2::XMLNode* parent
     transformNode->InsertEndChild(WriteVector3ToXML(gameObject->GetLocalTransform().GetScale(), "Scale", rootDoc));
 }
 
-void Scene::SerializeMesh(GameObject* gameObject, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc)
+void Scene::SerializeMesh(GameObject* gameObject, XMLNode* parentNode, XMLDocument& rootDoc)
 {
     if (gameObject == NULL || gameObject->GetMesh() == NULL)
         return;
@@ -344,12 +344,28 @@ void Scene::SerializeMesh(GameObject* gameObject, tinyxml2::XMLNode* parentNode,
     XMLElement* meshNode = rootDoc.NewElement("Mesh");
     meshNode->SetAttribute("guid", gameObject->GetMesh()->GetMesh()->GetResourceInfo()->guid);
     parentNode->InsertEndChild(meshNode);
+    SerializeMaterial(gameObject, meshNode, rootDoc);
 }
 
-void Scene::SerializeMaterial(GameObject* gameObject, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc)
+void Scene::SerializeMaterial(GameObject* gameObject, XMLNode* parentNode, XMLDocument& rootDoc)
 {
+    if (gameObject == NULL || gameObject->GetMesh() == NULL || gameObject->GetMesh()->GetMaterial() == NULL)
+        return;
 
+    Material* mat = gameObject->GetMesh()->GetMaterial();
+
+    XMLElement* matNode = rootDoc.NewElement("Material");
+    parentNode->InsertEndChild(matNode);
+
+    XMLElement* shaderNode = rootDoc.NewElement("Shader");
+    shaderNode->SetAttribute("guid", mat->GetShader()->GetResourceInfo()->guid);
+    matNode->InsertEndChild(shaderNode);
+
+    matNode->InsertEndChild(WriteColourToXML(mat->GetColour(Material::MAT_COLOUR_DIFFUSE), "ColorDiffuse", rootDoc));
+    matNode->InsertEndChild(WriteColourToXML(mat->GetColour(Material::MAT_COLOUR_AMBIENT), "ColorAmbient", rootDoc));
+    matNode->InsertEndChild(WriteColourToXML(mat->GetColour(Material::MAT_COLOUR_SPECULAR), "ColorSpecular", rootDoc));
 }
+
 
 void Scene::SerializeComponents(GameObject* gameObject, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc)
 {

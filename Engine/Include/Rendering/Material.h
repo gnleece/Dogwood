@@ -25,19 +25,23 @@ public:
 
     Material();
 
-    Material* DeepCopy();
+    void            SetShader(ShaderProgram* shader);
+    void            SetTexture(Texture* texture);
+    void            SetColour(eMatColourType type, ColourRGB colour);
 
-    void SetShader(ShaderProgram* shader);
-    void SetTexture(Texture* texture);
-    void SetColour(eMatColourType type, ColourRGB colour);
+    ShaderProgram*  GetShader();
+    Texture*        GetTexture();
+    ColourRGB       GetColour(eMatColourType type);
 
-    void ApplyMaterial(GLint posVBO, GLint normVBO, GLint uvVBO, Transform& transform);
-    void UnapplyMaterial();
+    void            ApplyMaterial(GLint posVBO, GLint normVBO, GLint uvVBO, Transform& transform);
+    void            UnapplyMaterial();
+
+    Material*       DeepCopy();
 
 private:
-    void SetUniformParam(ShaderProgram::eShaderParam param, eMatColourType colour);
-    void SetAttribParam(ShaderProgram::eShaderParam param, GLint buffer, int size);
-    void DisableAttribArray(ShaderProgram::eShaderParam param);
+    void            SetUniformParam(ShaderProgram::eShaderParam param, eMatColourType colour);
+    void            SetAttribParam(ShaderProgram::eShaderParam param, GLint buffer, int size);
+    void            DisableAttribArray(ShaderProgram::eShaderParam param);
 
     ShaderProgram*  m_shader;
     Texture*        m_texture;

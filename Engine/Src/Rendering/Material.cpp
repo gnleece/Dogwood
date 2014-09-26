@@ -42,6 +42,25 @@ void Material::SetColour(eMatColourType type, ColourRGB colour)
     }
 }
 
+ShaderProgram* Material::GetShader()
+{
+    return m_shader;
+}
+
+Texture* Material::GetTexture()
+{
+    return m_texture;
+}
+
+ColourRGB Material::GetColour(eMatColourType type)
+{
+    if (type < NUM_MAT_COLOURS)
+    {
+        return m_colours[type];
+    }
+    return ColourRGB::Black;
+}
+
 void Material::ApplyMaterial(GLint posVBO, GLint normVBO, GLint uvVBO, Transform& transform)
 {
     // Apply shader

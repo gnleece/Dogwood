@@ -37,7 +37,7 @@ struct ShaderResourceInfo : ResourceInfo
     {
         vertexpath = element->Attribute("vertex-path");
         fragmentpath = element->Attribute("fragment-path");
-        int guid = element->IntAttribute("guid");
+        guid = element->IntAttribute("guid");
         map[guid] = this;
     }
 };
