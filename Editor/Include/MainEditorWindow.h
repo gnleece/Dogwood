@@ -57,7 +57,9 @@ private slots:
 
     void NewScene();
     void OpenScene();
+    void OpenTestScene();       // temp shortcut for debugging
     void SaveScene();
+    void SaveSceneAs();
 
     void CreateGameObject();
     void DeleteGameObject();

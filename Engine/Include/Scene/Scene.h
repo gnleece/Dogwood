@@ -23,9 +23,8 @@ class Scene
 {
 public:
     Scene();
-    Scene(string filename);
 
-    void        LoadScene(string filename);
+    bool        LoadScene(string filename);
     void        SaveScene(string filename = "");
     void        UnloadScene();
 

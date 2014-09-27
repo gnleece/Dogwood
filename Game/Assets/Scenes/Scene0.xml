@@ -18,7 +18,7 @@
     <GameObject name="ROOT">
         <Transform>
             <Position x="0.00000" y="0.00000" z="0.00000"/>
-            <Rotation x="0.00000" y="0.00000" z="0.00000"/>
+            <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
             <Scale x="1.00000" y="1.00000" z="1.00000"/>
         </Transform>
         <GameObject name="Yellow Sphere">

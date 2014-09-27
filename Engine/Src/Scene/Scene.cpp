@@ -13,12 +13,7 @@
 Scene::Scene()
 { }
 
-Scene::Scene(string filename)
-{
-    LoadScene(filename);
-}
-
-void Scene::LoadScene(string filename)
+bool Scene::LoadScene(string filename)
 {
     m_filename = filename;
 
@@ -30,7 +25,7 @@ void Scene::LoadScene(string filename)
     if (result != XML_SUCCESS)
     {
         printf("Error reading scene file %s.\nXMLError %d\n", m_filename.c_str(), result);
-        return;
+        return false;
     }
     XMLElement* sceneXML = sceneDoc.FirstChildElement("Scene");
 
@@ -40,7 +35,7 @@ void Scene::LoadScene(string filename)
     if (resources == NULL)
     {
         printf("Error parsing scene file. Could not find resource list.\n");
-        return;
+        return false;
     }
     ResourceManager::Singleton().LoadSceneResources(resources);
 
@@ -51,6 +46,7 @@ void Scene::LoadScene(string filename)
     DoHierarchySetup(sceneXML);
 
     printf("DONE LOADING SCENE!\n");
+    return true;
 }
 
 void Scene::SaveScene(string filename)

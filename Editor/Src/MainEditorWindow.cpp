@@ -35,13 +35,15 @@ MainEditorWindow::MainEditorWindow(QWidget *parent)
     m_transformWidget->hide();
 
     // Edit menu
-    connect(m_ui->actionUndo, SIGNAL(triggered()), this, SLOT(Undo()));
-    connect(m_ui->actionRedo, SIGNAL(triggered()), this, SLOT(Redo()));
+    connect(m_ui->actionUndo,               SIGNAL(triggered()), this, SLOT(Undo()));
+    connect(m_ui->actionRedo,               SIGNAL(triggered()), this, SLOT(Redo()));
 
     // Scene menu
-    connect(m_ui->actionNew_Scene,  SIGNAL(triggered()), this, SLOT(NewScene()));
-    connect(m_ui->actionOpen_Scene, SIGNAL(triggered()), this, SLOT(OpenScene()));
-    connect(m_ui->actionSave_Scene, SIGNAL(triggered()), this, SLOT(SaveScene()));
+    connect(m_ui->actionNew_Scene,          SIGNAL(triggered()), this, SLOT(NewScene()));
+    connect(m_ui->actionOpen_Scene,         SIGNAL(triggered()), this, SLOT(OpenScene()));
+    connect(m_ui->actionOpen_Test_Scene,    SIGNAL(triggered()), this, SLOT(OpenTestScene()));
+    connect(m_ui->actionSave_Scene,         SIGNAL(triggered()), this, SLOT(SaveScene()));
+    connect(m_ui->actionSave_Scene_As,      SIGNAL(triggered()), this, SLOT(SaveSceneAs()));
 
     // Game Object menu
     connect(m_ui->actionCreate_Game_Object, SIGNAL(triggered()), this, SLOT(CreateGameObject()));
@@ -118,12 +120,34 @@ void MainEditorWindow::OpenScene()
 {
     DebugLog("Open scene");
 
-    // TODO use QFileDialog to specify filename instead of hard coding it!
+    // Open file dialog
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open Scene"), "", tr("Scene Files (*.xml)"));
+
     // TODO unload previous scene
-    m_scene = new Scene("..\\Game\\Assets\\Scenes\\Scene0.xml");
-    HierarchyModel* model = new HierarchyModel(m_scene->GetRootObject());
-    SetHierarchyModel(model);
-    RenderManager::Singleton().SetRootObject(m_scene->GetRootObject());
+    m_scene = new Scene();
+    if (m_scene->LoadScene(fileName.toStdString()))
+    {
+        HierarchyModel* model = new HierarchyModel(m_scene->GetRootObject());
+        SetHierarchyModel(model);
+        RenderManager::Singleton().SetRootObject(m_scene->GetRootObject());
+    }
+    else
+    {
+        DebugLog("Error loading scene");
+        m_scene = NULL;
+    }
+}
+
+void MainEditorWindow::OpenTestScene()
+{
+    // TODO unload previous scene
+    m_scene = new Scene();
+    if (m_scene->LoadScene("..\\Game\\Assets\\Scenes\\Scene0.xml"))
+    {
+        HierarchyModel* model = new HierarchyModel(m_scene->GetRootObject());
+        SetHierarchyModel(model);
+        RenderManager::Singleton().SetRootObject(m_scene->GetRootObject());
+    }
 }
 
 void MainEditorWindow::SaveScene()
@@ -133,6 +157,22 @@ void MainEditorWindow::SaveScene()
     if (m_scene != NULL)
     {
         m_scene->SaveScene();
+    }
+}
+
+void MainEditorWindow::SaveSceneAs()
+{
+    DebugLog("Save scene as...");
+
+    if (m_scene != NULL)
+    {
+        // Open file dialog
+        QString fileName = QFileDialog::getSaveFileName(this, "Save Scene As", "", "*.xml");
+        m_scene->SaveScene(fileName.toStdString());
+    }
+    else
+    {
+        DebugLog("No scene to save.");
     }
 }
 
