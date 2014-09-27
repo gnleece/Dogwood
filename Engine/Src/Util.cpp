@@ -58,6 +58,13 @@ XMLNode* WriteColourToXML(ColourRGB c, string name, XMLDocument& doc)
     return xmlnode;
 }
 
+XMLNode* WriteIntToXML(int value, string nodeName, string attribName, XMLDocument& doc)
+{
+    XMLElement* xmlnode = doc.NewElement(nodeName.c_str());
+    xmlnode->SetAttribute(attribName.c_str(), value);
+    return xmlnode;
+}
+
 XMLNode* WriteFloatToXML(float value, string nodeName, string attribName, XMLDocument& doc)
 {
     XMLElement* xmlnode = doc.NewElement(nodeName.c_str());

@@ -7,6 +7,7 @@
 #include "Rendering\Mesh.h"
 #include "Rendering\MeshInstance.h"
 #include "Rendering\RenderManager.h"
+#include "Rendering\Texture.h"
 //#include "..\..\Generated\GameComponentBindings.h"
 
 Scene::Scene()
@@ -65,14 +66,16 @@ void Scene::SaveScene(string filename)
     XMLElement* rootElement = sceneDoc.NewElement("Scene");
     sceneDoc.InsertEndChild(rootElement);
 
+    // Track which resources are needed by the scene
+    unordered_set<int> resourceGuids;
+
     // Serialize body
     SerializeGlobalSettings(rootElement, sceneDoc);
-    ResourceManager::Singleton().SerializeLoadedResourceMap(rootElement, sceneDoc);
-    SerializeHierarchy(m_rootObject, rootElement, sceneDoc);
+    SerializeHierarchy(m_rootObject, rootElement, sceneDoc, resourceGuids);
+    SerializeResourceList(resourceGuids, rootElement, sceneDoc);
 
     // Save it!
-    sceneDoc.SaveFile("save_test.xml");
-    //sceneDoc.SaveFile(m_filename.c_str());
+    sceneDoc.SaveFile(m_filename.c_str());
 }
 
 void Scene::UnloadScene()
@@ -304,7 +307,7 @@ void Scene::SerializeGlobalSettings(XMLElement* parentNode, XMLDocument& rootDoc
     lightNode->InsertEndChild(WriteFloatToXML(m_light.power, "Power", "value", rootDoc));
 }
 
-void Scene::SerializeHierarchy(GameObject* gameObject, XMLNode* parentNode, XMLDocument& rootDoc)
+void Scene::SerializeHierarchy(GameObject* gameObject, XMLNode* parentNode, XMLDocument& rootDoc, unordered_set<int>& guids)
 {
     if (gameObject == NULL)
         return;
@@ -314,7 +317,7 @@ void Scene::SerializeHierarchy(GameObject* gameObject, XMLNode* parentNode, XMLD
 
     // Serialize components
     SerializeTransform(gameObject, goNode, rootDoc);
-    SerializeMesh(gameObject, goNode, rootDoc);
+    SerializeMesh(gameObject, goNode, rootDoc, guids);
     SerializeComponents(gameObject, goNode, rootDoc);
 
     // Serialize children
@@ -322,7 +325,7 @@ void Scene::SerializeHierarchy(GameObject* gameObject, XMLNode* parentNode, XMLD
     for (childIter = gameObject->GetChildren().begin(); childIter != gameObject->GetChildren().end(); childIter++)
     {
         GameObject* child = *childIter;
-        SerializeHierarchy(child, goNode, rootDoc);
+        SerializeHierarchy(child, goNode, rootDoc, guids);
     }
 }
 void Scene::SerializeTransform(GameObject* gameObject, XMLNode* parentNode, XMLDocument& rootDoc)
@@ -336,18 +339,20 @@ void Scene::SerializeTransform(GameObject* gameObject, XMLNode* parentNode, XMLD
     transformNode->InsertEndChild(WriteVector3ToXML(gameObject->GetLocalTransform().GetScale(), "Scale", rootDoc));
 }
 
-void Scene::SerializeMesh(GameObject* gameObject, XMLNode* parentNode, XMLDocument& rootDoc)
+void Scene::SerializeMesh(GameObject* gameObject, XMLNode* parentNode, XMLDocument& rootDoc, unordered_set<int>& guids)
 {
     if (gameObject == NULL || gameObject->GetMesh() == NULL)
         return;
 
     XMLElement* meshNode = rootDoc.NewElement("Mesh");
-    meshNode->SetAttribute("guid", gameObject->GetMesh()->GetMesh()->GetResourceInfo()->guid);
+    int guid = gameObject->GetMesh()->GetMesh()->GetResourceInfo()->guid;
+    meshNode->SetAttribute("guid", guid);
+    guids.insert(guid);
     parentNode->InsertEndChild(meshNode);
-    SerializeMaterial(gameObject, meshNode, rootDoc);
+    SerializeMaterial(gameObject, meshNode, rootDoc, guids);
 }
 
-void Scene::SerializeMaterial(GameObject* gameObject, XMLNode* parentNode, XMLDocument& rootDoc)
+void Scene::SerializeMaterial(GameObject* gameObject, XMLNode* parentNode, XMLDocument& rootDoc, unordered_set<int>& guids)
 {
     if (gameObject == NULL || gameObject->GetMesh() == NULL || gameObject->GetMesh()->GetMaterial() == NULL)
         return;
@@ -357,10 +362,27 @@ void Scene::SerializeMaterial(GameObject* gameObject, XMLNode* parentNode, XMLDo
     XMLElement* matNode = rootDoc.NewElement("Material");
     parentNode->InsertEndChild(matNode);
 
-    XMLElement* shaderNode = rootDoc.NewElement("Shader");
-    shaderNode->SetAttribute("guid", mat->GetShader()->GetResourceInfo()->guid);
-    matNode->InsertEndChild(shaderNode);
+    // Serialize texture info
+    if (mat->GetTexture() != NULL && mat->GetTexture() != Texture::DefaultTexture())
+    {
+        XMLElement* textureNode = rootDoc.NewElement("Texture");
+        int guid = mat->GetTexture()->GetResourceInfo()->guid;
+        textureNode->SetAttribute("guid", guid);
+        guids.insert(guid);
+        matNode->InsertEndChild(textureNode);
+    }
 
+    // Serialize shader info
+    if (mat->GetShader() != NULL)
+    {
+        XMLElement* shaderNode = rootDoc.NewElement("Shader");
+        int guid = mat->GetShader()->GetResourceInfo()->guid;
+        shaderNode->SetAttribute("guid", guid);
+        guids.insert(guid);
+        matNode->InsertEndChild(shaderNode);
+    }
+
+    // Serialize colour info
     matNode->InsertEndChild(WriteColourToXML(mat->GetColour(Material::MAT_COLOUR_DIFFUSE), "ColorDiffuse", rootDoc));
     matNode->InsertEndChild(WriteColourToXML(mat->GetColour(Material::MAT_COLOUR_AMBIENT), "ColorAmbient", rootDoc));
     matNode->InsertEndChild(WriteColourToXML(mat->GetColour(Material::MAT_COLOUR_SPECULAR), "ColorSpecular", rootDoc));
@@ -370,4 +392,16 @@ void Scene::SerializeMaterial(GameObject* gameObject, XMLNode* parentNode, XMLDo
 void Scene::SerializeComponents(GameObject* gameObject, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc)
 {
     // TODO implement me
+}
+
+void Scene::SerializeResourceList(unordered_set<int>& guids, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc)
+{
+    XMLElement* resourcesNode = rootDoc.NewElement("Resources");
+    parentNode->InsertFirstChild(resourcesNode);
+
+    unordered_set<int>::iterator iter;
+    for (iter = guids.begin(); iter != guids.end(); iter++)
+    {
+        resourcesNode->InsertEndChild(WriteIntToXML(*iter, "Resource", "guid", rootDoc));
+    }
 }

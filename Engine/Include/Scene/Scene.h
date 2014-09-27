@@ -7,12 +7,14 @@
 
 #include <string>
 #include <tinyxml2.h>
+#include <unordered_set>
 
 #include "..\Rendering\Camera.h"
 #include "..\Rendering\Light.h"
 #include "..\Rendering\Material.h"
 
 using std::string;
+using std::unordered_set;
 
 class GameObject;
 class MeshInstance;
@@ -43,12 +45,13 @@ private:
     
     // Scene saving helper functions
     void        SerializeGlobalSettings(tinyxml2::XMLElement* parentNode, tinyxml2::XMLDocument& rootDoc);
-    void        SerializeHierarchy(GameObject* gameObject, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc);
+    void        SerializeHierarchy(GameObject* gameObject, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc, unordered_set<int>& guids);
     void        SerializeTransform(GameObject* gameObject, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc);
-    void        SerializeMesh(GameObject* gameObject, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc);
-    void        SerializeMaterial(GameObject* gameObject, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc);
+    void        SerializeMesh(GameObject* gameObject, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc, unordered_set<int>& guids);
+    void        SerializeMaterial(GameObject* gameObject, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc, unordered_set<int>& guids);
     void        SerializeMaterialColor(Material* material, string colorName, Material::eMatColourType type, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument rootDoc);
     void        SerializeComponents(GameObject* gameObject, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc);
+    void        SerializeResourceList(unordered_set<int>& guids, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc);
 
     string      m_filename;
     Camera      m_mainCamera;

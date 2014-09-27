@@ -61,9 +61,22 @@ void ResourceManager::Shutdown()
 
 void ResourceManager::LoadSceneResources(XMLElement* resources)
 {
-    LoadResourcesOfType(resources, "Textures");
-    LoadResourcesOfType(resources, "Meshes");
-    LoadResourcesOfType(resources, "Shaders");
+    XMLElement* element = resources->FirstChildElement();
+    while (element)
+    {
+        int guid = element->IntAttribute("guid");
+        ResourceInfo* info = m_resourceLookup[guid];
+        if (info)
+        {
+            printf("Loading guid %d\n", guid);
+            m_loadedResources[guid] = info->Load();
+        }
+        else
+        {
+            printf("Error! Could not find guid %d in database\n", guid);
+        }
+        element = element->NextSiblingElement();
+    }
 }
 
 void ResourceManager::UnloadSceneResources()
@@ -89,11 +102,6 @@ Mesh* ResourceManager::GetMesh(int guid)
 ShaderProgram* ResourceManager::GetShader(int guid)
 {
     return (ShaderProgram*)m_loadedResources[guid];
-}
-
-void ResourceManager::SerializeLoadedResourceMap(XMLElement* parentNode, XMLDocument& rootDoc)
-{
-    // TODO implement me
 }
 
 void ResourceManager::BuildResourceLookupTable(string resourcesFilepath)
@@ -141,27 +149,3 @@ void ResourceManager::AddResourcesToMap(XMLElement* resources, string typeName)
         }
     }
 };
-
-void ResourceManager::LoadResourcesOfType(XMLElement* resources, string typeName)
-{
-    XMLElement* resourceSubtree = resources->FirstChildElement(typeName.c_str());
-    if (resourceSubtree)
-    {
-        XMLElement* element = resourceSubtree->FirstChildElement();
-        while (element)
-        {
-            int guid = element->IntAttribute("guid");
-            ResourceInfo* info = m_resourceLookup[guid];
-            if (info)
-            {
-                printf("Loading guid %d of type %s\n", guid, typeName.c_str());
-                m_loadedResources[guid] = info->Load();
-            }
-            else
-            {
-                printf("Error! Could not find guid %d in database\n", guid);
-            }
-            element = element->NextSiblingElement();
-        }
-    }
-}

@@ -51,16 +51,12 @@ public:
     Mesh*           GetMesh(int guid);
     ShaderProgram*  GetShader(int guid);
 
-    void            SerializeLoadedResourceMap(XMLElement* parentNode, XMLDocument& rootDoc);
-
 private:
     void BuildResourceLookupTable(string resourcesFilepath);
     void ClearResourceLookupTable();
 
     template<typename T>
     void AddResourcesToMap(XMLElement* resources, string typeName);
-
-    void LoadResourcesOfType(XMLElement* resources, string typeName);
 
     unordered_map<int, ResourceInfo*> m_resourceLookup;
     unordered_map<int, Resource*> m_loadedResources;

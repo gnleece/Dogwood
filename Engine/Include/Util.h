@@ -17,5 +17,6 @@ XMLNode*    WriteVector3ToXML(Vector3 vector, string name, XMLDocument& doc);
 ColourRGB   ReadColourFromXML(XMLElement* xmlnode);
 XMLNode*    WriteColourToXML(ColourRGB colour, string name, XMLDocument& doc);
 
+XMLNode*    WriteIntToXML(int value, string nodeName, string attribName, XMLDocument& doc);
 XMLNode*    WriteFloatToXML(float value, string nodeName, string attribName, XMLDocument& doc);
 XMLNode*    WriteStringToXML(string str, string nodeName, string attribName, XMLDocument& doc);
