@@ -97,6 +97,9 @@
     <ClInclude Include="Include\EditorCommands.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Include\DebugLogger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GeneratedFiles\Debug\moc_HierarchyModel.cpp">
@@ -160,6 +163,9 @@
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
     <ClCompile Include="Src\GameObjectMimeData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\DebugLogger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

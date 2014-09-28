@@ -8,6 +8,7 @@
 #include <QGLWidget>
 
 class GameObject;
+class MainEditorWindow;
 
 class GLWidget : public QGLWidget
 {

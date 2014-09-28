@@ -36,8 +36,6 @@ public:
     virtual void resizeEvent(QResizeEvent* resizeEvent);
 
     void SetHierarchyModel(HierarchyModel* model);
-    void DebugLog(string text);
-
     void UpdateGameObjectTransform(Vector3 vector, VectorType type);
 
 private:
@@ -52,20 +50,21 @@ private:
     GameObject*             m_copiedGameObject;
 
 private slots:
-    void Undo();
-    void Redo();
-
     void NewScene();
     void OpenScene();
-    void OpenTestScene();       // temp shortcut for debugging
     void SaveScene();
     void SaveSceneAs();
+
+    void Undo();
+    void Redo();
 
     void CreateGameObject();
     void DeleteGameObject();
     void CopyGameObject();
     void CutGameObject();
     void PasteGameObject();
+
+    void OpenTestScene();       // temp shortcut for debugging
 
     void OnSelectionChanged(const QItemSelection & selected, const QItemSelection & deselected);
 };

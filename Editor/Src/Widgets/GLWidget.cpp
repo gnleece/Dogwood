@@ -4,6 +4,7 @@
 #include <QtOpenGL>
 #include <QtWidgets>
 
+#include "DebugLogger.h"
 #include "GameObject.h"
 #include "Rendering\RenderManager.h"
 
@@ -43,7 +44,9 @@ void GLWidget::resizeGL(int width, int height)
 {}
 
 void GLWidget::mousePressEvent(QMouseEvent *event)
-{}
+{
+    DebugLogger::Singleton().Log("Mouse press on GLWidget");
+}
 
 void GLWidget::mouseMoveEvent(QMouseEvent *event)
 {}

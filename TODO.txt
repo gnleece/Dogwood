@@ -40,8 +40,14 @@ EDITOR (Thicket)
 
     * Handle root properly
 
+    * Project
+        * Define project structure (xml?)
+        * Resources map
+        * New project, open project, save project
+
     * Scene
         * New scene
+        * Debug camera controls
 
     * Visuals
         * Show world space gnomon
@@ -58,8 +64,7 @@ EDITOR (Thicket)
     
     * Window resizing
 
-    * Prefabs
-    * "Project" files?
+    * "Prefabs"?
 
     BUGS:
         - Something wrong with redo stack (can't always redo all the way)

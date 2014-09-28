@@ -1,6 +1,7 @@
 
 
 #include "maineditorwindow.h"
+#include "DebugLogger.h"
 #include "HierarchyModel.h"
 #include "GameObject.h"
 #include "ui_maineditorwindow.h"
@@ -19,13 +20,12 @@ MainEditorWindow::MainEditorWindow(QWidget *parent)
     // Window setup
     m_ui->setupUi(this);
     setWindowTitle(tr("Dogwood Editor!"));
-    m_ui->textEdit_DebugOutput->append("Loading scene...");
 
     // Tree view setup
     m_view = m_ui->treeView;
 
     // OpenGL widget setup
-    m_glWidget = new GLWidget;
+    m_glWidget = new GLWidget(this);
     m_glWidget->setFixedSize(640, 480);
     m_ui->verticalLayout->addWidget(m_glWidget);
 
@@ -34,16 +34,18 @@ MainEditorWindow::MainEditorWindow(QWidget *parent)
     m_ui->componentLayout->addWidget(m_transformWidget);
     m_transformWidget->hide();
 
+    // Debug logging
+    DebugLogger::Singleton().SetTextEditTarget(m_ui->textEdit_DebugOutput);
+
+    // File menu
+    connect(m_ui->actionNew_Scene, SIGNAL(triggered()), this, SLOT(NewScene()));
+    connect(m_ui->actionOpen_Scene, SIGNAL(triggered()), this, SLOT(OpenScene()));
+    connect(m_ui->actionSave_Scene, SIGNAL(triggered()), this, SLOT(SaveScene()));
+    connect(m_ui->actionSave_Scene_As, SIGNAL(triggered()), this, SLOT(SaveSceneAs()));
+
     // Edit menu
     connect(m_ui->actionUndo,               SIGNAL(triggered()), this, SLOT(Undo()));
     connect(m_ui->actionRedo,               SIGNAL(triggered()), this, SLOT(Redo()));
-
-    // Scene menu
-    connect(m_ui->actionNew_Scene,          SIGNAL(triggered()), this, SLOT(NewScene()));
-    connect(m_ui->actionOpen_Scene,         SIGNAL(triggered()), this, SLOT(OpenScene()));
-    connect(m_ui->actionOpen_Test_Scene,    SIGNAL(triggered()), this, SLOT(OpenTestScene()));
-    connect(m_ui->actionSave_Scene,         SIGNAL(triggered()), this, SLOT(SaveScene()));
-    connect(m_ui->actionSave_Scene_As,      SIGNAL(triggered()), this, SLOT(SaveSceneAs()));
 
     // Game Object menu
     connect(m_ui->actionCreate_Game_Object, SIGNAL(triggered()), this, SLOT(CreateGameObject()));
@@ -51,6 +53,9 @@ MainEditorWindow::MainEditorWindow(QWidget *parent)
     connect(m_ui->actionCopy_Game_Object,   SIGNAL(triggered()), this, SLOT(CopyGameObject()));
     connect(m_ui->actionCut_Game_Object,    SIGNAL(triggered()), this, SLOT(CutGameObject()));
     connect(m_ui->actionPaste_Game_Object,  SIGNAL(triggered()), this, SLOT(PasteGameObject()));
+
+    // Debug menu
+    connect(m_ui->actionOpen_Test_Scene, SIGNAL(triggered()), this, SLOT(OpenTestScene()));
 }
 
 MainEditorWindow::~MainEditorWindow()
@@ -68,14 +73,9 @@ void MainEditorWindow::SetHierarchyModel(HierarchyModel* model)
 {
     m_model = model;
     m_view->setModel(m_model);
-    DebugLog("Hierarchy model set!");
+    DebugLogger::Singleton().Log("Hierarchy model set!");
     connect(m_view->selectionModel(), SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)), this, SLOT(OnSelectionChanged(const QItemSelection &, const QItemSelection &)));
     m_view->expandAll();
-}
-
-void MainEditorWindow::DebugLog(string text)
-{
-    m_ui->textEdit_DebugOutput->append(QString(text.c_str()));
 }
 
 // TODO: Qt textboxes seem to capture ctrl + z and do their own undo. stop that!
@@ -87,11 +87,11 @@ void MainEditorWindow::Undo()
 
     if (success)
     {
-        DebugLog("Undo");
+        DebugLogger::Singleton().Log("Undo");
     }
     else
     {
-        DebugLog("Can't undo. Stack is empty.");
+        DebugLogger::Singleton().Log("Can't undo. Stack is empty.");
     }
 }
 
@@ -102,23 +102,23 @@ void MainEditorWindow::Redo()
 
     if (success)
     {
-        DebugLog("Redo");
+        DebugLogger::Singleton().Log("Redo");
     }
     else
     {
-        DebugLog("Can't redo. Stack is empty.");
+        DebugLogger::Singleton().Log("Can't redo. Stack is empty.");
     }
 }
 
 void MainEditorWindow::NewScene()
 {
     // TODO implement me
-    DebugLog("New scene: not implemented yet");
+    DebugLogger::Singleton().Log("New scene: not implemented yet");
 }
 
 void MainEditorWindow::OpenScene()
 {
-    DebugLog("Open scene");
+    DebugLogger::Singleton().Log("Open scene");
 
     // Open file dialog
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open Scene"), "", tr("Scene Files (*.xml)"));
@@ -133,7 +133,7 @@ void MainEditorWindow::OpenScene()
     }
     else
     {
-        DebugLog("Error loading scene");
+        DebugLogger::Singleton().Log("Error loading scene");
         m_scene = NULL;
     }
 }
@@ -152,7 +152,7 @@ void MainEditorWindow::OpenTestScene()
 
 void MainEditorWindow::SaveScene()
 {
-    DebugLog("Save scene");
+    DebugLogger::Singleton().Log("Save scene");
 
     if (m_scene != NULL)
     {
@@ -162,7 +162,7 @@ void MainEditorWindow::SaveScene()
 
 void MainEditorWindow::SaveSceneAs()
 {
-    DebugLog("Save scene as...");
+    DebugLogger::Singleton().Log("Save scene as...");
 
     if (m_scene != NULL)
     {
@@ -172,13 +172,13 @@ void MainEditorWindow::SaveSceneAs()
     }
     else
     {
-        DebugLog("No scene to save.");
+        DebugLogger::Singleton().Log("No scene to save.");
     }
 }
 
 void MainEditorWindow::CreateGameObject()
 {
-    DebugLog("Creating game object");
+    DebugLogger::Singleton().Log("Creating game object");
 
     QModelIndex index = m_view->selectionModel()->currentIndex();
     CreateGameObjectCommand* command = new CreateGameObjectCommand(m_model, m_view, index);
@@ -187,7 +187,7 @@ void MainEditorWindow::CreateGameObject()
 
 void MainEditorWindow::DeleteGameObject()
 {
-    DebugLog("Deleting game object");
+    DebugLogger::Singleton().Log("Deleting game object");
 
     QModelIndex index = m_view->selectionModel()->currentIndex();
     DeleteGameObjectCommand* command = new DeleteGameObjectCommand(m_model, m_view, index);
@@ -202,11 +202,11 @@ void MainEditorWindow::CopyGameObject()
 
     if (m_copiedGameObject != NULL)
     {
-        DebugLog("Copied game object");
+        DebugLogger::Singleton().Log("Copied game object");
     }
     else
     {
-        DebugLog("Tried to copy game object but selection was invalid.");
+        DebugLogger::Singleton().Log("Tried to copy game object but selection was invalid.");
     }
 }
 
@@ -218,14 +218,14 @@ void MainEditorWindow::CutGameObject()
 
     if (m_copiedGameObject != NULL)
     {
-        DebugLog("Cutting game object");
+        DebugLogger::Singleton().Log("Cutting game object");
 
         DeleteGameObjectCommand* command = new DeleteGameObjectCommand(m_model, m_view, index);
         CommandManager::Singleton().ExecuteCommand(command);
     }
     else
     {
-        DebugLog("Tried to cut object but selection was invalid.");
+        DebugLogger::Singleton().Log("Tried to cut object but selection was invalid.");
     }
 }
 
@@ -233,7 +233,7 @@ void MainEditorWindow::PasteGameObject()
 {
     if (m_copiedGameObject != NULL)
     {
-        DebugLog("Pasting game object");
+        DebugLogger::Singleton().Log("Pasting game object");
 
         QModelIndex index = m_view->selectionModel()->currentIndex();
         PasteGameObjectCommand* command = new PasteGameObjectCommand(m_model, m_view, index, m_copiedGameObject);
@@ -241,14 +241,14 @@ void MainEditorWindow::PasteGameObject()
     }
     else
     {
-        DebugLog("Tried to paste but there was no copied object.");
+        DebugLogger::Singleton().Log("Tried to paste but there was no copied object.");
     }
 }
 
 // TODO: discard trivial updates that don't actually modify values
 void MainEditorWindow::UpdateGameObjectTransform(Vector3 vector, VectorType type)
 {
-    DebugLog("Updating gameobject transform");
+    DebugLogger::Singleton().Log("Updating gameobject transform");
 
     QModelIndex index = m_view->selectionModel()->currentIndex();
     ModifyTransformCommand* command = new ModifyTransformCommand(m_model, index, vector, type);
@@ -283,7 +283,7 @@ void MainEditorWindow::resizeEvent(QResizeEvent* resizeEvent)
     int width = newSize.width();
     int height = newSize.height();
 
-    DebugLog("Window resize!");
+    DebugLogger::Singleton().Log("Window resize!");
 
     //TODO: scale/reposition widgets
 }
