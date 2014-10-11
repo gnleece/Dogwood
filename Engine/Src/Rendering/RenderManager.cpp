@@ -20,6 +20,8 @@ void RenderManager::Startup(RenderConfig& config)
     glewExperimental = GL_TRUE;
     glewInit();
 
+    m_clearColour = config.clearColour;
+
     //DebugDraw::Singleton().Startup();     // TODO fixme qt-opengl-convert
 }
 
@@ -52,6 +54,11 @@ void RenderManager::SetView(Matrix4x4& view)
     m_dirty = true;
 }
 
+void RenderManager::SetClearColour(ColourRGB colour)
+{
+    m_clearColour = colour;
+}
+
 Matrix4x4& RenderManager::GetView()
 {
     return m_viewMatrix;
@@ -60,6 +67,7 @@ Matrix4x4& RenderManager::GetView()
 void RenderManager::RenderScene()
 {
     // Clear the screen to black
+    glClearColor(m_clearColour.r, m_clearColour.g, m_clearColour.b, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // Render game objects

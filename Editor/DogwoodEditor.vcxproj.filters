@@ -80,6 +80,9 @@
     <CustomBuild Include="Include\GameObjectMimeData.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
+    <CustomBuild Include="Include\Widgets\SceneViewWidget.h">
+      <Filter>Header Files\Widgets</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_maineditorwindow.h">
@@ -167,6 +170,15 @@
     </ClCompile>
     <ClCompile Include="Src\DebugLogger.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Widgets\SceneViewWidget.cpp">
+      <Filter>Source Files\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_SceneViewWidget.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_SceneViewWidget.cpp">
+      <Filter>Generated Files\Release</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

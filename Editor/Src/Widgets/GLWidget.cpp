@@ -14,7 +14,9 @@
 
 GLWidget::GLWidget(QWidget *parent)
 : QGLWidget(QGLFormat(QGL::SampleBuffers), parent)
-{}
+{
+    setFocusPolicy(Qt::FocusPolicy::ClickFocus);
+}
 
 GLWidget::~GLWidget()
 {}
@@ -41,12 +43,4 @@ void GLWidget::paintGL()
 {}
 
 void GLWidget::resizeGL(int width, int height)
-{}
-
-void GLWidget::mousePressEvent(QMouseEvent *event)
-{
-    DebugLogger::Singleton().Log("Mouse press on GLWidget");
-}
-
-void GLWidget::mouseMoveEvent(QMouseEvent *event)
 {}

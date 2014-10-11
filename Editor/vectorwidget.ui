@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>218</width>
-    <height>55</height>
+    <height>50</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,7 +19,7 @@
      <x>10</x>
      <y>20</y>
      <width>21</width>
-     <height>31</height>
+     <height>21</height>
     </rect>
    </property>
    <property name="text">
@@ -32,7 +32,7 @@
      <x>80</x>
      <y>20</y>
      <width>31</width>
-     <height>31</height>
+     <height>21</height>
     </rect>
    </property>
    <property name="text">
@@ -45,13 +45,13 @@
      <x>20</x>
      <y>20</y>
      <width>51</width>
-     <height>31</height>
+     <height>26</height>
     </rect>
    </property>
    <property name="font">
     <font>
      <family>Consolas</family>
-     <pointsize>11</pointsize>
+     <pointsize>10</pointsize>
     </font>
    </property>
    <property name="layoutDirection">
@@ -73,13 +73,13 @@
      <x>90</x>
      <y>20</y>
      <width>51</width>
-     <height>31</height>
+     <height>26</height>
     </rect>
    </property>
    <property name="font">
     <font>
      <family>Consolas</family>
-     <pointsize>11</pointsize>
+     <pointsize>10</pointsize>
     </font>
    </property>
    <property name="layoutDirection">
@@ -101,13 +101,13 @@
      <x>160</x>
      <y>20</y>
      <width>51</width>
-     <height>31</height>
+     <height>26</height>
     </rect>
    </property>
    <property name="font">
     <font>
      <family>Consolas</family>
-     <pointsize>11</pointsize>
+     <pointsize>10</pointsize>
     </font>
    </property>
    <property name="layoutDirection">
@@ -129,7 +129,7 @@
      <x>150</x>
      <y>20</y>
      <width>31</width>
-     <height>31</height>
+     <height>21</height>
     </rect>
    </property>
    <property name="text">

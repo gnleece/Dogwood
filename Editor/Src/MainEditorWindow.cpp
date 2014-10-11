@@ -7,7 +7,7 @@
 #include "ui_maineditorwindow.h"
 #include "Rendering\RenderManager.h"
 #include "Scene\Scene.h"
-#include "Widgets\GLWidget.h"
+#include "Widgets\SceneViewWidget.h"
 #include "Widgets\TransformWidget.h"
 
 #include <QtWidgets>
@@ -24,10 +24,10 @@ MainEditorWindow::MainEditorWindow(QWidget *parent)
     // Tree view setup
     m_view = m_ui->treeView;
 
-    // OpenGL widget setup
-    m_glWidget = new GLWidget(this);
-    m_glWidget->setFixedSize(640, 480);
-    m_ui->verticalLayout->addWidget(m_glWidget);
+    // Scene view widget setup
+    m_sceneViewWidget = new SceneViewWidget(this);
+    m_sceneViewWidget->setFixedSize(640, 480);
+    m_ui->verticalLayout->addWidget(m_sceneViewWidget);
 
     // Component widgets
     m_transformWidget = new TransformWidget(this, this);
@@ -61,12 +61,12 @@ MainEditorWindow::MainEditorWindow(QWidget *parent)
 MainEditorWindow::~MainEditorWindow()
 {
     delete m_ui;
-    delete m_glWidget;
+    delete m_sceneViewWidget;
 }
 
 void MainEditorWindow::Paint()
 {
-    m_glWidget->update();
+    m_sceneViewWidget->update();
 }
 
 void MainEditorWindow::SetHierarchyModel(HierarchyModel* model)

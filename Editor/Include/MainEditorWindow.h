@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include <qabstractitemmodel.h>
 #include <QItemSelection>
 #include <QMainWindow>
@@ -10,11 +9,11 @@
 #include "EditorCommands.h"
 #include "Math\Algebra.h"
 
-class GLWidget;
 class GameObject;
 class HierarchyModel;
 class QTreeView;
 class Scene;
+class SceneViewWidget;
 class TransformWidget;
 
 using std::string;
@@ -40,7 +39,7 @@ public:
 
 private:
     Ui::MainEditorWindow*   m_ui;
-    GLWidget*               m_glWidget;
+    SceneViewWidget*        m_sceneViewWidget;
     TransformWidget*        m_transformWidget;
 
     QTreeView*              m_view;

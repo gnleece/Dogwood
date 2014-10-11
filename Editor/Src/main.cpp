@@ -20,6 +20,7 @@ int main(int argc, char *argv[])
     RenderConfig renderConfig;
     renderConfig.width = 640;
     renderConfig.height = 480;
+    renderConfig.clearColour = ColourRGB(0.4, 0.4, 0.4);
     RenderManager::Singleton().Startup(renderConfig);
     
     ResourceManager::Singleton().Startup("..\\Game\\Assets\\Resources.xml");        // TODO fix these paths!!
