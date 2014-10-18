@@ -15,7 +15,7 @@
 using namespace EditorCommands;
 
 MainEditorWindow::MainEditorWindow(QWidget *parent)
-: m_ui(new Ui::MainEditorWindow)
+: m_ui(new Ui::MainEditorWindow), m_copiedGameObject(NULL), m_selectedGameObject(NULL)
 {
     // Window setup
     m_ui->setupUi(this);
@@ -263,11 +263,21 @@ void MainEditorWindow::OnSelectionChanged(const QItemSelection & selected, const
     const QModelIndex index = m_view->selectionModel()->currentIndex();
     GameObject* go = m_model->getItem(index);
 
+    if (m_selectedGameObject != NULL)
+    {
+        m_selectedGameObject->SetSelected(false);
+        m_selectedGameObject = NULL;
+    }
+
     if (go != NULL)
     {
         // Show the components for the selected game object
         m_transformWidget->SetGameObject(go);
         m_transformWidget->show();
+
+        // Notify the game object that it's been selected
+        go->SetSelected(true);
+        m_selectedGameObject = go;
     }
     else
     {

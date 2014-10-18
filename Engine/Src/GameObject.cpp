@@ -6,7 +6,7 @@
 vector<GameObject*> GameObject::ActiveGameObjects = vector<GameObject*>();
 
 GameObject::GameObject(string name, GameObject* parent)
- : m_dirty(true)
+ : m_dirty(true), m_selected(false)
 {
     m_name = name;
     SetParent(parent);
@@ -163,9 +163,10 @@ void GameObject::Update(float deltaTime)
     }
 }
 
-void GameObject::Render(Transform& parentWorldTransform, bool dirty)
+void GameObject::Render(Transform& parentWorldTransform, bool dirty, bool wireframe)
 {
     dirty |= m_dirty | m_localTransform.HasChanged();
+    wireframe |= m_selected;
     if (dirty)
     {
         // hierarchy has changed so recompute world transform (and cache it)
@@ -177,7 +178,7 @@ void GameObject::Render(Transform& parentWorldTransform, bool dirty)
     // render the mesh, if there is one
     if (m_mesh)
     {
-        m_mesh->Render(m_worldTransform);
+        m_mesh->Render(m_worldTransform, wireframe);
     }
 
     // render children
@@ -185,7 +186,7 @@ void GameObject::Render(Transform& parentWorldTransform, bool dirty)
     for (childIter = m_children.begin(); childIter != m_children.end(); childIter++)
     {
         GameObject* child = *childIter;
-        child->Render(m_worldTransform, dirty);
+        child->Render(m_worldTransform, dirty, wireframe);
     }
 }
 
@@ -215,4 +216,9 @@ void GameObject::RemoveChild(GameObject* child)
 {
     // TODO fixme
     //m_children.remove(child);
+}
+
+void GameObject::SetSelected(bool selected)
+{
+    m_selected = selected;
 }

@@ -46,10 +46,12 @@ public:
     void OnEnable();
     void OnDisable();
 
-    void Render(Transform& parentWorldTransform, bool dirty);
+    void Render(Transform& parentWorldTransform, bool dirty, bool wireframe = false);
 
     void SetMesh(MeshInstance* mesh); 
     MeshInstance* GetMesh();
+
+    void SetSelected(bool selected);
 
     static vector<GameObject*> ActiveGameObjects;
 
@@ -63,6 +65,7 @@ private:
     Transform               m_localTransform;
     Transform               m_worldTransform;
     bool                    m_dirty;
+    bool                    m_selected;
 
     MeshInstance*           m_mesh;         // TODO this should be part of regular component list
 

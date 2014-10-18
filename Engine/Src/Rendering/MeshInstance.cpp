@@ -2,11 +2,11 @@
 #include "Rendering\MeshInstance.h"
 #include "Rendering\Mesh.h"
 
-void MeshInstance::Render(Transform& transform)
+void MeshInstance::Render(Transform& transform, bool wireframe)
 {
     if (m_mesh)
     {
-        m_mesh->Render(transform, m_material);
+        m_mesh->Render(transform, m_material, wireframe);
     }
 }
 

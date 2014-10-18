@@ -47,12 +47,10 @@ EDITOR (Thicket)
 
     * Scene
         * New scene
-        * Debug camera controls
 
     * Visuals
         * Show world space gnomon
         * Show local space gnomon on selected object
-        * Highlight selected object
         * Unit grid on x-z plane
 
     * Object manipulation

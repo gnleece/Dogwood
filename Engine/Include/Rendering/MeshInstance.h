@@ -9,7 +9,7 @@ class Mesh;
 class MeshInstance : public GameComponent
 {
 public:
-    void Render(Transform& transform);
+    void Render(Transform& transform, bool wireframe = false);
 
     void SetMesh(Mesh* mesh)                { m_mesh = mesh; }
     Mesh* GetMesh()                         { return m_mesh; }

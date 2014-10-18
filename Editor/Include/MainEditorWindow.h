@@ -47,6 +47,7 @@ private:
     Scene*                  m_scene;
 
     GameObject*             m_copiedGameObject;
+    GameObject*             m_selectedGameObject;
 
 private slots:
     void NewScene();
