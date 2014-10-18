@@ -1,10 +1,10 @@
 #version 150
 
-in vec3 Color;
+uniform vec3 matColorDiffuse;
 
 out vec4 outColor;
 
 void main() 
 {
-    outColor =	vec4(Color,1.0);
+    outColor =	vec4(matColorDiffuse,1.0);
 }

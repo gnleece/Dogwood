@@ -9,6 +9,7 @@
 #define GLFW_INCLUDE_GLU
 #include <GLFW/glfw3.h>
 
+class Material;
 class ShaderProgram;
 
 class DebugDraw
@@ -23,19 +24,25 @@ public:
     }
     DebugDraw() {}
 
-    void Startup();
-    void Shutdown();
+    void            Startup();
+    void            Shutdown();
 
-    void DrawLine(Vector3& a, Vector3& b, ColourRGB& colour);       // draw line for one frame
-    void RenderLines();
+    void            DrawLine(Vector3& a, Vector3& b, ColourRGB& colour);       // draw line for one frame
+    void            RenderLines();
 
-private:    
-    ShaderProgram*  m_shader;
+    Material*       GetDebugMaterial();
+
+private:
+    void            SetupDebugMat();
+
     GLuint          m_vertexBufferID;
     GLuint          m_colourBufferID;
     GLuint          m_vertexArrayID;
     Vector3         m_vertexBufferData[MAX_LINES_PER_FRAME * 2];
     ColourRGB       m_lineColours[MAX_LINES_PER_FRAME * 2];
     int             m_numLines = 0;
+
+    Material*       m_material;
+    ShaderProgram*  m_shader;
 
 };

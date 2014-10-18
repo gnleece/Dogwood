@@ -22,12 +22,12 @@ void RenderManager::Startup(RenderConfig& config)
 
     m_clearColour = config.clearColour;
 
-    //DebugDraw::Singleton().Startup();     // TODO fixme qt-opengl-convert
+    DebugDraw::Singleton().Startup();
 }
 
 void RenderManager::Shutdown()
 {
-    //DebugDraw::Singleton().Shutdown();
+    DebugDraw::Singleton().Shutdown();
 }
 
 void RenderManager::SetRootObject(GameObject* rootObject)

@@ -1,11 +1,10 @@
 #include "Debugging\DebugDraw.h"
+#include "Rendering\Material.h"
 #include "Rendering\ShaderProgram.h"
 
 void DebugDraw::Startup()
 {
-    // TODO fix me
-    m_shader = new ShaderProgram();
-    m_shader->Load("..\\Engine\\Src\\Shaders\\DebugDrawVertexShader.glsl", "..\\Engine\\Src\\Shaders\\DebugDrawFragmentShader.glsl");
+    SetupDebugMat();
 
     glGenBuffers(1, &m_vertexBufferID);
     glBindBuffer(GL_ARRAY_BUFFER, m_vertexBufferID);
@@ -24,6 +23,8 @@ void DebugDraw::Shutdown()
     glDeleteBuffers(1, &m_vertexBufferID);
     glDeleteBuffers(1, &m_colourBufferID);
     glDeleteVertexArrays(1, &m_vertexArrayID);
+
+    //TODO clean up material/shader
 }
 
 void DebugDraw::DrawLine(Vector3& a, Vector3& b, ColourRGB& colour)
@@ -69,3 +70,16 @@ void DebugDraw::RenderLines()
     m_numLines = 0;
 }
 
+Material* DebugDraw::GetDebugMaterial()
+{
+    return m_material;
+}
+
+void DebugDraw::SetupDebugMat()
+{
+    m_shader = new ShaderProgram();
+    m_shader->Load("..\\Engine\\Src\\Shaders\\DebugDrawVertexShader.glsl", "..\\Engine\\Src\\Shaders\\DebugDrawFragmentShader.glsl");
+
+    m_material = new Material();
+    m_material->SetShader(m_shader);
+}

@@ -17,7 +17,7 @@ class Mesh : public Resource
 public:
     Mesh(std::string filename, ResourceInfo* resourceInfo);
 
-    void Render(Transform& transform, Material* material);
+    void Render(Transform& transform, Material* material, bool wireframe = false);
     void Delete();
 
 private:

@@ -1,5 +1,6 @@
 #include "Rendering\Mesh.h"
 
+#include "Debugging\DebugDraw.h"
 #include "Rendering\Image.h"
 #include "Rendering\Material.h"
 #include "Rendering\ModelLoading.h"
@@ -47,7 +48,7 @@ Mesh::Mesh(std::string path, ResourceInfo* resourceInfo)
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)*m_indexedVertexCount, indices.data(), GL_STATIC_DRAW);
 }
 
-void Mesh::Render(Transform& transform, Material* material)
+void Mesh::Render(Transform& transform, Material* material, bool wireframe)
 {
     if (material)
     {
@@ -57,6 +58,15 @@ void Mesh::Render(Transform& transform, Material* material)
         material->ApplyMaterial(m_vboPosition, m_vboNormal, m_vboUV, transform);
         glDrawElements(m_drawMode, m_indexedVertexCount, GL_UNSIGNED_INT, 0);
         material->UnapplyMaterial();
+
+        if (wireframe)
+        {
+            Material* debugMat = DebugDraw::Singleton().GetDebugMaterial();
+            debugMat->SetColour(Material::eMatColourType::MAT_COLOUR_DIFFUSE, ColourRGB::White);
+            debugMat->ApplyMaterial(m_vboPosition, m_vboNormal, m_vboUV, transform);
+            glDrawElements(GL_LINE_LOOP, m_indexedVertexCount, GL_UNSIGNED_INT, 0);
+            debugMat->UnapplyMaterial();
+        }
     }
 }
 

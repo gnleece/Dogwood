@@ -32,7 +32,7 @@ public:
     void focusOutEvent(QFocusEvent * event);
 
 private:
-    const float KEY_TRANS_AMOUNT = 2.f;
+    const float KEY_TRANS_AMOUNT = 6.f;
     const float KEY_ROT_AMOUNT = 35.f;
     const float MOUSE_ROT_AMOUNT = 7.f;
 
