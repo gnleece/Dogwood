@@ -30,6 +30,9 @@ public:
     void            DrawLine(Vector3& a, Vector3& b, ColourRGB& colour);       // draw line for one frame
     void            RenderLines();
 
+    void            PrepareLineBuffer(Vector3* buffer, int count, GLuint &vao, GLuint &vbo);
+    void            DrawLineBuffer(GLuint vao, GLuint vbo, Vector3* buffer, int size, ColourRGB color);
+
     Material*       GetDebugMaterial();
 
 private:
@@ -44,5 +47,4 @@ private:
 
     Material*       m_material;
     ShaderProgram*  m_shader;
-
 };

@@ -18,7 +18,11 @@ void RenderManager::Startup(RenderConfig& config)
     glDepthFunc(GL_LESS);
 
     glewExperimental = GL_TRUE;
-    glewInit();
+    GLenum ret = glewInit();
+    if (ret != 0)
+    {
+        printf("Error in glewInit! Abort.\n");
+    }
 
     m_clearColour = config.clearColour;
 

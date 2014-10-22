@@ -30,6 +30,7 @@ class MainEditorWindow : public QMainWindow
 public:
     explicit MainEditorWindow(QWidget* parent = 0);
     ~MainEditorWindow();
+    void PostSetup();
 
     void Paint();
     virtual void resizeEvent(QResizeEvent* resizeEvent);

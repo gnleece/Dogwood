@@ -12,6 +12,12 @@ HierarchyModel::HierarchyModel(GameObject* root, QObject *parent)
 : m_rootItem(root),
   QAbstractItemModel(parent)
 {
+    if (root == NULL)
+    {
+        printf("Error creating HierarchyModel. Root object is null.\n");
+        return;
+    }
+
     m_rootItem = new GameObject("Game Object Hierarchy");
     root->SetParent(m_rootItem);
 }

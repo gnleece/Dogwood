@@ -15,7 +15,7 @@ void DebugDraw::Startup()
     glBufferData(GL_ARRAY_BUFFER, sizeof(m_lineColours), m_lineColours, GL_DYNAMIC_DRAW);
 
     glGenVertexArrays(1, &m_vertexArrayID);
-    glBindVertexArray(m_vertexArrayID); 
+    glBindVertexArray(m_vertexArrayID);
 }
 
 void DebugDraw::Shutdown()
@@ -39,9 +39,49 @@ void DebugDraw::DrawLine(Vector3& a, Vector3& b, ColourRGB& colour)
     }
 }
 
+void DebugDraw::PrepareLineBuffer(Vector3* buffer, int count, GLuint& vao, GLuint &vbo)
+{
+    glGenVertexArrays(1, &vao);
+    glBindVertexArray(vao);
+
+    glGenBuffers(1, &vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*count * 3, buffer, GL_STATIC_DRAW);
+}
+
+void DebugDraw::DrawLineBuffer(GLuint vao, GLuint vbo, Vector3* buffer, int count, ColourRGB color)
+{
+    // Bind arrays/buffers
+    glBindVertexArray(vao);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+
+    // Set the shader
+    m_shader->ApplyShader();
+
+    // Set uniform color value
+    GLint paramLocation = m_shader->GetParamLocation(ShaderProgram::UNI_COLOUR_DIFFUSE);
+    glUniform3fv(paramLocation, 1, color.Start());
+
+    // Set model matrix to identiy (debug lines are given in world coords)
+    GLint uniModel = m_shader->GetParamLocation(ShaderProgram::UNI_MODEL);
+    glUniformMatrix4fv(uniModel, 1, GL_FALSE, Matrix4x4::Identity.Transpose().Start());
+
+    // Bind position data
+    paramLocation = m_shader->GetParamLocation(ShaderProgram::ATTRIB_POS);
+    glEnableVertexAttribArray(paramLocation);
+    glVertexAttribPointer(paramLocation, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
+
+    // Draw the lines!
+    glDrawArrays(GL_LINES, 0, count);
+
+    glDisableVertexAttribArray(0);
+}
+
 void DebugDraw::RenderLines()
 {
     m_shader->ApplyShader();
+
+    // TODO this function is broken now that colours are uniform parameters
 
     // Set model matrix to identiy. debug lines are given in world coords
     GLint uniModel = m_shader->GetParamLocation(ShaderProgram::UNI_MODEL);

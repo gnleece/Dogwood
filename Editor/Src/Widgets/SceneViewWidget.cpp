@@ -1,12 +1,41 @@
 #include "Widgets\SceneViewWidget.h"
 
 #include "DebugLogger.h"
+#include "Debugging\DebugDraw.h"
 #include "Rendering\RenderManager.h"
 #include <QtWidgets>
 
 SceneViewWidget::SceneViewWidget(QWidget* parent)
-: GLWidget(parent), m_hasFocus(false), m_mousePressed(false), m_mouseDragging(false)
-{}
+: GLWidget(parent), m_hasFocus(false), m_mousePressed(false), m_mouseDragging(false),
+  m_showGrid(true)
+{
+}
+
+void SceneViewWidget::PostSetup()
+{
+    // This setup can't be done in the constructor, because glewInit hasn't been called
+    // at that point, and we need opengl to be ready
+
+    // Make a buffer of lines for a unit grid in the x-z plane
+    int z = -GRID_SIZE;
+    for (int i = 0; i < GRID_SIZE * 2 + 1; i++)
+    {
+        m_gridLinesVertexBuffer[i * 2] = Vector3(-GRID_SIZE, 0, z);
+        m_gridLinesVertexBuffer[i * 2 + 1] = Vector3(GRID_SIZE, 0, z);
+        z++;
+    }
+    int x = -GRID_SIZE;
+    for (int i = 0; i < GRID_SIZE * 2 + 1; i++)
+    {
+        m_gridLinesVertexBuffer[(GRID_SIZE * 4 + 2) + i * 2] = Vector3(x, 0, -GRID_SIZE);
+        m_gridLinesVertexBuffer[(GRID_SIZE * 4 + 2) + i * 2 + 1] = Vector3(x, 0, GRID_SIZE);
+        x++;
+    }
+
+    m_gridColor = ColourRGB(0.5f, 0.5f, 0.5f);
+
+    DebugDraw::Singleton().PrepareLineBuffer(m_gridLinesVertexBuffer, GRID_BUFFER_SIZE, m_gridVAO, m_gridVBO);
+}
 
 void SceneViewWidget::update()
 {
@@ -31,6 +60,8 @@ void SceneViewWidget::update()
             MoveCamera(Vector3(-KEY_TRANS_AMOUNT*0.01/**deltaTime*/, 0, 0));
         }
     }
+
+    DebugDraw::Singleton().DrawLineBuffer(m_gridVAO, m_gridVBO, m_gridLinesVertexBuffer, GRID_BUFFER_SIZE, m_gridColor);
 }
 
 void SceneViewWidget::mousePressEvent(QMouseEvent* event)

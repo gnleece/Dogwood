@@ -6,12 +6,12 @@
         <Resource guid="2001"/>
     </Resources>
     <Camera>
-        <Position x="0.00000" y="0.00000" z="0.00000"/>
+        <Position x="0.00000" y="1.00000" z="5.00000"/>
         <Direction x="0.00000" y="0.00000" z="-1.00000"/>
         <Up x="0.00000" y="1.00000" z="0.00000"/>
     </Camera>
     <Light>
-        <Position x="0.00000" y="0.00000" z="0.00000"/>
+        <Position x="0.00000" y="2.00000" z="5.00000"/>
         <Color r="1.00000" g="1.00000" b="1.00000"/>
         <Power value="15.00000"/>
     </Light>
@@ -23,8 +23,8 @@
         </Transform>
         <GameObject name="Yellow Sphere">
             <Transform>
-                <Position x="-1.00000" y="-1.00000" z="-5.00000"/>
-                <Rotation x="35.00001" y="-0.00000" z="0.00000"/>
+                <Position x="-1.00000" y="0.00000" z="0.00000"/>
+                <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
                 <Scale x="0.80000" y="0.80000" z="0.80000"/>
             </Transform>
             <Mesh guid="2002">
@@ -68,7 +68,7 @@
         </GameObject>
         <GameObject name="Green Cube">
             <Transform>
-                <Position x="1.20000" y="-0.50000" z="-5.00000"/>
+                <Position x="1.20000" y="0.00000" z="0.00000"/>
                 <Rotation x="45.00000" y="-0.00000" z="45.00000"/>
                 <Scale x="0.45000" y="0.45000" z="0.45000"/>
             </Transform>

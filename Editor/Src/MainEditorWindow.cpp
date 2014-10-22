@@ -64,6 +64,11 @@ MainEditorWindow::~MainEditorWindow()
     delete m_sceneViewWidget;
 }
 
+void MainEditorWindow::PostSetup()
+{
+    m_sceneViewWidget->PostSetup();
+}
+
 void MainEditorWindow::Paint()
 {
     m_sceneViewWidget->update();
@@ -141,6 +146,7 @@ void MainEditorWindow::OpenScene()
 void MainEditorWindow::OpenTestScene()
 {
     // TODO unload previous scene
+
     m_scene = new Scene();
     if (m_scene->LoadScene("..\\Game\\Assets\\Scenes\\Scene0.xml"))
     {

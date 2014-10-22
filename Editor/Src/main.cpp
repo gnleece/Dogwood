@@ -12,11 +12,12 @@
 
 int main(int argc, char *argv[])
 {
-    // QT setup
+    // QT setup.
     QApplication app(argc, argv);
     MainEditorWindow window;
     window.show();
 
+    // Render setup. Must be done AFTER window (QT) setup
     RenderConfig renderConfig;
     renderConfig.width = 640;
     renderConfig.height = 480;
@@ -24,6 +25,9 @@ int main(int argc, char *argv[])
     RenderManager::Singleton().Startup(renderConfig);
     
     ResourceManager::Singleton().Startup("..\\Game\\Assets\\Resources.xml");        // TODO fix these paths!!
+
+    // Post-setup step
+    window.PostSetup();
 
     // Event & render loop
     QTime lastUpdate;

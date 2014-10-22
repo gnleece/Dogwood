@@ -62,7 +62,7 @@ void Mesh::Render(Transform& transform, Material* material, bool wireframe)
         if (wireframe)
         {
             Material* debugMat = DebugDraw::Singleton().GetDebugMaterial();
-            debugMat->SetColour(Material::eMatColourType::MAT_COLOUR_DIFFUSE, ColourRGB::White);
+            debugMat->SetColour(Material::eMatColourType::MAT_COLOUR_DIFFUSE, ColourRGB(0.7f,0.7f,0.7f));
             debugMat->ApplyMaterial(m_vboPosition, m_vboNormal, m_vboUV, transform);
             glDrawElements(GL_LINE_LOOP, m_indexedVertexCount, GL_UNSIGNED_INT, 0);
             debugMat->UnapplyMaterial();
