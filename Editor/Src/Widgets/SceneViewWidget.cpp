@@ -6,9 +6,12 @@
 #include <QtWidgets>
 
 SceneViewWidget::SceneViewWidget(QWidget* parent)
-: GLWidget(parent), m_hasFocus(false), m_mousePressed(false), m_mouseDragging(false),
-  m_showGrid(true)
+: GLWidget(parent), m_hasFocus(false), m_showGrid(true)
 {
+    m_mousePressed[0] = false;
+    m_mousePressed[1] = false;
+    m_mouseDragging[0] = false;
+    m_mouseDragging[1] = false;
 }
 
 void SceneViewWidget::PostSetup()
@@ -66,30 +69,46 @@ void SceneViewWidget::update()
 
 void SceneViewWidget::mousePressEvent(QMouseEvent* event)
 {
-    m_mousePressed = true;
+    if (event->button() == Qt::LeftButton)
+    {
+        m_mousePressed[0] = true;
+    }
+    else if (event->button() == Qt::RightButton)
+    {
+        m_mousePressed[1] = true;
+    }
 }
 
 void SceneViewWidget::mouseMoveEvent(QMouseEvent* event)
 {
     QPoint pos = event->pos();
-    if (m_mouseDragging)
+
+    if (m_mouseDragging[1])
     {
         float deltaX = pos.x() - m_prevMousePos.x();
         float deltaY = pos.y() - m_prevMousePos.y();
         RotateCamera(AXIS_Y, deltaX*MOUSE_ROT_AMOUNT*0.01/**deltaTime*/);
         RotateCamera(AXIS_X, deltaY*MOUSE_ROT_AMOUNT*0.01/**deltaTime*/);
     }
-    else
+    else if (m_mousePressed[1])
     {
-        m_mouseDragging = true;
+        m_mouseDragging[1] = true;
     }
     m_prevMousePos = pos;
 }
 
 void SceneViewWidget::mouseReleaseEvent(QMouseEvent* event)
 {
-    m_mousePressed = false;
-    m_mouseDragging = false;
+    if (event->button() == Qt::LeftButton)
+    {
+        m_mousePressed[0] = false;
+        m_mouseDragging[0] = false;
+    }
+    else if (event->button() == Qt::RightButton)
+    {
+        m_mousePressed[1] = false;
+        m_mouseDragging[1] = false;
+    }
 }
 
 void SceneViewWidget::keyPressEvent(QKeyEvent* event)
@@ -112,7 +131,8 @@ void SceneViewWidget::focusInEvent(QFocusEvent* event)
 void SceneViewWidget::focusOutEvent(QFocusEvent* event)
 {
     m_hasFocus = false;
-    m_mousePressed = false;
+    m_mousePressed[0] = false;
+    m_mousePressed[1] = false;
     m_keyStates.clear();
 }
 

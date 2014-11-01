@@ -41,8 +41,8 @@ private:
     void RotateCamera(eAXIS axis, float degrees);
 
     bool                        m_hasFocus;
-    bool                        m_mousePressed;
-    bool                        m_mouseDragging;
+    bool                        m_mousePressed[2];
+    bool                        m_mouseDragging[2];
     
     unordered_map<int, bool>    m_keyStates;
     QPoint                      m_prevMousePos;
