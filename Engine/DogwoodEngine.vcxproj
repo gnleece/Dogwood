@@ -136,8 +136,8 @@
     <ClCompile Include="Src\Window\GameWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Src\Shaders\DebugDrawFragmentShader.glsl" />
-    <None Include="Src\Shaders\DebugDrawVertexShader.glsl" />
+    <None Include="Src\Shaders\UnlitUniformColor.frag.glsl" />
+    <None Include="Src\Shaders\UnlitUniformColor.vert.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

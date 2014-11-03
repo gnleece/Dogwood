@@ -26,6 +26,8 @@ void RenderManager::Startup(RenderConfig& config)
 
     m_clearColour = config.clearColour;
 
+    LoadCommonShaders();
+
     DebugDraw::Singleton().Startup();
 }
 
@@ -80,11 +82,6 @@ void RenderManager::RenderScene()
         m_rootObject->Render(Transform::Identity, false);
     }
 
-    // Draw debug gnomon. TODO remove me
-    //DebugDraw::Singleton().DrawLine(Vector3(-1.5f, -1.f, -3.f), Vector3(-0.5f, -1.f, -3.f), ColourRGB::Red);
-    //DebugDraw::Singleton().DrawLine(Vector3(-1.5f, -1.f, -3.f), Vector3(-1.5f, 0.f, -3.f), ColourRGB::Green);
-    //DebugDraw::Singleton().DrawLine(Vector3(-1.5f, -1.f, -3.f), Vector3(-1.5f, -1.f, -4.f), ColourRGB::Blue);
-
     //DebugDraw::Singleton().RenderLines();
 
     // Swap buffers
@@ -106,8 +103,25 @@ bool RenderManager::SettingsDirty()
     return m_dirty;
 }
 
+ShaderProgram* RenderManager::GetCommonShader(eCommonShader name)
+{
+    if (name >= 0 && name < NUM_COMMON_SHADERS)
+        return m_commonShaders[name];
+    return NULL;
+}
+
+
 void RenderManager::SetUniformMatrix(ShaderProgram* shader, ShaderProgram::eShaderParam param, Matrix4x4 & matrix)
 {
     GLint paramLocation = shader->GetParamLocation(param);
     glUniformMatrix4fv(paramLocation, 1, GL_FALSE, matrix.Transpose().Start());
+}
+
+void RenderManager::LoadCommonShaders()
+{
+    m_commonShaders[SHADER_UNLIT] = new ShaderProgram();
+    (m_commonShaders[SHADER_UNLIT])->Load("..\\Engine\\Src\\Shaders\\Unlit.vert.glsl", "..\\Engine\\Src\\Shaders\\Unlit.frag.glsl");
+
+    m_commonShaders[SHADER_UNLIT_UNI_COLOR] = new ShaderProgram();
+    (m_commonShaders[SHADER_UNLIT_UNI_COLOR])->Load("..\\Engine\\Src\\Shaders\\UnlitUniformColor.vert.glsl", "..\\Engine\\Src\\Shaders\\UnlitUniformColor.frag.glsl");
 }

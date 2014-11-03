@@ -34,34 +34,46 @@ public:
     }
     RenderManager() {}
 
-    void        Startup(RenderConfig& config);
-    void        Shutdown();
+    enum eCommonShader
+    {
+        SHADER_UNLIT,
+        SHADER_UNLIT_UNI_COLOR,
+        NUM_COMMON_SHADERS
+    };
 
-    void        SetRootObject(GameObject* rootObject);
-    void        SetLight(Light light);
-    void        SetCamera(Camera camera);
-    void        SetView(Matrix4x4& view);
-    void        SetClearColour(ColourRGB colour);
+    void            Startup(RenderConfig& config);
+    void            Shutdown();
 
-    Matrix4x4&  GetView();
+    void            SetRootObject(GameObject* rootObject);
+    void            SetLight(Light light);
+    void            SetCamera(Camera camera);
+    void            SetView(Matrix4x4& view);
+    void            SetClearColour(ColourRGB colour);
 
-    void        RenderScene();
-    void        ApplyGlobalParams(ShaderProgram* shader);
+    Matrix4x4&      GetView();
 
-    bool        SettingsDirty();
+    void            RenderScene();
+    void            ApplyGlobalParams(ShaderProgram* shader);
+
+    bool            SettingsDirty();
+
+    ShaderProgram*  GetCommonShader(eCommonShader name);
 
 private:
     RenderManager(RenderManager const&);
     void operator=(RenderManager const&);
 
-    void        SetUniformMatrix(ShaderProgram* shader, ShaderProgram::eShaderParam param, Matrix4x4& matrix);
+    void            SetUniformMatrix(ShaderProgram* shader, ShaderProgram::eShaderParam param, Matrix4x4& matrix);
+    void            LoadCommonShaders();
 
-    GameObject* m_rootObject;
-    Light       m_light;        // TODO support mutiple light sources
-    ColourRGB   m_clearColour;
+    GameObject*     m_rootObject;
+    Light           m_light;        // TODO support mutiple light sources
+    ColourRGB       m_clearColour;
 
-    Matrix4x4   m_viewMatrix;
-    Matrix4x4   m_projMatrix;
+    Matrix4x4       m_viewMatrix;
+    Matrix4x4       m_projMatrix;
 
-    bool        m_dirty;
+    bool            m_dirty;
+
+    ShaderProgram*  m_commonShaders[NUM_COMMON_SHADERS];
 };

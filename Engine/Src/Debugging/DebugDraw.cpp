@@ -1,18 +1,16 @@
 #include "Debugging\DebugDraw.h"
 #include "Rendering\Material.h"
+#include "Rendering\RenderManager.h"
 #include "Rendering\ShaderProgram.h"
 
 void DebugDraw::Startup()
 {
     SetupDebugMat();
 
+    // Debug lines
     glGenBuffers(1, &m_vertexBufferID);
     glBindBuffer(GL_ARRAY_BUFFER, m_vertexBufferID);
     glBufferData(GL_ARRAY_BUFFER, sizeof(m_vertexBufferData), m_vertexBufferData, GL_DYNAMIC_DRAW);
-    
-    glGenBuffers(1, &m_colourBufferID);
-    glBindBuffer(GL_ARRAY_BUFFER, m_colourBufferID);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(m_lineColours), m_lineColours, GL_DYNAMIC_DRAW);
 
     glGenVertexArrays(1, &m_vertexArrayID);
     glBindVertexArray(m_vertexArrayID);
@@ -117,8 +115,7 @@ Material* DebugDraw::GetDebugMaterial()
 
 void DebugDraw::SetupDebugMat()
 {
-    m_shader = new ShaderProgram();
-    m_shader->Load("..\\Engine\\Src\\Shaders\\DebugDrawVertexShader.glsl", "..\\Engine\\Src\\Shaders\\DebugDrawFragmentShader.glsl");
+    m_shader = RenderManager::Singleton().GetCommonShader(RenderManager::eCommonShader::SHADER_UNLIT_UNI_COLOR);
 
     m_material = new Material();
     m_material->SetShader(m_shader);
