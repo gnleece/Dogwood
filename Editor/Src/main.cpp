@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
         }
 
         RenderManager::Singleton().RenderScene();
-        window.Paint();
+        window.Update();
     }
     app.exit();
 

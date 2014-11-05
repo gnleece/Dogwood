@@ -38,6 +38,9 @@ MainEditorWindow::MainEditorWindow(QWidget *parent)
     DebugLogger::Singleton().SetTextEditTarget(m_ui->textEdit_DebugOutput);
 
     // File menu
+    connect(m_ui->actionNew_Project,        SIGNAL(triggered()), this, SLOT(NewProject()));
+    connect(m_ui->actionOpen_Project,       SIGNAL(triggered()), this, SLOT(OpenProject()));
+    connect(m_ui->actionSave_Project,       SIGNAL(triggered()), this, SLOT(SaveProject()));
     connect(m_ui->actionNew_Scene,          SIGNAL(triggered()), this, SLOT(NewScene()));
     connect(m_ui->actionOpen_Scene,         SIGNAL(triggered()), this, SLOT(OpenScene()));
     connect(m_ui->actionSave_Scene,         SIGNAL(triggered()), this, SLOT(SaveScene()));
@@ -69,8 +72,12 @@ void MainEditorWindow::PostSetup()
     m_sceneViewWidget->PostSetup();
 }
 
-void MainEditorWindow::Paint()
+void MainEditorWindow::Update()
 {
+    // Enable/disable menu options based on current state
+    UpdateMenuState();
+
+    // Update scene view
     m_sceneViewWidget->update();
 }
 
@@ -113,6 +120,21 @@ void MainEditorWindow::Redo()
     {
         DebugLogger::Singleton().Log("Can't redo. Stack is empty.");
     }
+}
+
+void MainEditorWindow::NewProject()
+{
+    // TODO implement me
+}
+
+void MainEditorWindow::OpenProject()
+{
+    // TODO implement me
+}
+
+void MainEditorWindow::SaveProject()
+{
+    // TODO implement me
 }
 
 void MainEditorWindow::NewScene()
@@ -310,4 +332,27 @@ void MainEditorWindow::resizeEvent(QResizeEvent* resizeEvent)
     DebugLogger::Singleton().Log("Window resize!");
 
     //TODO: scale/reposition widgets
+}
+
+void MainEditorWindow::UpdateMenuState()
+{
+    // Only enable scene operations if a project is loaded
+    m_ui->actionNew_Scene->setEnabled(m_project);
+    m_ui->actionOpen_Scene->setEnabled(m_project);
+    m_ui->actionSave_Scene->setEnabled(m_project && m_scene);
+    m_ui->actionSave_Scene_As->setEnabled(m_project && m_scene);
+    m_ui->actionSave_Project->setEnabled(m_project);
+
+    // Only enable undo/redo if there are commands on the stack
+    m_ui->actionUndo->setEnabled(CommandManager::Singleton().CanUndo());
+    m_ui->actionRedo->setEnabled(CommandManager::Singleton().CanRedo());
+
+    // Only enable object creation & paste if a scene is open
+    m_ui->actionCreate_Game_Object->setEnabled(m_scene);
+    m_ui->actionPaste_Game_Object->setEnabled(m_scene && m_copiedGameObject);
+
+    // Only enable object delete/cut/copy if a scene is open and an object is selected
+    m_ui->actionDelete_Game_Object->setEnabled(m_scene && m_selectedGameObject);
+    m_ui->actionCopy_Game_Object->setEnabled(m_scene && m_selectedGameObject);
+    m_ui->actionCut_Game_Object->setEnabled(m_scene && m_selectedGameObject);
 }

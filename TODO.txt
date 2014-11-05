@@ -33,15 +33,15 @@ ENGINE (Dogwood)
         * Engine provided assets (e.g. default shaders)
         * Asset path formatting
         * Input wrappers
+        * Clear window state on scene load
 
 ---------------------------------------------------------------------------
 
 EDITOR (Thicket)
 
     * Project
-        * Define project structure (xml?)
-        * Resources map
         * New project, open project, save project
+        * Indicate active project in editor window
 
     * Scene
         * New scene

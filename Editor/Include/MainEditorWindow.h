@@ -32,8 +32,8 @@ public:
     explicit MainEditorWindow(QWidget* parent = 0);
     ~MainEditorWindow();
     void PostSetup();
+    void Update();
 
-    void Paint();
     virtual void resizeEvent(QResizeEvent* resizeEvent);
 
     void SetHierarchyModel(HierarchyModel* model);
@@ -53,6 +53,9 @@ private:
     GameObject*             m_selectedGameObject;
 
 private slots:
+    void NewProject();
+    void OpenProject();
+    void SaveProject();
     void NewScene();
     void OpenScene();
     void SaveScene();
@@ -70,4 +73,6 @@ private slots:
     void OpenTestProject();       // temp shortcut for debugging
 
     void OnSelectionChanged(const QItemSelection & selected, const QItemSelection & deselected);
+
+    void UpdateMenuState();
 };
