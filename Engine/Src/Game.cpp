@@ -10,13 +10,24 @@
 #include "Scene\ResourceManager.h"
 #include "Scene\Scene.h"
 #include "GameObject.h"
+#include "GameProject.h"
 
-void Game::Init(string name, int windowWidth, int windowHeight, string resourcesFilepath)
+void Game::Init(string projectPath)
 {
     printf("=============== GAME INIT ===============\n");
 
+    ResourceManager::Singleton().Startup();
+
+    // Project setup
+    m_gameProject = new GameProject();
+    bool success = m_gameProject->Load(projectPath);
+    if (!success)
+        return;
+
     // Window setup
-    m_gameWindow.Setup(name, windowWidth, windowHeight);
+    int windowWidth, windowHeight;
+    m_gameProject->GetResolution(windowWidth, windowHeight);
+    m_gameWindow.Setup(m_gameProject->GetName(), windowWidth, windowHeight);
 
     // Manager setup
     RenderConfig renderConfig;
@@ -25,7 +36,6 @@ void Game::Init(string name, int windowWidth, int windowHeight, string resources
     RenderManager::Singleton().Startup(renderConfig);
 
     InputManager::Singleton().Startup(&m_gameWindow);
-    ResourceManager::Singleton().Startup(resourcesFilepath);
 }
 
 void Game::Run(GameObject* sceneRoot)

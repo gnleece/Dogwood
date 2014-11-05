@@ -141,6 +141,9 @@
     <ClInclude Include="..\Libraries\tinyxml2\tinyxml2.h">
       <Filter>Libraries</Filter>
     </ClInclude>
+    <ClInclude Include="Include\GameProject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Debugging\DebugCameraControls.cpp">
@@ -220,6 +223,9 @@
     </ClCompile>
     <ClCompile Include="..\Libraries\tinyxml2\tinyxml2.cpp">
       <Filter>Libraries</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\GameProject.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

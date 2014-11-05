@@ -1,4 +1,6 @@
 #include "Scene\ResourceManager.h"
+
+#include "GameProject.h"
 #include "Rendering\Mesh.h"
 #include "Rendering\Texture.h"
 
@@ -49,14 +51,21 @@ void ResourceInfo::AddToMap(XMLElement* element, unordered_map<int, ResourceInfo
     map[guid] = this;
 }
 
-void ResourceManager::Startup(string resourcesFilepath)
-{
-    BuildResourceLookupTable(resourcesFilepath);
-}
+void ResourceManager::Startup()
+{}
 
 void ResourceManager::Shutdown()
 {
     ClearResourceLookupTable();
+}
+
+void ResourceManager::BuildResourceMap(XMLElement* resources)
+{
+    // Unload previous project
+    ClearResourceLookupTable();
+
+    // Load new project
+    BuildResourceLookupTable(resources);
 }
 
 void ResourceManager::LoadSceneResources(XMLElement* resources)
@@ -104,28 +113,12 @@ ShaderProgram* ResourceManager::GetShader(int guid)
     return (ShaderProgram*)m_loadedResources[guid];
 }
 
-void ResourceManager::BuildResourceLookupTable(string resourcesFilepath)
+void ResourceManager::BuildResourceLookupTable(XMLElement* resources)
 {
-    // Load the resources XML file
-    XMLDocument resourcesDoc;
-    XMLError result = resourcesDoc.LoadFile(resourcesFilepath.c_str());
-    if (result != XML_SUCCESS)
-    {
-        printf("Error reading resources file. XMLError %d\n", result);
-        return;
-    }
-
-    XMLElement* resourceList = resourcesDoc.FirstChildElement("Resources");
-    if (resourceList == NULL)
-    {
-        printf("Error parsing resources file. Could not find Resources node: %s\n", resourcesFilepath.c_str());
-        return;
-    }
-
     // Process each resource type
-    AddResourcesToMap<TextureResourceInfo>(resourceList, "Textures");
-    AddResourcesToMap<MeshResourceInfo>(resourceList, "Meshes");
-    AddResourcesToMap<ShaderResourceInfo>(resourceList, "Shaders");
+    AddResourcesToMap<TextureResourceInfo>(resources, "Textures");
+    AddResourcesToMap<MeshResourceInfo>(resources, "Meshes");
+    AddResourcesToMap<ShaderResourceInfo>(resources, "Shaders");
 }
 
 void ResourceManager::ClearResourceLookupTable()

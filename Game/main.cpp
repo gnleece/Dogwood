@@ -6,8 +6,9 @@
 
 int main(void)
 {
-    Game::Singleton().Init("Dogwood Engine : Game", 640, 480, "Assets\\Resources.xml");
+    Game::Singleton().Init("GameProject.xml");
 
+    // TODO startup scene should be specified in the project file
     Scene scene;
     scene.LoadScene("Assets\\Scenes\\Scene0.xml");
     Game::Singleton().Run(scene.GetRootObject());

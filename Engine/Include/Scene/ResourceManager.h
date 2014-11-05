@@ -11,6 +11,7 @@
 
 #include "Resource.h"
 
+class GameProject;
 class Mesh;
 class ShaderProgram;
 class Texture;
@@ -40,8 +41,10 @@ public:
     }
     ResourceManager() {}
 
-    void            Startup(string resourcesFilepath);
+    void            Startup();
     void            Shutdown();
+
+    void            BuildResourceMap(XMLElement* resources);
 
     void            LoadSceneResources(XMLElement* resources);
     void            UnloadSceneResources();
@@ -52,7 +55,7 @@ public:
     ShaderProgram*  GetShader(int guid);
 
 private:
-    void BuildResourceLookupTable(string resourcesFilepath);
+    void BuildResourceLookupTable(XMLElement* resources);
     void ClearResourceLookupTable();
 
     template<typename T>

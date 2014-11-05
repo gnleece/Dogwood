@@ -10,6 +10,7 @@
 #include "Math\Algebra.h"
 
 class GameObject;
+class GameProject;
 class HierarchyModel;
 class QTreeView;
 class Scene;
@@ -45,6 +46,7 @@ private:
 
     QTreeView*              m_view;
     HierarchyModel*         m_model;
+    GameProject*            m_project;
     Scene*                  m_scene;
 
     GameObject*             m_copiedGameObject;
@@ -65,7 +67,7 @@ private slots:
     void CutGameObject();
     void PasteGameObject();
 
-    void OpenTestScene();       // temp shortcut for debugging
+    void OpenTestProject();       // temp shortcut for debugging
 
     void OnSelectionChanged(const QItemSelection & selected, const QItemSelection & deselected);
 };

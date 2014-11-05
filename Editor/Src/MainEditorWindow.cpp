@@ -1,9 +1,8 @@
-
-
-#include "maineditorwindow.h"
+#include "MainEditorWindow.h"
 #include "DebugLogger.h"
 #include "HierarchyModel.h"
 #include "GameObject.h"
+#include "GameProject.h"
 #include "ui_maineditorwindow.h"
 #include "Rendering\RenderManager.h"
 #include "Scene\Scene.h"
@@ -15,7 +14,8 @@
 using namespace EditorCommands;
 
 MainEditorWindow::MainEditorWindow(QWidget *parent)
-: m_ui(new Ui::MainEditorWindow), m_copiedGameObject(NULL), m_selectedGameObject(NULL)
+: m_ui(new Ui::MainEditorWindow), m_copiedGameObject(NULL), m_selectedGameObject(NULL),
+  m_project(NULL), m_scene(NULL)
 {
     // Window setup
     m_ui->setupUi(this);
@@ -38,10 +38,10 @@ MainEditorWindow::MainEditorWindow(QWidget *parent)
     DebugLogger::Singleton().SetTextEditTarget(m_ui->textEdit_DebugOutput);
 
     // File menu
-    connect(m_ui->actionNew_Scene, SIGNAL(triggered()), this, SLOT(NewScene()));
-    connect(m_ui->actionOpen_Scene, SIGNAL(triggered()), this, SLOT(OpenScene()));
-    connect(m_ui->actionSave_Scene, SIGNAL(triggered()), this, SLOT(SaveScene()));
-    connect(m_ui->actionSave_Scene_As, SIGNAL(triggered()), this, SLOT(SaveSceneAs()));
+    connect(m_ui->actionNew_Scene,          SIGNAL(triggered()), this, SLOT(NewScene()));
+    connect(m_ui->actionOpen_Scene,         SIGNAL(triggered()), this, SLOT(OpenScene()));
+    connect(m_ui->actionSave_Scene,         SIGNAL(triggered()), this, SLOT(SaveScene()));
+    connect(m_ui->actionSave_Scene_As,      SIGNAL(triggered()), this, SLOT(SaveSceneAs()));
 
     // Edit menu
     connect(m_ui->actionUndo,               SIGNAL(triggered()), this, SLOT(Undo()));
@@ -55,7 +55,7 @@ MainEditorWindow::MainEditorWindow(QWidget *parent)
     connect(m_ui->actionPaste_Game_Object,  SIGNAL(triggered()), this, SLOT(PasteGameObject()));
 
     // Debug menu
-    connect(m_ui->actionOpen_Test_Scene, SIGNAL(triggered()), this, SLOT(OpenTestScene()));
+    connect(m_ui->actionOpen_Test_Project, SIGNAL(triggered()), this, SLOT(OpenTestProject()));
 }
 
 MainEditorWindow::~MainEditorWindow()
@@ -143,10 +143,18 @@ void MainEditorWindow::OpenScene()
     }
 }
 
-void MainEditorWindow::OpenTestScene()
+void MainEditorWindow::OpenTestProject()
 {
-    // TODO unload previous scene
+    // TODO unload previous project
 
+    m_project = new GameProject();
+    bool success = m_project->Load("..\\Game\\Katamari.xml");
+    if (!success)
+    {
+        DebugLogger::Singleton().Log("Error loading test project.");
+        return;
+    }
+    
     m_scene = new Scene();
     if (m_scene->LoadScene("..\\Game\\Assets\\Scenes\\Scene0.xml"))
     {

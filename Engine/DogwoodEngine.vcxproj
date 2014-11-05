@@ -85,6 +85,7 @@
     <ClInclude Include="Include\Game.h" />
     <ClInclude Include="Include\GameComponent.h" />
     <ClInclude Include="Include\GameObject.h" />
+    <ClInclude Include="Include\GameProject.h" />
     <ClInclude Include="Include\Input\InputManager.h" />
     <ClInclude Include="Include\Math\Algebra.h" />
     <ClInclude Include="Include\Math\Transform.h" />
@@ -114,6 +115,7 @@
     <ClCompile Include="Src\Game.cpp" />
     <ClCompile Include="Src\GameComponent.cpp" />
     <ClCompile Include="Src\GameObject.cpp" />
+    <ClCompile Include="Src\GameProject.cpp" />
     <ClCompile Include="Src\Input\InputManager.cpp" />
     <ClCompile Include="Src\Math\Algebra.cpp" />
     <ClCompile Include="Src\Math\Transform.cpp" />

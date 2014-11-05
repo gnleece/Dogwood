@@ -24,7 +24,8 @@ int main(int argc, char *argv[])
     renderConfig.clearColour = ColourRGB(0.4, 0.4, 0.4);
     RenderManager::Singleton().Startup(renderConfig);
     
-    ResourceManager::Singleton().Startup("..\\Game\\Assets\\Resources.xml");        // TODO fix these paths!!
+    // Other manager setup
+    ResourceManager::Singleton().Startup();
 
     // Post-setup step
     window.PostSetup();
@@ -48,5 +49,9 @@ int main(int argc, char *argv[])
         window.Paint();
     }
     app.exit();
+
+    // Shutdown
+    ResourceManager::Singleton().Shutdown();
+    RenderManager::Singleton().Shutdown();
 }
 

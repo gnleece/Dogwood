@@ -15,6 +15,7 @@ using std::list;
 using std::string;
 
 class GameObject;
+class GameProject;
 
 class Game
 {
@@ -28,13 +29,14 @@ public:
     }
     Game() {}
 
-    void Init(string name, int windowWidth, int windowHeight, string resourcesFilepath);
+    void Init(string projectPath);
     void Run(GameObject* sceneRoot);
     
 private:
     void Shutdown();
     void UpdateTime();
 
+    GameProject*      m_gameProject;
     GameWindow        m_gameWindow;
     GameObject*       m_rootObject;
 
