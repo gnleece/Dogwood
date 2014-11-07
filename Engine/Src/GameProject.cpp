@@ -20,6 +20,7 @@ bool GameProject::Load(string filepath)
         return false;
     }
     XMLElement* projectXML = projectDoc.FirstChildElement("Dogwood-Project");
+    m_name = projectXML->Attribute("name");
 
     // Get project settings
     XMLElement* settingsXML = projectXML->FirstChildElement("Settings");

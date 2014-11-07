@@ -19,14 +19,14 @@ MainEditorWindow::MainEditorWindow(QWidget *parent)
 {
     // Window setup
     m_ui->setupUi(this);
-    setWindowTitle(tr("Dogwood Editor!"));
+    setWindowTitle(tr("[DOGWOOD EDITOR]"));
 
     // Tree view setup
     m_view = m_ui->treeView;
 
     // Scene view widget setup
     m_sceneViewWidget = new SceneViewWidget(this);
-    m_sceneViewWidget->setFixedSize(640, 480);
+    m_sceneViewWidget->setFixedSize(990, 630);
     m_ui->verticalLayout->addWidget(m_sceneViewWidget);
 
     // Component widgets
@@ -59,6 +59,8 @@ MainEditorWindow::MainEditorWindow(QWidget *parent)
 
     // Debug menu
     connect(m_ui->actionOpen_Test_Project, SIGNAL(triggered()), this, SLOT(OpenTestProject()));
+
+    showMaximized();
 }
 
 MainEditorWindow::~MainEditorWindow()
@@ -184,6 +186,9 @@ void MainEditorWindow::OpenTestProject()
         SetHierarchyModel(model);
         RenderManager::Singleton().SetRootObject(m_scene->GetRootObject());
     }
+
+
+    setWindowTitle(tr("[DOGWOOD EDITOR] Project: ") + QString(m_project->GetName().c_str()));
 }
 
 void MainEditorWindow::SaveScene()

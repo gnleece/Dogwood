@@ -18,7 +18,8 @@ HierarchyModel::HierarchyModel(GameObject* root, QObject *parent)
         return;
     }
 
-    m_rootItem = new GameObject("Game Object Hierarchy");
+    // TODO fix root issues
+    m_rootItem = new GameObject("ROOT");
     root->SetParent(m_rootItem);
 }
 

@@ -30,10 +30,10 @@ ENGINE (Dogwood)
         * Colour -> Color everywhere for consistency
         * Rewrite matrix inversion. Currently just copied from CS488 provided code
         * Add missing matrix maths (e.g. addition)
-        * Engine provided assets (e.g. default shaders)
+        * Engine provided assets (e.g. default shaders, primitive meshes)
         * Asset path formatting
         * Input wrappers
-        * Clear window state on scene load
+        
 
 ---------------------------------------------------------------------------
 
@@ -42,14 +42,22 @@ EDITOR (Thicket)
     * Project
         * New project, open project, save project
         * Indicate active project in editor window
+        * Project settings window
+        * Assets widget
+        * Add/remove assets (with guids)
 
     * Scene
         * New scene
 
+    * Game components
+        * Built-in component widgets (mesh, material, texture, shader)
+        * Custom component widget
+        * Add/remove components
+        * Enable/disable components
+
     * Visuals
         * Show world space gnomon
         * Show local space gnomon on selected object
-        * Unit grid on x-z plane
 
     * Object manipulation
         * Transform widgets
@@ -67,6 +75,7 @@ EDITOR (Thicket)
         - Items don't auto expand when reparented
         - Camera "up" is wrong / LookAt bug
         - Root is not handled properly
+        - Clear window state on scene load
 
 ---------------------------------------------------------------------------
 
