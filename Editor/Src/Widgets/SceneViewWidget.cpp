@@ -8,10 +8,7 @@
 SceneViewWidget::SceneViewWidget(QWidget* parent)
 : GLWidget(parent), m_hasFocus(false), m_showGrid(true)
 {
-    m_mousePressed[0] = false;
-    m_mousePressed[1] = false;
-    m_mouseDragging[0] = false;
-    m_mouseDragging[1] = false;
+    ClearMouseButtonState();
 }
 
 void SceneViewWidget::PostSetup()
@@ -69,13 +66,10 @@ void SceneViewWidget::update()
 
 void SceneViewWidget::mousePressEvent(QMouseEvent* event)
 {
-    if (event->button() == Qt::LeftButton)
+    eMouseButton button = QtMouseButtonConvert(event->button());
+    if (button < NUM_MOUSE_BUTTONS)
     {
-        m_mousePressed[0] = true;
-    }
-    else if (event->button() == Qt::RightButton)
-    {
-        m_mousePressed[1] = true;
+        m_mousePressed[button] = true;
     }
 }
 
@@ -83,31 +77,29 @@ void SceneViewWidget::mouseMoveEvent(QMouseEvent* event)
 {
     QPoint pos = event->pos();
 
-    if (m_mouseDragging[1])
+    // Middle mouse button rotates the camera
+    if (m_mouseDragging[MOUSE_BUTTON_MIDDLE])
     {
         float deltaX = pos.x() - m_prevMousePos.x();
         float deltaY = pos.y() - m_prevMousePos.y();
         RotateCamera(AXIS_Y, deltaX*MOUSE_ROT_AMOUNT*0.01/**deltaTime*/);
         RotateCamera(AXIS_X, deltaY*MOUSE_ROT_AMOUNT*0.01/**deltaTime*/);
     }
-    else if (m_mousePressed[1])
+    else if (m_mousePressed[MOUSE_BUTTON_MIDDLE])
     {
-        m_mouseDragging[1] = true;
+        m_mouseDragging[MOUSE_BUTTON_MIDDLE] = true;
     }
+
     m_prevMousePos = pos;
 }
 
 void SceneViewWidget::mouseReleaseEvent(QMouseEvent* event)
 {
-    if (event->button() == Qt::LeftButton)
+    eMouseButton button = QtMouseButtonConvert(event->button());
+    if (button < NUM_MOUSE_BUTTONS)
     {
-        m_mousePressed[0] = false;
-        m_mouseDragging[0] = false;
-    }
-    else if (event->button() == Qt::RightButton)
-    {
-        m_mousePressed[1] = false;
-        m_mouseDragging[1] = false;
+        m_mousePressed[button] = false;
+        m_mouseDragging[button] = false;
     }
 }
 
@@ -131,8 +123,7 @@ void SceneViewWidget::focusInEvent(QFocusEvent* event)
 void SceneViewWidget::focusOutEvent(QFocusEvent* event)
 {
     m_hasFocus = false;
-    m_mousePressed[0] = false;
-    m_mousePressed[1] = false;
+    ClearMouseButtonState();
     m_keyStates.clear();
 }
 
@@ -148,4 +139,24 @@ void SceneViewWidget::RotateCamera(eAXIS axis, float degrees)
     Matrix4x4 view = RenderManager::Singleton().GetView();
     view = Rotation(degrees, axis)*view;
     RenderManager::Singleton().SetView(view);
+}
+
+void SceneViewWidget::ClearMouseButtonState()
+{
+    for (int i = 0; i < NUM_MOUSE_BUTTONS; i++)
+    {
+        m_mousePressed[i] = false;
+        m_mouseDragging[i] = false;
+    }
+}
+
+SceneViewWidget::eMouseButton SceneViewWidget::QtMouseButtonConvert(Qt::MouseButton qtButton)
+{
+    switch (qtButton)
+    {
+        case Qt::MouseButton::LeftButton:   return MOUSE_BUTTON_LEFT;
+        case Qt::MouseButton::RightButton:  return MOUSE_BUTTON_RIGHT;
+        case Qt::MouseButton::MiddleButton: return MOUSE_BUTTON_MIDDLE;
+        default:                            return NUM_MOUSE_BUTTONS;
+    }
 }

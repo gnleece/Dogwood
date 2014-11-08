@@ -15,6 +15,14 @@ class SceneViewWidget : public GLWidget
     Q_OBJECT
 
 public:
+    enum eMouseButton
+    {
+        MOUSE_BUTTON_LEFT,
+        MOUSE_BUTTON_RIGHT,
+        MOUSE_BUTTON_MIDDLE,
+        NUM_MOUSE_BUTTONS
+    };
+
     SceneViewWidget(QWidget *parent = 0);
 
     void PostSetup();
@@ -39,10 +47,12 @@ private:
 
     void MoveCamera(Vector3 localSpaceOffset);
     void RotateCamera(eAXIS axis, float degrees);
+    void ClearMouseButtonState();
+    static eMouseButton QtMouseButtonConvert(Qt::MouseButton qtButton);
 
     bool                        m_hasFocus;
-    bool                        m_mousePressed[2];
-    bool                        m_mouseDragging[2];
+    bool                        m_mousePressed[NUM_MOUSE_BUTTONS];
+    bool                        m_mouseDragging[NUM_MOUSE_BUTTONS];
     
     unordered_map<int, bool>    m_keyStates;
     QPoint                      m_prevMousePos;
