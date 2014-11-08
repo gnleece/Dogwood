@@ -7,6 +7,7 @@
 #include "Rendering\RenderManager.h"
 #include "Scene\Scene.h"
 #include "Widgets\SceneViewWidget.h"
+#include "Widgets\ScrollWidget.h"
 #include "Widgets\TransformWidget.h"
 
 #include <QtWidgets>
@@ -29,9 +30,11 @@ MainEditorWindow::MainEditorWindow(QWidget *parent)
     m_sceneViewWidget->setFixedSize(990, 630);
     m_ui->verticalLayout->addWidget(m_sceneViewWidget);
 
-    // Component widgets
-    m_transformWidget = new TransformWidget(this, this);
-    m_ui->componentLayout->addWidget(m_transformWidget);
+    // Game object widget (components list)
+    ScrollWidget* componentsWidget = new ScrollWidget(m_ui->gameObjectScrollArea);
+    m_ui->gameObjectScrollArea->setWidget(componentsWidget);
+    m_transformWidget = new TransformWidget(componentsWidget, this);
+    componentsWidget->AddChildWidget(m_transformWidget);
     m_transformWidget->hide();
 
     // Debug logging

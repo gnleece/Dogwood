@@ -20,4 +20,5 @@ HEADERS  += maineditorwindow.h
 
 FORMS    += maineditorwindow.ui \
     transformwidget.ui \
-    vectorwidget.ui
+    vectorwidget.ui \
+    scrollwidget.ui

@@ -40,7 +40,7 @@
      <rect>
       <x>10</x>
       <y>30</y>
-      <width>321</width>
+      <width>311</width>
       <height>461</height>
      </rect>
     </property>
@@ -85,17 +85,6 @@
      <string/>
     </property>
    </widget>
-   <widget class="QWidget" name="verticalLayoutWidget_2">
-    <property name="geometry">
-     <rect>
-      <x>340</x>
-      <y>30</y>
-      <width>251</width>
-      <height>461</height>
-     </rect>
-    </property>
-    <layout class="QVBoxLayout" name="componentLayout"/>
-   </widget>
    <widget class="QListView" name="listView">
     <property name="geometry">
      <rect>
@@ -122,7 +111,7 @@
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>340</x>
+      <x>330</x>
       <y>10</y>
       <width>81</width>
       <height>16</height>
@@ -170,6 +159,32 @@
     <property name="text">
      <string>Log</string>
     </property>
+   </widget>
+   <widget class="QScrollArea" name="gameObjectScrollArea">
+    <property name="geometry">
+     <rect>
+      <x>330</x>
+      <y>30</y>
+      <width>261</width>
+      <height>461</height>
+     </rect>
+    </property>
+    <property name="verticalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOn</enum>
+    </property>
+    <property name="widgetResizable">
+     <bool>false</bool>
+    </property>
+    <widget class="QWidget" name="scrollAreaWidgetContents">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>242</width>
+       <height>459</height>
+      </rect>
+     </property>
+    </widget>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">

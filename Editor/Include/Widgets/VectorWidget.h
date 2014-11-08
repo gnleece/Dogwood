@@ -1,10 +1,9 @@
 #pragma once
 
-// TODO rename this to vectorwidget
-
 #include <QtWidgets>
 #include <string>
 #include "Math\Algebra.h"
+
 
 using std::string;
 
@@ -36,7 +35,7 @@ signals:
 private:
     float GetFloatFromTextEdit(QPlainTextEdit* textEdit);
 
-    Ui::VectorWidget*     m_ui;
+    Ui::VectorWidget*   m_ui;
     MainEditorWindow*   m_window;
 
     Vector3             m_vector;
