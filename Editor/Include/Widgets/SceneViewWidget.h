@@ -48,6 +48,8 @@ private:
     void MoveCamera(Vector3 localSpaceOffset);
     void RotateCamera(eAXIS axis, float degrees);
     void ClearMouseButtonState();
+    void PickObject(const QPointF clickPosition);
+
     static eMouseButton QtMouseButtonConvert(Qt::MouseButton qtButton);
 
     bool                        m_hasFocus;

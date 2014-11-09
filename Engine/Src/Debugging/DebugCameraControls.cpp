@@ -68,14 +68,14 @@ void DebugCameraControls::CheckMouse(float deltaTime)
 
 void DebugCameraControls::MoveCamera(Vector3 localSpaceOffset)
 {
-    Matrix4x4 view = RenderManager::Singleton().GetView();
+    Matrix4x4 view = RenderManager::Singleton().GetView().GetMatrix();
     view = Translation(localSpaceOffset)*view;
     RenderManager::Singleton().SetView(view);
 }
 
 void DebugCameraControls::RotateCamera(eAXIS axis, float degrees)
 {
-    Matrix4x4 view = RenderManager::Singleton().GetView();
+    Matrix4x4 view = RenderManager::Singleton().GetView().GetMatrix();
     view = Rotation(degrees, axis)*view;
     RenderManager::Singleton().SetView(view);
 }

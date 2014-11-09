@@ -268,6 +268,11 @@ Vector4 operator *(float s, const Vector4& v)
   return Vector4(s*v[0], s*v[1], s*v[2], s*v[3]);
 }
 
+Vector3 Vector4::xyz()
+{
+    return Vector3(m_values[0], m_values[1], m_values[2]);
+}
+
 void Vector4::DebugPrint()
 {
     printf("%f\t%f\t%f\t%f\n", m_values[0], m_values[1], m_values[2], m_values[3]);
@@ -466,6 +471,21 @@ Matrix4x4 operator *(const Matrix4x4& a, const Matrix4x4& b)
                         a[i][2] * b[2][j] +
                         a[i][3] * b[3][j];
         }
+    }
+
+    return ret;
+}
+
+Vector4 operator *(const Matrix4x4& m, const Vector4& v)
+{
+    Vector4 ret;
+
+    for (int i = 0; i < 4; ++i)
+    {
+        ret[i] = m[i][0] * v[0] +
+                 m[i][1] * v[1] +
+                 m[i][2] * v[2] +
+                 m[i][3] * v[3];
     }
 
     return ret;

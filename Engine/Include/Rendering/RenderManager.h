@@ -4,6 +4,7 @@
 #include <GL/glew.h>
 
 #include "..\Math\Algebra.h"
+#include "..\Math\Transform.h"
 #include "..\Math\Transformations.h"
 #include "Light.h"
 #include "ShaderProgram.h"
@@ -50,7 +51,9 @@ public:
     void            SetView(Matrix4x4& view);
     void            SetClearColour(ColourRGB colour);
 
-    Matrix4x4&      GetView();
+    Transform&      GetView();
+    Transform&      GetProjection();
+    RenderConfig&   GetConfig();
 
     void            RenderScene();
     void            ApplyGlobalParams(ShaderProgram* shader);
@@ -66,12 +69,14 @@ private:
     void            SetUniformMatrix(ShaderProgram* shader, ShaderProgram::eShaderParam param, Matrix4x4& matrix);
     void            LoadCommonShaders();
 
+    RenderConfig    m_config;
+
     GameObject*     m_rootObject;
     Light           m_light;        // TODO support mutiple light sources
     ColourRGB       m_clearColour;
 
-    Matrix4x4       m_viewMatrix;
-    Matrix4x4       m_projMatrix;
+    Transform       m_viewMatrix;
+    Transform       m_projMatrix;
 
     bool            m_dirty;
 

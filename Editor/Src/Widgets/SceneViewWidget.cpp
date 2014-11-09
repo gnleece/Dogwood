@@ -71,6 +71,11 @@ void SceneViewWidget::mousePressEvent(QMouseEvent* event)
     {
         m_mousePressed[button] = true;
     }
+
+    if (button == MOUSE_BUTTON_RIGHT)
+    {
+        PickObject(event->localPos());
+    }
 }
 
 void SceneViewWidget::mouseMoveEvent(QMouseEvent* event)
@@ -129,14 +134,14 @@ void SceneViewWidget::focusOutEvent(QFocusEvent* event)
 
 void SceneViewWidget::MoveCamera(Vector3 localSpaceOffset)
 {
-    Matrix4x4 view = RenderManager::Singleton().GetView();
+    Matrix4x4 view = RenderManager::Singleton().GetView().GetMatrix();
     view = Translation(localSpaceOffset)*view;
     RenderManager::Singleton().SetView(view);
 }
 
 void SceneViewWidget::RotateCamera(eAXIS axis, float degrees)
 {
-    Matrix4x4 view = RenderManager::Singleton().GetView();
+    Matrix4x4 view = RenderManager::Singleton().GetView().GetMatrix();
     view = Rotation(degrees, axis)*view;
     RenderManager::Singleton().SetView(view);
 }
@@ -148,6 +153,37 @@ void SceneViewWidget::ClearMouseButtonState()
         m_mousePressed[i] = false;
         m_mouseDragging[i] = false;
     }
+}
+
+// Based on tutorial from: http://antongerdelan.net/opengl/raycasting.html
+void SceneViewWidget::PickObject(const QPointF clickPosition)
+{
+    // Viewport coords: x in [0, width], y in [0, height]
+    int screenX = clickPosition.x();
+    int screenY = clickPosition.y();
+
+    // Normalized coords: x in [-1, 1], y in [-1, 1]
+    int width = RenderManager::Singleton().GetConfig().width;
+    int height = RenderManager::Singleton().GetConfig().height;
+    float normalizedX = (2.0f * screenX) / width - 1.0f;
+    float normalizedY = 1.0f - (2.0f * screenY) / height;
+
+    // Clip coords
+    Vector4 rayClip = Vector4(normalizedX, normalizedY, -1.0, 1.0);
+
+    // Camera coords
+    Vector4 rayCamera = RenderManager::Singleton().GetProjection().GetMatrix().Inverse() * rayClip;
+    rayCamera[2] = -1;     // we only need to unproject x and y, not z and w
+    rayCamera[3] = 0;
+
+    // World coords
+    Vector3 rayWorld = (RenderManager::Singleton().GetView().GetMatrix().Inverse() * rayCamera).xyz();
+    rayWorld = rayWorld.Normalized();
+
+    // Ray origin is camera position
+    Vector3 origin = RenderManager::Singleton().GetView().GetPosition();
+
+    // TODO perform actual raycast
 }
 
 SceneViewWidget::eMouseButton SceneViewWidget::QtMouseButtonConvert(Qt::MouseButton qtButton)

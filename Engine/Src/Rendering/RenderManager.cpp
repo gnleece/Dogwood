@@ -7,12 +7,15 @@ void RenderManager::Startup(RenderConfig& config)
 {
     m_dirty = true;
     m_rootObject = NULL;
+    m_config = config;
 
     // Prepare projection matrix
-    float aspect = (float)config.width / config.height;
-    m_projMatrix = PerspectiveProjection(config.FOV, aspect, config.nearPlane, config.farPlane);
-    glViewport(0, 0, config.width, config.height);
+    float aspect = (float)m_config.width / m_config.height;
+    Matrix4x4 projMatrix = PerspectiveProjection(m_config.FOV, aspect, m_config.nearPlane, m_config.farPlane);
+    m_projMatrix.SetMatrix(projMatrix);
+    glViewport(0, 0, m_config.width, m_config.height);
 
+    // OpenGL setup
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
     glDepthFunc(GL_LESS);
@@ -24,10 +27,12 @@ void RenderManager::Startup(RenderConfig& config)
         printf("Error in glewInit! Abort.\n");
     }
 
-    m_clearColour = config.clearColour;
+    m_clearColour = m_config.clearColour;
 
+    // Common asset setup
     LoadCommonShaders();
 
+    // Dependent manager setup
     DebugDraw::Singleton().Startup();
 }
 
@@ -50,13 +55,13 @@ void RenderManager::SetLight(Light light)
 
 void RenderManager::SetCamera(Camera camera)
 {
-    m_viewMatrix = LookAt(camera);
+    m_viewMatrix.SetMatrix(LookAt(camera));
     m_dirty = true;
 }
 
 void RenderManager::SetView(Matrix4x4& view)
 {
-    m_viewMatrix = view;
+    m_viewMatrix.SetMatrix(view);
     m_dirty = true;
 }
 
@@ -65,9 +70,19 @@ void RenderManager::SetClearColour(ColourRGB colour)
     m_clearColour = colour;
 }
 
-Matrix4x4& RenderManager::GetView()
+Transform& RenderManager::GetView()
 {
     return m_viewMatrix;
+}
+
+Transform& RenderManager::GetProjection()
+{
+    return m_projMatrix;
+}
+
+RenderConfig& RenderManager::GetConfig()
+{
+    return m_config;
 }
 
 void RenderManager::RenderScene()
@@ -92,8 +107,8 @@ void RenderManager::ApplyGlobalParams(ShaderProgram* shader)
 {
     m_light.ApplyLight(shader);
 
-    SetUniformMatrix(shader, ShaderProgram::UNI_VIEW, m_viewMatrix);
-    SetUniformMatrix(shader, ShaderProgram::UNI_PROJ, m_projMatrix);
+    SetUniformMatrix(shader, ShaderProgram::UNI_VIEW, m_viewMatrix.GetMatrix());
+    SetUniformMatrix(shader, ShaderProgram::UNI_PROJ, m_projMatrix.GetMatrix());
 
     m_dirty = false;
 }

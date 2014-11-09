@@ -82,6 +82,7 @@ public:
 
     float& operator[](int i);
     float operator[](int i) const;
+    Vector3 xyz();
 
     void DebugPrint();
 
@@ -125,6 +126,8 @@ private:
 
 //TODO matrix addition
 Matrix4x4 operator *(const Matrix4x4& a, const Matrix4x4& b);
+
+Vector4 operator *(const Matrix4x4& m, const Vector4& v);
 
 float DegreesToRadians(float degrees);
 float RadiansToDegrees(float radians);

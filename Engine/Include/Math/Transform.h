@@ -7,23 +7,23 @@ class Transform
 public:
     Transform();
 
-    void SetMatrix(Matrix4x4& m);
-    void SetPosition(Vector3& position);
-    void SetRotation(Vector3& rotation);
-    void SetScale(Vector3& scale);
+    void        SetMatrix(Matrix4x4& m);
+    void        SetPosition(Vector3& position);
+    void        SetRotation(Vector3& rotation);
+    void        SetScale(Vector3& scale);
 
     Matrix4x4&  GetMatrix();
     Vector3&    GetPosition();
     Vector3&    GetRotation();
     Vector3&    GetScale();
 
+    bool        IsDirty();
+    bool        HasChanged();
+    void        ClearChangedFlag();
+
+    void        ComputeMatrixFromComponents();
+
     static Transform Identity;
-
-    bool IsDirty();
-    bool HasChanged();
-    void ClearChangedFlag();
-
-    void ComputeMatrixFromComponents();
 
     // TODO implement math convenience functions
 
