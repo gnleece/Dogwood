@@ -11,6 +11,9 @@
 #define GLFW_INCLUDE_GLU
 #include <GLFW/glfw3.h>
 
+// TODO For a given mesh, we should do the indexing and bounding sphere calculations once when
+// the mesh is imported to a project, instead of having to do it at load time every time
+
 Mesh::Mesh(std::string path, ResourceInfo* resourceInfo)
 {
     m_drawMode = GL_TRIANGLES;
@@ -22,6 +25,7 @@ Mesh::Mesh(std::string path, ResourceInfo* resourceInfo)
     std::vector<GLuint>  indices;
 
     LoadIndexedModel(path, positions, normals, uvs, indices);
+    CalculateBoundingRadius(positions);
 
     m_vertexCount = positions.size();
     m_indexedVertexCount = indices.size();
@@ -77,4 +81,26 @@ void Mesh::Delete()
     glDeleteBuffers(1, &m_vboNormal);
     glDeleteBuffers(1, &m_vboUV);
     glDeleteBuffers(1, &m_ebo);
+}
+
+float Mesh::GetBoundingRadius()
+{
+    return m_boundingRadius;
+}
+
+void Mesh::CalculateBoundingRadius(std::vector<Vector3>& vertices)
+{
+    // Find the vertex with the max distance from the center of the object
+    // This will be the radius of the bound spehere
+    float max = 0;
+    std::vector<Vector3>::iterator iter;
+    for (iter = vertices.begin(); iter != vertices.end(); iter++)
+    {
+        float distance = (*iter).Magnitude();
+        if (distance > max)
+        {
+            max = distance;
+        }
+    }
+    m_boundingRadius = max;
 }

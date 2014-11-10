@@ -1,5 +1,6 @@
 #pragma once
 
+#include <float.h>
 #include <string>
 #include <vector>
 
@@ -17,7 +18,7 @@ class GameObject
 public:
     GameObject(string name = "", GameObject* parent = NULL);
 
-    Transform& GetLocalTransform()        { return m_localTransform; }
+    Transform& GetLocalTransform()              { return m_localTransform; }
     void SetLocalTransform(Transform& t);
     void SetLocalTransform(Matrix4x4& m);
 
@@ -52,6 +53,7 @@ public:
     MeshInstance* GetMesh();
 
     void SetSelected(bool selected);
+    GameObject* BoundingSphereRaycast(Vector3 rayOrigin, Vector3 rayDirection, Transform& parentWorldTransform, float& distance);
 
     static vector<GameObject*> ActiveGameObjects;
 

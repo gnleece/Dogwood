@@ -17,10 +17,14 @@ class Mesh : public Resource
 public:
     Mesh(std::string filename, ResourceInfo* resourceInfo);
 
-    void Render(Transform& transform, Material* material, bool wireframe = false);
-    void Delete();
+    void    Render(Transform& transform, Material* material, bool wireframe = false);
+    void    Delete();
+
+    float   GetBoundingRadius();
 
 private:
+    void    CalculateBoundingRadius(std::vector<Vector3>& vertices);
+
     GLuint      m_vao;
     GLuint      m_vboPosition;
     GLuint      m_vboNormal;
@@ -31,4 +35,5 @@ private:
     GLsizei     m_indexedVertexCount;
 
     GLenum      m_drawMode;
+    float       m_boundingRadius;
 };

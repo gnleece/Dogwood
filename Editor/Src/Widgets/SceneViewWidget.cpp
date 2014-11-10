@@ -2,7 +2,9 @@
 
 #include "DebugLogger.h"
 #include "Debugging\DebugDraw.h"
+#include "GameObject.h"
 #include "Rendering\RenderManager.h"
+#include "Scene\Scene.h"
 #include <QtWidgets>
 
 SceneViewWidget::SceneViewWidget(QWidget* parent)
@@ -36,6 +38,12 @@ void SceneViewWidget::PostSetup()
 
     DebugDraw::Singleton().PrepareLineBuffer(m_gridLinesVertexBuffer, GRID_BUFFER_SIZE, m_gridVAO, m_gridVBO);
 }
+
+void SceneViewWidget::SetScene(Scene* scene)
+{
+    m_scene = scene;
+}
+
 
 void SceneViewWidget::update()
 {
@@ -158,6 +166,12 @@ void SceneViewWidget::ClearMouseButtonState()
 // Based on tutorial from: http://antongerdelan.net/opengl/raycasting.html
 void SceneViewWidget::PickObject(const QPointF clickPosition)
 {
+    // TODO there are some bugs in here. This seems to work with the default camera position,
+    // but if you rotate the camera too much it breaks. FIXME
+
+    if (m_scene == NULL || m_scene->GetRootObject() == NULL)
+        return;
+
     // Viewport coords: x in [0, width], y in [0, height]
     int screenX = clickPosition.x();
     int screenY = clickPosition.y();
@@ -181,9 +195,21 @@ void SceneViewWidget::PickObject(const QPointF clickPosition)
     rayWorld = rayWorld.Normalized();
 
     // Ray origin is camera position
-    Vector3 origin = RenderManager::Singleton().GetView().GetPosition();
+    // TODO multiply by -1 is a hack, need to fix camera/view setup properly
+    Vector3 rayOrigin = -1 * RenderManager::Singleton().GetView().GetPosition();
 
-    // TODO perform actual raycast
+    // Do raycast against all objects in hierarchy   TODO this is pretty terrible
+    float hitDistance;
+    GameObject* hitObject = m_scene->GetRootObject()->BoundingSphereRaycast(rayOrigin, rayWorld, Transform::Identity, hitDistance);
+    if (hitObject != NULL)
+    {
+        DebugLogger::Singleton().Log("HIT SOMETING!!!!");
+        DebugLogger::Singleton().Log(hitObject->GetName());
+    }
+    else
+    {
+        DebugLogger::Singleton().Log("No hit...");
+    }
 }
 
 SceneViewWidget::eMouseButton SceneViewWidget::QtMouseButtonConvert(Qt::MouseButton qtButton)

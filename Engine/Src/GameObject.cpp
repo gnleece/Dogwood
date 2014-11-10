@@ -1,5 +1,6 @@
 #include "GameObject.h"
 
+#include "Rendering\Mesh.h"
 #include "Rendering\MeshInstance.h"
 #include "GameComponent.h"
 
@@ -221,4 +222,92 @@ void GameObject::RemoveChild(GameObject* child)
 void GameObject::SetSelected(bool selected)
 {
     m_selected = selected;
+}
+
+GameObject* GameObject::BoundingSphereRaycast(Vector3 rayOrigin, Vector3 rayDirection, Transform& parentWorldTransform, float& distance)
+{
+    // TODO this function is less optimized than Render, i.e. we don't both caching the world transform
+    // This is because this function shouldn't get called very often currently (e.g. right now it is only
+    // needed for object picking in the Editor). Also, this code probably shouldn't live here. Also, because
+    // of the way we apply scale to the radius, the bounding sphere is nowhere near optimal. But it is good enough :)
+
+    // TODO also it's kind of insane to raycast against literally every object in the scene here
+    // Really, we should do some kind of space partitioning first
+
+    // Raycast against self, if we have a mesh
+    Transform worldTransform = parentWorldTransform*m_localTransform;
+    bool hit = false;
+    distance = FLT_MAX;
+    if (m_mesh != NULL && m_mesh->GetMesh() != NULL)
+    {
+        float radius = m_mesh->GetMesh()->GetBoundingRadius();
+        Vector3 scale = worldTransform.GetScale();
+        float maxScale = std::fmaxf(scale[0], scale[1]);
+        maxScale = std::fmaxf(maxScale, scale[2]);
+        radius *= maxScale;        // this is pretty hacky and gives a suboptimal radius, but it's good enough
+
+        Vector3 objectCenter = worldTransform.GetPosition();
+
+        Vector3 objectToRayOrigin = rayOrigin - objectCenter;
+        float b = rayDirection.Dot(objectToRayOrigin);
+        float c = objectToRayOrigin.Dot(objectToRayOrigin) - radius*radius;
+
+        float descriminant = b*b - c;
+
+        // Negative descriminant = no solution = no intersection
+        if (descriminant >= 0)
+        {
+            hit = true;
+            float sqrtDescr = sqrt(descriminant);
+            float t_1 = -b + sqrtDescr;
+            float t_2 = -b - sqrtDescr;
+            distance = std::fminf(t_1, t_2);
+        }
+    }
+
+    // Raycast against children
+    std::vector<GameObject*>::iterator childIter;
+    float bestChildDistance = FLT_MAX;
+    GameObject* bestChildObject = NULL;
+    bool childHit = false;
+    for (childIter = m_children.begin(); childIter != m_children.end(); childIter++)
+    {
+        GameObject* child = *childIter;
+        float childDistance;
+        GameObject* hitObject = child->BoundingSphereRaycast(rayOrigin, rayDirection, worldTransform, childDistance);
+        if (hitObject != NULL)
+        {
+            childHit = true;
+            if (childDistance < bestChildDistance)
+            {
+                bestChildDistance = childDistance;
+                bestChildObject = hitObject;
+            }
+        }
+    }
+
+    // Return object with smallest distance from ray origin
+    if (hit && childHit)
+    {
+        if (bestChildDistance < distance)
+        {
+            distance = bestChildDistance;
+            return bestChildObject;
+        }
+        else
+        {
+            return this;
+        }
+    }
+    else if (hit)
+    {
+        return this;
+    }
+    else if (childHit)
+    {
+        distance = bestChildDistance;
+        return bestChildObject;
+    }
+    distance = FLT_MAX;
+    return NULL;
 }

@@ -10,6 +10,8 @@
 
 using std::unordered_map;
 
+class Scene;
+
 class SceneViewWidget : public GLWidget
 {
     Q_OBJECT
@@ -26,6 +28,7 @@ public:
     SceneViewWidget(QWidget *parent = 0);
 
     void PostSetup();
+    void SetScene(Scene* scene);
     void update();
 
     void mousePressEvent(QMouseEvent* event);
@@ -51,6 +54,8 @@ private:
     void PickObject(const QPointF clickPosition);
 
     static eMouseButton QtMouseButtonConvert(Qt::MouseButton qtButton);
+
+    Scene*                      m_scene;
 
     bool                        m_hasFocus;
     bool                        m_mousePressed[NUM_MOUSE_BUTTONS];

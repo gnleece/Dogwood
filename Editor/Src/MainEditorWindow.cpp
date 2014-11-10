@@ -162,6 +162,7 @@ void MainEditorWindow::OpenScene()
         HierarchyModel* model = new HierarchyModel(m_scene->GetRootObject());
         SetHierarchyModel(model);
         RenderManager::Singleton().SetRootObject(m_scene->GetRootObject());
+        m_sceneViewWidget->SetScene(m_scene);
     }
     else
     {
@@ -188,6 +189,7 @@ void MainEditorWindow::OpenTestProject()
         HierarchyModel* model = new HierarchyModel(m_scene->GetRootObject());
         SetHierarchyModel(model);
         RenderManager::Singleton().SetRootObject(m_scene->GetRootObject());
+        m_sceneViewWidget->SetScene(m_scene);
     }
 
 
