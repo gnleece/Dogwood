@@ -76,7 +76,6 @@ EDITOR (Thicket)
         - Camera "up" is wrong / LookAt bug
         - Root is not handled properly
         - Clear window state on scene load
-        - Object picking doesn't work properly if camera moves too much
 
 ---------------------------------------------------------------------------
 

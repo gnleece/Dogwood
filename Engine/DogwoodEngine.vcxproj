@@ -88,6 +88,7 @@
     <ClInclude Include="Include\GameProject.h" />
     <ClInclude Include="Include\Input\InputManager.h" />
     <ClInclude Include="Include\Math\Algebra.h" />
+    <ClInclude Include="Include\Math\Raycast.h" />
     <ClInclude Include="Include\Math\Transform.h" />
     <ClInclude Include="Include\Math\Transformations.h" />
     <ClInclude Include="Include\Rendering\Camera.h" />
@@ -118,6 +119,7 @@
     <ClCompile Include="Src\GameProject.cpp" />
     <ClCompile Include="Src\Input\InputManager.cpp" />
     <ClCompile Include="Src\Math\Algebra.cpp" />
+    <ClCompile Include="Src\Math\Raycast.cpp" />
     <ClCompile Include="Src\Math\Transform.cpp" />
     <ClCompile Include="Src\Math\Transformations.cpp" />
     <ClCompile Include="Src\Rendering\Camera.cpp" />

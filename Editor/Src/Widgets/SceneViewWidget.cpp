@@ -167,9 +167,6 @@ void SceneViewWidget::ClearMouseButtonState()
 // Based on tutorial from: http://antongerdelan.net/opengl/raycasting.html
 void SceneViewWidget::PickObject(const QPointF clickPosition)
 {
-    // TODO there are some bugs in here. This seems to work with the default camera position,
-    // but if you rotate the camera too much it breaks. FIXME
-
     if (m_scene == NULL || m_scene->GetRootObject() == NULL)
         return;
 
