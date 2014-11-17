@@ -3,12 +3,13 @@
 #include "DebugLogger.h"
 #include "Debugging\DebugDraw.h"
 #include "GameObject.h"
+#include "MainEditorWindow.h"
 #include "Rendering\RenderManager.h"
 #include "Scene\Scene.h"
 #include <QtWidgets>
 
-SceneViewWidget::SceneViewWidget(QWidget* parent)
-: GLWidget(parent), m_hasFocus(false), m_showGrid(true)
+SceneViewWidget::SceneViewWidget(MainEditorWindow* window, QWidget* parent)
+: m_window(window), GLWidget(parent), m_hasFocus(false), m_showGrid(true)
 {
     ClearMouseButtonState();
 }
@@ -80,7 +81,7 @@ void SceneViewWidget::mousePressEvent(QMouseEvent* event)
         m_mousePressed[button] = true;
     }
 
-    if (button == MOUSE_BUTTON_RIGHT)
+    if (button == OBJECT_SELECT_BUTTON)
     {
         PickObject(event->localPos());
     }
@@ -91,16 +92,16 @@ void SceneViewWidget::mouseMoveEvent(QMouseEvent* event)
     QPoint pos = event->pos();
 
     // Middle mouse button rotates the camera
-    if (m_mouseDragging[MOUSE_BUTTON_MIDDLE])
+    if (m_mouseDragging[CAMERA_ROTATE_BUTTON])
     {
         float deltaX = pos.x() - m_prevMousePos.x();
         float deltaY = pos.y() - m_prevMousePos.y();
         RotateCamera(AXIS_Y, deltaX*MOUSE_ROT_AMOUNT*0.01/**deltaTime*/);
         RotateCamera(AXIS_X, deltaY*MOUSE_ROT_AMOUNT*0.01/**deltaTime*/);
     }
-    else if (m_mousePressed[MOUSE_BUTTON_MIDDLE])
+    else if (m_mousePressed[CAMERA_ROTATE_BUTTON])
     {
-        m_mouseDragging[MOUSE_BUTTON_MIDDLE] = true;
+        m_mouseDragging[CAMERA_ROTATE_BUTTON] = true;
     }
 
     m_prevMousePos = pos;
@@ -183,28 +184,30 @@ void SceneViewWidget::PickObject(const QPointF clickPosition)
     float normalizedY = 1.0f - (2.0f * screenY) / height;
 
     // Clip coords
-    Vector4 rayClip = Vector4(normalizedX, normalizedY, -1.0, 1.0);
+    Vector4 rayDirectionClipSpace = Vector4(normalizedX, normalizedY, -1.0, 1.0);
 
     // Camera coords
-    Vector4 rayCamera = RenderManager::Singleton().GetProjection().GetMatrix().Inverse() * rayClip;
-    rayCamera[2] = -1;     // we only need to unproject x and y, not z and w
-    rayCamera[3] = 0;
+    Vector4 rayDirectionCameraSpace = RenderManager::Singleton().GetProjection().GetMatrix().Inverse() * rayDirectionClipSpace;
+    rayDirectionCameraSpace[2] = -1;     // we only need to unproject x and y, not z and w
+    rayDirectionCameraSpace[3] = 0;
 
     // World coords
-    Vector3 rayWorld = (RenderManager::Singleton().GetView().GetMatrix().Inverse() * rayCamera).xyz();
-    rayWorld = rayWorld.Normalized();
+    Vector3 rayDirectionWorldSpace = (RenderManager::Singleton().GetView().GetMatrix().Inverse() * rayDirectionCameraSpace).xyz();
+    rayDirectionWorldSpace = rayDirectionWorldSpace.Normalized();
 
     // Ray origin is camera position
-    // TODO multiply by -1 is a hack, need to fix camera/view setup properly
-    Vector3 rayOrigin = -1 * RenderManager::Singleton().GetView().GetPosition();
+    Vector4 cameraPosition = Vector4(RenderManager::Singleton().GetView().GetPosition(), 0);
+    Vector4 cameraPositionWorldSpace = RenderManager::Singleton().GetView().GetMatrix().Inverse() * cameraPosition;
+    Vector3 rayOriginWorldSpace = -1 * cameraPositionWorldSpace.xyz(); // TODO multiply by -1 is a hack, need to fix camera/view setup properly
 
     // Do raycast against all objects in hierarchy   TODO this is pretty terrible
     float hitDistance;
-    GameObject* hitObject = m_scene->GetRootObject()->BoundingSphereRaycast(rayOrigin, rayWorld, Transform::Identity, hitDistance);
+    GameObject* hitObject = m_scene->GetRootObject()->BoundingSphereRaycast(rayOriginWorldSpace, rayDirectionWorldSpace, Transform::Identity, hitDistance);
     if (hitObject != NULL)
     {
         DebugLogger::Singleton().Log("HIT SOMETING!!!!");
         DebugLogger::Singleton().Log(hitObject->GetName());
+        m_window->SelectObject(hitObject);
     }
     else
     {

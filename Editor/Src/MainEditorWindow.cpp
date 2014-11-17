@@ -26,7 +26,7 @@ MainEditorWindow::MainEditorWindow(QWidget *parent)
     m_view = m_ui->treeView;
 
     // Scene view widget setup
-    m_sceneViewWidget = new SceneViewWidget(this);
+    m_sceneViewWidget = new SceneViewWidget(this, this);
     m_sceneViewWidget->setFixedSize(990, 630);
     m_ui->verticalLayout->addWidget(m_sceneViewWidget);
 
@@ -299,6 +299,11 @@ void MainEditorWindow::UpdateGameObjectTransform(Vector3 vector, VectorType type
     QModelIndex index = m_view->selectionModel()->currentIndex();
     ModifyTransformCommand* command = new ModifyTransformCommand(m_model, index, vector, type);
     CommandManager::Singleton().ExecuteCommand(command);
+}
+
+void MainEditorWindow::SelectObject(GameObject* gameObject)
+{
+    // TODO implement me
 }
 
 void MainEditorWindow::OnSelectionChanged(const QItemSelection & selected, const QItemSelection & deselected)

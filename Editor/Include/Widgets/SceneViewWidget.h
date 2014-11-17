@@ -10,6 +10,7 @@
 
 using std::unordered_map;
 
+class MainEditorWindow;
 class Scene;
 
 class SceneViewWidget : public GLWidget
@@ -25,7 +26,7 @@ public:
         NUM_MOUSE_BUTTONS
     };
 
-    SceneViewWidget(QWidget *parent = 0);
+    SceneViewWidget(MainEditorWindow* window, QWidget *parent = 0);
 
     void PostSetup();
     void SetScene(Scene* scene);
@@ -48,6 +49,9 @@ private:
     const static int GRID_SIZE = 10;
     const static int GRID_BUFFER_SIZE = (GRID_SIZE * 2 + 1) * 2 * 2; // GRID_SIZE * (pos + neg) + zero * (horiz + vert) * (points per line)
 
+    const eMouseButton OBJECT_SELECT_BUTTON = MOUSE_BUTTON_RIGHT;
+    const eMouseButton CAMERA_ROTATE_BUTTON = MOUSE_BUTTON_MIDDLE;
+
     void MoveCamera(Vector3 localSpaceOffset);
     void RotateCamera(eAXIS axis, float degrees);
     void ClearMouseButtonState();
@@ -55,6 +59,7 @@ private:
 
     static eMouseButton QtMouseButtonConvert(Qt::MouseButton qtButton);
 
+    MainEditorWindow*           m_window;
     Scene*                      m_scene;
 
     bool                        m_hasFocus;

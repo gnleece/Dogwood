@@ -38,6 +38,7 @@ public:
 
     void SetHierarchyModel(HierarchyModel* model);
     void UpdateGameObjectTransform(Vector3 vector, VectorType type);
+    void SelectObject(GameObject* gameObject);
 
 private:
     Ui::MainEditorWindow*   m_ui;
