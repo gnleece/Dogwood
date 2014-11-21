@@ -35,6 +35,8 @@ public:
 
     GameObject*     getItem(const QModelIndex &index) const;
 
+    const static int MatchRole = 32;
+
 private:
-    GameObject*   m_rootItem;
+    GameObject*     m_rootItem;
 };

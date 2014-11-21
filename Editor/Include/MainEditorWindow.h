@@ -74,6 +74,7 @@ private slots:
     void OpenTestProject();       // temp shortcut for debugging
 
     void OnSelectionChanged(const QItemSelection & selected, const QItemSelection & deselected);
+    void SwitchSelectObject(GameObject* gameobject);
 
     void UpdateMenuState();
 };

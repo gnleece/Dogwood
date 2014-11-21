@@ -58,6 +58,8 @@ public:
     static vector<GameObject*> ActiveGameObjects;
 
 private:
+    static int NextID;
+
     void AddChild(GameObject* child, int index = -1);
     void RemoveChild(GameObject* child);
 

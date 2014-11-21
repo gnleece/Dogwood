@@ -303,7 +303,21 @@ void MainEditorWindow::UpdateGameObjectTransform(Vector3 vector, VectorType type
 
 void MainEditorWindow::SelectObject(GameObject* gameObject)
 {
-    // TODO implement me
+    // Search the model for the given game object
+    QModelIndexList Items = m_model->match(
+        m_model->index(0, 0),                       // start
+        HierarchyModel::MatchRole,                  // role
+        QVariant::fromValue(gameObject->GetID()),   // value
+        1,                                          // hits
+        Qt::MatchRecursive);                        // flags
+
+    // Clear previous selection
+    m_view->selectionModel()->clearSelection();
+
+    // Select new object in hierarchy view
+    m_view->selectionModel()->select(Items.first(), QItemSelectionModel::Select);
+
+    SwitchSelectObject(gameObject);
 }
 
 void MainEditorWindow::OnSelectionChanged(const QItemSelection & selected, const QItemSelection & deselected)
@@ -312,23 +326,28 @@ void MainEditorWindow::OnSelectionChanged(const QItemSelection & selected, const
 
     // Get the selected game object
     const QModelIndex index = m_view->selectionModel()->currentIndex();
-    GameObject* go = m_model->getItem(index);
+    GameObject* gameObject = m_model->getItem(index);
 
+    SwitchSelectObject(gameObject);
+}
+
+void MainEditorWindow::SwitchSelectObject(GameObject* gameobject)
+{
     if (m_selectedGameObject != NULL)
     {
         m_selectedGameObject->SetSelected(false);
         m_selectedGameObject = NULL;
     }
 
-    if (go != NULL)
+    if (gameobject != NULL)
     {
         // Show the components for the selected game object
-        m_transformWidget->SetGameObject(go);
+        m_transformWidget->SetGameObject(gameobject);
         m_transformWidget->show();
 
         // Notify the game object that it's been selected
-        go->SetSelected(true);
-        m_selectedGameObject = go;
+        gameobject->SetSelected(true);
+        m_selectedGameObject = gameobject;
     }
     else
     {

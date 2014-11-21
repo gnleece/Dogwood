@@ -6,12 +6,16 @@
 #include "GameComponent.h"
 
 vector<GameObject*> GameObject::ActiveGameObjects = vector<GameObject*>();
+int GameObject::NextID = 0;
 
 GameObject::GameObject(string name, GameObject* parent)
  : m_dirty(true), m_selected(false)
 {
     m_name = name;
     SetParent(parent);
+
+    m_id = NextID;
+    NextID++;
 
     // TODO unregister on destroy
     ActiveGameObjects.push_back(this);

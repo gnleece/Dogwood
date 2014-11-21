@@ -61,10 +61,16 @@ QVariant HierarchyModel::data(const QModelIndex &index, int role) const
     if (!index.isValid())
         return QVariant();
 
-    if (role != Qt::DisplayRole && role != Qt::EditRole)
+    if (role != Qt::DisplayRole && role != Qt::EditRole && role != MatchRole)
         return QVariant();
 
     GameObject *item = getItem(index);
+
+    if (role == MatchRole)
+    {
+        return QVariant(item->GetID());
+    }
+
     return QVariant(item->GetName().c_str());
 }
 
