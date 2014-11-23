@@ -50,26 +50,6 @@ void SceneViewWidget::update()
 {
     GLWidget::update();
 
-    if (m_hasFocus)
-    {
-        if (m_keyStates[Qt::Key::Key_W])
-        {
-            MoveCamera(Vector3(0, 0, KEY_TRANS_AMOUNT*0.01/**deltaTime*/));
-        }
-        if (m_keyStates[Qt::Key::Key_S])
-        {
-            MoveCamera(Vector3(0, 0, -KEY_TRANS_AMOUNT*0.01/**deltaTime*/));
-        }
-        if (m_keyStates[Qt::Key::Key_A])
-        {
-            MoveCamera(Vector3(KEY_TRANS_AMOUNT*0.01/**deltaTime*/, 0, 0));
-        }
-        if (m_keyStates[Qt::Key::Key_D])
-        {
-            MoveCamera(Vector3(-KEY_TRANS_AMOUNT*0.01/**deltaTime*/, 0, 0));
-        }
-    }
-
     DebugDraw::Singleton().DrawLineBuffer(m_gridVAO, m_gridVBO, m_gridLinesVertexBuffer, GRID_BUFFER_SIZE, m_gridColor);
 }
 
@@ -80,6 +60,7 @@ void SceneViewWidget::mousePressEvent(QMouseEvent* event)
     {
         m_mousePressed[button] = true;
     }
+    m_prevMousePos = event->pos();
 
     if (button == OBJECT_SELECT_BUTTON)
     {
@@ -91,17 +72,20 @@ void SceneViewWidget::mouseMoveEvent(QMouseEvent* event)
 {
     QPoint pos = event->pos();
 
-    // Middle mouse button rotates the camera
-    if (m_mouseDragging[CAMERA_ROTATE_BUTTON])
+    if (m_mousePressed[CAMERA_ROTATE_BUTTON])
     {
         float deltaX = pos.x() - m_prevMousePos.x();
         float deltaY = pos.y() - m_prevMousePos.y();
-        RotateCamera(AXIS_Y, deltaX*MOUSE_ROT_AMOUNT*0.01/**deltaTime*/);
-        RotateCamera(AXIS_X, deltaY*MOUSE_ROT_AMOUNT*0.01/**deltaTime*/);
+        RotateCamera(AXIS_Y, deltaX*CAMERA_ROTATE_AMOUNT);
+        RotateCamera(AXIS_X, deltaY*CAMERA_ROTATE_AMOUNT);
     }
-    else if (m_mousePressed[CAMERA_ROTATE_BUTTON])
+
+    if (m_mousePressed[CAMERA_PAN_BUTTON])
     {
-        m_mouseDragging[CAMERA_ROTATE_BUTTON] = true;
+        float deltaX = pos.x() - m_prevMousePos.x();
+        float deltaY = pos.y() - m_prevMousePos.y();
+        MoveCamera(Vector3(deltaX*CAMERA_PAN_AMOUNT, 0, 0));
+        MoveCamera(Vector3(0, -1*deltaY*CAMERA_PAN_AMOUNT, 0));
     }
 
     m_prevMousePos = pos;
@@ -113,7 +97,15 @@ void SceneViewWidget::mouseReleaseEvent(QMouseEvent* event)
     if (button < NUM_MOUSE_BUTTONS)
     {
         m_mousePressed[button] = false;
-        m_mouseDragging[button] = false;
+    }
+}
+
+void SceneViewWidget::wheelEvent(QWheelEvent* event)
+{
+    int delta = event->delta();
+    if (m_hasFocus)
+    {
+        MoveCamera(Vector3(0, 0, delta*CAMERA_ZOOM_AMOUNT));
     }
 }
 
@@ -160,7 +152,6 @@ void SceneViewWidget::ClearMouseButtonState()
     for (int i = 0; i < NUM_MOUSE_BUTTONS; i++)
     {
         m_mousePressed[i] = false;
-        m_mouseDragging[i] = false;
     }
 }
 
@@ -202,13 +193,7 @@ void SceneViewWidget::PickObject(const QPointF clickPosition)
     GameObject* hitObject = m_scene->GetRootObject()->BoundingSphereRaycast(rayOriginWorldSpace, rayDirectionWorldSpace, Transform::Identity, hitDistance);
     if (hitObject != NULL)
     {
-        DebugLogger::Singleton().Log("HIT SOMETING!!!!");
-        DebugLogger::Singleton().Log(hitObject->GetName());
         m_window->SelectObject(hitObject);
-    }
-    else
-    {
-        DebugLogger::Singleton().Log("No hit...");
     }
 }
 

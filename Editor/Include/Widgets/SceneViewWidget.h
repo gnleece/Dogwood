@@ -35,6 +35,7 @@ public:
     void mousePressEvent(QMouseEvent* event);
     void mouseMoveEvent(QMouseEvent* event);
     void mouseReleaseEvent(QMouseEvent* event);
+    void wheelEvent(QWheelEvent* event);
     void keyPressEvent(QKeyEvent* event);
     void keyReleaseEvent(QKeyEvent* event);
 
@@ -42,15 +43,16 @@ public:
     void focusOutEvent(QFocusEvent * event);
 
 private:
-    const float KEY_TRANS_AMOUNT = 6.f;
-    const float KEY_ROT_AMOUNT = 35.f;
-    const float MOUSE_ROT_AMOUNT = 7.f;
+    const float CAMERA_ROTATE_AMOUNT = 0.07f;
+    const float CAMERA_PAN_AMOUNT = 0.006f;
+    const float CAMERA_ZOOM_AMOUNT = 0.01f;
 
     const static int GRID_SIZE = 10;
     const static int GRID_BUFFER_SIZE = (GRID_SIZE * 2 + 1) * 2 * 2; // GRID_SIZE * (pos + neg) + zero * (horiz + vert) * (points per line)
 
-    const eMouseButton OBJECT_SELECT_BUTTON = MOUSE_BUTTON_RIGHT;
-    const eMouseButton CAMERA_ROTATE_BUTTON = MOUSE_BUTTON_MIDDLE;
+    const eMouseButton OBJECT_SELECT_BUTTON = MOUSE_BUTTON_LEFT;
+    const eMouseButton CAMERA_ROTATE_BUTTON = MOUSE_BUTTON_RIGHT;
+    const eMouseButton CAMERA_PAN_BUTTON = MOUSE_BUTTON_MIDDLE;
 
     void MoveCamera(Vector3 localSpaceOffset);
     void RotateCamera(eAXIS axis, float degrees);
@@ -64,7 +66,6 @@ private:
 
     bool                        m_hasFocus;
     bool                        m_mousePressed[NUM_MOUSE_BUTTONS];
-    bool                        m_mouseDragging[NUM_MOUSE_BUTTONS];
     
     unordered_map<int, bool>    m_keyStates;
     QPoint                      m_prevMousePos;
