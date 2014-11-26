@@ -95,6 +95,11 @@ void MainEditorWindow::SetHierarchyModel(HierarchyModel* model)
     m_view->expandAll();
 }
 
+GameObject* MainEditorWindow::GetSelectedObject()
+{
+    return m_selectedGameObject;
+}
+
 // TODO: Qt textboxes seem to capture ctrl + z and do their own undo. stop that!
 // TODO: just selecting a game object counts as a bunch of update commands. fix that!
 void MainEditorWindow::Undo()

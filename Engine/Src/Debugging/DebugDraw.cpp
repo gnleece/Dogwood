@@ -6,6 +6,7 @@
 void DebugDraw::Startup()
 {
     SetupDebugMat();
+    m_gnomon.Init();
 
     // Debug lines
     glGenBuffers(1, &m_vertexBufferID);
@@ -108,6 +109,11 @@ void DebugDraw::RenderLines()
     m_numLines = 0;
 }
 
+void DebugDraw::DrawGnomon(Matrix4x4& transform)
+{
+    m_gnomon.Draw(transform);
+}
+
 Material* DebugDraw::GetDebugMaterial()
 {
     return m_material;
@@ -119,4 +125,74 @@ void DebugDraw::SetupDebugMat()
 
     m_material = new Material();
     m_material->SetShader(m_shader);
+}
+
+void Gnomon::Init()
+{
+    // Unit lines along x, y, z axes
+    m_positionBufferData[0] = Vector3::Zero;
+    m_positionBufferData[1] = Vector3(1.0f, 0.0f, 0.0f);
+    m_positionBufferData[2] = Vector3::Zero;
+    m_positionBufferData[3] = Vector3(0.0f, 1.0f, 0.0f);
+    m_positionBufferData[4] = Vector3::Zero;
+    m_positionBufferData[5] = Vector3(0.0f, 0.0f, 1.0f);
+
+    // x : red, y : blue, z : green
+    m_colorBufferData[0] = ColourRGB::Red;
+    m_colorBufferData[1] = ColourRGB::Red;
+    m_colorBufferData[2] = ColourRGB::Blue;
+    m_colorBufferData[3] = ColourRGB::Blue;
+    m_colorBufferData[4] = ColourRGB::Green;
+    m_colorBufferData[5] = ColourRGB::Green;
+
+    glGenBuffers(1, &m_positionBufferID);
+    glBindBuffer(GL_ARRAY_BUFFER, m_positionBufferID);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(m_positionBufferData), m_positionBufferData, GL_DYNAMIC_DRAW);
+
+    glGenBuffers(1, &m_colorBufferID);
+    glBindBuffer(GL_ARRAY_BUFFER, m_colorBufferID);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(m_colorBufferData), m_colorBufferData, GL_DYNAMIC_DRAW);
+
+    glGenVertexArrays(1, &m_vertexArrayID);
+    glBindVertexArray(m_vertexArrayID);
+
+    m_shader = RenderManager::Singleton().GetCommonShader(RenderManager::eCommonShader::SHADER_UNLIT);
+}
+
+void Gnomon::Draw(Matrix4x4& transform)
+{
+    // Disable depth so that gnomon renders on top of everything
+    glDisable(GL_DEPTH_TEST);
+
+    // Set the shader
+    m_shader->ApplyShader();
+
+    // Bind arrays/buffers
+    glBindVertexArray(m_vertexArrayID);
+
+    // Set model matrix
+    GLint uniModel = m_shader->GetParamLocation(ShaderProgram::UNI_MODEL);
+    glUniformMatrix4fv(uniModel, 1, GL_FALSE, transform.Transpose().Start());
+
+    // Bind position data
+    GLint paramLocation = m_shader->GetParamLocation(ShaderProgram::ATTRIB_POS);
+    glEnableVertexAttribArray(paramLocation);
+    glBindBuffer(GL_ARRAY_BUFFER, m_positionBufferID);
+    glVertexAttribPointer(paramLocation, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
+
+    // Bind color data
+    paramLocation = m_shader->GetParamLocation(ShaderProgram::ATTRIB_COLOUR);
+    glEnableVertexAttribArray(paramLocation);
+    glBindBuffer(GL_ARRAY_BUFFER, m_colorBufferID);
+    glVertexAttribPointer(paramLocation, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
+
+    // TODO add arrows
+
+    // Draw the lines!
+    glDrawArrays(GL_LINES, 0, 6);
+
+    glDisableVertexAttribArray(0);
+
+    // Re-enable depth
+    glEnable(GL_DEPTH_TEST);
 }

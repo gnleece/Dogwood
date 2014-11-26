@@ -31,14 +31,17 @@ class MainEditorWindow : public QMainWindow
 public:
     explicit MainEditorWindow(QWidget* parent = 0);
     ~MainEditorWindow();
-    void PostSetup();
-    void Update();
+
+    void        PostSetup();
+    void        Update();
+
+    void        SetHierarchyModel(HierarchyModel* model);
+    void        UpdateGameObjectTransform(Vector3 vector, VectorType type);
+    void        SelectObject(GameObject* gameObject);
+
+    GameObject* GetSelectedObject();
 
     virtual void resizeEvent(QResizeEvent* resizeEvent);
-
-    void SetHierarchyModel(HierarchyModel* model);
-    void UpdateGameObjectTransform(Vector3 vector, VectorType type);
-    void SelectObject(GameObject* gameObject);
 
 private:
     Ui::MainEditorWindow*   m_ui;

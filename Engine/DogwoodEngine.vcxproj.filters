@@ -241,5 +241,11 @@
     <None Include="Src\Shaders\UnlitUniformColor.vert.glsl">
       <Filter>Source Files\Shaders</Filter>
     </None>
+    <None Include="Src\Shaders\Unlit.frag.glsl">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="Src\Shaders\Unlit.vert.glsl">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -21,6 +21,22 @@ GameObject::GameObject(string name, GameObject* parent)
     ActiveGameObjects.push_back(this);
 }
 
+Transform& GameObject::GetLocalTransform()
+{
+    return m_localTransform;
+}
+
+Transform GameObject::GetWorldTransform()
+{
+    // TODO optimize this
+    if (m_parent)
+    {
+        return m_parent->GetWorldTransform()*m_localTransform;
+    }
+
+    return m_localTransform;
+}
+
 void GameObject::SetLocalTransform(Transform& t)
 {
     m_localTransform = t;
@@ -31,6 +47,34 @@ void GameObject::SetLocalTransform(Matrix4x4& m)
 {
     m_localTransform.SetMatrix(m);
     m_dirty = true;
+}
+
+int GameObject::GetID()
+{
+    return m_id;
+}
+
+string GameObject::GetName()
+{
+    return m_name;
+}
+
+void GameObject::SetName(string name)
+{
+    m_name = name;
+}
+
+void GameObject::SetName(const char* name)
+{
+    if (name)
+    {
+        m_name = name;
+    }
+}
+
+GameObject* GameObject::GetParent()
+{
+    return m_parent;
 }
 
 void GameObject::SetParent(GameObject* parent, int index)

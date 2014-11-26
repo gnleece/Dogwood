@@ -60,6 +60,9 @@ public:
 
     void DebugPrint();
 
+    static Vector3 Zero;
+    static Vector3 One;
+
 private:
     float m_values[3];
 };

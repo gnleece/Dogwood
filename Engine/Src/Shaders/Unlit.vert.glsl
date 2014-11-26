@@ -7,7 +7,7 @@ uniform mat4 model;
 uniform mat4 view;
 uniform mat4 proj;
 
-out vertColor;
+out vec3 vertColor;
 
 void main()
 {

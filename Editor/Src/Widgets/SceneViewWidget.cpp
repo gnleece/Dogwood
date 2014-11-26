@@ -8,6 +8,8 @@
 #include "Scene\Scene.h"
 #include <QtWidgets>
 
+#include "Math\Transformations.h"
+
 SceneViewWidget::SceneViewWidget(MainEditorWindow* window, QWidget* parent)
 : m_window(window), GLWidget(parent), m_hasFocus(false), m_showGrid(true)
 {
@@ -51,6 +53,12 @@ void SceneViewWidget::update()
     GLWidget::update();
 
     DebugDraw::Singleton().DrawLineBuffer(m_gridVAO, m_gridVBO, m_gridLinesVertexBuffer, GRID_BUFFER_SIZE, m_gridColor);
+
+    GameObject* selectedObject = m_window->GetSelectedObject();
+    if (selectedObject)
+    {
+        DebugDraw::Singleton().DrawGnomon(selectedObject->GetWorldTransform().GetMatrix());
+    }
 }
 
 void SceneViewWidget::mousePressEvent(QMouseEvent* event)

@@ -203,6 +203,9 @@ Vector3 normalize(Vector3 v)
     return v.Normalized();
 }
 
+Vector3 Vector3::Zero = Vector3(0.f, 0.f, 0.f);
+Vector3 Vector3::One = Vector3(1.f, 1.f, 1.f);
+
 Vector4::Vector4()
 {
     m_values[0] = 0.0f;

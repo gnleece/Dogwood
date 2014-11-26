@@ -64,7 +64,6 @@ EDITOR (Thicket)
             * Translate
             * Rotate
             * Scale
-        * Object picking (from scene view)
     
     * Window resizing
 
@@ -76,6 +75,7 @@ EDITOR (Thicket)
         - Camera "up" is wrong / LookAt bug
         - Root is not handled properly
         - Clear window state on scene load
+        - Editing transform after selecting by picking doesn't work
 
 ---------------------------------------------------------------------------
 
