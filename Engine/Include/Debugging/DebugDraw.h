@@ -12,9 +12,24 @@
 class Material;
 class ShaderProgram;
 
+// TODO put debug draw shapes in their own file
+struct Pyramid
+{
+public:
+    void            Init(float base, float height);
+    void            Draw(Matrix4x4& transform, ColourRGB& color);
+
+private:
+    GLuint          m_positionBufferID;
+    GLuint          m_vertexArrayID;
+    GLuint          m_ebo;
+    Vector3         m_positionBufferData[4];
+    GLuint          m_indices[4 * 3];           // 4 triangles * 3 points per triangle
+    ShaderProgram*  m_shader;
+};
+
 struct Gnomon
 {
-
 public:
     void            Init();
     void            Draw(Matrix4x4& transform);
@@ -23,10 +38,15 @@ private:
     GLuint          m_positionBufferID;
     GLuint          m_colorBufferID;
     GLuint          m_vertexArrayID;
-    Vector3         m_positionBufferData[6];    // 3 lines * 2 points per line
-    ColourRGB       m_colorBufferData[6];
+    Vector3         m_positionBufferData[3 * 2];    // 3 lines * 2 points per line
+    ColourRGB       m_colorBufferData[3 * 2];
     ShaderProgram*  m_shader;
+
+    Pyramid         m_arrow;
+    Matrix4x4       m_arrowTransforms[3];
 };
+
+
 
 class DebugDraw
 {

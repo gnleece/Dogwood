@@ -76,6 +76,7 @@ EDITOR (Thicket)
         - Root is not handled properly
         - Clear window state on scene load
         - Editing transform after selecting by picking doesn't work
+        - Prevent debug camera roll (pitch and yaw only)
 
 ---------------------------------------------------------------------------
 

@@ -11,7 +11,7 @@
 #include "Math\Transformations.h"
 
 SceneViewWidget::SceneViewWidget(MainEditorWindow* window, QWidget* parent)
-: m_window(window), GLWidget(parent), m_hasFocus(false), m_showGrid(true)
+: m_window(window), GLWidget(parent), m_hasFocus(false), m_showGrid(true), m_scene(NULL)
 {
     ClearMouseButtonState();
 }
