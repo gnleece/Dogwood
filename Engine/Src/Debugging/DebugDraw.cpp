@@ -6,7 +6,6 @@
 void DebugDraw::Startup()
 {
     SetupDebugMat();
-    m_gnomon.Init();
 
     // Debug lines
     glGenBuffers(1, &m_vertexBufferID);
@@ -109,11 +108,6 @@ void DebugDraw::RenderLines()
     m_numLines = 0;
 }
 
-void DebugDraw::DrawGnomon(Matrix4x4& transform)
-{
-    m_gnomon.Draw(transform);
-}
-
 Material* DebugDraw::GetDebugMaterial()
 {
     return m_material;
@@ -127,7 +121,7 @@ void DebugDraw::SetupDebugMat()
     m_material->SetShader(m_shader);
 }
 
-void Gnomon::Init()
+void Gnomon::Init(float arrowBase, float arrowHeight)
 {
     // Unit lines along x, y, z axes
     m_positionBufferData[0] = Vector3::Zero;
@@ -158,7 +152,7 @@ void Gnomon::Init()
     glBindVertexArray(m_vertexArrayID);
 
     // Init arrows
-    m_arrow.Init(0.1, 0.2);
+    m_arrow.Init(arrowBase, arrowHeight);
     m_arrowTransforms[0] = Rotation(90, eAXIS::AXIS_Y)*Translation(Vector3(0, 0, 1));
     m_arrowTransforms[1] = Rotation(-90, eAXIS::AXIS_X)*Translation(Vector3(0, 0, 1));
     m_arrowTransforms[2] = Rotation(-90, eAXIS::AXIS_Z)*Translation(Vector3(0, 0, 1))*Rotation(-30, eAXIS::AXIS_Z);

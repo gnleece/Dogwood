@@ -12,6 +12,11 @@ Transform::Transform()
     m_changed = true;
 }
 
+Transform::Transform(Matrix4x4& m)
+{
+    SetMatrix(m);
+}
+
 void Transform::SetMatrix(Matrix4x4& m)
 {
     m_matrix = m;

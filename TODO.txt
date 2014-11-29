@@ -59,7 +59,7 @@ EDITOR (Thicket)
         * Show world space gnomon
 
     * Object manipulation
-        * Transform widgets
+        * Transform tools
             * Translate
             * Rotate
             * Scale
@@ -75,6 +75,7 @@ EDITOR (Thicket)
         - Root is not handled properly
         - Clear window state on scene load
         - Editing transform after selecting by picking doesn't work
+        - Fix camera jump on first move after scene load
 
 ---------------------------------------------------------------------------
 

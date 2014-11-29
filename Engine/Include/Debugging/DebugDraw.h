@@ -31,7 +31,7 @@ private:
 struct Gnomon
 {
 public:
-    void            Init();
+    void            Init(float arrowBase = 0.1f, float arrowHeight = 0.2f);
     void            Draw(Matrix4x4& transform);
 
 private:
@@ -45,8 +45,6 @@ private:
     Pyramid         m_arrow;
     Matrix4x4       m_arrowTransforms[3];
 };
-
-
 
 class DebugDraw
 {
@@ -65,7 +63,6 @@ public:
 
     void            DrawLine(Vector3& a, Vector3& b, ColourRGB& colour);       // draw line for one frame
     void            RenderLines();
-    void            DrawGnomon(Matrix4x4& transform);
 
     void            PrepareLineBuffer(Vector3* buffer, int count, GLuint &vao, GLuint &vbo);
     void            DrawLineBuffer(GLuint vao, GLuint vbo, Vector3* buffer, int size, ColourRGB color);
@@ -84,6 +81,4 @@ private:
 
     Material*       m_material;
     ShaderProgram*  m_shader;
-
-    Gnomon          m_gnomon;
 };

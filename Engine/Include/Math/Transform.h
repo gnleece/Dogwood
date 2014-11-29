@@ -6,6 +6,7 @@ class Transform
 {
 public:
     Transform();
+    Transform(Matrix4x4& m);
 
     void        SetMatrix(Matrix4x4& m);
     void        SetPosition(Vector3& position);

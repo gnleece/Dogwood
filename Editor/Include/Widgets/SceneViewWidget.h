@@ -6,6 +6,7 @@
 #include "GLWidget.h"
 #include "Math\Algebra.h"
 #include "Rendering\Colour.h"
+#include "Tools\TransformTool.h"
 #include <unordered_map>
 
 using std::unordered_map;
@@ -60,7 +61,10 @@ private:
     void SetViewMatrix();
 
     void ClearMouseButtonState();
-    void PickObject(const QPointF clickPosition);
+
+    void HandleSelectionClick(const QPointF clickPosition);
+    bool PickTool(Vector3 rayOrigin, Vector3 rayDirection);
+    bool PickObject(Vector3 rayOrigin, Vector3 rayDirection);
 
     static eMouseButton QtMouseButtonConvert(Qt::MouseButton qtButton);
 
@@ -73,14 +77,16 @@ private:
     unordered_map<int, bool>    m_keyStates;
     QPoint                      m_prevMousePos;
 
+    float                       m_cameraPitch;
+    float                       m_cameraYaw;
+    Vector3                     m_cameraOffset;
+
+    TransformTool               m_transformTool;
+
     // Unit grid (x-z plane)
     bool                        m_showGrid;
     ColourRGB                   m_gridColor;
     GLuint                      m_gridVAO;
     GLuint                      m_gridVBO;
     Vector3                     m_gridLinesVertexBuffer[GRID_BUFFER_SIZE];
-
-    float                       m_cameraPitch;
-    float                       m_cameraYaw;
-    Vector3                     m_cameraOffset;
 };

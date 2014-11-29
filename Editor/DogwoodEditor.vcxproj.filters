@@ -51,6 +51,12 @@
     <Filter Include="Header Files\Widgets">
       <UniqueIdentifier>{58927b4d-1b89-4edd-9c60-b6ea8e62d46f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Tools">
+      <UniqueIdentifier>{6e526489-d98c-472a-95ba-ff6b99774217}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Tools">
+      <UniqueIdentifier>{85dc07fb-4747-4827-a2f5-607cfaff7be8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="maineditorwindow.ui">
@@ -111,6 +117,9 @@
     </ClInclude>
     <ClInclude Include="GeneratedFiles\ui_scrollwidget.h">
       <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Tools\TransformTool.h">
+      <Filter>Header Files\Tools</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -197,6 +206,9 @@
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_GLWidget.cpp">
       <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Tools\TransformTool.cpp">
+      <Filter>Source Files\Tools</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

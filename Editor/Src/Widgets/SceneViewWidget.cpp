@@ -41,6 +41,7 @@ void SceneViewWidget::PostSetup()
     m_gridColor = ColourRGB(0.5f, 0.5f, 0.5f);
 
     DebugDraw::Singleton().PrepareLineBuffer(m_gridLinesVertexBuffer, GRID_BUFFER_SIZE, m_gridVAO, m_gridVBO);
+    m_transformTool.Init();
 }
 
 void SceneViewWidget::SetScene(Scene* scene)
@@ -58,7 +59,7 @@ void SceneViewWidget::update()
     GameObject* selectedObject = m_window->GetSelectedObject();
     if (selectedObject)
     {
-        DebugDraw::Singleton().DrawGnomon(selectedObject->GetWorldTransform().GetMatrix());
+        m_transformTool.Draw(selectedObject->GetWorldTransform());
     }
 }
 
@@ -73,7 +74,7 @@ void SceneViewWidget::mousePressEvent(QMouseEvent* event)
 
     if (button == OBJECT_SELECT_BUTTON)
     {
-        PickObject(event->localPos());
+        HandleSelectionClick(event->localPos());
     }
 }
 
@@ -186,10 +187,12 @@ void SceneViewWidget::ClearMouseButtonState()
 }
 
 // Based on tutorial from: http://antongerdelan.net/opengl/raycasting.html
-void SceneViewWidget::PickObject(const QPointF clickPosition)
+void SceneViewWidget::HandleSelectionClick(const QPointF clickPosition)
 {
     if (m_scene == NULL || m_scene->GetRootObject() == NULL)
         return;
+
+    // TODO move this code into a Util function somewhere
 
     // Viewport coords: x in [0, width], y in [0, height]
     int screenX = clickPosition.x();
@@ -218,13 +221,32 @@ void SceneViewWidget::PickObject(const QPointF clickPosition)
     Vector4 cameraPositionWorldSpace = RenderManager::Singleton().GetView().GetMatrix().Inverse() * cameraPosition;
     Vector3 rayOriginWorldSpace = -1 * cameraPositionWorldSpace.xyz(); // TODO multiply by -1 is a hack, need to fix camera/view setup properly
 
+    // First, check whether the click hit any of the tools
+    bool hitTool = PickTool(rayOriginWorldSpace, rayDirectionWorldSpace);
+
+    // If not, check whether the click hit any gameobjects
+    if (!hitTool)
+    {
+        PickObject(rayOriginWorldSpace, rayDirectionWorldSpace);
+    }
+}
+
+bool SceneViewWidget::PickTool(Vector3 rayOrigin, Vector3 rayDirection)
+{
+    return m_transformTool.OnClick(rayOrigin, rayDirection);
+}
+
+bool SceneViewWidget::PickObject(Vector3 rayOrigin, Vector3 rayDirection)
+{
     // Do raycast against all objects in hierarchy   TODO this is pretty terrible
     float hitDistance;
-    GameObject* hitObject = m_scene->GetRootObject()->BoundingSphereRaycast(rayOriginWorldSpace, rayDirectionWorldSpace, Transform::Identity, hitDistance);
+    GameObject* hitObject = m_scene->GetRootObject()->BoundingSphereRaycast(rayOrigin, rayDirection, Transform::Identity, hitDistance);
     if (hitObject != NULL)
     {
         m_window->SelectObject(hitObject);
+        return true;
     }
+    return false;
 }
 
 SceneViewWidget::eMouseButton SceneViewWidget::QtMouseButtonConvert(Qt::MouseButton qtButton)
