@@ -131,6 +131,7 @@ private:
 Matrix4x4 operator *(const Matrix4x4& a, const Matrix4x4& b);
 
 Vector4 operator *(const Matrix4x4& m, const Vector4& v);
+Vector4 operator *(const Vector4& v, const Matrix4x4& m);
 
 float DegreesToRadians(float degrees);
 float RadiansToDegrees(float radians);

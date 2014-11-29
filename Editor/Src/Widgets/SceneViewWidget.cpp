@@ -11,7 +11,8 @@
 #include "Math\Transformations.h"
 
 SceneViewWidget::SceneViewWidget(MainEditorWindow* window, QWidget* parent)
-: m_window(window), GLWidget(parent), m_hasFocus(false), m_showGrid(true), m_scene(NULL)
+: m_window(window), GLWidget(parent), m_hasFocus(false), m_showGrid(true), m_scene(NULL),
+  m_cameraPitch(0), m_cameraYaw(0)
 {
     ClearMouseButtonState();
 }
@@ -84,16 +85,16 @@ void SceneViewWidget::mouseMoveEvent(QMouseEvent* event)
     {
         float deltaX = pos.x() - m_prevMousePos.x();
         float deltaY = pos.y() - m_prevMousePos.y();
-        RotateCamera(AXIS_Y, deltaX*CAMERA_ROTATE_AMOUNT);
-        RotateCamera(AXIS_X, deltaY*CAMERA_ROTATE_AMOUNT);
+        RotateCamera(DEBUG_CAMERA_YAW, deltaX*CAMERA_ROTATE_AMOUNT);
+        RotateCamera(DEBUG_CAMERA_PITCH, deltaY*CAMERA_ROTATE_AMOUNT);
     }
 
     if (m_mousePressed[CAMERA_PAN_BUTTON])
     {
         float deltaX = pos.x() - m_prevMousePos.x();
         float deltaY = pos.y() - m_prevMousePos.y();
-        MoveCamera(Vector3(deltaX*CAMERA_PAN_AMOUNT, 0, 0));
-        MoveCamera(Vector3(0, -1*deltaY*CAMERA_PAN_AMOUNT, 0));
+        TranslateCamera(Vector3(deltaX*CAMERA_PAN_AMOUNT, 0, 0));
+        TranslateCamera(Vector3(0, -1 * deltaY*CAMERA_PAN_AMOUNT, 0));
     }
 
     m_prevMousePos = pos;
@@ -113,7 +114,7 @@ void SceneViewWidget::wheelEvent(QWheelEvent* event)
     int delta = event->delta();
     if (m_hasFocus)
     {
-        MoveCamera(Vector3(0, 0, delta*CAMERA_ZOOM_AMOUNT));
+        TranslateCamera(Vector3(0, 0, delta*CAMERA_ZOOM_AMOUNT));
     }
 }
 
@@ -141,17 +142,38 @@ void SceneViewWidget::focusOutEvent(QFocusEvent* event)
     m_keyStates.clear();
 }
 
-void SceneViewWidget::MoveCamera(Vector3 localSpaceOffset)
+void SceneViewWidget::TranslateCamera(Vector3 localSpaceOffset)
 {
-    Matrix4x4 view = RenderManager::Singleton().GetView().GetMatrix();
-    view = Translation(localSpaceOffset)*view;
-    RenderManager::Singleton().SetView(view);
+    // Convert the local (camera) space offset to world coords
+    Matrix4x4 cameraRotation = Rotation(m_cameraPitch, eAXIS::AXIS_X)*Rotation(m_cameraYaw, eAXIS::AXIS_Y);
+    Vector3 offset = (Vector4(localSpaceOffset, 0)*cameraRotation).xyz();
+
+    // Add new offset to total offset and re-set view matrix
+    m_cameraOffset = m_cameraOffset + offset;
+    SetViewMatrix();
 }
 
-void SceneViewWidget::RotateCamera(eAXIS axis, float degrees)
+// Camera only rotates in world X and world Y (i.e. only pitch and yaw, no roll)
+void SceneViewWidget::RotateCamera(CameraRotationType type, float degrees)
 {
-    Matrix4x4 view = RenderManager::Singleton().GetView().GetMatrix();
-    view = Rotation(degrees, axis)*view;
+    if (type == DEBUG_CAMERA_PITCH)
+    {
+        m_cameraPitch += degrees;
+    }
+    else if (type == DEBUG_CAMERA_YAW)
+    {
+        m_cameraYaw += degrees;
+    }
+    SetViewMatrix();
+}
+
+void SceneViewWidget::SetViewMatrix()
+{
+    // We accumulate pitch and yaw separately because we want to rotate the camera in
+    // world coords and never rotate in z (roll)
+    Matrix4x4 view = Rotation(m_cameraPitch, eAXIS::AXIS_X)*Rotation(m_cameraYaw, eAXIS::AXIS_Y);
+
+    view = view*Translation(m_cameraOffset);
     RenderManager::Singleton().SetView(view);
 }
 

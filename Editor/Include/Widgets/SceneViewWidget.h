@@ -54,8 +54,11 @@ private:
     const eMouseButton CAMERA_ROTATE_BUTTON = MOUSE_BUTTON_RIGHT;
     const eMouseButton CAMERA_PAN_BUTTON = MOUSE_BUTTON_MIDDLE;
 
-    void MoveCamera(Vector3 localSpaceOffset);
-    void RotateCamera(eAXIS axis, float degrees);
+    enum CameraRotationType { DEBUG_CAMERA_PITCH, DEBUG_CAMERA_YAW }; // no roll
+    void TranslateCamera(Vector3 localSpaceOffset);
+    void RotateCamera(CameraRotationType type, float degrees);
+    void SetViewMatrix();
+
     void ClearMouseButtonState();
     void PickObject(const QPointF clickPosition);
 
@@ -76,4 +79,8 @@ private:
     GLuint                      m_gridVAO;
     GLuint                      m_gridVBO;
     Vector3                     m_gridLinesVertexBuffer[GRID_BUFFER_SIZE];
+
+    float                       m_cameraPitch;
+    float                       m_cameraYaw;
+    Vector3                     m_cameraOffset;
 };

@@ -494,6 +494,21 @@ Vector4 operator *(const Matrix4x4& m, const Vector4& v)
     return ret;
 }
 
+Vector4 operator *(const Vector4& v, const Matrix4x4& m)
+{
+    Vector4 ret;
+
+    for (int i = 0; i < 4; ++i)
+    {
+        ret[i] = m[0][i] * v[0] +
+            m[1][i] * v[1] +
+            m[2][i] * v[2] +
+            m[3][i] * v[3];
+    }
+
+    return ret;
+}
+
 float DegreesToRadians(float degrees)
 {
     return degrees * M_PI / 180.0f;
