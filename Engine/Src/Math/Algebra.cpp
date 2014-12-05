@@ -29,6 +29,21 @@ Point3& Point3::operator =(const Point3 other)
     return *this;
 }
 
+float Point3::x()
+{
+    return m_values[0];
+}
+
+float Point3::y()
+{
+    return m_values[1];
+}
+
+float Point3::z()
+{
+    return m_values[2];
+}
+
 Vector2::Vector2()
 {
     m_values[0] = 0.0f;
@@ -73,6 +88,26 @@ float Vector2::operator[](int i) const
 float* Vector2::Start()
 {
     return m_values;
+}
+
+float Vector2::x()
+{
+    return m_values[0];
+}
+
+float Vector2::y()
+{
+    return m_values[1];
+}
+
+Vector2 operator +(const Vector2& a, const Vector2& b)
+{
+    return Vector2(a[0] + b[0], a[1] + b[1]);
+}
+
+Vector2 operator -(const Vector2& a, const Vector2& b)
+{
+    return Vector2(a[0] - b[0], a[1] - b[1]);
 }
 
 Vector3::Vector3()
@@ -124,6 +159,21 @@ float Vector3::operator[](int i) const
 float* Vector3::Start()
 {
     return m_values;
+}
+
+float Vector3::x()
+{
+    return m_values[0];
+}
+
+float Vector3::y()
+{
+    return m_values[1];
+}
+
+float Vector3::z()
+{
+    return m_values[2];
 }
 
 float Vector3::MagnitudeSqrd() const
@@ -257,6 +307,26 @@ float& Vector4::operator[](int i)
 float Vector4::operator[](int i) const
 {
     return m_values[i];
+}
+
+float Vector4::x()
+{
+    return m_values[0];
+}
+
+float Vector4::y()
+{
+    return m_values[1];
+}
+
+float Vector4::z()
+{
+    return m_values[2];
+}
+
+float Vector4::w()
+{
+    return m_values[3];
 }
 
 Vector4 operator +(const Vector4& a, const Vector4& b)
@@ -520,4 +590,13 @@ float DegreesToRadians(float degrees)
 float RadiansToDegrees(float radians)
 {
     return radians * 180.0f / M_PI;
+}
+
+float Clamp(float value, float min, float max)
+{
+    if (value < min)
+        return min;
+    if (value > max)
+        return max;
+    return value;
 }

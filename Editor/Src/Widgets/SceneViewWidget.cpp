@@ -2,6 +2,7 @@
 
 #include "DebugLogger.h"
 #include "Debugging\DebugDraw.h"
+#include "EditorCommands.h"
 #include "GameObject.h"
 #include "MainEditorWindow.h"
 #include "Rendering\RenderManager.h"
@@ -12,7 +13,7 @@
 
 SceneViewWidget::SceneViewWidget(MainEditorWindow* window, QWidget* parent)
 : m_window(window), GLWidget(parent), m_hasFocus(false), m_showGrid(true), m_scene(NULL),
-  m_cameraPitch(0), m_cameraYaw(0)
+  m_cameraPitch(0), m_cameraYaw(0), m_activeTool(NULL)
 {
     ClearMouseButtonState();
 }
@@ -41,14 +42,13 @@ void SceneViewWidget::PostSetup()
     m_gridColor = ColourRGB(0.5f, 0.5f, 0.5f);
 
     DebugDraw::Singleton().PrepareLineBuffer(m_gridLinesVertexBuffer, GRID_BUFFER_SIZE, m_gridVAO, m_gridVBO);
-    m_transformTool.Init();
+    m_transformTool.Init(this);
 }
 
 void SceneViewWidget::SetScene(Scene* scene)
 {
     m_scene = scene;
 }
-
 
 void SceneViewWidget::update()
 {
@@ -99,6 +99,11 @@ void SceneViewWidget::mouseMoveEvent(QMouseEvent* event)
     }
 
     m_prevMousePos = pos;
+
+    if (m_activeTool != NULL)
+    {
+        m_activeTool->OnMouseMove(pos.x(), pos.y());
+    }
 }
 
 void SceneViewWidget::mouseReleaseEvent(QMouseEvent* event)
@@ -107,6 +112,14 @@ void SceneViewWidget::mouseReleaseEvent(QMouseEvent* event)
     if (button < NUM_MOUSE_BUTTONS)
     {
         m_mousePressed[button] = false;
+    }
+
+    if (button == OBJECT_SELECT_BUTTON)
+    {
+        if (m_activeTool != NULL)
+        {
+            m_activeTool->OnMouseUp();
+        }
     }
 }
 
@@ -141,6 +154,18 @@ void SceneViewWidget::focusOutEvent(QFocusEvent* event)
     m_hasFocus = false;
     ClearMouseButtonState();
     m_keyStates.clear();
+    if (m_activeTool)
+    {
+        m_activeTool->OnMouseUp();
+    }
+}
+
+void SceneViewWidget::MoveSelectedObject(Vector3 offset)
+{
+    // TODO implement me!
+    Vector3 curPos = m_window->GetSelectedObject()->GetLocalTransform().GetPosition();
+    Vector3 newPos = curPos + offset;
+    m_window->UpdateGameObjectTransform(newPos, eVector_Position);
 }
 
 void SceneViewWidget::TranslateCamera(Vector3 localSpaceOffset)
@@ -222,7 +247,7 @@ void SceneViewWidget::HandleSelectionClick(const QPointF clickPosition)
     Vector3 rayOriginWorldSpace = -1 * cameraPositionWorldSpace.xyz(); // TODO multiply by -1 is a hack, need to fix camera/view setup properly
 
     // First, check whether the click hit any of the tools
-    bool hitTool = PickTool(rayOriginWorldSpace, rayDirectionWorldSpace);
+    bool hitTool = PickTool(clickPosition, rayOriginWorldSpace, rayDirectionWorldSpace);
 
     // If not, check whether the click hit any gameobjects
     if (!hitTool)
@@ -231,9 +256,14 @@ void SceneViewWidget::HandleSelectionClick(const QPointF clickPosition)
     }
 }
 
-bool SceneViewWidget::PickTool(Vector3 rayOrigin, Vector3 rayDirection)
+bool SceneViewWidget::PickTool(const QPointF clickPosition, Vector3 rayOrigin, Vector3 rayDirection)
 {
-    return m_transformTool.OnClick(rayOrigin, rayDirection);
+    if (m_transformTool.OnMouseDown(clickPosition.x(), clickPosition.y(), rayOrigin, rayDirection))
+    {
+        m_activeTool = &m_transformTool;
+        return true;
+    }
+    return false;
 }
 
 bool SceneViewWidget::PickObject(Vector3 rayOrigin, Vector3 rayDirection)

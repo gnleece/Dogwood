@@ -15,6 +15,10 @@ public:
     Point3(float x, float y, float z);
     Point3& operator =(const Point3 other);
 
+    float x();
+    float y();
+    float z();
+
 private:
     float m_values[3];
 };
@@ -32,11 +36,17 @@ public:
     float operator[](int i) const;
     float* Start();
 
+    float x();
+    float y();
+
     void DebugPrint();
 
 private:
     float m_values[2];
 };
+
+Vector2 operator +(const Vector2& a, const Vector2& b);
+Vector2 operator -(const Vector2& a, const Vector2& b);
 
 class Vector3
 {
@@ -50,6 +60,10 @@ public:
     float& operator[](int i);
     float operator[](int i) const;
     float* Start();
+
+    float x();
+    float y();
+    float z();
 
     float MagnitudeSqrd() const;
     float Magnitude() const;
@@ -89,6 +103,11 @@ public:
     float& operator[](int i);
     float operator[](int i) const;
     Vector3 xyz();
+
+    float x();
+    float y();
+    float z();
+    float w();
 
     void DebugPrint();
 
@@ -138,3 +157,5 @@ Vector4 operator *(const Vector4& v, const Matrix4x4& m);
 
 float DegreesToRadians(float degrees);
 float RadiansToDegrees(float radians);
+
+float Clamp(float value, float min, float max);

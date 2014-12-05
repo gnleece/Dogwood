@@ -112,3 +112,8 @@ Transform operator *(Transform& a, Transform& b)
     ret.SetMatrix(a.GetMatrix() * b.GetMatrix());
     return ret;
 }
+
+Vector4 operator *(Transform& m, Vector4& v)
+{
+    return m.GetMatrix() * v;
+}

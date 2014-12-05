@@ -6,6 +6,7 @@
 #include "GLWidget.h"
 #include "Math\Algebra.h"
 #include "Rendering\Colour.h"
+#include "Tools\BaseSceneTool.h"
 #include "Tools\TransformTool.h"
 #include <unordered_map>
 
@@ -43,6 +44,8 @@ public:
     void focusInEvent(QFocusEvent * event);
     void focusOutEvent(QFocusEvent * event);
 
+    void MoveSelectedObject(Vector3 offset);
+
 private:
     const float CAMERA_ROTATE_AMOUNT = 0.07f;
     const float CAMERA_PAN_AMOUNT = 0.006f;
@@ -63,7 +66,7 @@ private:
     void ClearMouseButtonState();
 
     void HandleSelectionClick(const QPointF clickPosition);
-    bool PickTool(Vector3 rayOrigin, Vector3 rayDirection);
+    bool PickTool(const QPointF clickPosition, Vector3 rayOrigin, Vector3 rayDirection);
     bool PickObject(Vector3 rayOrigin, Vector3 rayDirection);
 
     static eMouseButton QtMouseButtonConvert(Qt::MouseButton qtButton);
@@ -71,17 +74,20 @@ private:
     MainEditorWindow*           m_window;
     Scene*                      m_scene;
 
+    // Mouse/keyboard state
     bool                        m_hasFocus;
     bool                        m_mousePressed[NUM_MOUSE_BUTTONS];
-    
     unordered_map<int, bool>    m_keyStates;
     QPoint                      m_prevMousePos;
 
+    // Camera state
     float                       m_cameraPitch;
     float                       m_cameraYaw;
     Vector3                     m_cameraOffset;
 
+    // Tools
     TransformTool               m_transformTool;
+    BaseSceneTool*              m_activeTool;
 
     // Unit grid (x-z plane)
     bool                        m_showGrid;

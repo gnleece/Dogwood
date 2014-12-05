@@ -157,6 +157,7 @@
     <ClInclude Include="Include\CommandManager.h" />
     <ClInclude Include="Include\DebugLogger.h" />
     <ClInclude Include="Include\EditorCommands.h" />
+    <ClInclude Include="Include\Tools\BaseSceneTool.h" />
     <ClInclude Include="Include\Tools\TransformTool.h" />
     <CustomBuild Include="Include\Widgets\ScrollWidget.h">
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing ScrollWidget.h...</Message>
@@ -300,6 +301,7 @@
     <ClCompile Include="Src\HierarchyModel.cpp" />
     <ClCompile Include="Src\main.cpp" />
     <ClCompile Include="Src\MainEditorWindow.cpp" />
+    <ClCompile Include="Src\Tools\BaseSceneTool.cpp" />
     <ClCompile Include="Src\Tools\TransformTool.cpp" />
     <ClCompile Include="Src\Widgets\ScrollWidget.cpp" />
     <ClCompile Include="Src\Widgets\GLWidget.cpp" />

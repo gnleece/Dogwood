@@ -125,6 +125,18 @@ ShaderProgram* RenderManager::GetCommonShader(eCommonShader name)
     return NULL;
 }
 
+Vector2 RenderManager::ToScreenSpace(Vector3 worldPosition)
+{
+    // TODO the math for this doesn't seem quite right, debug it
+    Vector2 screenPos;
+    Vector4 pos = (Vector4(worldPosition, 1));
+    Vector3 normalizedPosition = ((m_projMatrix*m_viewMatrix)*pos).xyz();
+    float x = Clamp(normalizedPosition[0] / normalizedPosition[2], -1.f, 1.f);
+    float y = Clamp(normalizedPosition[1] / normalizedPosition[2], -1.f, 1.f);
+    screenPos[0] = (x + 1.0f) * m_config.width / 2.0f;
+    screenPos[1] = (1.0f - y) * m_config.height / 2.0f;
+    return screenPos;
+}
 
 void RenderManager::SetUniformMatrix(ShaderProgram* shader, ShaderProgram::eShaderParam param, Matrix4x4 & matrix)
 {

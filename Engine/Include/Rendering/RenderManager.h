@@ -62,6 +62,8 @@ public:
 
     ShaderProgram*  GetCommonShader(eCommonShader name);
 
+    Vector2         ToScreenSpace(Vector3 worldPosition);
+
 private:
     RenderManager(RenderManager const&);
     void operator=(RenderManager const&);

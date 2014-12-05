@@ -39,3 +39,4 @@ private:
 };
 
 Transform operator *(Transform& a, Transform& b);
+Vector4 operator *(Transform& m, Vector4& v);
