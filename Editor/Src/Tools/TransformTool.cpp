@@ -28,6 +28,11 @@ void TransformTool::Draw(Transform& transform)
     m_gnomon.Draw(m_transform.GetMatrix());
 }
 
+void TransformTool::SetLocalTransform(Transform& transform)
+{
+    m_localTransform = transform;
+}
+
 bool TransformTool::OnMouseDown(int screenX, int screenY, Vector3 rayOrigin, Vector3 rayDirection)
 {
     float arrowRadius = m_arrowHeight/2;
@@ -77,22 +82,21 @@ void TransformTool::OnMouseMove(int screenX, int screenY)
 
     if (m_active)
     {
-        float t = CalculateT(screenX, screenY);
         float scale = 0.1f;
-        if (t > m_prevT)
-        {
-            // positive motion
-            Vector3 offset = scale*m_arrowTransforms[m_activeAxis].GetPosition();
-            m_parent->MoveSelectedObject(offset);
-            DebugLogger::Singleton().Log("positive");
-        }
-        else
-        {
-            // negative motion
-            Vector3 offset = -1 * scale*m_arrowTransforms[m_activeAxis].GetPosition();
-            m_parent->MoveSelectedObject(offset);
-            DebugLogger::Singleton().Log("negative");
-        }
+
+        // Use t values to determine sign of motion
+        float t = CalculateT(screenX, screenY);
+        float direction = (t > m_prevT) ? 1 : -1;
+
+        // Use active axis to determine deterction of motion
+        Vector3 offset = direction*scale*m_arrowTransforms[m_activeAxis].GetPosition();
+
+        // Convert offset into object's local space
+        offset = (m_localTransform.GetMatrix()*Vector4(offset, 0)).xyz();
+
+        // Apply the offset
+        m_parent->MoveSelectedObject(offset);
+
         m_prevT = t;
     }
 }

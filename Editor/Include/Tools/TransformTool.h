@@ -10,6 +10,7 @@ class TransformTool : public BaseSceneTool
 public:
     virtual void    Init(SceneViewWidget* parent);
     virtual void    Draw(Transform& transform);
+    void            SetLocalTransform(Transform& transform);
 
     virtual bool    OnMouseDown(int screenX, int screenY, Vector3 rayOrigin, Vector3 rayDirection);
     virtual void    OnMouseMove(int screenX, int screenY);
@@ -19,6 +20,7 @@ private:
     float       CalculateT(float screenX, float screenY);
 
     Transform   m_transform;
+    Transform   m_localTransform;
     Gnomon      m_gnomon;
 
     float       m_arrowBase;
@@ -31,10 +33,5 @@ private:
     Vector2     m_activeAxisPoint1;
     float       m_a;
     float       m_c;
-
-    float m_prevT;
-
-
-
-
+    float       m_prevT;
 };

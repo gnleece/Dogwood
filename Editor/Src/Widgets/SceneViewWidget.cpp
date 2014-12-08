@@ -60,6 +60,7 @@ void SceneViewWidget::update()
     if (selectedObject)
     {
         m_transformTool.Draw(selectedObject->GetWorldTransform());
+        m_transformTool.SetLocalTransform(selectedObject->GetLocalTransform());
     }
 }
 
