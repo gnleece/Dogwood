@@ -16,6 +16,7 @@ class GameObject;
 class HierarchyModel;
 class GameObjectMimeData;
 class QTreeView;
+class TransformWidget;
 
 using std::string;
 
@@ -92,15 +93,16 @@ namespace EditorCommands
     class ModifyTransformCommand : public ICommand
     {
     public:
-        ModifyTransformCommand(HierarchyModel* model, QModelIndex index, Vector3 vector, VectorType type);
+        ModifyTransformCommand(HierarchyModel* model, QModelIndex index, Vector3 vector, VectorType type, TransformWidget* widget);
         void Execute();
         void Undo();
 
     private:
-        HierarchyModel* m_model;
-        VectorType      m_type;
-        Vector3         m_vector;
-        Vector3         m_previousVector;
-        GameObject*     m_gameObject;
+        HierarchyModel*     m_model;
+        VectorType          m_type;
+        Vector3             m_vector;
+        Vector3             m_previousVector;
+        GameObject*         m_gameObject;
+        TransformWidget*    m_widget;
     };
 }

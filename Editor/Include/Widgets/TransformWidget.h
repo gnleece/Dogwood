@@ -20,6 +20,7 @@ public:
     TransformWidget(QWidget* parent = 0, MainEditorWindow* window = 0);
 
     void SetGameObject(GameObject* gameObject);
+    void Refresh();
 
 public slots:
     void UpdatePosition(Vector3& position);

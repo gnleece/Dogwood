@@ -34,6 +34,11 @@ TransformWidget::TransformWidget(QWidget* parent, MainEditorWindow* window)
 void TransformWidget::SetGameObject(GameObject* gameObject)
 {
     m_gameObject = gameObject;
+    Refresh();
+}
+
+void TransformWidget::Refresh()
+{
     if (m_gameObject != NULL)
     {
         // Display the position, rotation, and scale values of this game object

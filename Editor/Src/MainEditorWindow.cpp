@@ -311,7 +311,7 @@ void MainEditorWindow::UpdateGameObjectTransform(Vector3 vector, VectorType type
     {
         // TODO handle multi select?
         QModelIndex index = m_view->selectionModel()->selectedIndexes().first();
-        ModifyTransformCommand* command = new ModifyTransformCommand(m_model, index, vector, type);
+        ModifyTransformCommand* command = new ModifyTransformCommand(m_model, index, vector, type, m_transformWidget);
         CommandManager::Singleton().ExecuteCommand(command);
     }
 }

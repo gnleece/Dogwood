@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "GameObjectMimeData.h"
 #include "HierarchyModel.h"
+#include "Widgets\TransformWidget.h"
 
 #include <QtWidgets>
 
@@ -138,12 +139,13 @@ namespace EditorCommands
 
     //-----------------------------------------------------------------------------------------------
 
-    ModifyTransformCommand::ModifyTransformCommand(HierarchyModel* model, QModelIndex index, Vector3 vector, VectorType type)
+    ModifyTransformCommand::ModifyTransformCommand(HierarchyModel* model, QModelIndex index, Vector3 vector, VectorType type, TransformWidget* widget)
     {
         m_model = model;
         m_gameObject = (GameObject*)index.internalPointer();
         m_vector = vector;
         m_type = type;
+        m_widget = widget;
     }
 
     void ModifyTransformCommand::Execute()
@@ -165,6 +167,11 @@ namespace EditorCommands
                 m_gameObject->GetLocalTransform().SetScale(m_vector);
                 break;
             }
+
+            if (m_widget != NULL)
+            {
+                m_widget->Refresh();
+            }
         }
     }
 
@@ -183,6 +190,11 @@ namespace EditorCommands
             case eVector_Scale:
                 m_gameObject->GetLocalTransform().SetScale(m_previousVector);
                 break;
+            }
+
+            if (m_widget != NULL)
+            {
+                m_widget->Refresh();
             }
         }
     }
