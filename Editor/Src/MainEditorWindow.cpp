@@ -231,7 +231,7 @@ void MainEditorWindow::CreateGameObject()
 {
     DebugLogger::Singleton().Log("Creating game object");
 
-    QModelIndex index = m_view->selectionModel()->currentIndex();
+    QModelIndex index = m_view->selectionModel()->selectedIndexes().first();
     CreateGameObjectCommand* command = new CreateGameObjectCommand(m_model, m_view, index);
     CommandManager::Singleton().ExecuteCommand(command);
 }
@@ -240,53 +240,59 @@ void MainEditorWindow::DeleteGameObject()
 {
     DebugLogger::Singleton().Log("Deleting game object");
 
-    QModelIndex index = m_view->selectionModel()->currentIndex();
+    QModelIndex index = m_view->selectionModel()->selectedIndexes().first();
     DeleteGameObjectCommand* command = new DeleteGameObjectCommand(m_model, m_view, index);
     CommandManager::Singleton().ExecuteCommand(command);
 }
 
 void MainEditorWindow::CopyGameObject()
 {
-    QModelIndex index = m_view->selectionModel()->currentIndex();
-
-    m_copiedGameObject = index.isValid() ? m_model->getItem(index) : NULL;
-
-    if (m_copiedGameObject != NULL)
+    if (!(m_view->selectionModel()->selectedIndexes().isEmpty()))
     {
-        DebugLogger::Singleton().Log("Copied game object");
-    }
-    else
-    {
-        DebugLogger::Singleton().Log("Tried to copy game object but selection was invalid.");
+        QModelIndex index = m_view->selectionModel()->selectedIndexes().first();
+
+        m_copiedGameObject = index.isValid() ? m_model->getItem(index) : NULL;
+
+        if (m_copiedGameObject != NULL)
+        {
+            DebugLogger::Singleton().Log("Copied game object");
+        }
+        else
+        {
+            DebugLogger::Singleton().Log("Tried to copy game object but selection was invalid.");
+        }
     }
 }
 
 void MainEditorWindow::CutGameObject()
 {
-    QModelIndex index = m_view->selectionModel()->currentIndex();
-
-    m_copiedGameObject = index.isValid() ? m_model->getItem(index) : NULL;
-
-    if (m_copiedGameObject != NULL)
+    if (!(m_view->selectionModel()->selectedIndexes().isEmpty()))
     {
-        DebugLogger::Singleton().Log("Cutting game object");
+        QModelIndex index = m_view->selectionModel()->selectedIndexes().first();
 
-        DeleteGameObjectCommand* command = new DeleteGameObjectCommand(m_model, m_view, index);
-        CommandManager::Singleton().ExecuteCommand(command);
-    }
-    else
-    {
-        DebugLogger::Singleton().Log("Tried to cut object but selection was invalid.");
+        m_copiedGameObject = index.isValid() ? m_model->getItem(index) : NULL;
+
+        if (m_copiedGameObject != NULL)
+        {
+            DebugLogger::Singleton().Log("Cutting game object");
+
+            DeleteGameObjectCommand* command = new DeleteGameObjectCommand(m_model, m_view, index);
+            CommandManager::Singleton().ExecuteCommand(command);
+        }
+        else
+        {
+            DebugLogger::Singleton().Log("Tried to cut object but selection was invalid.");
+        }
     }
 }
 
 void MainEditorWindow::PasteGameObject()
 {
-    if (m_copiedGameObject != NULL)
+    if (m_copiedGameObject != NULL && !(m_view->selectionModel()->selectedIndexes().isEmpty()))
     {
         DebugLogger::Singleton().Log("Pasting game object");
 
-        QModelIndex index = m_view->selectionModel()->currentIndex();
+        QModelIndex index = m_view->selectionModel()->selectedIndexes().first();
         PasteGameObjectCommand* command = new PasteGameObjectCommand(m_model, m_view, index, m_copiedGameObject);
         CommandManager::Singleton().ExecuteCommand(command);
     }
@@ -301,39 +307,45 @@ void MainEditorWindow::UpdateGameObjectTransform(Vector3 vector, VectorType type
 {
     DebugLogger::Singleton().Log("Updating gameobject transform");
 
-    QModelIndex index = m_view->selectionModel()->currentIndex();
-    ModifyTransformCommand* command = new ModifyTransformCommand(m_model, index, vector, type);
-    CommandManager::Singleton().ExecuteCommand(command);
+    if (!m_view->selectionModel()->selectedIndexes().isEmpty())
+    {
+        // TODO handle multi select?
+        QModelIndex index = m_view->selectionModel()->selectedIndexes().first();
+        ModifyTransformCommand* command = new ModifyTransformCommand(m_model, index, vector, type);
+        CommandManager::Singleton().ExecuteCommand(command);
+    }
 }
 
 void MainEditorWindow::SelectObject(GameObject* gameObject)
 {
-    // Search the model for the given game object
-    QModelIndexList Items = m_model->match(
-        m_model->index(0, 0),                       // start
-        HierarchyModel::MatchRole,                  // role
-        QVariant::fromValue(gameObject->GetID()),   // value
-        1,                                          // hits
-        Qt::MatchRecursive);                        // flags
-
     // Clear previous selection
     m_view->selectionModel()->clearSelection();
 
-    // Select new object in hierarchy view
-    m_view->selectionModel()->select(Items.first(), QItemSelectionModel::Select);
+    // Search the model for the given game object
+    if (gameObject)
+    {
+        QModelIndexList Items = m_model->match(
+            m_model->index(0, 0),                       // start
+            HierarchyModel::MatchRole,                  // role
+            QVariant::fromValue(gameObject->GetID()),   // value
+            1,                                          // hits
+            Qt::MatchRecursive);                        // flags
 
-    SwitchSelectObject(gameObject);
+        // Select new object in hierarchy view
+        m_view->selectionModel()->select(Items.first(), QItemSelectionModel::Select);
+    }
 }
 
 void MainEditorWindow::OnSelectionChanged(const QItemSelection & selected, const QItemSelection & deselected)
 {
-    // TODO enforce selection of only one object at a time?
-
     // Get the selected game object
-    const QModelIndex index = m_view->selectionModel()->currentIndex();
-    GameObject* gameObject = m_model->getItem(index);
+    if (!(m_view->selectionModel()->selectedIndexes().isEmpty()))
+    {
+        const QModelIndex index = selected.indexes().first();
+        GameObject* gameObject = m_model->getItem(index);
 
-    SwitchSelectObject(gameObject);
+        SwitchSelectObject(gameObject);
+    }
 }
 
 void MainEditorWindow::SwitchSelectObject(GameObject* gameobject)

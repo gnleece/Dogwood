@@ -162,7 +162,6 @@ void SceneViewWidget::focusOutEvent(QFocusEvent* event)
 
 void SceneViewWidget::MoveSelectedObject(Vector3 offset)
 {
-    // TODO implement me!
     Vector3 curPos = m_window->GetSelectedObject()->GetLocalTransform().GetPosition();
     Vector3 newPos = curPos + offset;
     m_window->UpdateGameObjectTransform(newPos, eVector_Position);
@@ -276,6 +275,7 @@ bool SceneViewWidget::PickObject(Vector3 rayOrigin, Vector3 rayDirection)
         m_window->SelectObject(hitObject);
         return true;
     }
+    m_window->SelectObject(NULL);
     return false;
 }
 

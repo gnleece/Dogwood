@@ -74,8 +74,11 @@ EDITOR (Thicket)
         - Camera "up" is wrong / LookAt bug
         - Root is not handled properly
         - Clear window state on scene load
-        - Editing transform after selecting by picking doesn't work
         - Fix camera jump on first move after scene load
+        - Transform tool "up" can have division by 0
+        - Transform tool moves along wrong space axes
+        - Moving object with transform tool adds new undo command every frame
+        - Fully clear selection on null click
 
 ---------------------------------------------------------------------------
 
