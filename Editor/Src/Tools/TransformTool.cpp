@@ -32,7 +32,7 @@ bool TransformTool::OnMouseDown(int screenX, int screenY, Vector3 rayOrigin, Vec
 {
     float arrowRadius = m_arrowHeight/2;
 
-    // Raycast against each arrow of the gnomon
+    // Raycast against each arrow of the gnomon to determine if one was clicked
     float minDistance = FLT_MAX;
     int arrowIndex = -1;
     for (int i = 0; i < 3; i++)
@@ -49,23 +49,18 @@ bool TransformTool::OnMouseDown(int screenX, int screenY, Vector3 rayOrigin, Vec
 
     if (arrowIndex != -1)
     {
+        // Activate the selected arrow
         DebugLogger::Singleton().Log("Transform Tool ON");
-        m_active = true;
         m_activeAxis = (eAXIS)arrowIndex;
 
-        m_point0 = RenderManager::Singleton().ToScreenSpace(m_transform.GetPosition());
-        m_point1 = RenderManager::Singleton().ToScreenSpace((m_transform*m_arrowTransforms[m_activeAxis]).GetPosition());
+        // Calculate the equation of the line for the active axis, in screen space
+        m_activeAxisPoint0 = RenderManager::Singleton().ToScreenSpace(m_transform.GetPosition());
+        m_activeAxisPoint1 = RenderManager::Singleton().ToScreenSpace((m_transform*m_arrowTransforms[m_activeAxis]).GetPosition());
+        m_a = (m_activeAxisPoint1.y() - m_activeAxisPoint0.y()) / (m_activeAxisPoint1.x() - m_activeAxisPoint0.x());
+        m_c = m_activeAxisPoint0.y() - m_a*m_activeAxisPoint0.x();
+        m_prevT = CalculateT(screenX, screenY);
 
-        float a = (m_point1.y() - m_point0.y()) / (m_point1.x() - m_point0.x());
-        float b = -1;
-        float c = m_point0.y() - a*m_point0.x();
-
-        // Find the closet point on the screen space line to the mouse click position
-        m_prevLineX = (screenX + a*screenY - a*c) / (a*a + 1);
-        m_prevLineY = (a*(screenX + a*screenY) + c) / (a*a + 1);
-        Vector2 A = Vector2(m_prevLineX, m_prevLineY) - m_point0;
-        Vector2 B = m_point1 - m_point0;
-        float t = A.x() / B.x();
+        m_active = true;
         return true;
     }
 
@@ -75,38 +70,29 @@ bool TransformTool::OnMouseDown(int screenX, int screenY, Vector3 rayOrigin, Vec
 
 void TransformTool::OnMouseMove(int screenX, int screenY)
 {
+    // The line of the active axis is represented as a parametic line equation in screen space.
+    // We find the point on the line that's closest to the current click position, and calculte
+    // its t value. If it's greater than the previous t value, the mouse has been dragged "forward"
+    // relative to the axis line, so we move the tool forward (and vice versa if the t value is less)
+
     if (m_active)
     {
-        // Convert active axis line from world space to screen space
-        float a = (float)(m_point1.y() - m_point0.y()) / (float)(m_point1.x() - m_point0.x());
-        float b = -1;
-        float c = m_point0.y() - a*m_point0.x();
-
-        // Find the closet point on the screen space line to the mouse click position
-        float x = (screenX + a*screenY - a*c) / (a*a + 1);
-        float y = (a*(screenX + a*screenY) + c) / (a*a + 1);
-
-
-        // Use the delta to adjust the select object position
-        Vector3 offset;
+        float t = CalculateT(screenX, screenY);
         float scale = 0.1f;
-        Vector2 A = Vector2(x, y) - m_point0;
-        Vector2 B = m_point1 - m_point0;
-        float t = A.x() / B.x();
         if (t > m_prevT)
         {
             // positive motion
-            offset = scale*m_arrowTransforms[m_activeAxis].GetPosition();
+            Vector3 offset = scale*m_arrowTransforms[m_activeAxis].GetPosition();
+            m_parent->MoveSelectedObject(offset);
             DebugLogger::Singleton().Log("positive");
         }
         else
         {
             // negative motion
-            offset = -1*scale*m_arrowTransforms[m_activeAxis].GetPosition();
+            Vector3 offset = -1 * scale*m_arrowTransforms[m_activeAxis].GetPosition();
+            m_parent->MoveSelectedObject(offset);
             DebugLogger::Singleton().Log("negative");
         }
-        m_parent->MoveSelectedObject(offset);
-
         m_prevT = t;
     }
 }
@@ -118,4 +104,17 @@ void TransformTool::OnMouseUp()
         DebugLogger::Singleton().Log("Transform Tool OFF");
     }
     m_active = false;
+}
+
+float TransformTool::CalculateT(float screenX, float screenY)
+{
+    // Find the point on the active axis line that's closet to the mouse click position,
+    // and return the t value of that point
+    float x = (screenX + m_a*screenY - m_a*m_c) / (m_a*m_a + 1);
+    float y = (m_a*(screenX + m_a*screenY) + m_c) / (m_a*m_a + 1);
+    Vector2 A = Vector2(x, y) - m_activeAxisPoint0;
+    Vector2 B = m_activeAxisPoint1 - m_activeAxisPoint0;        // TODO check for division by zero
+    float t = A.x() / B.x();
+
+    return t;
 }

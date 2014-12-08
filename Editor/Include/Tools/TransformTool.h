@@ -16,6 +16,8 @@ public:
     virtual void    OnMouseUp();
 
 private:
+    float       CalculateT(float screenX, float screenY);
+
     Transform   m_transform;
     Gnomon      m_gnomon;
 
@@ -23,12 +25,16 @@ private:
     float       m_arrowHeight;
     Transform   m_arrowTransforms[3];
 
-    float       m_prevLineX;
-    float       m_prevLineY;
+    eAXIS       m_activeAxis;
+
+    Vector2     m_activeAxisPoint0;
+    Vector2     m_activeAxisPoint1;
+    float       m_a;
+    float       m_c;
+
     float m_prevT;
 
-    Vector2     m_point0;
-    Vector2     m_point1;
 
-    eAXIS       m_activeAxis;
+
+
 };
