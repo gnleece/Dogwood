@@ -75,8 +75,8 @@ EDITOR (Thicket)
         - Camera "up" is wrong / LookAt bug
         - Root is not handled properly
         - Clear window state on scene load
-        - Fix camera jump on first move after scene load
         - Keep constant gnomon size
+        - App doesn't quit properly
 
 ---------------------------------------------------------------------------
 

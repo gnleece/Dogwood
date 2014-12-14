@@ -48,6 +48,7 @@ void SceneViewWidget::PostSetup()
 void SceneViewWidget::SetScene(Scene* scene)
 {
     m_scene = scene;
+    TranslateCamera(Vector3(0, -1, -5));
 }
 
 void SceneViewWidget::update()
