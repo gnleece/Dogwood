@@ -320,6 +320,11 @@ void MainEditorWindow::SelectObject(GameObject* gameObject)
 {
     // Clear previous selection
     m_view->selectionModel()->clearSelection();
+    if (m_selectedGameObject)
+    {
+        m_selectedGameObject->SetSelected(false);
+    }
+    m_selectedGameObject = NULL;
 
     // Search the model for the given game object
     if (gameObject)
@@ -339,13 +344,13 @@ void MainEditorWindow::SelectObject(GameObject* gameObject)
 void MainEditorWindow::OnSelectionChanged(const QItemSelection & selected, const QItemSelection & deselected)
 {
     // Get the selected game object
+    GameObject* selectedObject = NULL;
     if (!(m_view->selectionModel()->selectedIndexes().isEmpty()))
     {
         const QModelIndex index = selected.indexes().first();
-        GameObject* gameObject = m_model->getItem(index);
-
-        SwitchSelectObject(gameObject);
+        selectedObject = m_model->getItem(index);
     }
+    SwitchSelectObject(selectedObject);
 }
 
 void MainEditorWindow::SwitchSelectObject(GameObject* gameobject)
