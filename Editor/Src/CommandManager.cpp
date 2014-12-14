@@ -7,7 +7,7 @@ void CommandManager::ExecuteCommand(ICommand* command)
     
     // Execute the command!
     command->Execute();
-    m_commandStack.push_back(command);
+    PushCommand(command);
 
     // Don't let stack grow indefinitely. Throw away oldest command if stack is too large
     if (m_commandStack.size() > MAX_STACK_SIZE)
@@ -62,4 +62,23 @@ bool CommandManager::CanUndo()
 bool CommandManager::CanRedo()
 {
     return m_undoStack.size() > 0;
+}
+
+void CommandManager::PushCommand(ICommand* command)
+{
+    // Check whether this command can be collapsed into the command that
+    // is currently on the top of the stack
+    if (CanUndo())
+    {
+        ICommand* top = m_commandStack.back();
+        if (top->Collapse(command))
+        {
+            // We successfully collapsed the new command into the top command,
+            // so we don't need to add it to the stack
+            return;
+        }
+    }
+
+    // We couldn't collapse the command, so push it onto the stack
+    m_commandStack.push_back(command);
 }

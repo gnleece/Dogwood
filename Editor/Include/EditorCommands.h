@@ -3,13 +3,14 @@
 ///////////////////////////////////////////////////////////////////////
 // Each command is a class that implements ICommand, so that it can 
 // be managed by the CommandManager (an undo/redo stack). Any action
-// that manipulatse the game object hierarchy in any way should be
+// that manipulates the game object hierarchy in any way should be
 // implemented as a command in this way so that it can be undone/redone.
 ///////////////////////////////////////////////////////////////////////
 
 #include "CommandManager.h"
 #include "Math\Algebra.h"
 #include <qabstractitemmodel.h>
+#include <QTime>
 #include <string>
 
 class GameObject;
@@ -96,6 +97,7 @@ namespace EditorCommands
         ModifyTransformCommand(HierarchyModel* model, QModelIndex index, Vector3 vector, VectorType type, TransformWidget* widget);
         void Execute();
         void Undo();
+        bool Collapse(ICommand* command);
 
     private:
         HierarchyModel*     m_model;
@@ -104,5 +106,8 @@ namespace EditorCommands
         Vector3             m_previousVector;
         GameObject*         m_gameObject;
         TransformWidget*    m_widget;
+        QTime               m_timestamp;
+
+        const int           MaxCollapseTimeDelta = 100;
     };
 }

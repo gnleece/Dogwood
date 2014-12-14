@@ -305,8 +305,6 @@ void MainEditorWindow::PasteGameObject()
 // TODO: discard trivial updates that don't actually modify values
 void MainEditorWindow::UpdateGameObjectTransform(Vector3 vector, VectorType type)
 {
-    DebugLogger::Singleton().Log("Updating gameobject transform");
-
     if (!m_view->selectionModel()->selectedIndexes().isEmpty())
     {
         // TODO handle multi select?

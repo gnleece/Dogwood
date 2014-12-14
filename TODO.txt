@@ -27,6 +27,7 @@ ENGINE (Dogwood)
         * Tweakables?
 
     * Fix-up stuff
+        * Memory leaks everywhere! Lots of missing "deletes"
         * Colour -> Color everywhere for consistency
         * Rewrite matrix inversion. Currently just copied from CS488 provided code
         * Add missing matrix maths (e.g. addition)
@@ -76,8 +77,6 @@ EDITOR (Thicket)
         - Clear window state on scene load
         - Fix camera jump on first move after scene load
         - Transform tool "up" can have division by 0
-        - Moving object with transform tool adds new undo command every frame
-        - Fully clear selection on null click
         - Keep constant gnomon size
 
 ---------------------------------------------------------------------------

@@ -10,6 +10,8 @@ public:
     virtual void Execute() = 0;
     virtual void Undo() = 0;
 
+    virtual bool Collapse(ICommand* command) { return false; }
+
     // TODO proper delete!
 };
 
@@ -33,6 +35,8 @@ public:
     bool CanRedo();
 
 private:
+    void PushCommand(ICommand* command);
+
     deque<ICommand*> m_commandStack;    // this is a deque instead of just a stack so that we
                                         // can remove items at the front if there are too many items
                                         // (we don't want the command stack to grow indefinitely)

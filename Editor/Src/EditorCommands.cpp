@@ -146,6 +146,7 @@ namespace EditorCommands
         m_vector = vector;
         m_type = type;
         m_widget = widget;
+        m_timestamp = QTime::currentTime();
     }
 
     void ModifyTransformCommand::Execute()
@@ -197,5 +198,32 @@ namespace EditorCommands
                 m_widget->Refresh();
             }
         }
+    }
+
+    bool ModifyTransformCommand::Collapse(ICommand* command)
+    {
+        // Check whether the new command is actually a ModifyTransformCommand
+        ModifyTransformCommand* transformCommand = dynamic_cast<ModifyTransformCommand*> (command);
+        if (transformCommand == NULL)
+            return false;
+
+        // Check whether the new command is the same type
+        if (transformCommand->m_type != m_type)
+            return false;
+
+        // Check whether the command applies to the same gameobject
+        if (transformCommand->m_gameObject != m_gameObject)
+            return false;
+
+        // Check whether the timestamps are close enough
+        QTime currentTime = QTime::currentTime();
+        int deltaTime = m_timestamp.msecsTo(transformCommand->m_timestamp);
+        if (deltaTime > MaxCollapseTimeDelta)
+            return false;
+
+        // Success! Collapse the new command into this one
+        m_vector = transformCommand->m_vector;
+        m_timestamp = transformCommand->m_timestamp;
+        return true;
     }
 }
