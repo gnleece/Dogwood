@@ -76,7 +76,6 @@ EDITOR (Thicket)
         - Root is not handled properly
         - Clear window state on scene load
         - Fix camera jump on first move after scene load
-        - Transform tool "up" can have division by 0
         - Keep constant gnomon size
 
 ---------------------------------------------------------------------------

@@ -31,6 +31,7 @@ private:
 
     Vector2     m_activeAxisPoint0;
     Vector2     m_activeAxisPoint1;
+    bool        m_vertical;
     float       m_a;
     float       m_c;
     float       m_prevT;

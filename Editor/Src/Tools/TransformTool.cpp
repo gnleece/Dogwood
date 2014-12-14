@@ -61,7 +61,13 @@ bool TransformTool::OnMouseDown(int screenX, int screenY, Vector3 rayOrigin, Vec
         // Calculate the equation of the line for the active axis, in screen space
         m_activeAxisPoint0 = RenderManager::Singleton().ToScreenSpace(m_transform.GetPosition());
         m_activeAxisPoint1 = RenderManager::Singleton().ToScreenSpace((m_transform*m_arrowTransforms[m_activeAxis]).GetPosition());
-        m_a = (m_activeAxisPoint1.y() - m_activeAxisPoint0.y()) / (m_activeAxisPoint1.x() - m_activeAxisPoint0.x());
+        m_vertical = true;
+        if (m_activeAxisPoint1.x() - m_activeAxisPoint0.x() != 0)
+        {
+            // x-delta is non-zero, so the line is not vertical
+            m_a = (m_activeAxisPoint1.y() - m_activeAxisPoint0.y()) / (m_activeAxisPoint1.x() - m_activeAxisPoint0.x());
+            m_vertical = false;
+        }
         m_c = m_activeAxisPoint0.y() - m_a*m_activeAxisPoint0.x();
         m_prevT = CalculateT(screenX, screenY);
 
@@ -114,11 +120,21 @@ float TransformTool::CalculateT(float screenX, float screenY)
 {
     // Find the point on the active axis line that's closet to the mouse click position,
     // and return the t value of that point
-    float x = (screenX + m_a*screenY - m_a*m_c) / (m_a*m_a + 1);
-    float y = (m_a*(screenX + m_a*screenY) + m_c) / (m_a*m_a + 1);
-    Vector2 A = Vector2(x, y) - m_activeAxisPoint0;
-    Vector2 B = m_activeAxisPoint1 - m_activeAxisPoint0;        // TODO check for division by zero
-    float t = A.x() / B.x();
+    float t = 0;
+    if (m_vertical)
+    {
+        float A = screenY - m_activeAxisPoint0.y();
+        float B = m_activeAxisPoint1.y() - m_activeAxisPoint0.y();  // guaranteed non-zero since line is vertical
+        t = A / B;
+    }
+    else
+    {
+        float x = (screenX + m_a*screenY - m_a*m_c) / (m_a*m_a + 1);
+        float y = (m_a*(screenX + m_a*screenY) + m_c) / (m_a*m_a + 1);
+        Vector2 A = Vector2(x, y) - m_activeAxisPoint0;
+        Vector2 B = m_activeAxisPoint1 - m_activeAxisPoint0;
+        t = A.x() / B.x();        // B.x is guaranteed non-zero in this case (i.e. non-vertical line => non-zero x delta)
+    }
 
     return t;
 }

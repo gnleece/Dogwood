@@ -302,7 +302,6 @@ void MainEditorWindow::PasteGameObject()
     }
 }
 
-// TODO: discard trivial updates that don't actually modify values
 void MainEditorWindow::UpdateGameObjectTransform(Vector3 vector, VectorType type)
 {
     if (!m_view->selectionModel()->selectedIndexes().isEmpty())
