@@ -107,7 +107,7 @@ void TransformTool::OnMouseMove(int screenX, int screenY)
         switch (m_mode)
         {
             case TOOL_MODE_TRANSLATE:   ApplyTranslation(direction, scale); break;
-            case TOOL_MODE_ROTATE:      ApplyRotation();                    break;
+            case TOOL_MODE_ROTATE:      ApplyRotation(direction, scale);    break;
             case TOOL_MODE_SCALE:       ApplyScale(direction, scale);       break;
         }
 
@@ -155,10 +155,10 @@ void TransformTool::ApplyTranslation(float direction, float scale)
     m_parent->TranslateSelectedObject(offset);
 }
 
-void TransformTool::ApplyRotation()
+void TransformTool::ApplyRotation(float direction, float scale)
 {
-    // TODO implement me!
-    DebugLogger::Singleton().Log("OOPS! Rotation tool not implemented!");
+    float offset = direction*scale*5;
+    m_parent->RotateSelectedObject(offset, m_activeAxis);
 }
 
 void TransformTool::ApplyScale(float direction, float scale)

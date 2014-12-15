@@ -45,7 +45,7 @@ public:
     void focusOutEvent(QFocusEvent * event);
 
     void TranslateSelectedObject(Vector3 offset);
-    void RotateSelectedObject();
+    void RotateSelectedObject(float offset, eAXIS axis);
     void ScaleSelectedObject(float offset, eAXIS axis);
 
     void SetTransformToolMode(TransformTool::eMode mode);

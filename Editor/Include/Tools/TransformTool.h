@@ -24,7 +24,7 @@ public:
 private:
     float       CalculateT(float screenX, float screenY);
     void        ApplyTranslation(float direction, float scale);
-    void        ApplyRotation();
+    void        ApplyRotation(float direction, float scale);
     void        ApplyScale(float direction, float scale);
 
     eMode        m_mode;

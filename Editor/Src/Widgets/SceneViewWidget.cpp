@@ -169,9 +169,11 @@ void SceneViewWidget::TranslateSelectedObject(Vector3 offset)
     m_window->UpdateGameObjectTransform(newPos, eVector_Position);
 }
 
-void SceneViewWidget::RotateSelectedObject()
+void SceneViewWidget::RotateSelectedObject(float offset, eAXIS axis)
 {
-    // TODO implement me
+    Vector3 curRot = m_window->GetSelectedObject()->GetLocalTransform().GetRotation();
+    curRot[axis] = curRot[axis] + offset;
+    m_window->UpdateGameObjectTransform(curRot, eVector_Rotation);
 }
 
 void SceneViewWidget::ScaleSelectedObject(float offset, eAXIS axis)

@@ -78,6 +78,7 @@ EDITOR (Thicket)
         - Clear window state on scene load
         - Keep constant gnomon size
         - Some scaling (non-uniform?) breaks object picking
+        - Rotation tool behaviour is non-intuitive
 
 ---------------------------------------------------------------------------
 
