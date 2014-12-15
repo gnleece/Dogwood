@@ -41,9 +41,14 @@ public:
 
     GameObject* GetSelectedObject();
 
+    bool        IsOpen();
+
     virtual void resizeEvent(QResizeEvent* resizeEvent);
+    virtual void closeEvent(QCloseEvent *event);
 
 private:
+    bool                    m_open;
+
     Ui::MainEditorWindow*   m_ui;
     SceneViewWidget*        m_sceneViewWidget;
     TransformWidget*        m_transformWidget;

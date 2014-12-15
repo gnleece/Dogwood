@@ -21,6 +21,7 @@ MainEditorWindow::MainEditorWindow(QWidget *parent)
 {
     // Window setup
     m_ui->setupUi(this);
+    m_open = true;
     setWindowTitle(tr("[DOGWOOD EDITOR]"));
 
     // Tree view setup
@@ -104,6 +105,11 @@ void MainEditorWindow::SetHierarchyModel(HierarchyModel* model)
 GameObject* MainEditorWindow::GetSelectedObject()
 {
     return m_selectedGameObject;
+}
+
+bool MainEditorWindow::IsOpen()
+{
+    return m_open;
 }
 
 // TODO: Qt textboxes seem to capture ctrl + z and do their own undo. stop that!
@@ -415,6 +421,11 @@ void MainEditorWindow::resizeEvent(QResizeEvent* resizeEvent)
     DebugLogger::Singleton().Log("Window resize!");
 
     //TODO: scale/reposition widgets
+}
+
+void MainEditorWindow::closeEvent(QCloseEvent *event)
+{
+    m_open = false;
 }
 
 void MainEditorWindow::UpdateMenuState()

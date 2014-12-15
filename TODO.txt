@@ -77,7 +77,6 @@ EDITOR (Thicket)
         - Root is not handled properly
         - Clear window state on scene load
         - Keep constant gnomon size
-        - App doesn't quit properly
         - Some scaling (non-uniform?) breaks object picking
 
 ---------------------------------------------------------------------------

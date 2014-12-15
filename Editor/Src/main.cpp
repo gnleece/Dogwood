@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
     // Event & render loop
     QTime lastUpdate;
     int updateTimeStep = 1000 / 60;
-    while (true)                        // TODO handle quit / close window
+    while (window.IsOpen())
     {
         app.processEvents();
         
