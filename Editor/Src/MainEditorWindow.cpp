@@ -6,6 +6,7 @@
 #include "ui_maineditorwindow.h"
 #include "Rendering\RenderManager.h"
 #include "Scene\Scene.h"
+#include "Tools\TransformTool.h"
 #include "Widgets\SceneViewWidget.h"
 #include "Widgets\ScrollWidget.h"
 #include "Widgets\TransformWidget.h"
@@ -27,7 +28,7 @@ MainEditorWindow::MainEditorWindow(QWidget *parent)
 
     // Scene view widget setup
     m_sceneViewWidget = new SceneViewWidget(this, this);
-    m_sceneViewWidget->setFixedSize(990, 630);
+    m_sceneViewWidget->setFixedSize(990, 610);      // TODO set this properly
     m_ui->verticalLayout->addWidget(m_sceneViewWidget);
 
     // Game object widget (components list)
@@ -61,7 +62,12 @@ MainEditorWindow::MainEditorWindow(QWidget *parent)
     connect(m_ui->actionPaste_Game_Object,  SIGNAL(triggered()), this, SLOT(PasteGameObject()));
 
     // Debug menu
-    connect(m_ui->actionOpen_Test_Project, SIGNAL(triggered()), this, SLOT(OpenTestProject()));
+    connect(m_ui->actionOpen_Test_Project,  SIGNAL(triggered()), this, SLOT(OpenTestProject()));
+
+    // Transform tool buttons
+    connect(m_ui->transformButton_Translate, SIGNAL(clicked()),  this, SLOT(TransformTranslateButton()));
+    connect(m_ui->transformButton_Rotate,    SIGNAL(clicked()),  this, SLOT(TransformRotateButton()));
+    connect(m_ui->transformButton_Scale,     SIGNAL(clicked()),  this, SLOT(TransformScaleButton()));
 
     showMaximized();
 }
@@ -300,6 +306,30 @@ void MainEditorWindow::PasteGameObject()
     {
         DebugLogger::Singleton().Log("Tried to paste but there was no copied object.");
     }
+}
+
+void MainEditorWindow::TransformTranslateButton()
+{
+    m_sceneViewWidget->SetTransformToolMode(TransformTool::eMode::TOOL_MODE_TRANSLATE);
+    m_ui->transformButton_Translate->setChecked(true);
+    m_ui->transformButton_Rotate->setChecked(false);
+    m_ui->transformButton_Scale->setChecked(false);
+}
+
+void MainEditorWindow::TransformRotateButton()
+{
+    m_sceneViewWidget->SetTransformToolMode(TransformTool::eMode::TOOL_MODE_ROTATE);
+    m_ui->transformButton_Translate->setChecked(false);
+    m_ui->transformButton_Rotate->setChecked(true);
+    m_ui->transformButton_Scale->setChecked(false);
+}
+
+void MainEditorWindow::TransformScaleButton()
+{
+    m_sceneViewWidget->SetTransformToolMode(TransformTool::eMode::TOOL_MODE_SCALE);
+    m_ui->transformButton_Translate->setChecked(false);
+    m_ui->transformButton_Rotate->setChecked(false);
+    m_ui->transformButton_Scale->setChecked(true);
 }
 
 void MainEditorWindow::UpdateGameObjectTransform(Vector3 vector, VectorType type)

@@ -58,12 +58,13 @@ EDITOR (Thicket)
 
     * Visuals
         * Show world space gnomon
+        * Change transform tool shape based on mode
+        * Use cones instead of pyramids for gnomon arrows
 
     * Object manipulation
         * Transform tools
-            * Translate
             * Rotate
-            * Scale
+        * Local vs. Global option
     
     * Window resizing
 
@@ -77,6 +78,7 @@ EDITOR (Thicket)
         - Clear window state on scene load
         - Keep constant gnomon size
         - App doesn't quit properly
+        - Some scaling (non-uniform?) breaks object picking
 
 ---------------------------------------------------------------------------
 

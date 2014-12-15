@@ -8,6 +8,7 @@
 void TransformTool::Init(SceneViewWidget* parent)
 {
     BaseSceneTool::Init(parent);
+    m_mode = TOOL_MODE_TRANSLATE;
     
     // Init gnomon
     m_arrowBase = 0.1f;
@@ -33,6 +34,16 @@ void TransformTool::SetLocalTransform(Transform& transform)
     m_localTransform = transform;
 }
 
+void TransformTool::SetMode(eMode mode)
+{
+    m_mode = mode;
+}
+
+TransformTool::eMode TransformTool::GetMode()
+{
+    return m_mode;
+}
+
 bool TransformTool::OnMouseDown(int screenX, int screenY, Vector3 rayOrigin, Vector3 rayDirection)
 {
     float arrowRadius = m_arrowHeight/2;
@@ -55,7 +66,6 @@ bool TransformTool::OnMouseDown(int screenX, int screenY, Vector3 rayOrigin, Vec
     if (arrowIndex != -1)
     {
         // Activate the selected arrow
-        DebugLogger::Singleton().Log("Transform Tool ON");
         m_activeAxis = (eAXIS)arrowIndex;
 
         // Calculate the equation of the line for the active axis, in screen space
@@ -94,14 +104,12 @@ void TransformTool::OnMouseMove(int screenX, int screenY)
         float t = CalculateT(screenX, screenY);
         float direction = (t > m_prevT) ? 1 : -1;
 
-        // Use active axis to determine deterction of motion
-        Vector3 offset = direction*scale*m_arrowTransforms[m_activeAxis].GetPosition();
-
-        // Convert offset into object's local space
-        offset = (m_localTransform.GetMatrix()*Vector4(offset, 0)).xyz();
-
-        // Apply the offset
-        m_parent->MoveSelectedObject(offset);
+        switch (m_mode)
+        {
+            case TOOL_MODE_TRANSLATE:   ApplyTranslation(direction, scale); break;
+            case TOOL_MODE_ROTATE:      ApplyRotation();                    break;
+            case TOOL_MODE_SCALE:       ApplyScale(direction, scale);       break;
+        }
 
         m_prevT = t;
     }
@@ -109,10 +117,6 @@ void TransformTool::OnMouseMove(int screenX, int screenY)
 
 void TransformTool::OnMouseUp()
 {
-    if (m_active)
-    {
-        DebugLogger::Singleton().Log("Transform Tool OFF");
-    }
     m_active = false;
 }
 
@@ -137,4 +141,28 @@ float TransformTool::CalculateT(float screenX, float screenY)
     }
 
     return t;
+}
+
+void TransformTool::ApplyTranslation(float direction, float scale)
+{
+    // Use active axis to determine deterction of motion
+    Vector3 offset = direction*scale*m_arrowTransforms[m_activeAxis].GetPosition();
+
+    // Convert offset into object's local space
+    offset = (m_localTransform.GetMatrix()*Vector4(offset, 0)).xyz();
+
+    // Apply the offset
+    m_parent->TranslateSelectedObject(offset);
+}
+
+void TransformTool::ApplyRotation()
+{
+    // TODO implement me!
+    DebugLogger::Singleton().Log("OOPS! Rotation tool not implemented!");
+}
+
+void TransformTool::ApplyScale(float direction, float scale)
+{
+    float offset = direction*scale;
+    m_parent->ScaleSelectedObject(offset, m_activeAxis);
 }

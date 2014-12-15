@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
     // Render setup. Must be done AFTER window (QT) setup
     RenderConfig renderConfig;
     renderConfig.width = 990;           // TODO set this properly
-    renderConfig.height = 630;
+    renderConfig.height = 610;
     renderConfig.clearColour = ColourRGB(0.4, 0.4, 0.4);
     RenderManager::Singleton().Startup(renderConfig);
     

@@ -8,9 +8,14 @@
 class TransformTool : public BaseSceneTool
 {
 public:
+    enum eMode { TOOL_MODE_TRANSLATE, TOOL_MODE_ROTATE, TOOL_MODE_SCALE };
+
     virtual void    Init(SceneViewWidget* parent);
     virtual void    Draw(Transform& transform);
     void            SetLocalTransform(Transform& transform);
+
+    void            SetMode(eMode mode);
+    eMode           GetMode();
 
     virtual bool    OnMouseDown(int screenX, int screenY, Vector3 rayOrigin, Vector3 rayDirection);
     virtual void    OnMouseMove(int screenX, int screenY);
@@ -18,6 +23,11 @@ public:
 
 private:
     float       CalculateT(float screenX, float screenY);
+    void        ApplyTranslation(float direction, float scale);
+    void        ApplyRotation();
+    void        ApplyScale(float direction, float scale);
+
+    eMode        m_mode;
 
     Transform   m_transform;
     Transform   m_localTransform;

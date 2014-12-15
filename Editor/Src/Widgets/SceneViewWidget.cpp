@@ -162,11 +162,28 @@ void SceneViewWidget::focusOutEvent(QFocusEvent* event)
     }
 }
 
-void SceneViewWidget::MoveSelectedObject(Vector3 offset)
+void SceneViewWidget::TranslateSelectedObject(Vector3 offset)
 {
     Vector3 curPos = m_window->GetSelectedObject()->GetLocalTransform().GetPosition();
     Vector3 newPos = curPos + offset;
     m_window->UpdateGameObjectTransform(newPos, eVector_Position);
+}
+
+void SceneViewWidget::RotateSelectedObject()
+{
+    // TODO implement me
+}
+
+void SceneViewWidget::ScaleSelectedObject(float offset, eAXIS axis)
+{
+    Vector3 curScale = m_window->GetSelectedObject()->GetLocalTransform().GetScale();
+    curScale[axis] = Clamp(curScale[axis] + offset, 0, FLT_MAX);
+    m_window->UpdateGameObjectTransform(curScale, eVector_Scale);
+}
+
+void SceneViewWidget::SetTransformToolMode(TransformTool::eMode mode)
+{
+    m_transformTool.SetMode(mode);
 }
 
 void SceneViewWidget::TranslateCamera(Vector3 localSpaceOffset)

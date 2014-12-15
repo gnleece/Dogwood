@@ -44,7 +44,11 @@ public:
     void focusInEvent(QFocusEvent * event);
     void focusOutEvent(QFocusEvent * event);
 
-    void MoveSelectedObject(Vector3 offset);
+    void TranslateSelectedObject(Vector3 offset);
+    void RotateSelectedObject();
+    void ScaleSelectedObject(float offset, eAXIS axis);
+
+    void SetTransformToolMode(TransformTool::eMode mode);
 
 private:
     const float CAMERA_ROTATE_AMOUNT = 0.07f;

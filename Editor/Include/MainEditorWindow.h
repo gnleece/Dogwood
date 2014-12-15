@@ -76,6 +76,10 @@ private slots:
 
     void OpenTestProject();       // temp shortcut for debugging
 
+    void TransformTranslateButton();
+    void TransformRotateButton();
+    void TransformScaleButton();
+
     void OnSelectionChanged(const QItemSelection & selected, const QItemSelection & deselected);
     void SwitchSelectObject(GameObject* gameobject);
 
