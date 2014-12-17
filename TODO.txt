@@ -77,6 +77,7 @@ EDITOR (Thicket)
         - Keep constant gnomon size
         - Some scaling (non-uniform?) breaks object picking
         - Rotation tool behaviour is non-intuitive
+        - Scene view resolution isn't set nicely
 
 ---------------------------------------------------------------------------
 

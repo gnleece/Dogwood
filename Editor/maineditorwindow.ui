@@ -172,6 +172,9 @@
     <property name="verticalScrollBarPolicy">
      <enum>Qt::ScrollBarAlwaysOn</enum>
     </property>
+    <property name="horizontalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
     <property name="widgetResizable">
      <bool>false</bool>
     </property>
@@ -311,6 +314,7 @@
      <string>Game Component</string>
     </property>
     <addaction name="actionAdd_Component"/>
+    <addaction name="actionAdd_Mesh"/>
    </widget>
    <widget class="QMenu" name="menuGame_Object">
     <property name="title">
@@ -490,6 +494,16 @@
   <action name="actionAdd_Component">
    <property name="text">
     <string>Add Component...</string>
+   </property>
+  </action>
+  <action name="actionFoo">
+   <property name="text">
+    <string>Foo</string>
+   </property>
+  </action>
+  <action name="actionAdd_Mesh">
+   <property name="text">
+    <string>Add Mesh</string>
    </property>
   </action>
  </widget>

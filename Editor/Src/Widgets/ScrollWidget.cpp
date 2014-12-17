@@ -23,7 +23,7 @@ void ScrollWidget::AddChildWidget(QWidget* child)
     m_width = std::max(m_width, child->width());
     
     setFixedHeight(m_height + 10);
-    setFixedWidth(m_width);
+    setFixedWidth(m_width + 15);
     m_ui->verticalGroupBox->setFixedHeight(m_height + 10);
-    m_ui->verticalGroupBox->setFixedWidth(m_width);
+    m_ui->verticalGroupBox->setFixedWidth(m_width + 15);
 }

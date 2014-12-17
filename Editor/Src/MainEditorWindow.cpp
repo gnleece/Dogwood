@@ -7,9 +7,11 @@
 #include "Rendering\RenderManager.h"
 #include "Scene\Scene.h"
 #include "Tools\TransformTool.h"
+#include "Widgets\MeshWidget.h"
 #include "Widgets\SceneViewWidget.h"
 #include "Widgets\ScrollWidget.h"
 #include "Widgets\TransformWidget.h"
+#include "Widgets\WidgetUtils.h"
 
 #include <QtWidgets>
 
@@ -33,44 +35,65 @@ MainEditorWindow::MainEditorWindow(QWidget *parent)
     m_ui->verticalLayout->addWidget(m_sceneViewWidget);
 
     // Game object widget (components list)
-    ScrollWidget* componentsWidget = new ScrollWidget(m_ui->gameObjectScrollArea);
-    m_ui->gameObjectScrollArea->setWidget(componentsWidget);
-    m_transformWidget = new TransformWidget(componentsWidget, this);
-    componentsWidget->AddChildWidget(m_transformWidget);
-    m_transformWidget->hide();
+    SetupComponentWidgets();
+
+    // Menu setup
+    SetupMenuCommands();
 
     // Debug logging
     DebugLogger::Singleton().SetTextEditTarget(m_ui->textEdit_DebugOutput);
 
+    showMaximized();
+}
+
+void MainEditorWindow::SetupComponentWidgets()
+{
+    // Parent widget, which holds all the component widgets
+    ScrollWidget* componentsWidget = new ScrollWidget(m_ui->gameObjectScrollArea);
+    m_ui->gameObjectScrollArea->setWidget(componentsWidget);
+
+    // Transform widget
+    m_transformWidget = new TransformWidget(componentsWidget, this);
+    componentsWidget->AddChildWidget(m_transformWidget);
+    m_transformWidget->hide();
+
+    componentsWidget->AddChildWidget(AddLineSeparator(componentsWidget));
+
+    // Mesh widget
+    m_meshWidget = new MeshWidget(componentsWidget);
+    componentsWidget->AddChildWidget(m_meshWidget);
+    m_meshWidget->hide();
+}
+
+void MainEditorWindow::SetupMenuCommands()
+{
     // File menu
-    connect(m_ui->actionNew_Project,        SIGNAL(triggered()), this, SLOT(NewProject()));
-    connect(m_ui->actionOpen_Project,       SIGNAL(triggered()), this, SLOT(OpenProject()));
-    connect(m_ui->actionSave_Project,       SIGNAL(triggered()), this, SLOT(SaveProject()));
-    connect(m_ui->actionNew_Scene,          SIGNAL(triggered()), this, SLOT(NewScene()));
-    connect(m_ui->actionOpen_Scene,         SIGNAL(triggered()), this, SLOT(OpenScene()));
-    connect(m_ui->actionSave_Scene,         SIGNAL(triggered()), this, SLOT(SaveScene()));
-    connect(m_ui->actionSave_Scene_As,      SIGNAL(triggered()), this, SLOT(SaveSceneAs()));
+    connect(m_ui->actionNew_Project,            SIGNAL(triggered()), this, SLOT(NewProject()));
+    connect(m_ui->actionOpen_Project,           SIGNAL(triggered()), this, SLOT(OpenProject()));
+    connect(m_ui->actionSave_Project,           SIGNAL(triggered()), this, SLOT(SaveProject()));
+    connect(m_ui->actionNew_Scene,              SIGNAL(triggered()), this, SLOT(NewScene()));
+    connect(m_ui->actionOpen_Scene,             SIGNAL(triggered()), this, SLOT(OpenScene()));
+    connect(m_ui->actionSave_Scene,             SIGNAL(triggered()), this, SLOT(SaveScene()));
+    connect(m_ui->actionSave_Scene_As,          SIGNAL(triggered()), this, SLOT(SaveSceneAs()));
 
     // Edit menu
-    connect(m_ui->actionUndo,               SIGNAL(triggered()), this, SLOT(Undo()));
-    connect(m_ui->actionRedo,               SIGNAL(triggered()), this, SLOT(Redo()));
+    connect(m_ui->actionUndo,                   SIGNAL(triggered()), this, SLOT(Undo()));
+    connect(m_ui->actionRedo,                   SIGNAL(triggered()), this, SLOT(Redo()));
 
     // Game Object menu
-    connect(m_ui->actionCreate_Game_Object, SIGNAL(triggered()), this, SLOT(CreateGameObject()));
-    connect(m_ui->actionDelete_Game_Object, SIGNAL(triggered()), this, SLOT(DeleteGameObject()));
-    connect(m_ui->actionCopy_Game_Object,   SIGNAL(triggered()), this, SLOT(CopyGameObject()));
-    connect(m_ui->actionCut_Game_Object,    SIGNAL(triggered()), this, SLOT(CutGameObject()));
-    connect(m_ui->actionPaste_Game_Object,  SIGNAL(triggered()), this, SLOT(PasteGameObject()));
+    connect(m_ui->actionCreate_Game_Object,     SIGNAL(triggered()), this, SLOT(CreateGameObject()));
+    connect(m_ui->actionDelete_Game_Object,     SIGNAL(triggered()), this, SLOT(DeleteGameObject()));
+    connect(m_ui->actionCopy_Game_Object,       SIGNAL(triggered()), this, SLOT(CopyGameObject()));
+    connect(m_ui->actionCut_Game_Object,        SIGNAL(triggered()), this, SLOT(CutGameObject()));
+    connect(m_ui->actionPaste_Game_Object,      SIGNAL(triggered()), this, SLOT(PasteGameObject()));
 
     // Debug menu
-    connect(m_ui->actionOpen_Test_Project,  SIGNAL(triggered()), this, SLOT(OpenTestProject()));
+    connect(m_ui->actionOpen_Test_Project,      SIGNAL(triggered()), this, SLOT(OpenTestProject()));
 
     // Transform tool buttons
-    connect(m_ui->transformButton_Translate, SIGNAL(clicked()),  this, SLOT(TransformTranslateButton()));
-    connect(m_ui->transformButton_Rotate,    SIGNAL(clicked()),  this, SLOT(TransformRotateButton()));
-    connect(m_ui->transformButton_Scale,     SIGNAL(clicked()),  this, SLOT(TransformScaleButton()));
-
-    showMaximized();
+    connect(m_ui->transformButton_Translate,    SIGNAL(clicked()),   this, SLOT(TransformTranslateButton()));
+    connect(m_ui->transformButton_Rotate,       SIGNAL(clicked()),   this, SLOT(TransformRotateButton()));
+    connect(m_ui->transformButton_Scale,        SIGNAL(clicked()),   this, SLOT(TransformScaleButton()));
 }
 
 MainEditorWindow::~MainEditorWindow()
@@ -397,8 +420,9 @@ void MainEditorWindow::SwitchSelectObject(GameObject* gameobject)
     if (gameobject != NULL)
     {
         // Show the components for the selected game object
-        m_transformWidget->SetGameObject(gameobject);
+        m_transformWidget->SetGameObject(gameobject);       // TODO add some kind of component widget base class to clean this up
         m_transformWidget->show();
+        m_meshWidget->show();
 
         // Notify the game object that it's been selected
         gameobject->SetSelected(true);
@@ -409,6 +433,7 @@ void MainEditorWindow::SwitchSelectObject(GameObject* gameobject)
         // Nothing is selected, so hide widgets
         m_transformWidget->SetGameObject(NULL);
         m_transformWidget->hide();
+        m_meshWidget->hide();
     }
 }
 

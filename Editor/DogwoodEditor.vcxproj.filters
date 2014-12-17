@@ -95,6 +95,12 @@
     <CustomBuild Include="scrollwidget.ui">
       <Filter>Form Files</Filter>
     </CustomBuild>
+    <CustomBuild Include="Include\Widgets\MeshWidget.h">
+      <Filter>Header Files\Widgets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="meshwidget.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\CommandManager.h">
@@ -105,6 +111,12 @@
     </ClInclude>
     <ClInclude Include="Include\DebugLogger.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Tools\TransformTool.h">
+      <Filter>Header Files\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Tools\BaseSceneTool.h">
+      <Filter>Header Files\Tools</Filter>
     </ClInclude>
     <ClInclude Include="GeneratedFiles\ui_maineditorwindow.h">
       <Filter>Generated Files</Filter>
@@ -118,11 +130,11 @@
     <ClInclude Include="GeneratedFiles\ui_scrollwidget.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Tools\TransformTool.h">
-      <Filter>Header Files\Tools</Filter>
+    <ClInclude Include="GeneratedFiles\ui_meshwidget.h">
+      <Filter>Generated Files</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Tools\BaseSceneTool.h">
-      <Filter>Header Files\Tools</Filter>
+    <ClInclude Include="Include\Widgets\WidgetUtils.h">
+      <Filter>Header Files\Widgets</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -161,6 +173,18 @@
     </ClCompile>
     <ClCompile Include="Src\Widgets\ScrollWidget.cpp">
       <Filter>Source Files\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Tools\TransformTool.cpp">
+      <Filter>Source Files\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Tools\BaseSceneTool.cpp">
+      <Filter>Source Files\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Widgets\MeshWidget.cpp">
+      <Filter>Source Files\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_MeshWidget.cpp">
+      <Filter>Generated Files\Debug</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_GameObjectMimeData.cpp">
       <Filter>Generated Files\Debug</Filter>
@@ -210,11 +234,11 @@
     <ClCompile Include="GeneratedFiles\Release\moc_GLWidget.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Tools\TransformTool.cpp">
-      <Filter>Source Files\Tools</Filter>
+    <ClCompile Include="GeneratedFiles\Release\moc_MeshWidget.cpp">
+      <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Tools\BaseSceneTool.cpp">
-      <Filter>Source Files\Tools</Filter>
+    <ClCompile Include="Src\Widgets\WidgetUtils.cpp">
+      <Filter>Source Files\Widgets</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

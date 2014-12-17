@@ -14,11 +14,14 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         maineditorwindow.cpp \
-        vectoredit.cpp
+        vectoredit.cpp \
+    meshwidget.cpp
 
-HEADERS  += maineditorwindow.h
+HEADERS  += maineditorwindow.h \
+    meshwidget.h
 
 FORMS    += maineditorwindow.ui \
     transformwidget.ui \
     vectorwidget.ui \
-    scrollwidget.ui
+    scrollwidget.ui \
+    meshwidget.ui

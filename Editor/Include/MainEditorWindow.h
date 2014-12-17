@@ -12,6 +12,7 @@
 class GameObject;
 class GameProject;
 class HierarchyModel;
+class MeshWidget;
 class QTreeView;
 class Scene;
 class SceneViewWidget;
@@ -52,6 +53,7 @@ private:
     Ui::MainEditorWindow*   m_ui;
     SceneViewWidget*        m_sceneViewWidget;
     TransformWidget*        m_transformWidget;
+    MeshWidget*             m_meshWidget;
 
     QTreeView*              m_view;
     HierarchyModel*         m_model;
@@ -62,6 +64,9 @@ private:
     GameObject*             m_selectedGameObject;
 
 private slots:
+    void SetupComponentWidgets();
+    void SetupMenuCommands();
+
     void NewProject();
     void OpenProject();
     void SaveProject();
