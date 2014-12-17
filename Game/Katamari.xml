@@ -6,7 +6,7 @@
 <Dogwood-Project name="Katamari!">
 
   <Settings>
-    <Resoltuion width="640" height="480"/>
+    <Resolution width="640" height="480"/>
   </Settings>
   
   <Resources>

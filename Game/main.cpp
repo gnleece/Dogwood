@@ -6,7 +6,7 @@
 
 int main(void)
 {
-    Game::Singleton().Init("GameProject.xml");
+    Game::Singleton().Init("Katamari.xml");
 
     // TODO startup scene should be specified in the project file
     Scene scene;

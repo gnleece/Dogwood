@@ -62,8 +62,6 @@ EDITOR (Thicket)
         * Use cones instead of pyramids for gnomon arrows
 
     * Object manipulation
-        * Transform tools
-            * Rotate
         * Local vs. Global option
     
     * Window resizing
