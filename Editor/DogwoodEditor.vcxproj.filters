@@ -101,6 +101,12 @@
     <CustomBuild Include="meshwidget.ui">
       <Filter>Form Files</Filter>
     </CustomBuild>
+    <CustomBuild Include="colorwidget.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Include\Widgets\ColorWidget.h">
+      <Filter>Header Files\Widgets</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\CommandManager.h">
@@ -118,6 +124,9 @@
     <ClInclude Include="Include\Tools\BaseSceneTool.h">
       <Filter>Header Files\Tools</Filter>
     </ClInclude>
+    <ClInclude Include="Include\Widgets\WidgetUtils.h">
+      <Filter>Header Files\Widgets</Filter>
+    </ClInclude>
     <ClInclude Include="GeneratedFiles\ui_maineditorwindow.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
@@ -133,8 +142,8 @@
     <ClInclude Include="GeneratedFiles\ui_meshwidget.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Widgets\WidgetUtils.h">
-      <Filter>Header Files\Widgets</Filter>
+    <ClInclude Include="GeneratedFiles\ui_colorwidget.h">
+      <Filter>Generated Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -183,7 +192,13 @@
     <ClCompile Include="Src\Widgets\MeshWidget.cpp">
       <Filter>Source Files\Widgets</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_MeshWidget.cpp">
+    <ClCompile Include="Src\Widgets\WidgetUtils.cpp">
+      <Filter>Source Files\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Widgets\ColorWidget.cpp">
+      <Filter>Source Files\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_ColorWidget.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_GameObjectMimeData.cpp">
@@ -202,6 +217,12 @@
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_HierarchyModel.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_MeshWidget.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_MeshWidget.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_ScrollWidget.cpp">
@@ -234,11 +255,8 @@
     <ClCompile Include="GeneratedFiles\Release\moc_GLWidget.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_MeshWidget.cpp">
+    <ClCompile Include="GeneratedFiles\Release\moc_ColorWidget.cpp">
       <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Widgets\WidgetUtils.cpp">
-      <Filter>Source Files\Widgets</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

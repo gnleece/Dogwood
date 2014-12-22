@@ -23,4 +23,5 @@ private:
 
     int                 m_height;
     int                 m_width;
+    int                 m_numWidgets;
 };

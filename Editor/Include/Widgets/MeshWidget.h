@@ -2,6 +2,8 @@
 
 #include <QtWidgets>
 
+class ColorWidget;
+
 namespace Ui
 {
     class MeshWidget;
@@ -16,4 +18,6 @@ public:
 
 private:
     Ui::MeshWidget*    m_ui;
+
+    ColorWidget*       m_colorWidgets[3];
 };
