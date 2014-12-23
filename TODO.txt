@@ -79,7 +79,6 @@ EDITOR (Thicket)
         - Rotation tool behaviour is non-intuitive
         - Scene view resolution isn't set nicely
         - Transform widget values don't update when object is moved with transform tool
-        - Set current color in color picker dialog
 
 ---------------------------------------------------------------------------
 

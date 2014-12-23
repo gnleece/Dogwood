@@ -37,9 +37,13 @@ void ColorWidget::SetColor(QColor color)
 void ColorWidget::OnButtonClick()
 {
     // Open a ColorDialog to let the user pick a color
-    m_color = QColorDialog::getColor();    
-    SetButtonStyle();
-    emit ColorChanged(QColorToColourRGB(m_color));
+    QColor newColor = QColorDialog::getColor(m_color);
+    if (newColor.isValid())                             // color will be invalid if user hits "cancel" on dialog
+    {
+        m_color = newColor;
+        SetButtonStyle();
+        emit ColorChanged(QColorToColourRGB(m_color));
+    }
 }
 
 void ColorWidget::SetButtonStyle()
