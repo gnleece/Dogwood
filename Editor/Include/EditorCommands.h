@@ -8,20 +8,23 @@
 ///////////////////////////////////////////////////////////////////////
 
 #include "CommandManager.h"
+#include "Rendering\Colour.h"
 #include "Math\Algebra.h"
 #include <qabstractitemmodel.h>
 #include <QTime>
 #include <string>
 
 class GameObject;
-class HierarchyModel;
 class GameObjectMimeData;
+class HierarchyModel;
+class Material;
 class QTreeView;
 class TransformWidget;
 
 using std::string;
 
 enum VectorType { eVector_Position, eVector_Rotation, eVector_Scale };
+enum MaterialColorType { eMaterial_Diffuse, eMaterial_Ambient, eMaterial_Specular };
 
 namespace EditorCommands
 {
@@ -94,20 +97,32 @@ namespace EditorCommands
     class ModifyTransformCommand : public ICommand
     {
     public:
-        ModifyTransformCommand(HierarchyModel* model, QModelIndex index, Vector3 vector, VectorType type, TransformWidget* widget);
+        ModifyTransformCommand(GameObject* gameObject, Vector3 vector, VectorType type);
         void Execute();
         void Undo();
         bool Collapse(ICommand* command);
 
     private:
-        HierarchyModel*     m_model;
+        GameObject*         m_gameObject;
         VectorType          m_type;
         Vector3             m_vector;
         Vector3             m_previousVector;
-        GameObject*         m_gameObject;
-        TransformWidget*    m_widget;
         QTime               m_timestamp;
 
         const int           MaxCollapseTimeDelta = 100;
+    };
+
+    class ChangeMaterialColorCommand : public ICommand
+    {
+    public:
+        ChangeMaterialColorCommand(Material* material, MaterialColorType type, ColourRGB color);
+        void Execute();
+        void Undo();
+
+    private:
+        Material*           m_material;
+        MaterialColorType   m_type;
+        ColourRGB           m_color;
+        ColourRGB           m_previousColor;
     };
 }

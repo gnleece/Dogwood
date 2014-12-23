@@ -1,8 +1,18 @@
 #pragma once
 
+#define GLEW_STATIC
+#include <GL/glew.h>
+
+#define GLFW_INCLUDE_GLU
+#include <GLFW/glfw3.h>
+
 #include <QtWidgets>
 
+#include "Rendering\Colour.h"
+#include "Rendering\Material.h"
+
 class ColorWidget;
+class MeshInstance;
 
 namespace Ui
 {
@@ -16,8 +26,18 @@ class MeshWidget : public QWidget
 public:
     MeshWidget(QWidget* parent = 0);
 
-private:
-    Ui::MeshWidget*    m_ui;
+    void                SetMeshInstance(MeshInstance* mesh);
 
-    ColorWidget*       m_colorWidgets[3];
+public slots:
+    void                UpdateDiffuseColor(ColourRGB& color);
+    void                UpdateAmbientColor(ColourRGB& color);
+    void                UpdateSpecularColor(ColourRGB& color);
+
+private:
+    void                ExecuteColorChange(Material::eMatColourType type, ColourRGB color);
+
+    Ui::MeshWidget*     m_ui;
+    MeshInstance*       m_meshInstance;
+
+    ColorWidget*        m_colorWidgets[3];
 };

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QtWidgets>
+#include "EditorCommands.h"
 #include "Math\Algebra.h"
 
 class GameObject;
@@ -28,6 +29,8 @@ public slots:
     void UpdateScale(Vector3& scale);
 
 private:
+    void ExecuteModifyTransform(Vector3 vector, VectorType type);
+
     Ui::TransformWidget*    m_ui;
     MainEditorWindow*       m_window;
     GameObject*             m_gameObject;

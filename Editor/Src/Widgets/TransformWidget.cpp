@@ -6,22 +6,23 @@
 
 #include "..\GeneratedFiles\ui_transformwidget.h"
 
+using namespace EditorCommands;
+
 TransformWidget::TransformWidget(QWidget* parent, MainEditorWindow* window)
-: m_ui(new Ui::TransformWidget),
-  m_window(window)
+: m_ui(new Ui::TransformWidget), m_window(window), m_gameObject(NULL)
 {
     m_ui->setupUi(this);
 
     // Create vector widgets
-    m_positionWidget = new VectorWidget(this, window);
+    m_positionWidget = new VectorWidget(this);
     m_positionWidget->SetTitle("Position");
     m_ui->verticalLayout->addWidget(m_positionWidget);
 
-    m_rotationWidget = new VectorWidget(this, window);
+    m_rotationWidget = new VectorWidget(this);
     m_rotationWidget->SetTitle("Rotation");
     m_ui->verticalLayout->addWidget(m_rotationWidget);
 
-    m_scaleWidget = new VectorWidget(this, window);
+    m_scaleWidget = new VectorWidget(this);
     m_scaleWidget->SetTitle("Scale");
     m_ui->verticalLayout->addWidget(m_scaleWidget);
 
@@ -46,23 +47,26 @@ void TransformWidget::Refresh()
         m_rotationWidget->SetVector(m_gameObject->GetLocalTransform().GetRotation());
         m_scaleWidget->SetVector(m_gameObject->GetLocalTransform().GetScale());
     }
-    else
-    {
-        // TODO clear the vector fields
-    }
 }
 
 void TransformWidget::UpdatePosition(Vector3& position)
 {
-    m_window->UpdateGameObjectTransform(position, eVector_Position);
+    ExecuteModifyTransform(position, eVector_Position);
 }
 
 void TransformWidget::UpdateRotation(Vector3& rotation)
 {
-    m_window->UpdateGameObjectTransform(rotation, eVector_Rotation);
+    ExecuteModifyTransform(rotation, eVector_Rotation);
 }
 
 void TransformWidget::UpdateScale(Vector3& scale)
 {
-    m_window->UpdateGameObjectTransform(scale, eVector_Scale);
+    ExecuteModifyTransform(scale, eVector_Scale);
+}
+
+void TransformWidget::ExecuteModifyTransform(Vector3 vector, VectorType type)
+{
+    GameObject* selectedObject = m_window->GetSelectedObject();
+    ModifyTransformCommand* command = new ModifyTransformCommand(selectedObject, vector, type);
+    CommandManager::Singleton().ExecuteCommand(command);
 }

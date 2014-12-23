@@ -2,7 +2,7 @@
 #include "GameObject.h"
 #include "GameObjectMimeData.h"
 #include "HierarchyModel.h"
-#include "Widgets\TransformWidget.h"
+#include "Rendering\Material.h"
 
 #include <QtWidgets>
 
@@ -139,13 +139,11 @@ namespace EditorCommands
 
     //-----------------------------------------------------------------------------------------------
 
-    ModifyTransformCommand::ModifyTransformCommand(HierarchyModel* model, QModelIndex index, Vector3 vector, VectorType type, TransformWidget* widget)
+    ModifyTransformCommand::ModifyTransformCommand(GameObject* gameObject, Vector3 vector, VectorType type)
     {
-        m_model = model;
-        m_gameObject = (GameObject*)index.internalPointer();
+        m_gameObject = gameObject;
         m_vector = vector;
         m_type = type;
-        m_widget = widget;
         m_timestamp = QTime::currentTime();
     }
 
@@ -169,10 +167,7 @@ namespace EditorCommands
                 break;
             }
 
-            if (m_widget != NULL)
-            {
-                m_widget->Refresh();
-            }
+            // TODO need to emit a "transform changed" signal here, or in transform set function
         }
     }
 
@@ -193,10 +188,7 @@ namespace EditorCommands
                 break;
             }
 
-            if (m_widget != NULL)
-            {
-                m_widget->Refresh();
-            }
+            // TODO need to emit a "transform changed" signal here, or in transform set function
         }
     }
 
@@ -225,5 +217,25 @@ namespace EditorCommands
         m_vector = transformCommand->m_vector;
         m_timestamp = transformCommand->m_timestamp;
         return true;
+    }
+
+    //-----------------------------------------------------------------------------------------------
+
+    ChangeMaterialColorCommand::ChangeMaterialColorCommand(Material* material, MaterialColorType type, ColourRGB color)
+    {
+        m_material = material;
+        m_type = type;
+        m_color = color;
+    }
+
+    void ChangeMaterialColorCommand::Execute()
+    {
+        m_previousColor = m_material->GetColour((Material::eMatColourType)m_type);
+        m_material->SetColour((Material::eMatColourType)m_type, m_color);
+    }
+
+    void ChangeMaterialColorCommand::Undo()
+    {
+        m_material->SetColour((Material::eMatColourType)m_type, m_previousColor);
     }
 }

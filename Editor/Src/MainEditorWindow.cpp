@@ -361,17 +361,6 @@ void MainEditorWindow::TransformScaleButton()
     m_ui->transformButton_Scale->setChecked(true);
 }
 
-void MainEditorWindow::UpdateGameObjectTransform(Vector3 vector, VectorType type)
-{
-    if (!m_view->selectionModel()->selectedIndexes().isEmpty())
-    {
-        // TODO handle multi select?
-        QModelIndex index = m_view->selectionModel()->selectedIndexes().first();
-        ModifyTransformCommand* command = new ModifyTransformCommand(m_model, index, vector, type, m_transformWidget);
-        CommandManager::Singleton().ExecuteCommand(command);
-    }
-}
-
 void MainEditorWindow::SelectObject(GameObject* gameObject)
 {
     // Clear previous selection
@@ -417,12 +406,22 @@ void MainEditorWindow::SwitchSelectObject(GameObject* gameobject)
         m_selectedGameObject = NULL;
     }
 
+    // TODO clean this up!
     if (gameobject != NULL)
     {
         // Show the components for the selected game object
         m_transformWidget->SetGameObject(gameobject);       // TODO add some kind of component widget base class to clean this up
         m_transformWidget->show();
-        m_meshWidget->show();
+        if (gameobject->GetMesh())
+        {
+            m_meshWidget->SetMeshInstance(gameobject->GetMesh());
+            m_meshWidget->show();
+        }
+        else
+        {
+            m_meshWidget->SetMeshInstance(NULL);
+            m_meshWidget->hide();
+        }
 
         // Notify the game object that it's been selected
         gameobject->SetSelected(true);
@@ -433,6 +432,7 @@ void MainEditorWindow::SwitchSelectObject(GameObject* gameobject)
         // Nothing is selected, so hide widgets
         m_transformWidget->SetGameObject(NULL);
         m_transformWidget->hide();
+        m_meshWidget->SetMeshInstance(NULL);
         m_meshWidget->hide();
     }
 }

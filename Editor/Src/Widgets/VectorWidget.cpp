@@ -1,11 +1,9 @@
 #include "Widgets\VectorWidget.h"
 
 #include "..\GeneratedFiles\ui_VectorWidget.h"
-#include "MainEditorWindow.h"
 
-VectorWidget::VectorWidget(QWidget* parent, MainEditorWindow* window)
-: m_ui(new Ui::VectorWidget),
-  m_window(window)
+VectorWidget::VectorWidget(QWidget* parent)
+: m_ui(new Ui::VectorWidget)
 {
     m_ui->setupUi(this);
 

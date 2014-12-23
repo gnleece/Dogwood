@@ -16,6 +16,16 @@ class ColorWidget : public QWidget
 public:
     ColorWidget(QWidget* parent = 0);
 
+    ColourRGB           GetColor();
+    void                SetColor(ColourRGB color);
+    void                SetColor(QColor color);
+
+    static ColourRGB    QColorToColourRGB(QColor qcolor);
+    static QColor       ColourRGBToQColor(ColourRGB color);
+
+signals:
+    void                ColorChanged(ColourRGB& color);
+
 private:
     Ui::ColorWidget*    m_ui;
     QColor              m_color;
@@ -23,5 +33,4 @@ private:
 private slots:
     void                OnButtonClick();
     void                SetButtonStyle();
-    ColourRGB           QColorToColourRGB(QColor qcolor);
 };

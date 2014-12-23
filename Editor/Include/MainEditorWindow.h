@@ -37,9 +37,8 @@ public:
     void        Update();
 
     void        SetHierarchyModel(HierarchyModel* model);
-    void        UpdateGameObjectTransform(Vector3 vector, VectorType type);
-    void        SelectObject(GameObject* gameObject);
 
+    void        SelectObject(GameObject* gameObject);
     GameObject* GetSelectedObject();
 
     bool        IsOpen();

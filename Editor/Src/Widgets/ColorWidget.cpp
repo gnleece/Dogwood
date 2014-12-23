@@ -18,11 +18,28 @@ ColorWidget::ColorWidget(QWidget* parent)
     SetButtonStyle();
 }
 
+ColourRGB ColorWidget::GetColor()
+{
+    return QColorToColourRGB(m_color);
+}
+
+void ColorWidget::SetColor(ColourRGB color)
+{
+    SetColor(ColourRGBToQColor(color));
+}
+
+void ColorWidget::SetColor(QColor color)
+{
+    m_color = color;
+    SetButtonStyle();
+}
+
 void ColorWidget::OnButtonClick()
 {
     // Open a ColorDialog to let the user pick a color
     m_color = QColorDialog::getColor();    
     SetButtonStyle();
+    emit ColorChanged(QColorToColourRGB(m_color));
 }
 
 void ColorWidget::SetButtonStyle()
@@ -37,6 +54,18 @@ void ColorWidget::SetButtonStyle()
 
 ColourRGB ColorWidget::QColorToColourRGB(QColor qcolor)
 {
-    // TODO implement me
-    return ColourRGB::Black;
+    ColourRGB ret;
+    ret.r = qcolor.redF();
+    ret.g = qcolor.greenF();
+    ret.b = qcolor.blueF();
+    return ret;
+}
+
+QColor ColorWidget::ColourRGBToQColor(ColourRGB color)
+{
+    QColor ret;
+    ret.setRedF(color.r);
+    ret.setGreenF(color.g);
+    ret.setBlueF(color.b);
+    return ret;
 }

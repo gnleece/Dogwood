@@ -3,6 +3,7 @@
 #define GLEW_STATIC
 #include <GL/glew.h>
 
+#include "EditorCommands.h"
 #include "GLWidget.h"
 #include "Math\Algebra.h"
 #include "Rendering\Colour.h"
@@ -72,6 +73,7 @@ private:
     void HandleSelectionClick(const QPointF clickPosition);
     bool PickTool(const QPointF clickPosition, Vector3 rayOrigin, Vector3 rayDirection);
     bool PickObject(Vector3 rayOrigin, Vector3 rayDirection);
+    void ExecuteModifyTransform(Vector3 vector, VectorType type);
 
     static eMouseButton QtMouseButtonConvert(Qt::MouseButton qtButton);
 

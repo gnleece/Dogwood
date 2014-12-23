@@ -2,7 +2,6 @@
 
 #include "DebugLogger.h"
 #include "Debugging\DebugDraw.h"
-#include "EditorCommands.h"
 #include "GameObject.h"
 #include "MainEditorWindow.h"
 #include "Rendering\RenderManager.h"
@@ -10,6 +9,8 @@
 #include <QtWidgets>
 
 #include "Math\Transformations.h"
+
+using namespace EditorCommands;
 
 SceneViewWidget::SceneViewWidget(MainEditorWindow* window, QWidget* parent)
 : m_window(window), GLWidget(parent), m_hasFocus(false), m_showGrid(true), m_scene(NULL),
@@ -164,23 +165,23 @@ void SceneViewWidget::focusOutEvent(QFocusEvent* event)
 
 void SceneViewWidget::TranslateSelectedObject(Vector3 offset)
 {
-    Vector3 curPos = m_window->GetSelectedObject()->GetLocalTransform().GetPosition();
-    Vector3 newPos = curPos + offset;
-    m_window->UpdateGameObjectTransform(newPos, eVector_Position);
+    Vector3 position = m_window->GetSelectedObject()->GetLocalTransform().GetPosition();
+    position = position + offset;
+    ExecuteModifyTransform(position, eVector_Position);
 }
 
 void SceneViewWidget::RotateSelectedObject(float offset, eAXIS axis)
 {
-    Vector3 curRot = m_window->GetSelectedObject()->GetLocalTransform().GetRotation();
-    curRot[axis] = curRot[axis] + offset;
-    m_window->UpdateGameObjectTransform(curRot, eVector_Rotation);
+    Vector3 rotation = m_window->GetSelectedObject()->GetLocalTransform().GetRotation();
+    rotation[axis] = rotation[axis] + offset;
+    ExecuteModifyTransform(rotation, eVector_Rotation);
 }
 
 void SceneViewWidget::ScaleSelectedObject(float offset, eAXIS axis)
 {
-    Vector3 curScale = m_window->GetSelectedObject()->GetLocalTransform().GetScale();
-    curScale[axis] = Clamp(curScale[axis] + offset, 0, FLT_MAX);
-    m_window->UpdateGameObjectTransform(curScale, eVector_Scale);
+    Vector3 scale = m_window->GetSelectedObject()->GetLocalTransform().GetScale();
+    scale[axis] = Clamp(scale[axis] + offset, 0, FLT_MAX);
+    ExecuteModifyTransform(scale, eVector_Scale);
 }
 
 void SceneViewWidget::SetTransformToolMode(TransformTool::eMode mode)
@@ -298,6 +299,13 @@ bool SceneViewWidget::PickObject(Vector3 rayOrigin, Vector3 rayDirection)
     }
     m_window->SelectObject(NULL);
     return false;
+}
+
+void SceneViewWidget::ExecuteModifyTransform(Vector3 vector, VectorType type)
+{
+    GameObject* selectedObject = m_window->GetSelectedObject();
+    ModifyTransformCommand* command = new ModifyTransformCommand(selectedObject, vector, type);
+    CommandManager::Singleton().ExecuteCommand(command);
 }
 
 SceneViewWidget::eMouseButton SceneViewWidget::QtMouseButtonConvert(Qt::MouseButton qtButton)
