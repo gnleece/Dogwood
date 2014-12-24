@@ -197,7 +197,7 @@ void MainEditorWindow::OpenScene()
 
     // TODO unload previous scene
     m_scene = new Scene();
-    if (m_scene->LoadScene(fileName.toStdString()))
+    if (m_scene->Load(fileName.toStdString()))
     {
         HierarchyModel* model = new HierarchyModel(m_scene->GetRootObject());
         SetHierarchyModel(model);
@@ -224,7 +224,7 @@ void MainEditorWindow::OpenTestProject()
     }
     
     m_scene = new Scene();
-    if (m_scene->LoadScene("..\\Game\\Assets\\Scenes\\Scene0.xml"))
+    if (m_scene->Load("..\\Game\\Assets\\Scenes\\Scene0.xml"))
     {
         HierarchyModel* model = new HierarchyModel(m_scene->GetRootObject());
         SetHierarchyModel(model);
@@ -242,7 +242,7 @@ void MainEditorWindow::SaveScene()
 
     if (m_scene != NULL)
     {
-        m_scene->SaveScene();
+        m_scene->Save();
     }
 }
 
@@ -254,7 +254,7 @@ void MainEditorWindow::SaveSceneAs()
     {
         // Open file dialog
         QString fileName = QFileDialog::getSaveFileName(this, "Save Scene As", "", "*.xml");
-        m_scene->SaveScene(fileName.toStdString());
+        m_scene->Save(fileName.toStdString());
     }
     else
     {

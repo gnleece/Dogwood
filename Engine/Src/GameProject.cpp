@@ -5,8 +5,33 @@
 
 using namespace tinyxml2;
 
+GameProject::GameProject()
+ : m_loaded(false)
+{
+}
+
+bool GameProject::New(string filepath)
+{
+    if (m_loaded)
+    {
+        printf("GameProject error: can't init because project is already loaded.\n");
+        return false;
+    }
+
+    m_filepath = filepath;
+
+    // TODO implement me
+    return false;
+}
+
 bool GameProject::Load(string filepath)
 {
+    if (m_loaded)
+    {
+        printf("GameProject error: can't load because project is already loaded.\n");
+        return false;
+    }
+
     m_filepath = filepath;
 
     printf("LOADING PROJECT: %s\n", m_filepath.c_str());
@@ -30,13 +55,32 @@ bool GameProject::Load(string filepath)
     XMLElement* resourcesXML = projectXML->FirstChildElement("Resources");
     ResourceManager::Singleton().BuildResourceMap(resourcesXML);
 
+    m_loaded = true;
     return true;
 }
 
-bool GameProject::Save(string path)
+bool GameProject::Save(string filepath)
 {
+    if (!m_loaded)
+    {
+        printf("GameProject error: can't save because no project is loaded.\n");
+        return false;
+    }
+
     // TODO implement me
     return false;
+}
+
+bool GameProject::Unload()
+{
+    if (!m_loaded)
+    {
+        printf("GameProject error: can't unload because project is not loaded.\n");
+        return false;
+    }
+
+    m_loaded = false;
+    return true;
 }
 
 string GameProject::GetName()

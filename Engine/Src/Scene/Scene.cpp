@@ -11,10 +11,29 @@
 //#include "..\..\Generated\GameComponentBindings.h"
 
 Scene::Scene()
+: m_loaded(false)
 { }
 
-bool Scene::LoadScene(string filename)
+bool Scene::New(string filename)
 {
+    if (m_loaded)
+    {
+        printf("Scene error: can't init new scene because scene is already loaded.\n");
+        return false;
+    }
+
+    // TODO implement me
+    return false;
+}
+
+bool Scene::Load(string filename)
+{
+    if (m_loaded)
+    {
+        printf("Scene error: can't load because scene is already loaded.\n");
+        return false;
+    }
+
     m_filename = filename;
 
     printf("LOADING SCENE: %s\n", m_filename.c_str());
@@ -46,11 +65,19 @@ bool Scene::LoadScene(string filename)
     DoHierarchySetup(sceneXML);
 
     printf("DONE LOADING SCENE!\n");
+
+    m_loaded = true;
     return true;
 }
 
-void Scene::SaveScene(string filename)
+bool Scene::Save(string filename)
 {
+    if (!m_loaded)
+    {
+        printf("Scene error: can't save because no scene is loaded.\n");
+        return false;
+    }
+
     // If a non-empty filename is provided, use it (for "Save As")
     if (filename.compare("") != 0)
     {
@@ -72,10 +99,18 @@ void Scene::SaveScene(string filename)
 
     // Save it!
     sceneDoc.SaveFile(m_filename.c_str());
+
+    return true;
 }
 
-void Scene::UnloadScene()
+bool Scene::Unload()
 {
+    if (!m_loaded)
+    {
+        printf("Scene error: can't unload because scene is not loaded.\n");
+        return false;
+    }
+
     // Unload resources
     ResourceManager::Singleton().UnloadSceneResources();
 
@@ -83,6 +118,9 @@ void Scene::UnloadScene()
     // TODO implement me
 
     m_rootObject = NULL;
+    m_loaded = false;
+
+    return true;
 }
 
 GameObject* Scene::GetRootObject()

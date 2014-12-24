@@ -19,7 +19,7 @@ void Game::Init(string projectPath)
     ResourceManager::Singleton().Startup();
 
     // Project setup
-    m_gameProject = new GameProject();
+    m_gameProject = new GameProject();          // TODO unload, cleanup
     bool success = m_gameProject->Load(projectPath);
     if (!success)
         return;

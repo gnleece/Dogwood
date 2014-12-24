@@ -8,8 +8,12 @@ using std::string;
 class GameProject
 {
 public:
+    GameProject();
+
+    bool    New(string filepath = "");
     bool    Load(string filepath);
     bool    Save(string filepath = "");
+    bool    Unload();
 
     string  GetName();
     void    SetName(string name);
@@ -20,6 +24,7 @@ public:
 private:
     void    LoadSettings(tinyxml2::XMLElement* settingsXML);
 
+    bool    m_loaded;
     string  m_filepath;
     string  m_name;
 

@@ -24,9 +24,10 @@ class Scene
 public:
     Scene();
 
-    bool        LoadScene(string filename);
-    void        SaveScene(string filename = "");
-    void        UnloadScene();
+    bool        New(string filename = "");
+    bool        Load(string filename);
+    bool        Save(string filename = "");
+    bool        Unload();
 
     GameObject* GetRootObject();
 
@@ -52,6 +53,7 @@ private:
     void        SerializeComponents(GameObject* gameObject, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc);
     void        SerializeResourceList(unordered_set<int>& guids, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc);
 
+    bool        m_loaded;
     string      m_filename;
     Camera      m_mainCamera;
     Light       m_light;
