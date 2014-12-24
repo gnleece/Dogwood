@@ -147,8 +147,8 @@ void RenderManager::SetUniformMatrix(ShaderProgram* shader, ShaderProgram::eShad
 void RenderManager::LoadCommonShaders()
 {
     m_commonShaders[SHADER_UNLIT] = new ShaderProgram();
-    (m_commonShaders[SHADER_UNLIT])->Load("..\\Engine\\Src\\Shaders\\Unlit.vert.glsl", "..\\Engine\\Src\\Shaders\\Unlit.frag.glsl");
+    (m_commonShaders[SHADER_UNLIT])->Load("..\\Engine\\Assets\\Shaders\\Unlit.vert.glsl", "..\\Engine\\Assets\\Shaders\\Unlit.frag.glsl");
 
     m_commonShaders[SHADER_UNLIT_UNI_COLOR] = new ShaderProgram();
-    (m_commonShaders[SHADER_UNLIT_UNI_COLOR])->Load("..\\Engine\\Src\\Shaders\\UnlitUniformColor.vert.glsl", "..\\Engine\\Src\\Shaders\\UnlitUniformColor.frag.glsl");
+    (m_commonShaders[SHADER_UNLIT_UNI_COLOR])->Load("..\\Engine\\Assets\\Shaders\\UnlitUniformColor.vert.glsl", "..\\Engine\\Assets\\Shaders\\UnlitUniformColor.frag.glsl");
 }

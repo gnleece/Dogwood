@@ -311,14 +311,26 @@
    </property>
    <widget class="QMenu" name="menuFIle">
     <property name="title">
-     <string>Game Component</string>
+     <string>Component</string>
     </property>
+    <widget class="QMenu" name="menuAdd_Mesh">
+     <property name="title">
+      <string>Add Mesh</string>
+     </property>
+     <addaction name="actionCube"/>
+     <addaction name="actionSphere"/>
+     <addaction name="actionPlane"/>
+     <addaction name="actionCylinder"/>
+     <addaction name="actionCone"/>
+     <addaction name="separator"/>
+     <addaction name="actionAsset"/>
+    </widget>
+    <addaction name="menuAdd_Mesh"/>
     <addaction name="actionAdd_Component"/>
-    <addaction name="actionAdd_Mesh"/>
    </widget>
    <widget class="QMenu" name="menuGame_Object">
     <property name="title">
-     <string>Game Object</string>
+     <string>Object</string>
     </property>
     <addaction name="actionCreate_Game_Object"/>
     <addaction name="actionDelete_Game_Object"/>
@@ -501,9 +513,39 @@
     <string>Foo</string>
    </property>
   </action>
-  <action name="actionAdd_Mesh">
+  <action name="actionCube">
+   <property name="text">
+    <string>Cube</string>
+   </property>
+  </action>
+  <action name="actionSphere">
+   <property name="text">
+    <string>Sphere</string>
+   </property>
+  </action>
+  <action name="actionPlane">
+   <property name="text">
+    <string>Plane</string>
+   </property>
+  </action>
+  <action name="actionCylinder">
+   <property name="text">
+    <string>Cylinder</string>
+   </property>
+  </action>
+  <action name="actionCone">
+   <property name="text">
+    <string>Cone</string>
+   </property>
+  </action>
+  <action name="actionAdd_Mesh_2">
    <property name="text">
     <string>Add Mesh</string>
+   </property>
+  </action>
+  <action name="actionAsset">
+   <property name="text">
+    <string>Asset...</string>
    </property>
   </action>
  </widget>

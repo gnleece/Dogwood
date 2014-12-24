@@ -7,6 +7,8 @@ ENGINE (Dogwood)
         * Proper awake/start/enable/disable/destroy/etc.
         * Fix custom component bindings
     * GUIDs
+    * Resources
+        * Unloading
     
     * Text (2D)
     * Particles
