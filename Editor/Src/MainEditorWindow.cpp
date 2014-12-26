@@ -179,7 +179,11 @@ void MainEditorWindow::OpenProject()
 
 void MainEditorWindow::SaveProject()
 {
-    // TODO implement me
+    if (m_project)
+    {
+        m_project->Save();
+        DebugLogger::Singleton().Log("Project saved.");
+    }
 }
 
 void MainEditorWindow::NewScene()

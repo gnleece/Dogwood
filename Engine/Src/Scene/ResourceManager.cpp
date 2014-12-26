@@ -42,6 +42,15 @@ struct ShaderResourceInfo : ResourceInfo
         guid = element->IntAttribute("guid");
         map[guid] = this;
     }
+
+    void Serialize(XMLDocument& rootDoc, XMLElement* parent)
+    {
+        XMLElement* xml = rootDoc.NewElement(typeName.c_str());
+        xml->SetAttribute("guid", guid);
+        xml->SetAttribute("vertex-path", vertexpath.c_str());
+        xml->SetAttribute("fragment-path", fragmentpath.c_str());
+        parent->InsertEndChild(xml);
+    }
 };
 
 void ResourceInfo::AddToMap(XMLElement* element, unordered_map<int, ResourceInfo*> & map)
@@ -51,21 +60,82 @@ void ResourceInfo::AddToMap(XMLElement* element, unordered_map<int, ResourceInfo
     map[guid] = this;
 }
 
+void ResourceInfo::Serialize(XMLDocument& rootDoc, XMLElement* parent)
+{
+    XMLElement* xml = rootDoc.NewElement(typeName.c_str());
+    xml->SetAttribute("guid", guid);
+    xml->SetAttribute("path", path.c_str());
+    parent->InsertEndChild(xml);
+}
+
 void ResourceManager::Startup()
 {}
 
 void ResourceManager::Shutdown()
 {
+    // Unload currently loaded resources, if any
+    UnloadSceneResources();
+
+    // Unload resource map
     ClearResourceLookupTable();
 }
 
-void ResourceManager::BuildResourceMap(XMLElement* resources)
+void ResourceManager::LoadResourceMap(XMLElement* resources)
 {
     // Unload previous project
     ClearResourceLookupTable();
 
-    // Load new project
-    BuildResourceLookupTable(resources);
+    // Process each resource type
+    AddResourcesToMap<TextureResourceInfo>(resources, "Textures");
+    AddResourcesToMap<MeshResourceInfo>(resources, "Meshes");
+    AddResourcesToMap<ShaderResourceInfo>(resources, "Shaders");
+}
+
+void ResourceManager::SerializeResourceMap(XMLDocument& rootDoc, XMLElement* parent)
+{
+    // Create parent node for each resource type
+    XMLElement* textureXML = rootDoc.NewElement("Textures");
+    XMLElement* meshXML = rootDoc.NewElement("Meshes");
+    XMLElement* shaderXML = rootDoc.NewElement("Shaders");
+    parent->InsertEndChild(textureXML);
+    parent->InsertEndChild(meshXML);
+    parent->InsertEndChild(shaderXML);
+
+    // Serialize lookup table
+    unordered_map<int, ResourceInfo*>::iterator iter;
+    for (iter = m_resourceLookup.begin(); iter != m_resourceLookup.end(); iter++)
+    {
+        // TODO this is pretty ugly
+        XMLElement* resourceParent = NULL;
+        if (strcmp(iter->second->typeName.c_str(), "Textures") == 0)
+        {
+            resourceParent = textureXML;
+        }
+        else if (strcmp(iter->second->typeName.c_str(), "Meshes") == 0)
+        {
+            resourceParent = meshXML;
+        }
+        else if (strcmp(iter->second->typeName.c_str(), "Shaders") == 0)
+        {
+            resourceParent = shaderXML;
+        }
+
+        if (resourceParent != NULL)
+        {
+            iter->second->Serialize(rootDoc, resourceParent);
+        }
+    }
+}
+
+bool ResourceManager::AddResourceToMap(ResourceInfo* resource, int guid)
+{
+    if (m_resourceLookup.count(guid) != 0)
+    {
+        printf("ResourceManager error: trying to add a resource with an exisiting guid.\n");
+        return false;
+    }
+    m_resourceLookup[guid] = resource;
+    return true;
 }
 
 void ResourceManager::LoadSceneResources(XMLElement* resources)
@@ -113,14 +183,6 @@ ShaderProgram* ResourceManager::GetShader(int guid)
     return (ShaderProgram*)m_loadedResources[guid];
 }
 
-void ResourceManager::BuildResourceLookupTable(XMLElement* resources)
-{
-    // Process each resource type
-    AddResourcesToMap<TextureResourceInfo>(resources, "Textures");
-    AddResourcesToMap<MeshResourceInfo>(resources, "Meshes");
-    AddResourcesToMap<ShaderResourceInfo>(resources, "Shaders");
-}
-
 void ResourceManager::ClearResourceLookupTable()
 {
     // TODO implement me
@@ -141,4 +203,4 @@ void ResourceManager::AddResourcesToMap(XMLElement* resources, string typeName)
             element = element->NextSiblingElement();
         }
     }
-};
+}

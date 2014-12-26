@@ -23,6 +23,8 @@ using namespace tinyxml2;
 struct ResourceInfo
 {
     virtual void        AddToMap(XMLElement* element, unordered_map<int, ResourceInfo*> & map);
+    virtual void        Serialize(XMLDocument& rootDoc, XMLElement* parent);
+
     virtual Resource*   Load() = 0;
     void                Unload();
 
@@ -44,7 +46,9 @@ public:
     void            Startup();
     void            Shutdown();
 
-    void            BuildResourceMap(XMLElement* resources);
+    void            LoadResourceMap(XMLElement* resources);
+    void            SerializeResourceMap(XMLDocument& rootDoc, XMLElement* parent);
+    bool            AddResourceToMap(ResourceInfo* resource, int guid);  // TODO this function should create its own guids
 
     void            LoadSceneResources(XMLElement* resources);
     void            UnloadSceneResources();
@@ -55,7 +59,6 @@ public:
     ShaderProgram*  GetShader(int guid);
 
 private:
-    void BuildResourceLookupTable(XMLElement* resources);
     void ClearResourceLookupTable();
 
     template<typename T>

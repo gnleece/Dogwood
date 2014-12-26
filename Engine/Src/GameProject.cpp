@@ -10,7 +10,7 @@ GameProject::GameProject()
 {
 }
 
-bool GameProject::New(string filepath)
+bool GameProject::New(string filename)
 {
     if (m_loaded)
     {
@@ -18,13 +18,13 @@ bool GameProject::New(string filepath)
         return false;
     }
 
-    m_filepath = filepath;
+    m_filename = filename;
 
     // TODO implement me
     return false;
 }
 
-bool GameProject::Load(string filepath)
+bool GameProject::Load(string filename)
 {
     if (m_loaded)
     {
@@ -32,16 +32,16 @@ bool GameProject::Load(string filepath)
         return false;
     }
 
-    m_filepath = filepath;
+    m_filename = filename;
 
-    printf("LOADING PROJECT: %s\n", m_filepath.c_str());
+    printf("LOADING PROJECT: %s\n", m_filename.c_str());
 
-    // Open the scene XML file
+    // Open the project XML file
     XMLDocument projectDoc;
-    XMLError result = projectDoc.LoadFile(m_filepath.c_str());
+    XMLError result = projectDoc.LoadFile(m_filename.c_str());
     if (result != XML_SUCCESS)
     {
-        printf("Error reading project file %s.\nXMLError %d\n", m_filepath.c_str(), result);
+        printf("Error reading project file %s.\nXMLError %d\n", m_filename.c_str(), result);
         return false;
     }
     XMLElement* projectXML = projectDoc.FirstChildElement("Dogwood-Project");
@@ -53,13 +53,16 @@ bool GameProject::Load(string filepath)
 
     // Give the resources list to the ResourceManager
     XMLElement* resourcesXML = projectXML->FirstChildElement("Resources");
-    ResourceManager::Singleton().BuildResourceMap(resourcesXML);
+    ResourceManager::Singleton().LoadResourceMap(resourcesXML);
+
+    // Get the list of scenes
+    LoadSceneList();
 
     m_loaded = true;
     return true;
 }
 
-bool GameProject::Save(string filepath)
+bool GameProject::Save(string filename)
 {
     if (!m_loaded)
     {
@@ -67,8 +70,32 @@ bool GameProject::Save(string filepath)
         return false;
     }
 
-    // TODO implement me
-    return false;
+    // If a non-empty filename is provided, use it (for "Save As")
+    if (filename.compare("") != 0)
+    {
+        m_filename = filename;
+    }
+
+    // Root setup
+    XMLDocument projectDoc;
+    XMLElement* rootElement = projectDoc.NewElement("Dogwood-Project");
+    rootElement->SetAttribute("name", m_name.c_str());
+    projectDoc.InsertEndChild(rootElement);
+
+    // Save settings
+    SerializeSettings(projectDoc, rootElement);
+
+    // Save resource map
+    XMLElement* resourcesXML = projectDoc.NewElement("Resources");
+    rootElement->InsertEndChild(resourcesXML);
+    ResourceManager::Singleton().SerializeResourceMap(projectDoc, resourcesXML);
+
+    // Save the scene list
+    SerilaizeSceneList();
+
+    // Save it!
+    projectDoc.SaveFile(m_filename.c_str());
+    return true;
 }
 
 bool GameProject::Unload()
@@ -105,6 +132,16 @@ void GameProject::SetResolution(int width, int height)
     m_height = height;
 }
 
+void GameProject::AddScene(Scene* scene)
+{
+    // TODO implement me
+}
+
+void GameProject::RemoveScene(Scene* scene)
+{
+    // TODO implement me
+}
+
 void GameProject::LoadSettings(XMLElement* settingsXML)
 {
     if (settingsXML == NULL)
@@ -116,4 +153,25 @@ void GameProject::LoadSettings(XMLElement* settingsXML)
         m_width = resolutionXML->IntAttribute("width");
         m_height = resolutionXML->IntAttribute("height");
     }
+}
+
+void GameProject::LoadSceneList()
+{
+    // TODO implement me
+}
+
+void GameProject::SerializeSettings(XMLDocument& rootDoc, XMLElement* parent)
+{
+    XMLElement* settingsXML = rootDoc.NewElement("Settings");
+    parent->InsertEndChild(settingsXML);
+
+    XMLElement* resolutionXML = rootDoc.NewElement("Resolution");
+    resolutionXML->SetAttribute("width", m_width);
+    resolutionXML->SetAttribute("height", m_height);
+    settingsXML->InsertEndChild(resolutionXML);
+}
+
+void GameProject::SerilaizeSceneList()
+{
+    // TODO implement me
 }
