@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>AssetWidget</class>
+ <widget class="QWidget" name="AssetWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>582</width>
+    <height>279</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QPushButton" name="pushButton">
+   <property name="geometry">
+    <rect>
+     <x>470</x>
+     <y>250</y>
+     <width>110</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Import asset...</string>
+   </property>
+  </widget>
+  <widget class="QTabWidget" name="tabWidget">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>581</width>
+     <height>251</height>
+    </rect>
+   </property>
+   <property name="currentIndex">
+    <number>0</number>
+   </property>
+   <widget class="QWidget" name="meshTab">
+    <attribute name="title">
+     <string>Meshes</string>
+    </attribute>
+   </widget>
+   <widget class="QWidget" name="textureTab">
+    <attribute name="title">
+     <string>Textures</string>
+    </attribute>
+   </widget>
+   <widget class="QWidget" name="shaderTab">
+    <attribute name="title">
+     <string>Shaders</string>
+    </attribute>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

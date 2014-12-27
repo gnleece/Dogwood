@@ -9,6 +9,7 @@
 #include "EditorCommands.h"
 #include "Math\Algebra.h"
 
+class AssetWidget;
 class GameObject;
 class GameProject;
 class HierarchyModel;
@@ -50,6 +51,7 @@ private:
     bool                    m_open;
 
     Ui::MainEditorWindow*   m_ui;
+    AssetWidget*            m_assetWidget;
     SceneViewWidget*        m_sceneViewWidget;
     TransformWidget*        m_transformWidget;
     MeshWidget*             m_meshWidget;

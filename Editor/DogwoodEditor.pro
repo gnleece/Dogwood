@@ -14,7 +14,8 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         maineditorwindow.cpp \
-        vectoredit.cpp
+        vectoredit.cpp \
+    assetwidget.cpp
 
 HEADERS  += maineditorwindow.h \
     meshwidget.h
@@ -24,4 +25,5 @@ FORMS    += maineditorwindow.ui \
     vectorwidget.ui \
     scrollwidget.ui \
     meshwidget.ui \
-    colorwidget.ui
+    colorwidget.ui \
+    assetwidget.ui

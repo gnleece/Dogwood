@@ -7,6 +7,7 @@
 #include "Rendering\RenderManager.h"
 #include "Scene\Scene.h"
 #include "Tools\TransformTool.h"
+#include "Widgets\AssetWidget.h"
 #include "Widgets\MeshWidget.h"
 #include "Widgets\SceneViewWidget.h"
 #include "Widgets\ScrollWidget.h"
@@ -28,6 +29,10 @@ MainEditorWindow::MainEditorWindow(QWidget *parent)
 
     // Tree view setup
     m_view = m_ui->treeView;
+
+    // Asset widget setup
+    m_assetWidget = new AssetWidget(this);
+    m_ui->assetWidgetLayout->addWidget(m_assetWidget);
 
     // Scene view widget setup
     m_sceneViewWidget = new SceneViewWidget(this, this);
