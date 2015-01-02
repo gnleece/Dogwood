@@ -18,18 +18,17 @@ class Texture;
 
 using std::string;
 using std::unordered_map;
-using namespace tinyxml2;
 
 struct ResourceInfo
 {
-    virtual void        AddToMap(XMLElement* element, unordered_map<int, ResourceInfo*> & map);
-    virtual void        Serialize(XMLDocument& rootDoc, XMLElement* parent);
+    virtual void        AddToMap(tinyxml2::XMLElement* element, unordered_map<int, ResourceInfo*> & map);
+    virtual void        Serialize(tinyxml2::XMLDocument& rootDoc, tinyxml2::XMLElement* parent);
 
     virtual Resource*   Load() = 0;
     void                Unload();
+    virtual string      TypeName() = 0;
 
     int     guid;
-    string  typeName;
     string  path;
 };
 
@@ -46,11 +45,11 @@ public:
     void            Startup();
     void            Shutdown();
 
-    void            LoadResourceMap(XMLElement* resources);
-    void            SerializeResourceMap(XMLDocument& rootDoc, XMLElement* parent);
-    bool            AddResourceToMap(ResourceInfo* resource, int guid);  // TODO this function should create its own guids
+    void            LoadResourceMap(tinyxml2::XMLElement* resources);
+    void            SerializeResourceMap(tinyxml2::XMLDocument& rootDoc, tinyxml2::XMLElement* parent);
+    bool            ImportResource(string filepath, string type);
 
-    void            LoadSceneResources(XMLElement* resources);
+    void            LoadSceneResources(tinyxml2::XMLElement* resources);
     void            UnloadSceneResources();
 
     Resource*       GetResource(int guid);
@@ -62,7 +61,7 @@ private:
     void ClearResourceLookupTable();
 
     template<typename T>
-    void AddResourcesToMap(XMLElement* resources, string typeName);
+    void AddResourcesToMap(tinyxml2::XMLElement* resources, string typeName);
 
     unordered_map<int, ResourceInfo*> m_resourceLookup;
     unordered_map<int, Resource*> m_loadedResources;

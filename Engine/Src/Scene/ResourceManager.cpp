@@ -6,12 +6,19 @@
 
 #include "tinyxml2.h"
 
+using namespace tinyxml2;
+
 struct TextureResourceInfo : ResourceInfo
 { 
     virtual Resource* Load()
     {
         Texture* texture = new Texture(path, this);
         return texture;
+    }
+
+    virtual string TypeName()
+    {
+        return "Texture";
     }
 };
 
@@ -21,6 +28,11 @@ struct MeshResourceInfo : ResourceInfo
     {
         Mesh* mesh = new Mesh(path, this);
         return mesh;
+    }
+
+    virtual string TypeName()
+    {
+        return "Mesh";
     }
 };
 
@@ -35,6 +47,11 @@ struct ShaderResourceInfo : ResourceInfo
         return shader;
     }
 
+    virtual string TypeName()
+    {
+        return "Shader";
+    }
+
     void AddToMap(XMLElement* element, unordered_map<int, ResourceInfo*> & map)
     {
         vertexpath = element->Attribute("vertex-path");
@@ -45,7 +62,7 @@ struct ShaderResourceInfo : ResourceInfo
 
     void Serialize(XMLDocument& rootDoc, XMLElement* parent)
     {
-        XMLElement* xml = rootDoc.NewElement(typeName.c_str());
+        XMLElement* xml = rootDoc.NewElement(TypeName().c_str());
         xml->SetAttribute("guid", guid);
         xml->SetAttribute("vertex-path", vertexpath.c_str());
         xml->SetAttribute("fragment-path", fragmentpath.c_str());
@@ -62,7 +79,7 @@ void ResourceInfo::AddToMap(XMLElement* element, unordered_map<int, ResourceInfo
 
 void ResourceInfo::Serialize(XMLDocument& rootDoc, XMLElement* parent)
 {
-    XMLElement* xml = rootDoc.NewElement(typeName.c_str());
+    XMLElement* xml = rootDoc.NewElement(TypeName().c_str());
     xml->SetAttribute("guid", guid);
     xml->SetAttribute("path", path.c_str());
     parent->InsertEndChild(xml);
@@ -111,15 +128,15 @@ void ResourceManager::SerializeResourceMap(XMLDocument& rootDoc, XMLElement* par
     {
         // TODO this is pretty ugly
         XMLElement* resourceParent = NULL;
-        if (strcmp(iter->second->typeName.c_str(), "Textures") == 0)
+        if (strcmp(iter->second->TypeName().c_str(), "Texture") == 0)
         {
             resourceParent = textureXML;
         }
-        else if (strcmp(iter->second->typeName.c_str(), "Meshes") == 0)
+        else if (strcmp(iter->second->TypeName().c_str(), "Mesh") == 0)
         {
             resourceParent = meshXML;
         }
-        else if (strcmp(iter->second->typeName.c_str(), "Shaders") == 0)
+        else if (strcmp(iter->second->TypeName().c_str(), "Shader") == 0)
         {
             resourceParent = shaderXML;
         }
@@ -131,8 +148,27 @@ void ResourceManager::SerializeResourceMap(XMLDocument& rootDoc, XMLElement* par
     }
 }
 
-bool ResourceManager::AddResourceToMap(ResourceInfo* resource, int guid)
+bool ResourceManager::ImportResource(string filepath, string type)
 {
+    ResourceInfo* resource = NULL;
+    int guid = 1337;        // TODO real guid generation
+
+    if (strcmp(type.c_str(), "obj") == 0)
+    {
+        // Mesh
+        resource = new MeshResourceInfo();
+        resource->path = filepath;
+        resource->guid = guid;
+    }
+    else if (strcmp(type.c_str(), "bmp") == 0)
+    {
+        // Texture
+        resource = new TextureResourceInfo();
+        resource->path = filepath;
+        resource->guid = guid;
+    }
+    // TODO handle shaders
+
     if (m_resourceLookup.count(guid) != 0)
     {
         printf("ResourceManager error: trying to add a resource with an exisiting guid.\n");
@@ -204,7 +240,6 @@ void ResourceManager::AddResourcesToMap(XMLElement* resources, string typeName)
         while (element)
         {
             T* info = new T();
-            info->typeName = typeName;
             info->AddToMap(element, m_resourceLookup);
             element = element->NextSiblingElement();
         }

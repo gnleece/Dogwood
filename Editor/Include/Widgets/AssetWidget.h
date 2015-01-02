@@ -20,4 +20,7 @@ private:
     Ui::AssetWidget*    m_ui;
 
     AssetDatabaseModel* m_model;
+
+private slots:
+    void ImportAssetClicked();
 };
