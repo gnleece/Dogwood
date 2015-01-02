@@ -69,7 +69,9 @@ void ResourceInfo::Serialize(XMLDocument& rootDoc, XMLElement* parent)
 }
 
 void ResourceManager::Startup()
-{}
+{
+    m_lookupTableLoaded = false;
+}
 
 void ResourceManager::Shutdown()
 {
@@ -89,6 +91,8 @@ void ResourceManager::LoadResourceMap(XMLElement* resources)
     AddResourcesToMap<TextureResourceInfo>(resources, "Textures");
     AddResourcesToMap<MeshResourceInfo>(resources, "Meshes");
     AddResourcesToMap<ShaderResourceInfo>(resources, "Shaders");
+
+    m_lookupTableLoaded = true;
 }
 
 void ResourceManager::SerializeResourceMap(XMLDocument& rootDoc, XMLElement* parent)
@@ -186,6 +190,8 @@ ShaderProgram* ResourceManager::GetShader(int guid)
 void ResourceManager::ClearResourceLookupTable()
 {
     // TODO implement me
+
+    m_lookupTableLoaded = false;
 }
 
 template<typename T>

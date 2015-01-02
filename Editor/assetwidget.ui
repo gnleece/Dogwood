@@ -42,6 +42,22 @@
     <attribute name="title">
      <string>Meshes</string>
     </attribute>
+    <widget class="QTableView" name="meshTableView">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>581</width>
+       <height>231</height>
+      </rect>
+     </property>
+     <attribute name="horizontalHeaderVisible">
+      <bool>false</bool>
+     </attribute>
+     <attribute name="verticalHeaderVisible">
+      <bool>false</bool>
+     </attribute>
+    </widget>
    </widget>
    <widget class="QWidget" name="textureTab">
     <attribute name="title">

@@ -2,6 +2,8 @@
 
 #include <QtWidgets>
 
+class AssetDatabaseModel;
+
 namespace Ui
 {
     class AssetWidget;
@@ -15,5 +17,7 @@ public:
     AssetWidget(QWidget* parent = 0);
 
 private:
-    Ui::AssetWidget*     m_ui;
+    Ui::AssetWidget*    m_ui;
+
+    AssetDatabaseModel* m_model;
 };

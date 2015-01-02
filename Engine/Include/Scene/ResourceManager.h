@@ -66,4 +66,6 @@ private:
 
     unordered_map<int, ResourceInfo*> m_resourceLookup;
     unordered_map<int, Resource*> m_loadedResources;
+
+    bool m_lookupTableLoaded;
 };
