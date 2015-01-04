@@ -28,8 +28,8 @@ struct ResourceInfo
     void                Unload();
     virtual string      TypeName() = 0;
 
-    int     guid;
-    string  path;
+    unsigned int        guid;
+    string              path;
 };
 
 class ResourceManager
@@ -47,15 +47,20 @@ public:
 
     void            LoadResourceMap(tinyxml2::XMLElement* resources);
     void            SerializeResourceMap(tinyxml2::XMLDocument& rootDoc, tinyxml2::XMLElement* parent);
-    bool            ImportResource(string filepath, string type);
+    bool            ImportResource(string& filepath, string& type);
 
     void            LoadSceneResources(tinyxml2::XMLElement* resources);
     void            UnloadSceneResources();
 
-    Resource*       GetResource(int guid);
-    Texture*        GetTexture(int guid);
-    Mesh*           GetMesh(int guid);
-    ShaderProgram*  GetShader(int guid);
+    Resource*       GetResource(unsigned int guid);
+    Texture*        GetTexture(unsigned int guid);
+    Mesh*           GetMesh(unsigned int guid);
+    ShaderProgram*  GetShader(unsigned int guid);
+
+    void            SetResourceBasePath(string& path);
+    string          GetResourceBasePath();
+
+    string          AbsolutePathToProjectPath(string& absolutePath);
 
 private:
     void ClearResourceLookupTable();
@@ -67,4 +72,6 @@ private:
     unordered_map<int, Resource*> m_loadedResources;
 
     bool m_lookupTableLoaded;
+
+    string m_resourceBasePath;
 };

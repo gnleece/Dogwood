@@ -6,7 +6,7 @@
 using namespace tinyxml2;
 
 GameProject::GameProject()
- : m_loaded(false)
+: m_loaded(false), m_filename(""), m_resourceDir("")
 {
 }
 
@@ -54,6 +54,7 @@ bool GameProject::Load(string filename)
     // Give the resources list to the ResourceManager
     XMLElement* resourcesXML = projectXML->FirstChildElement("Resources");
     ResourceManager::Singleton().LoadResourceMap(resourcesXML);
+    ResourceManager::Singleton().SetResourceBasePath(m_resourceDir);
 
     // Get the list of scenes
     LoadSceneList();
@@ -132,6 +133,18 @@ void GameProject::SetResolution(int width, int height)
     m_height = height;
 }
 
+string GameProject::GetResourceBasePath()
+{
+    return m_resourceDir;
+}
+
+void GameProject::SetResourceBasePath(string path)
+{
+    // TODO remap asset relative paths? give warning?
+
+    m_resourceDir = path;
+}
+
 void GameProject::AddScene(Scene* scene)
 {
     // TODO implement me
@@ -153,6 +166,12 @@ void GameProject::LoadSettings(XMLElement* settingsXML)
         m_width = resolutionXML->IntAttribute("width");
         m_height = resolutionXML->IntAttribute("height");
     }
+
+    XMLElement* resourcePathXML = settingsXML->FirstChildElement("Resource-Root-Path");
+    if (resourcePathXML)
+    {
+        m_resourceDir = resourcePathXML->Attribute("path");
+    }
 }
 
 void GameProject::LoadSceneList()
@@ -169,6 +188,10 @@ void GameProject::SerializeSettings(XMLDocument& rootDoc, XMLElement* parent)
     resolutionXML->SetAttribute("width", m_width);
     resolutionXML->SetAttribute("height", m_height);
     settingsXML->InsertEndChild(resolutionXML);
+
+    XMLElement* resourcePathXML = rootDoc.NewElement("Resource-Root-Path");
+    resourcePathXML->SetAttribute("path", m_resourceDir.c_str());
+    settingsXML->InsertEndChild(resourcePathXML);
 }
 
 void GameProject::SerilaizeSceneList()

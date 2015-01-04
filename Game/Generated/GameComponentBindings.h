@@ -17,7 +17,7 @@ class GameComponent;
 // TODO unsure yet if this design is terrible or not
 // How to avoid regenerating entire file every time a single component changes? Ugh.
 
-GameComponent* CreateComponentByGUID(int guid)
+GameComponent* CreateComponentByGUID(unsigned int guid)
 {
     switch (guid)
     {
@@ -65,7 +65,7 @@ void SetParameter_GUID_4002(FooComponent* comp, XMLElement* param)
     }
 }
 
-void SetComponentParameter(int guid, GameComponent* comp, XMLElement* param)
+void SetComponentParameter(unsigned int guid, GameComponent* comp, XMLElement* param)
 {
     // TODO make this a hash map of function pointers instead of a giant switch statement?
 

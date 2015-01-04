@@ -23,6 +23,9 @@ public:
     void    GetResolution(int& width, int& height);
     void    SetResolution(int width, int height);
 
+    string  GetResourceBasePath();
+    void    SetResourceBasePath(string path);
+
     void    AddScene(Scene* scene);
     void    RemoveScene(Scene* scene);
 
@@ -39,4 +42,6 @@ private:
 
     int     m_width;
     int     m_height;
+
+    string  m_resourceDir;
 };

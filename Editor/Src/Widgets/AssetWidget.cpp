@@ -3,6 +3,7 @@
 
 #include "Widgets\AssetWidget.h"
 #include "AssetDatabaseModel.h"
+#include "DebugLogger.h"
 #include "Scene\ResourceManager.h"
 
 #include "..\GeneratedFiles\ui_assetwidget.h"
@@ -32,14 +33,24 @@ void AssetWidget::ImportAssetClicked()
                                                     "Meshes (*.obj);;Textures (*.bmp);;Shaders (*.glsl)"
     );
 
-    // Get info about selected file
     QFileInfo fileInfo(fileName);
     if (fileInfo.exists())
     {
+        // Get info about selected file
         string suffix = fileInfo.suffix().toStdString();
-        string path = fileName.toStdString();       // TODO convert path into proper format
+        string absolutePath = fileName.toStdString();
+        string projectPath = ResourceManager::Singleton().AbsolutePathToProjectPath(absolutePath);
 
         // Import the asset!
-        ResourceManager::Singleton().ImportResource(path, suffix);
+        bool success = ResourceManager::Singleton().ImportResource(projectPath, suffix);
+
+        if (success)
+        {
+            DebugLogger::Singleton().Log("Successfully imported asset.");
+        }
+        else
+        {
+            DebugLogger::Singleton().Log("Error importing asset.");
+        }
     }
 }

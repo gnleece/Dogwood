@@ -6,9 +6,10 @@ ENGINE (Dogwood)
     * Game object/component system
         * Proper awake/start/enable/disable/destroy/etc.
         * Fix custom component bindings
-    * GUIDs
     * Resources
         * Unloading
+        * Fix Shader type
+        * Materials?
     
     * Text (2D)
     * Particles
@@ -34,7 +35,6 @@ ENGINE (Dogwood)
         * Rewrite matrix inversion. Currently just copied from CS488 provided code
         * Add missing matrix maths (e.g. addition)
         * Engine provided assets (e.g. default shaders, primitive meshes)
-        * Asset path formatting
         * Input wrappers
         
 
@@ -43,11 +43,12 @@ ENGINE (Dogwood)
 EDITOR (Thicket)
 
     * Project
-        * New project, open project, save project
+        * New project, open project
         * Indicate active project in editor window
         * Project settings window
         * Assets widget
         * Add/remove assets (with guids)
+        * typedef guid type?
 
     * Scene
         * New scene

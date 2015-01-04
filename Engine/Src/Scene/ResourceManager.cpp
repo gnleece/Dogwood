@@ -4,6 +4,7 @@
 #include "Rendering\Mesh.h"
 #include "Rendering\Texture.h"
 
+#include <ctime>
 #include "tinyxml2.h"
 
 using namespace tinyxml2;
@@ -12,7 +13,8 @@ struct TextureResourceInfo : ResourceInfo
 { 
     virtual Resource* Load()
     {
-        Texture* texture = new Texture(path, this);
+        string absolutePath = ResourceManager::Singleton().GetResourceBasePath() + path;
+        Texture* texture = new Texture(absolutePath, this);
         return texture;
     }
 
@@ -26,7 +28,8 @@ struct MeshResourceInfo : ResourceInfo
 {
     virtual Resource* Load()
     {
-        Mesh* mesh = new Mesh(path, this);
+        string absolutePath = ResourceManager::Singleton().GetResourceBasePath() + path;
+        Mesh* mesh = new Mesh(absolutePath, this);
         return mesh;
     }
 
@@ -43,7 +46,9 @@ struct ShaderResourceInfo : ResourceInfo
 
     virtual Resource* Load()
     {
-        ShaderProgram* shader = new ShaderProgram(vertexpath, fragmentpath, this);
+        string absolutePathVert = ResourceManager::Singleton().GetResourceBasePath() + vertexpath;
+        string absolutePathFrag = ResourceManager::Singleton().GetResourceBasePath() + fragmentpath;
+        ShaderProgram* shader = new ShaderProgram(absolutePathVert, absolutePathFrag, this);
         return shader;
     }
 
@@ -148,32 +153,46 @@ void ResourceManager::SerializeResourceMap(XMLDocument& rootDoc, XMLElement* par
     }
 }
 
-bool ResourceManager::ImportResource(string filepath, string type)
+bool ResourceManager::ImportResource(string& filepath, string& type)
 {
     ResourceInfo* resource = NULL;
-    int guid = 1337;        // TODO real guid generation
 
     if (strcmp(type.c_str(), "obj") == 0)
     {
         // Mesh
         resource = new MeshResourceInfo();
-        resource->path = filepath;
-        resource->guid = guid;
     }
     else if (strcmp(type.c_str(), "bmp") == 0)
     {
         // Texture
         resource = new TextureResourceInfo();
-        resource->path = filepath;
-        resource->guid = guid;
     }
     // TODO handle shaders
 
+    if (resource == NULL)
+    {
+        return false;
+    }
+
+    // Get timestamp
+    time_t timer;
+    time(&timer);
+    string timestamp = std::to_string(timer);
+
+    // Use filepath + timestamp to create guid for this resource
+    unsigned int guid = std::hash<string>()(filepath + timestamp);
+    resource->path = filepath;
+    resource->guid = guid;
+
     if (m_resourceLookup.count(guid) != 0)
     {
+        // Because the guid is a hash of filepath + timestamp, this should basically never happen
         printf("ResourceManager error: trying to add a resource with an exisiting guid.\n");
         return false;
     }
+
+    // TODO also check whether this filepath already exists in the table
+
     m_resourceLookup[guid] = resource;
     return true;
 }
@@ -183,7 +202,7 @@ void ResourceManager::LoadSceneResources(XMLElement* resources)
     XMLElement* element = resources->FirstChildElement();
     while (element)
     {
-        int guid = element->IntAttribute("guid");
+        unsigned int guid = element->UnsignedAttribute("guid");
         ResourceInfo* info = m_resourceLookup[guid];
         if (info)
         {
@@ -203,24 +222,52 @@ void ResourceManager::UnloadSceneResources()
     // TODO implement me
 }
 
-Resource* ResourceManager::GetResource(int guid)
+Resource* ResourceManager::GetResource(unsigned int guid)
 {
     return m_loadedResources[guid];
 }
 
-Texture* ResourceManager::GetTexture(int guid)
+Texture* ResourceManager::GetTexture(unsigned int guid)
 {
     return (Texture*)m_loadedResources[guid];
 }
 
-Mesh* ResourceManager::GetMesh(int guid)
+Mesh* ResourceManager::GetMesh(unsigned int guid)
 {
     return (Mesh*)m_loadedResources[guid];
 }
 
-ShaderProgram* ResourceManager::GetShader(int guid)
+ShaderProgram* ResourceManager::GetShader(unsigned int guid)
 {
     return (ShaderProgram*)m_loadedResources[guid];
+}
+
+void ResourceManager::SetResourceBasePath(string& path)
+{
+    m_resourceBasePath = path;
+}
+
+string ResourceManager::GetResourceBasePath()
+{
+    return m_resourceBasePath;
+}
+
+string ResourceManager::AbsolutePathToProjectPath(string& absolutePath)
+{
+    int basePathLen = strlen(m_resourceBasePath.c_str());
+    int absolutePathLen = strlen(absolutePath.c_str());
+
+    // Check whether base project path is a prefix of the absolute path
+    int result = strncmp(absolutePath.c_str(), m_resourceBasePath.c_str(), basePathLen);
+    if (result != 0)
+    {
+        // Base path isn't a prefix, so we can't convert the absolute path
+        return "";
+    }
+
+    // Return the suffix following the project base path
+    string projectPath = absolutePath.substr(basePathLen, absolutePathLen - basePathLen);
+    return projectPath;
 }
 
 void ResourceManager::ClearResourceLookupTable()

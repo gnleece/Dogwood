@@ -1,9 +1,9 @@
 <Scene>
     <Resources>
-        <Resource guid="2002"/>
-        <Resource guid="1001"/>
+        <Resource guid="396944253"/>
+        <Resource guid="3780387270"/>
         <Resource guid="3001"/>
-        <Resource guid="2001"/>
+        <Resource guid="1863496264"/>
     </Resources>
     <Camera>
         <Position x="0.00000" y="1.00000" z="5.00000"/>
@@ -27,7 +27,7 @@
                 <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
                 <Scale x="0.80000" y="0.80000" z="0.80000"/>
             </Transform>
-            <Mesh guid="2002">
+            <Mesh guid="396944253">
                 <Material>
                     <Shader guid="3001"/>
                     <ColorDiffuse r="1.00000" g="1.00000" b="0.00000"/>
@@ -41,7 +41,7 @@
                     <Rotation x="0.00000" y="45.00000" z="0.00000"/>
                     <Scale x="0.80000" y="0.80000" z="0.80000"/>
                 </Transform>
-                <Mesh guid="2002">
+                <Mesh guid="396944253">
                     <Material>
                         <Shader guid="3001"/>
                         <ColorDiffuse r="1.00000" g="0.00000" b="0.00000"/>
@@ -55,7 +55,7 @@
                         <Rotation x="13.70000" y="60.00000" z="70.00000"/>
                         <Scale x="0.80000" y="0.80000" z="0.80000"/>
                     </Transform>
-                    <Mesh guid="2002">
+                    <Mesh guid="396944253">
                         <Material>
                             <Shader guid="3001"/>
                             <ColorDiffuse r="0.00000" g="0.00000" b="1.00000"/>
@@ -72,9 +72,9 @@
                 <Rotation x="45.00000" y="-0.00000" z="45.00000"/>
                 <Scale x="0.45000" y="0.45000" z="0.45000"/>
             </Transform>
-            <Mesh guid="2001">
+            <Mesh guid="1863496264">
                 <Material>
-                    <Texture guid="1001"/>
+                    <Texture guid="3780387270"/>
                     <Shader guid="3001"/>
                     <ColorDiffuse r="0.00000" g="1.00000" b="0.00000"/>
                     <ColorAmbient r="0.10000" g="0.10000" b="0.10000"/>
