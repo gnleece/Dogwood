@@ -46,6 +46,7 @@ public:
     void            Shutdown();
 
     void            LoadResourceMap(tinyxml2::XMLElement* resources);
+    void            ClearResourceMap();
     void            SerializeResourceMap(tinyxml2::XMLDocument& rootDoc, tinyxml2::XMLElement* parent);
     bool            ImportResource(string& filepath, string& type);
 
@@ -63,12 +64,10 @@ public:
     string          AbsolutePathToProjectPath(string& absolutePath);
 
 private:
-    void ClearResourceLookupTable();
-
     template<typename T>
     void AddResourcesToMap(tinyxml2::XMLElement* resources, string typeName);
 
-    unordered_map<int, ResourceInfo*> m_resourceLookup;
+    unordered_map<int, ResourceInfo*> m_resourceMap;
     unordered_map<int, Resource*> m_loadedResources;
 
     bool m_lookupTableLoaded;

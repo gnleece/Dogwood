@@ -14,6 +14,8 @@
 #include "Widgets\TransformWidget.h"
 #include "Widgets\WidgetUtils.h"
 
+#include <QFileDialog>
+#include <qinputdialog.h>
 #include <QtWidgets>
 
 using namespace EditorCommands;
@@ -174,7 +176,27 @@ void MainEditorWindow::Redo()
 
 void MainEditorWindow::NewProject()
 {
-    // TODO implement me
+    // Choose project name
+    string projectName = QInputDialog::getText(this, "New Project", "Project Name").toStdString();
+
+    // Choose project directory
+    QString dirPath = QFileDialog::getExistingDirectory(this, "Choose project directory", "");
+
+    // Create Assets directory inside project directory
+    QDir dir(dirPath);
+    dir.mkdir("Assets");
+
+    // Set up new project and save it
+    string projectFilename = dirPath.toStdString() + "/" + projectName + ".xml";
+    string assetsPath = dirPath.toStdString() + "/Assets";
+    GameProject::Singleton().Unload();
+    GameProject::Singleton().New(projectName, projectFilename, assetsPath);
+    GameProject::Singleton().Save();
+
+    // TODO Copy default engine resources to Assets directory
+
+    // TODO unload scene?
+
 }
 
 void MainEditorWindow::OpenProject()

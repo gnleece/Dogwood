@@ -20,7 +20,7 @@ public:
     void    Startup();
     void    Shutdown();
 
-    bool    New(string filename = "");
+    bool    New(string name, string filename, string resourcePath);
     bool    Load(string filename);
     bool    Save(string filename = "");
     bool    Unload();

@@ -17,7 +17,7 @@ void GameProject::Shutdown()
     Unload();
 }
 
-bool GameProject::New(string filename)
+bool GameProject::New(string name, string filename, string resourcePath)
 {
     if (m_loaded)
     {
@@ -25,10 +25,16 @@ bool GameProject::New(string filename)
         return false;
     }
 
+    m_name = name;
     m_filename = filename;
+    m_resourceDir = resourcePath;
 
-    // TODO implement me
-    return false;
+    // TODO set default settings
+
+    ResourceManager::Singleton().ClearResourceMap();
+    ResourceManager::Singleton().SetResourceBasePath(m_resourceDir);
+
+    m_loaded = true;
 }
 
 bool GameProject::Load(string filename)

@@ -100,13 +100,13 @@ void ResourceManager::Shutdown()
     UnloadSceneResources();
 
     // Unload resource map
-    ClearResourceLookupTable();
+    ClearResourceMap();
 }
 
 void ResourceManager::LoadResourceMap(XMLElement* resources)
 {
     // Unload previous project
-    ClearResourceLookupTable();
+    ClearResourceMap();
 
     // Process each resource type
     AddResourcesToMap<TextureResourceInfo>(resources, "Textures");
@@ -114,6 +114,21 @@ void ResourceManager::LoadResourceMap(XMLElement* resources)
     AddResourcesToMap<ShaderResourceInfo>(resources, "Shaders");
 
     m_lookupTableLoaded = true;
+}
+
+void ResourceManager::ClearResourceMap()
+{
+    UnloadSceneResources();
+
+    unordered_map<int, ResourceInfo*>::iterator iter;
+    for (iter = m_resourceMap.begin(); iter != m_resourceMap.end(); iter++)
+    {
+        ResourceInfo* info = iter->second;
+        delete info;
+    }
+    m_resourceMap.clear();
+
+    m_lookupTableLoaded = false;
 }
 
 void ResourceManager::SerializeResourceMap(XMLDocument& rootDoc, XMLElement* parent)
@@ -128,7 +143,7 @@ void ResourceManager::SerializeResourceMap(XMLDocument& rootDoc, XMLElement* par
 
     // Serialize lookup table
     unordered_map<int, ResourceInfo*>::iterator iter;
-    for (iter = m_resourceLookup.begin(); iter != m_resourceLookup.end(); iter++)
+    for (iter = m_resourceMap.begin(); iter != m_resourceMap.end(); iter++)
     {
         // TODO this is pretty ugly
         XMLElement* resourceParent = NULL;
@@ -183,7 +198,7 @@ bool ResourceManager::ImportResource(string& filepath, string& type)
     resource->path = filepath;
     resource->guid = guid;
 
-    if (m_resourceLookup.count(guid) != 0)
+    if (m_resourceMap.count(guid) != 0)
     {
         // Because the guid is a hash of filepath + timestamp, this should basically never happen
         printf("ResourceManager error: trying to add a resource with an exisiting guid.\n");
@@ -192,7 +207,7 @@ bool ResourceManager::ImportResource(string& filepath, string& type)
 
     // TODO also check whether this filepath already exists in the table
 
-    m_resourceLookup[guid] = resource;
+    m_resourceMap[guid] = resource;
     return true;
 }
 
@@ -202,7 +217,7 @@ void ResourceManager::LoadSceneResources(XMLElement* resources)
     while (element)
     {
         unsigned int guid = element->UnsignedAttribute("guid");
-        ResourceInfo* info = m_resourceLookup[guid];
+        ResourceInfo* info = m_resourceMap[guid];
         if (info)
         {
             printf("Loading guid %d\n", guid);
@@ -269,12 +284,7 @@ string ResourceManager::AbsolutePathToProjectPath(string& absolutePath)
     return projectPath;
 }
 
-void ResourceManager::ClearResourceLookupTable()
-{
-    // TODO implement me
 
-    m_lookupTableLoaded = false;
-}
 
 template<typename T>
 void ResourceManager::AddResourcesToMap(XMLElement* resources, string typeName)
@@ -286,7 +296,7 @@ void ResourceManager::AddResourcesToMap(XMLElement* resources, string typeName)
         while (element)
         {
             T* info = new T();
-            info->AddToMap(element, m_resourceLookup);
+            info->AddToMap(element, m_resourceMap);
             element = element->NextSiblingElement();
         }
     }
