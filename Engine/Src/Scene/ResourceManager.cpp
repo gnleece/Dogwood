@@ -1,6 +1,5 @@
 #include "Scene\ResourceManager.h"
 
-#include "GameProject.h"
 #include "Rendering\Mesh.h"
 #include "Rendering\Texture.h"
 

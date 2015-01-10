@@ -10,12 +10,21 @@ class Scene;
 class GameProject
 {
 public:
-    GameProject();
+    static GameProject& Singleton()
+    {
+        static GameProject singleton;
+        return singleton;
+    }
+    GameProject() {}
+
+    void    Startup();
+    void    Shutdown();
 
     bool    New(string filename = "");
     bool    Load(string filename);
     bool    Save(string filename = "");
     bool    Unload();
+    bool    IsLoaded();
 
     string  GetName();
     void    SetName(string name);

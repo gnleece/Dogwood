@@ -10,6 +10,6 @@ int main(void)
 
     // TODO startup scene should be specified in the project file
     Scene scene;
-    scene.LoadScene("Assets\\Scenes\\Scene0.xml");
+    scene.Load("Assets\\Scenes\\Scene0.xml");
     Game::Singleton().Run(scene.GetRootObject());
 }

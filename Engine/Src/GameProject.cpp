@@ -5,9 +5,16 @@
 
 using namespace tinyxml2;
 
-GameProject::GameProject()
-: m_loaded(false), m_filename(""), m_resourceDir("")
+void GameProject::Startup()
 {
+    m_loaded = false;
+    m_filename = "";
+    m_resourceDir = "";
+}
+
+void GameProject::Shutdown()
+{
+    Unload();
 }
 
 bool GameProject::New(string filename)
@@ -109,6 +116,11 @@ bool GameProject::Unload()
 
     m_loaded = false;
     return true;
+}
+
+bool GameProject::IsLoaded()
+{
+    return m_loaded;
 }
 
 string GameProject::GetName()

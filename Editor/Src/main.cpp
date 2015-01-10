@@ -6,6 +6,7 @@
 
 #include "HierarchyModel.h"
 #include "maineditorwindow.h"
+#include "GameProject.h"
 #include "Rendering\RenderManager.h"
 #include "Scene\ResourceManager.h"
 #include "Scene\Scene.h"
@@ -26,6 +27,7 @@ int main(int argc, char *argv[])
     
     // Other manager setup
     ResourceManager::Singleton().Startup();
+    GameProject::Singleton().Startup();
 
     // Post-setup step
     window.PostSetup();
@@ -51,6 +53,7 @@ int main(int argc, char *argv[])
     app.exit();
 
     // Shutdown
+    GameProject::Singleton().Shutdown();
     ResourceManager::Singleton().Shutdown();
     RenderManager::Singleton().Shutdown();
 }

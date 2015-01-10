@@ -19,15 +19,15 @@ void Game::Init(string projectPath)
     ResourceManager::Singleton().Startup();
 
     // Project setup
-    m_gameProject = new GameProject();          // TODO unload, cleanup
-    bool success = m_gameProject->Load(projectPath);
+    GameProject::Singleton().Startup();
+    bool success = GameProject::Singleton().Load(projectPath);
     if (!success)
         return;
 
     // Window setup
     int windowWidth, windowHeight;
-    m_gameProject->GetResolution(windowWidth, windowHeight);
-    m_gameWindow.Setup(m_gameProject->GetName(), windowWidth, windowHeight);
+    GameProject::Singleton().GetResolution(windowWidth, windowHeight);
+    m_gameWindow.Setup(GameProject::Singleton().GetName(), windowWidth, windowHeight);
 
     // Manager setup
     RenderConfig renderConfig;
@@ -76,6 +76,7 @@ void Game::Run(GameObject* sceneRoot)
 void Game::Shutdown()
 {
     // Manager shutdown
+    GameProject::Singleton().Shutdown();
     ResourceManager::Singleton().Shutdown();
     InputManager::Singleton().Shutdown();
     RenderManager::Singleton().Shutdown();

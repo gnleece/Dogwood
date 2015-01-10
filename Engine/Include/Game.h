@@ -15,7 +15,6 @@ using std::list;
 using std::string;
 
 class GameObject;
-class GameProject;
 
 class Game
 {
@@ -36,7 +35,6 @@ private:
     void Shutdown();
     void UpdateTime();
 
-    GameProject*      m_gameProject;
     GameWindow        m_gameWindow;
     GameObject*       m_rootObject;
 

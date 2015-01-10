@@ -20,7 +20,7 @@ using namespace EditorCommands;
 
 MainEditorWindow::MainEditorWindow(QWidget *parent)
 : m_ui(new Ui::MainEditorWindow), m_copiedGameObject(NULL), m_selectedGameObject(NULL),
-  m_project(NULL), m_scene(NULL)
+  m_scene(NULL)
 {
     // Window setup
     m_ui->setupUi(this);
@@ -184,9 +184,9 @@ void MainEditorWindow::OpenProject()
 
 void MainEditorWindow::SaveProject()
 {
-    if (m_project)
+    if (GameProject::Singleton().IsLoaded());
     {
-        m_project->Save();
+        GameProject::Singleton().Save();
         DebugLogger::Singleton().Log("Project saved.");
     }
 }
@@ -222,10 +222,9 @@ void MainEditorWindow::OpenScene()
 
 void MainEditorWindow::OpenTestProject()
 {
-    // TODO unload previous project
+    GameProject::Singleton().Unload();
 
-    m_project = new GameProject();
-    bool success = m_project->Load("..\\Game\\Katamari.xml");
+    bool success = GameProject::Singleton().Load("..\\Game\\Katamari.xml");
     if (!success)
     {
         DebugLogger::Singleton().Log("Error loading test project.");
@@ -242,7 +241,7 @@ void MainEditorWindow::OpenTestProject()
     }
 
 
-    setWindowTitle(tr("[DOGWOOD EDITOR] Project: ") + QString(m_project->GetName().c_str()));
+    setWindowTitle(tr("[DOGWOOD EDITOR] Project: ") + QString(GameProject::Singleton().GetName().c_str()));
 }
 
 void MainEditorWindow::SaveScene()
@@ -464,12 +463,14 @@ void MainEditorWindow::closeEvent(QCloseEvent *event)
 
 void MainEditorWindow::UpdateMenuState()
 {
+    bool projectLoaded = GameProject::Singleton().IsLoaded();
+
     // Only enable scene operations if a project is loaded
-    m_ui->actionNew_Scene->setEnabled(m_project);
-    m_ui->actionOpen_Scene->setEnabled(m_project);
-    m_ui->actionSave_Scene->setEnabled(m_project && m_scene);
-    m_ui->actionSave_Scene_As->setEnabled(m_project && m_scene);
-    m_ui->actionSave_Project->setEnabled(m_project);
+    m_ui->actionNew_Scene->setEnabled(projectLoaded);
+    m_ui->actionOpen_Scene->setEnabled(projectLoaded);
+    m_ui->actionSave_Scene->setEnabled(projectLoaded && m_scene);
+    m_ui->actionSave_Scene_As->setEnabled(projectLoaded && m_scene);
+    m_ui->actionSave_Project->setEnabled(projectLoaded);
 
     // Only enable undo/redo if there are commands on the stack
     m_ui->actionUndo->setEnabled(CommandManager::Singleton().CanUndo());

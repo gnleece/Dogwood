@@ -1,9 +1,9 @@
 <Scene>
     <Resources>
         <Resource guid="396944253"/>
-        <Resource guid="3780387270"/>
         <Resource guid="3001"/>
         <Resource guid="1863496264"/>
+        <Resource guid="3780387270"/>
     </Resources>
     <Camera>
         <Position x="0.00000" y="1.00000" z="5.00000"/>

@@ -11,7 +11,6 @@
 
 class AssetWidget;
 class GameObject;
-class GameProject;
 class HierarchyModel;
 class MeshWidget;
 class QTreeView;
@@ -58,7 +57,6 @@ private:
 
     QTreeView*              m_view;
     HierarchyModel*         m_model;
-    GameProject*            m_project;
     Scene*                  m_scene;
 
     GameObject*             m_copiedGameObject;
