@@ -8,15 +8,16 @@
 #include "Math\Algebra.h"
 #include "Rendering\Colour.h"
 
-using namespace tinyxml2;
 using std::string;
 
-Vector3     ReadVector3FromXML(XMLElement* xmlnode);
-XMLNode*    WriteVector3ToXML(Vector3 vector, string name, XMLDocument& doc);
+Vector3             ReadVector3FromXML(tinyxml2::XMLElement* xmlnode);
+tinyxml2::XMLNode*  WriteVector3ToXML(Vector3 vector, string name, tinyxml2::XMLDocument& doc);
 
-ColourRGB   ReadColourFromXML(XMLElement* xmlnode);
-XMLNode*    WriteColourToXML(ColourRGB colour, string name, XMLDocument& doc);
+ColourRGB           ReadColourFromXML(tinyxml2::XMLElement* xmlnode);
+tinyxml2::XMLNode*  WriteColourToXML(ColourRGB colour, string name, tinyxml2::XMLDocument& doc);
 
-XMLNode*    WriteIntToXML(int value, string nodeName, string attribName, XMLDocument& doc);
-XMLNode*    WriteFloatToXML(float value, string nodeName, string attribName, XMLDocument& doc);
-XMLNode*    WriteStringToXML(string str, string nodeName, string attribName, XMLDocument& doc);
+tinyxml2::XMLNode*  WriteIntToXML(int value, string nodeName, string attribName, tinyxml2::XMLDocument& doc);
+tinyxml2::XMLNode*  WriteFloatToXML(float value, string nodeName, string attribName, tinyxml2::XMLDocument& doc);
+tinyxml2::XMLNode*  WriteStringToXML(string str, string nodeName, string attribName, tinyxml2::XMLDocument& doc);
+
+void                FileCopy(string source, string destination);

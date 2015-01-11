@@ -4,6 +4,7 @@
 #include "GameObject.h"
 #include "GameProject.h"
 #include "ui_maineditorwindow.h"
+#include "Util.h"
 #include "Rendering\RenderManager.h"
 #include "Scene\Scene.h"
 #include "Tools\TransformTool.h"
@@ -188,7 +189,7 @@ void MainEditorWindow::NewProject()
 
     // Set up new project and save it
     string projectFilename = dirPath.toStdString() + "/" + projectName + ".xml";
-    string assetsPath = dirPath.toStdString() + "/Assets";
+    string assetsPath = dirPath.toStdString() + "/Assets/";
     GameProject::Singleton().Unload();
     GameProject::Singleton().New(projectName, projectFilename, assetsPath);
     GameProject::Singleton().Save();

@@ -1,5 +1,10 @@
 #include "Util.h"
 
+#include <fstream>
+#include <ostream>
+
+using namespace tinyxml2;
+
 Vector3 ReadVector3FromXML(XMLElement* xmlnode)
 {
     Vector3 v;
@@ -83,4 +88,12 @@ XMLNode* WriteStringToXML(string str, string nodeName, string attribName, XMLDoc
     XMLElement* xmlnode = doc.NewElement(nodeName.c_str());
     xmlnode->SetAttribute(attribName.c_str(), str.c_str());
     return xmlnode;
+}
+
+void FileCopy(string source, string destination)
+{
+    std::ifstream src(source.c_str(), std::ios::binary);
+    std::ofstream dst(destination.c_str(), std::ios::binary);
+
+    dst << src.rdbuf();
 }

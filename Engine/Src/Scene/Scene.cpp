@@ -10,6 +10,8 @@
 #include "Rendering\Texture.h"
 //#include "..\..\Generated\GameComponentBindings.h"
 
+using namespace tinyxml2;
+
 Scene::Scene()
 : m_loaded(false)
 { }
