@@ -21,7 +21,7 @@ using std::unordered_map;
 
 struct ResourceInfo
 {
-    virtual void        AddToMap(tinyxml2::XMLElement* element, unordered_map<int, ResourceInfo*> & map);
+    virtual void        AddToMap(tinyxml2::XMLElement* element, unordered_map<unsigned int, ResourceInfo*> & map);
     virtual void        Serialize(tinyxml2::XMLDocument& rootDoc, tinyxml2::XMLElement* parent);
 
     virtual Resource*   Load() = 0;
@@ -48,7 +48,8 @@ public:
     void            LoadResourceMap(tinyxml2::XMLElement* resources);
     void            ClearResourceMap();
     void            SerializeResourceMap(tinyxml2::XMLDocument& rootDoc, tinyxml2::XMLElement* parent);
-    bool            ImportResource(string& filepath, string& type);
+    unsigned int    ImportResource(string& filepath, string type);
+    void            ImportDefaultResources();
 
     void            LoadSceneResources(tinyxml2::XMLElement* resources);
     void            UnloadSceneResources();
@@ -57,6 +58,7 @@ public:
     Texture*        GetTexture(unsigned int guid);
     Mesh*           GetMesh(unsigned int guid);
     ShaderProgram*  GetShader(unsigned int guid);
+    Resource*       GetDefaultResource(string name);
 
     void            SetResourceBasePath(string& path);
     string          GetResourceBasePath();
@@ -67,8 +69,9 @@ private:
     template<typename T>
     void AddResourcesToMap(tinyxml2::XMLElement* resources, string typeName);
 
-    unordered_map<int, ResourceInfo*> m_resourceMap;
-    unordered_map<int, Resource*> m_loadedResources;
+    unordered_map<unsigned int, ResourceInfo*>   m_resourceMap;
+    unordered_map<unsigned int, Resource*>       m_loadedResources;
+    unordered_map<string, unsigned int>          m_defaultResources;
 
     bool m_lookupTableLoaded;
 

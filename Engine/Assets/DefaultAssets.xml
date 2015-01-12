@@ -1,0 +1,24 @@
+<!-- This is a list of the built-in resources provided by the engine
+     (e.g. basic shaders, primitive meshes). This list is inserted into
+     every new game project. -->
+
+<Dogwood-Default-Resources>
+ 
+    <Textures>
+    </Textures>
+
+    <Meshes>
+      <Mesh name="mesh_cone" path="..\\Engine\\Assets\\Meshes\\cube.obj" />
+      <Mesh name="mesh_cube" path="..\\Engine\\Assets\\Meshes\\cube.obj" />
+      <Mesh name="mesh_cylinder" path="..\\Engine\\Assets\\Meshes\\cube.obj" />
+      <Mesh name="mesh_plane" path="..\\Engine\\Assets\\Meshes\\cube.obj" />
+      <Mesh name="mesh_sphere" path="..\\Engine\\Assets\\Meshes\\cube.obj" />
+      <Mesh name="mesh_torus" path="..\\Engine\\Assets\\Meshes\\cube.obj" />
+    </Meshes>
+
+    <Shaders>
+      <Shader vertex-path="..\\Engine\\Assets\\Shaders\\Unlit.vert.glsl" fragment-path="..\\Engine\\Assets\\Shaders\\Unlit.frag.glsl" />
+      <Shader vertex-path="..\\Engine\\Assets\\Shaders\\UnlitUniformColor.vert.glsl" fragment-path="..\\Engine\\Assets\\Shaders\\UnlitUniformColor.frag.glsl" />
+    </Shaders>
+
+</Dogwood-Default-Resources>

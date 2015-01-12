@@ -1,5 +1,6 @@
 #include "Scene\ResourceManager.h"
 
+#include "Util.h"
 #include "Rendering\Mesh.h"
 #include "Rendering\Texture.h"
 
@@ -56,7 +57,7 @@ struct ShaderResourceInfo : ResourceInfo
         return "Shader";
     }
 
-    void AddToMap(XMLElement* element, unordered_map<int, ResourceInfo*> & map)
+    void AddToMap(XMLElement* element, unordered_map<unsigned int, ResourceInfo*> & map)
     {
         vertexpath = element->Attribute("vertex-path");
         fragmentpath = element->Attribute("fragment-path");
@@ -74,7 +75,7 @@ struct ShaderResourceInfo : ResourceInfo
     }
 };
 
-void ResourceInfo::AddToMap(XMLElement* element, unordered_map<int, ResourceInfo*> & map)
+void ResourceInfo::AddToMap(XMLElement* element, unordered_map<unsigned int, ResourceInfo*> & map)
 {
     path = element->Attribute("path");
     guid = element->IntAttribute("guid");
@@ -113,6 +114,20 @@ void ResourceManager::LoadResourceMap(XMLElement* resources)
     AddResourcesToMap<MeshResourceInfo>(resources, "Meshes");
     AddResourcesToMap<ShaderResourceInfo>(resources, "Shaders");
 
+    // Load default resource map
+    XMLElement* elements = resources->FirstChildElement("DefaultResources");
+    if (elements)
+    {
+        XMLElement* element = elements->FirstChildElement();
+        while (element)
+        {
+            string name = element->Attribute("name");
+            unsigned int guid = element->IntAttribute("guid");
+            m_defaultResources[name] = guid;
+            element = element->NextSiblingElement();
+        }
+    }
+
     m_lookupTableLoaded = true;
 }
 
@@ -120,13 +135,14 @@ void ResourceManager::ClearResourceMap()
 {
     UnloadSceneResources();
 
-    unordered_map<int, ResourceInfo*>::iterator iter;
+    unordered_map<unsigned int, ResourceInfo*>::iterator iter;
     for (iter = m_resourceMap.begin(); iter != m_resourceMap.end(); iter++)
     {
         ResourceInfo* info = iter->second;
         delete info;
     }
     m_resourceMap.clear();
+    m_defaultResources.clear();
 
     m_lookupTableLoaded = false;
 }
@@ -142,7 +158,7 @@ void ResourceManager::SerializeResourceMap(XMLDocument& rootDoc, XMLElement* par
     parent->InsertEndChild(shaderXML);
 
     // Serialize lookup table
-    unordered_map<int, ResourceInfo*>::iterator iter;
+    unordered_map<unsigned int, ResourceInfo*>::iterator iter;
     for (iter = m_resourceMap.begin(); iter != m_resourceMap.end(); iter++)
     {
         // TODO this is pretty ugly
@@ -165,9 +181,21 @@ void ResourceManager::SerializeResourceMap(XMLDocument& rootDoc, XMLElement* par
             iter->second->Serialize(rootDoc, resourceParent);
         }
     }
+
+    // Serialize default resource lookup
+    XMLElement* defaultXML = rootDoc.NewElement("DefaultResources");
+    parent->InsertEndChild(defaultXML);
+    unordered_map<string, unsigned int>::iterator defIter;
+    for (defIter = m_defaultResources.begin(); defIter != m_defaultResources.end(); defIter++)
+    {
+        XMLElement* xml = rootDoc.NewElement("Asset");
+        xml->SetAttribute("name", defIter->first.c_str());
+        xml->SetAttribute("guid", defIter->second);
+        defaultXML->InsertEndChild(xml);
+    }
 }
 
-bool ResourceManager::ImportResource(string& filepath, string& type)
+unsigned int ResourceManager::ImportResource(string& filepath, string type)
 {
     ResourceInfo* resource = NULL;
 
@@ -185,7 +213,7 @@ bool ResourceManager::ImportResource(string& filepath, string& type)
 
     if (resource == NULL)
     {
-        return false;
+        return 0;
     }
 
     // Get timestamp
@@ -202,13 +230,49 @@ bool ResourceManager::ImportResource(string& filepath, string& type)
     {
         // Because the guid is a hash of filepath + timestamp, this should basically never happen
         printf("ResourceManager error: trying to add a resource with an exisiting guid.\n");
-        return false;
+        return 0;
     }
 
     // TODO also check whether this filepath already exists in the table
 
     m_resourceMap[guid] = resource;
-    return true;
+    resource->Load();
+    return guid;
+}
+
+
+void ResourceManager::ImportDefaultResources()
+{
+    XMLDocument assetsDoc;
+    XMLError result = assetsDoc.LoadFile("..\\Engine\\Assets\\DefaultAssets.xml");
+    if (result != XML_SUCCESS)
+    {
+        printf("Error reading default assets file.\nXMLError %d\n", result);
+    }
+    XMLElement* assetsXML = assetsDoc.FirstChildElement("Dogwood-Default-Resources");
+
+    XMLElement* meshesXML = assetsXML->FirstChildElement("Meshes");
+    if (meshesXML != NULL)
+    {
+        XMLElement* meshXML = meshesXML->FirstChildElement();
+        while (meshXML != NULL)
+        {
+            // Copy the asset to the project's asset folder
+            string srcfile = meshXML->Attribute("path");
+            string name = meshXML->Attribute("name");
+            string destfile = m_resourceBasePath + "Meshes/" + name + ".obj";
+            FileCopy(srcfile, destfile);
+
+            // Import the asset to the project
+            string relativePath = AbsolutePathToProjectPath(destfile);
+            unsigned int guid = ImportResource(relativePath, "obj");
+            m_defaultResources[name] = guid;
+
+            meshXML = meshXML->NextSiblingElement();
+        }
+    }
+
+    // TODO additional resource types
 }
 
 void ResourceManager::LoadSceneResources(XMLElement* resources)
@@ -256,6 +320,12 @@ ShaderProgram* ResourceManager::GetShader(unsigned int guid)
     return (ShaderProgram*)m_loadedResources[guid];
 }
 
+Resource* ResourceManager::GetDefaultResource(string name)
+{
+    int guid = m_defaultResources[name];
+    return m_loadedResources[guid];
+}
+
 void ResourceManager::SetResourceBasePath(string& path)
 {
     m_resourceBasePath = path;
@@ -283,8 +353,6 @@ string ResourceManager::AbsolutePathToProjectPath(string& absolutePath)
     string projectPath = absolutePath.substr(basePathLen, absolutePathLen - basePathLen);
     return projectPath;
 }
-
-
 
 template<typename T>
 void ResourceManager::AddResourcesToMap(XMLElement* resources, string typeName)

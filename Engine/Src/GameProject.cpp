@@ -31,10 +31,13 @@ bool GameProject::New(string name, string filename, string resourcePath)
 
     // TODO set default settings
 
+    // Prepare resource map
     ResourceManager::Singleton().ClearResourceMap();
     ResourceManager::Singleton().SetResourceBasePath(m_resourceDir);
+    ResourceManager::Singleton().ImportDefaultResources();
 
     m_loaded = true;
+    return true;
 }
 
 bool GameProject::Load(string filename)

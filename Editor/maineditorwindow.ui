@@ -318,11 +318,12 @@
      <property name="title">
       <string>Add Mesh</string>
      </property>
-     <addaction name="actionCube"/>
-     <addaction name="actionSphere"/>
-     <addaction name="actionPlane"/>
-     <addaction name="actionCylinder"/>
-     <addaction name="actionCone"/>
+     <addaction name="actionAdd_Cube_Mesh"/>
+     <addaction name="actionAdd_Sphere_Mesh"/>
+     <addaction name="actionAdd_Plane_Mesh"/>
+     <addaction name="actionAdd_Cylinder_Mesh"/>
+     <addaction name="actionAdd_Cone_Mesh"/>
+     <addaction name="actionAdd_Torus_Mesh"/>
      <addaction name="separator"/>
      <addaction name="actionAsset"/>
     </widget>
@@ -509,44 +510,57 @@
     <string>Add Component...</string>
    </property>
   </action>
-  <action name="actionFoo">
-   <property name="text">
-    <string>Foo</string>
-   </property>
-  </action>
-  <action name="actionCube">
+  <action name="actionAdd_Cube_Mesh">
    <property name="text">
     <string>Cube</string>
    </property>
+   <property name="toolTip">
+    <string>Add cube mesh</string>
+   </property>
   </action>
-  <action name="actionSphere">
+  <action name="actionAdd_Sphere_Mesh">
    <property name="text">
     <string>Sphere</string>
    </property>
+   <property name="toolTip">
+    <string>Add sphere mesh</string>
+   </property>
   </action>
-  <action name="actionPlane">
+  <action name="actionAdd_Plane_Mesh">
    <property name="text">
     <string>Plane</string>
    </property>
+   <property name="toolTip">
+    <string>Add plane mesh</string>
+   </property>
   </action>
-  <action name="actionCylinder">
+  <action name="actionAdd_Cylinder_Mesh">
    <property name="text">
     <string>Cylinder</string>
    </property>
+   <property name="toolTip">
+    <string>Add cylinder mesh</string>
+   </property>
   </action>
-  <action name="actionCone">
+  <action name="actionAdd_Cone_Mesh">
    <property name="text">
     <string>Cone</string>
    </property>
-  </action>
-  <action name="actionAdd_Mesh_2">
-   <property name="text">
-    <string>Add Mesh</string>
+   <property name="toolTip">
+    <string>Add cone mesh</string>
    </property>
   </action>
   <action name="actionAsset">
    <property name="text">
     <string>Asset...</string>
+   </property>
+  </action>
+  <action name="actionAdd_Torus_Mesh">
+   <property name="text">
+    <string>Torus</string>
+   </property>
+   <property name="toolTip">
+    <string>Add torus mesh</string>
    </property>
   </action>
  </widget>

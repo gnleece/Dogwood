@@ -4,7 +4,6 @@
 #include "GameObject.h"
 #include "GameProject.h"
 #include "ui_maineditorwindow.h"
-#include "Util.h"
 #include "Rendering\RenderManager.h"
 #include "Scene\Scene.h"
 #include "Tools\TransformTool.h"
@@ -102,6 +101,16 @@ void MainEditorWindow::SetupMenuCommands()
     connect(m_ui->transformButton_Translate,    SIGNAL(clicked()),   this, SLOT(TransformTranslateButton()));
     connect(m_ui->transformButton_Rotate,       SIGNAL(clicked()),   this, SLOT(TransformRotateButton()));
     connect(m_ui->transformButton_Scale,        SIGNAL(clicked()),   this, SLOT(TransformScaleButton()));
+
+    // Mesh component menu
+    m_addMeshSignalMapper = new QSignalMapper(this);
+    connect(m_addMeshSignalMapper, SIGNAL(mapped(const QString &)), this, SLOT(AddMeshPrimitive(const QString &)));
+    MapHookup(m_addMeshSignalMapper, m_ui->actionAdd_Cone_Mesh,     "mesh_cone");
+    MapHookup(m_addMeshSignalMapper, m_ui->actionAdd_Cube_Mesh,     "mesh_cube");
+    MapHookup(m_addMeshSignalMapper, m_ui->actionAdd_Cylinder_Mesh, "mesh_cylinder");
+    MapHookup(m_addMeshSignalMapper, m_ui->actionAdd_Plane_Mesh,    "mesh_plane");
+    MapHookup(m_addMeshSignalMapper, m_ui->actionAdd_Sphere_Mesh,   "mesh_sphere");
+    MapHookup(m_addMeshSignalMapper, m_ui->actionAdd_Torus_Mesh,    "mesh_torus");
 }
 
 MainEditorWindow::~MainEditorWindow()
@@ -181,11 +190,15 @@ void MainEditorWindow::NewProject()
     string projectName = QInputDialog::getText(this, "New Project", "Project Name").toStdString();
 
     // Choose project directory
-    QString dirPath = QFileDialog::getExistingDirectory(this, "Choose project directory", "");
+    QString dirPath = QFileDialog::getExistingDirectory(this, "Choose project directory", "..");
 
     // Create Assets directory inside project directory
     QDir dir(dirPath);
     dir.mkdir("Assets");
+    dir.mkpath("Assets/Meshes");
+    dir.mkpath("Assets/Scenes");
+    dir.mkpath("Assets/Shaders");
+    dir.mkpath("Assets/Textures");
 
     // Set up new project and save it
     string projectFilename = dirPath.toStdString() + "/" + projectName + ".xml";
@@ -194,10 +207,7 @@ void MainEditorWindow::NewProject()
     GameProject::Singleton().New(projectName, projectFilename, assetsPath);
     GameProject::Singleton().Save();
 
-    // TODO Copy default engine resources to Assets directory
-
-    // TODO unload scene?
-
+    // TODO unload scene, refresh scene view
 }
 
 void MainEditorWindow::OpenProject()
@@ -392,6 +402,11 @@ void MainEditorWindow::TransformScaleButton()
     m_ui->transformButton_Scale->setChecked(true);
 }
 
+void MainEditorWindow::AddMeshPrimitive(const QString& meshName)
+{
+    // TODO implement me
+}
+
 void MainEditorWindow::SelectObject(GameObject* gameObject)
 {
     // Clear previous selection
@@ -507,4 +522,10 @@ void MainEditorWindow::UpdateMenuState()
     m_ui->actionDelete_Game_Object->setEnabled(m_scene && m_selectedGameObject);
     m_ui->actionCopy_Game_Object->setEnabled(m_scene && m_selectedGameObject);
     m_ui->actionCut_Game_Object->setEnabled(m_scene && m_selectedGameObject);
+}
+
+void MainEditorWindow::MapHookup(QSignalMapper* signalMapper, QObject* sender, QString text)
+{
+    connect(sender, SIGNAL(triggered()), signalMapper, SLOT(map()));
+    signalMapper->setMapping(sender, text);
 }

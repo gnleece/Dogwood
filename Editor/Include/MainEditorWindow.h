@@ -3,6 +3,7 @@
 #include <qabstractitemmodel.h>
 #include <QItemSelection>
 #include <QMainWindow>
+#include <QSignalMapper>
 #include <string>
 
 #include "CommandManager.h"
@@ -55,6 +56,8 @@ private:
     TransformWidget*        m_transformWidget;
     MeshWidget*             m_meshWidget;
 
+    QSignalMapper*          m_addMeshSignalMapper;
+
     QTreeView*              m_view;
     HierarchyModel*         m_model;
     Scene*                  m_scene;
@@ -89,8 +92,11 @@ private slots:
     void TransformRotateButton();
     void TransformScaleButton();
 
+    void AddMeshPrimitive(const QString& meshName);
+
     void OnSelectionChanged(const QItemSelection & selected, const QItemSelection & deselected);
     void SwitchSelectObject(GameObject* gameobject);
 
     void UpdateMenuState();
+    void MapHookup(QSignalMapper* signalMapper, QObject* sender, QString text);
 };
