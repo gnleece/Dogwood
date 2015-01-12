@@ -26,6 +26,9 @@ fileList = [os.path.join(dp, f) for
 # Get the line count for each file in the list and print it in a nice format
 totalLOC = 0
 maxLOC = 0
+EngineLOC = 0
+EditorLOC = 0
+GameLOC = 0
 longestFile = ""
 for f in fileList:
     # Get line count for this file and add it to the total
@@ -34,6 +37,14 @@ for f in fileList:
     if loc > maxLOC:
         maxLOC = loc
         longestFile = f
+
+    # Add LOC count to project count
+    if f.startswith(rootdir+'Engine'):
+        EngineLOC += loc
+    elif f.startswith(rootdir+'Editor'):
+        EditorLOC += loc
+    elif f.startswith(rootdir+'Game'):
+        GameLOC += loc
 
     # Strip the rootdir prefix from the filename to get the relative path
     relativePath = f[len(rootdir):]
@@ -52,6 +63,12 @@ print(longFileStr + '\t'*(tableWidth-width) + str(maxLOC))
 
 print()
 
+print("Lines of code (Engine):\t\t" + str(EngineLOC))
+print("Lines of code (Editor):\t\t" + str(EditorLOC))
+print("Lines of code (Game):\t\t" + str(GameLOC))
+
+print()
+
 numFiles = len(fileList)
-print('File count:\t\t' + str(numFiles))
-print('Total lines of code:\t' + str(totalLOC))
+print('File count:\t\t\t' + str(numFiles))
+print('Total lines of code:\t\t' + str(totalLOC))
