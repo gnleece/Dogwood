@@ -8,12 +8,12 @@
     </Textures>
 
     <Meshes>
-      <Mesh name="mesh_cone" path="..\\Engine\\Assets\\Meshes\\cube.obj" />
+      <Mesh name="mesh_cone" path="..\\Engine\\Assets\\Meshes\\cone.obj" />
       <Mesh name="mesh_cube" path="..\\Engine\\Assets\\Meshes\\cube.obj" />
-      <Mesh name="mesh_cylinder" path="..\\Engine\\Assets\\Meshes\\cube.obj" />
-      <Mesh name="mesh_plane" path="..\\Engine\\Assets\\Meshes\\cube.obj" />
-      <Mesh name="mesh_sphere" path="..\\Engine\\Assets\\Meshes\\cube.obj" />
-      <Mesh name="mesh_torus" path="..\\Engine\\Assets\\Meshes\\cube.obj" />
+      <Mesh name="mesh_cylinder" path="..\\Engine\\Assets\\Meshes\\cylinder.obj" />
+      <Mesh name="mesh_plane" path="..\\Engine\\Assets\\Meshes\\plane.obj" />
+      <Mesh name="mesh_sphere" path="..\\Engine\\Assets\\Meshes\\sphere.obj" />
+      <Mesh name="mesh_torus" path="..\\Engine\\Assets\\Meshes\\torus.obj" />
     </Meshes>
 
     <Shaders>
