@@ -43,7 +43,7 @@ ENGINE (Dogwood)
 EDITOR (Thicket)
 
     * Project
-        * New project, open project
+        * Open project
         * Indicate active project in editor window
         * Project settings window
         * Assets widget
@@ -60,7 +60,6 @@ EDITOR (Thicket)
         * Enable/disable components
 
     * Visuals
-        * Show world space gnomon
         * Change transform tool shape based on mode
         * Use cones instead of pyramids for gnomon arrows
 
@@ -72,16 +71,20 @@ EDITOR (Thicket)
     * "Prefabs"?
 
     BUGS:
+        Lo pri
         - Something wrong with redo stack (can't always redo all the way)
         - Items don't auto expand when reparented
         - Camera "up" is wrong / LookAt bug
-        - Root is not handled properly
-        - Clear window state on scene load
-        - Keep constant gnomon size
-        - Some scaling (non-uniform?) breaks object picking
-        - Rotation tool behaviour is non-intuitive
         - Scene view resolution isn't set nicely
         - Transform widget values don't update when object is moved with transform tool
+        - Keep constant gnomon size
+        - Non-uniform scaling breaks object picking
+        - Rotation tool behaviour is non-intuitive
+
+        Hi pri
+        - Root is not handled properly
+        - Clear window state on scene load
+        - Scene save broken by adding default mesh
 
 ---------------------------------------------------------------------------
 

@@ -322,8 +322,14 @@ ShaderProgram* ResourceManager::GetShader(unsigned int guid)
 
 Resource* ResourceManager::GetDefaultResource(string name)
 {
-    int guid = m_defaultResources[name];
-    return m_loadedResources[guid];
+    unsigned int guid = m_defaultResources[name];
+    Resource* resource = m_loadedResources[guid];
+    if (resource == NULL)
+    {
+        resource = m_resourceMap[guid]->Load();
+        m_loadedResources[guid] = resource;
+    }
+    return resource;
 }
 
 void ResourceManager::SetResourceBasePath(string& path)

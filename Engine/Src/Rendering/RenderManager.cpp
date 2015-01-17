@@ -151,4 +151,7 @@ void RenderManager::LoadCommonShaders()
 
     m_commonShaders[SHADER_UNLIT_UNI_COLOR] = new ShaderProgram();
     (m_commonShaders[SHADER_UNLIT_UNI_COLOR])->Load("..\\Engine\\Assets\\Shaders\\UnlitUniformColor.vert.glsl", "..\\Engine\\Assets\\Shaders\\UnlitUniformColor.frag.glsl");
+
+    m_commonShaders[SHADER_GOURAUD] = new ShaderProgram();
+    (m_commonShaders[SHADER_GOURAUD])->Load("..\\Engine\\Assets\\Shaders\\Gouraud.vert.glsl", "..\\Engine\\Assets\\Shaders\\Gouraud.frag.glsl");
 }

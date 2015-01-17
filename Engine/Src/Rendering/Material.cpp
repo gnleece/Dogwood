@@ -6,6 +6,8 @@
 
 Material::Material()
 {
+    m_texture = NULL;
+
     m_colours[MAT_COLOUR_DIFFUSE] = ColourRGB::White;
     m_colours[MAT_COLOUR_AMBIENT] = ColourRGB(0.1f, 0.1f, 0.1f);
     m_colours[MAT_COLOUR_SPECULAR] = ColourRGB::White;

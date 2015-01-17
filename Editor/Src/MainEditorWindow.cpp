@@ -4,7 +4,9 @@
 #include "GameObject.h"
 #include "GameProject.h"
 #include "ui_maineditorwindow.h"
+#include "Rendering\MeshInstance.h"
 #include "Rendering\RenderManager.h"
+#include "Scene\ResourceManager.h"
 #include "Scene\Scene.h"
 #include "Tools\TransformTool.h"
 #include "Widgets\AssetWidget.h"
@@ -404,7 +406,32 @@ void MainEditorWindow::TransformScaleButton()
 
 void MainEditorWindow::AddMeshPrimitive(const QString& meshName)
 {
-    // TODO implement me
+    if (m_selectedGameObject != NULL)
+    {
+        if (m_selectedGameObject->GetMesh() != NULL)
+        {
+            DebugLogger::Singleton().Log("Error: object already has a mesh component. Remove it before adding a new one.");
+            return;
+        }
+
+        // TODO cleanup
+        Mesh* mesh = (Mesh*)ResourceManager::Singleton().GetDefaultResource(meshName.toStdString());
+        if (mesh != NULL)
+        {
+            MeshInstance* meshInstance = new MeshInstance();
+            meshInstance->SetMesh(mesh);
+            m_selectedGameObject->SetMesh(meshInstance);
+            Material* material = new Material();
+            meshInstance->SetMaterial(material);
+            // TODO this breaks scene saving, because this shader has no guid
+            material->SetShader(RenderManager::Singleton().GetCommonShader(RenderManager::eCommonShader::SHADER_GOURAUD));
+        }
+        else
+        {
+            DebugLogger::Singleton().Log("Error: mesh primitive missing from asset database.");
+            return;
+        }
+    }
 }
 
 void MainEditorWindow::SelectObject(GameObject* gameObject)

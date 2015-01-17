@@ -39,6 +39,7 @@ public:
     {
         SHADER_UNLIT,
         SHADER_UNLIT_UNI_COLOR,
+        SHADER_GOURAUD,
         NUM_COMMON_SHADERS
     };
 
