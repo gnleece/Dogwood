@@ -86,7 +86,6 @@ EDITOR (Thicket)
 
         Hi pri
         - Clear window state on scene load
-        - Deselect object when clicking on nothing in hierarchy view
 
 ---------------------------------------------------------------------------
 

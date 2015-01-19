@@ -116,6 +116,9 @@
     <CustomBuild Include="Include\AssetDatabaseModel.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
+    <CustomBuild Include="Include\HierarchyView.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\CommandManager.h">
@@ -213,11 +216,20 @@
     <ClCompile Include="Src\Widgets\AssetWidget.cpp">
       <Filter>Source Files\Widgets</Filter>
     </ClCompile>
+    <ClCompile Include="Src\AssetDatabaseModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\HierarchyView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_HierarchyView.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_AssetDatabaseModel.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
-    <ClCompile Include="Src\AssetDatabaseModel.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="GeneratedFiles\Release\moc_AssetDatabaseModel.cpp">
+      <Filter>Generated Files\Release</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_GameObjectMimeData.cpp">
       <Filter>Generated Files\Debug</Filter>
@@ -285,7 +297,7 @@
     <ClCompile Include="GeneratedFiles\Release\moc_GLWidget.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_AssetDatabaseModel.cpp">
+    <ClCompile Include="GeneratedFiles\Release\moc_HierarchyView.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
   </ItemGroup>

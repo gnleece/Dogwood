@@ -1,6 +1,7 @@
 #include "MainEditorWindow.h"
 #include "DebugLogger.h"
 #include "HierarchyModel.h"
+#include "HierarchyView.h"
 #include "GameObject.h"
 #include "GameProject.h"
 #include "ui_maineditorwindow.h"
@@ -32,7 +33,8 @@ MainEditorWindow::MainEditorWindow(QWidget *parent)
     setWindowTitle(tr("[DOGWOOD EDITOR]"));
 
     // Tree view setup
-    m_view = m_ui->treeView;
+    m_view = new HierarchyView(this);
+    m_ui->hierarchyViewLayout->addWidget(m_view);
 
     // Asset widget setup
     m_assetWidget = new AssetWidget(this);

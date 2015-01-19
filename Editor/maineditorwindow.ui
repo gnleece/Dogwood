@@ -35,37 +35,6 @@
      </property>
     </layout>
    </widget>
-   <widget class="QTreeView" name="treeView">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>30</y>
-      <width>311</width>
-      <height>461</height>
-     </rect>
-    </property>
-    <property name="acceptDrops">
-     <bool>true</bool>
-    </property>
-    <property name="dragEnabled">
-     <bool>true</bool>
-    </property>
-    <property name="dragDropMode">
-     <enum>QAbstractItemView::DragDrop</enum>
-    </property>
-    <property name="defaultDropAction">
-     <enum>Qt::CopyAction</enum>
-    </property>
-    <property name="alternatingRowColors">
-     <bool>true</bool>
-    </property>
-    <property name="rootIsDecorated">
-     <bool>true</bool>
-    </property>
-    <property name="headerHidden">
-     <bool>true</bool>
-    </property>
-   </widget>
    <widget class="QTextEdit" name="textEdit_DebugOutput">
     <property name="enabled">
      <bool>true</bool>
@@ -305,6 +274,17 @@
      </rect>
     </property>
     <layout class="QVBoxLayout" name="assetWidgetLayout"/>
+   </widget>
+   <widget class="QWidget" name="verticalLayoutWidget_3">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>30</y>
+      <width>311</width>
+      <height>461</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="hierarchyViewLayout"/>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">

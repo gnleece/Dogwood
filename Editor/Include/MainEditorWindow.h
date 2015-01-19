@@ -13,6 +13,7 @@
 class AssetWidget;
 class GameObject;
 class HierarchyModel;
+class HierarchyView;
 class MeshWidget;
 class QTreeView;
 class Scene;
@@ -58,7 +59,7 @@ private:
 
     QSignalMapper*          m_addMeshSignalMapper;
 
-    QTreeView*              m_view;
+    HierarchyView*          m_view;
     HierarchyModel*         m_model;
     Scene*                  m_scene;
 
