@@ -70,6 +70,13 @@ XMLNode* WriteIntToXML(int value, string nodeName, string attribName, XMLDocumen
     return xmlnode;
 }
 
+XMLNode* WriteUnsignedIntToXML(unsigned int value, string nodeName, string attribName, XMLDocument& doc)
+{
+    XMLElement* xmlnode = doc.NewElement(nodeName.c_str());
+    xmlnode->SetAttribute(attribName.c_str(), value);
+    return xmlnode;
+}
+
 XMLNode* WriteFloatToXML(float value, string nodeName, string attribName, XMLDocument& doc)
 {
     XMLElement* xmlnode = doc.NewElement(nodeName.c_str());

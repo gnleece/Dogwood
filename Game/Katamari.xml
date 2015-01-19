@@ -19,7 +19,9 @@
             <Mesh guid="2282599710" path="Meshes/mesh_torus.obj"/>
         </Meshes>
         <Shaders>
-            <Shader guid="3001" vertex-path="Shaders/VertexShader.glsl" fragment-path="Shaders/FragmentShader.glsl"/>
+            <Shader guid="441267611" vertex-path="Shaders/shader_unlit_unicolor.vert.glsl" fragment-path="Shaders/shader_unlit_unicolor.frag.glsl"/>
+            <Shader guid="311191123" vertex-path="Shaders/shader_unlit.vert.glsl" fragment-path="Shaders/shader_unlit.frag.glsl"/>
+            <Shader guid="3746892247" vertex-path="Shaders/shader_gouraud.vert.glsl" fragment-path="Shaders/shader_gouraud.frag.glsl"/>
         </Shaders>
         <DefaultResources>
             <Asset name="mesh_cone" guid="489851566"/>
@@ -28,6 +30,9 @@
             <Asset name="mesh_sphere" guid="3936014360"/>
             <Asset name="mesh_cylinder" guid="4197557055"/>
             <Asset name="mesh_plane" guid="156145593"/>
+            <Asset name="shader_unlit_unicolor" guid="441267611"/>
+            <Asset name="shader_unlit" guid="311191123"/>
+            <Asset name="shader_gouraud" guid="3746892247"/>
         </DefaultResources>
     </Resources>
 </Dogwood-Project>

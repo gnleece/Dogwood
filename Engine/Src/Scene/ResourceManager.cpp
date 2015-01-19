@@ -61,7 +61,7 @@ struct ShaderResourceInfo : ResourceInfo
     {
         vertexpath = element->Attribute("vertex-path");
         fragmentpath = element->Attribute("fragment-path");
-        guid = element->IntAttribute("guid");
+        guid = element->UnsignedAttribute("guid");
         map[guid] = this;
     }
 
@@ -78,7 +78,7 @@ struct ShaderResourceInfo : ResourceInfo
 void ResourceInfo::AddToMap(XMLElement* element, unordered_map<unsigned int, ResourceInfo*> & map)
 {
     path = element->Attribute("path");
-    guid = element->IntAttribute("guid");
+    guid = element->UnsignedAttribute("guid");
     map[guid] = this;
 }
 
@@ -122,7 +122,7 @@ void ResourceManager::LoadResourceMap(XMLElement* resources)
         while (element)
         {
             string name = element->Attribute("name");
-            unsigned int guid = element->IntAttribute("guid");
+            unsigned int guid = element->UnsignedAttribute("guid");
             m_defaultResources[name] = guid;
             element = element->NextSiblingElement();
         }
@@ -209,37 +209,44 @@ unsigned int ResourceManager::ImportResource(string& filepath, string type)
         // Texture
         resource = new TextureResourceInfo();
     }
-    // TODO handle shaders
 
     if (resource == NULL)
     {
         return 0;
     }
 
-    // Get timestamp
-    time_t timer;
-    time(&timer);
-    string timestamp = std::to_string(timer);
-
-    // Use filepath + timestamp to create guid for this resource
-    unsigned int guid = std::hash<string>()(filepath + timestamp);
     resource->path = filepath;
-    resource->guid = guid;
+    resource->guid = MakeGuid(filepath);
 
-    if (m_resourceMap.count(guid) != 0)
+    return Import(resource);
+}
+
+unsigned int ResourceManager::ImportShader(string vertpath, string fragpath)
+{
+    ShaderResourceInfo* resource = new ShaderResourceInfo();
+    resource->vertexpath = vertpath;
+    resource->fragmentpath = fragpath;
+    resource->guid = MakeGuid(vertpath + fragpath);
+
+    return Import(resource);
+}
+
+unsigned int ResourceManager::Import(ResourceInfo* resource)
+{
+    if (m_resourceMap.count(resource->guid) != 0)
     {
         // Because the guid is a hash of filepath + timestamp, this should basically never happen
         printf("ResourceManager error: trying to add a resource with an exisiting guid.\n");
+        delete resource;
         return 0;
     }
 
     // TODO also check whether this filepath already exists in the table
 
-    m_resourceMap[guid] = resource;
+    m_resourceMap[resource->guid] = resource;
     resource->Load();
-    return guid;
+    return resource->guid;
 }
-
 
 void ResourceManager::ImportDefaultResources()
 {
@@ -251,28 +258,63 @@ void ResourceManager::ImportDefaultResources()
     }
     XMLElement* assetsXML = assetsDoc.FirstChildElement("Dogwood-Default-Resources");
 
+    // Import each asset, by type
     XMLElement* meshesXML = assetsXML->FirstChildElement("Meshes");
-    if (meshesXML != NULL)
+    ImportDefaultResourceType(meshesXML, "Meshes", "obj");
+    XMLElement* texturesXML = assetsXML->FirstChildElement("Textures");
+    ImportDefaultResourceType(texturesXML, "Textures", "bmp");
+    XMLElement* shadersXML = assetsXML->FirstChildElement("Shaders");
+    ImportDefaultShaders(shadersXML);
+}
+
+void ResourceManager::ImportDefaultResourceType(tinyxml2::XMLElement* subtree, string folderName, string extension)
+{
+    if (subtree != NULL)
     {
-        XMLElement* meshXML = meshesXML->FirstChildElement();
-        while (meshXML != NULL)
+        XMLElement* resourceXML = subtree->FirstChildElement();
+        while (resourceXML != NULL)
         {
             // Copy the asset to the project's asset folder
-            string srcfile = meshXML->Attribute("path");
-            string name = meshXML->Attribute("name");
-            string destfile = m_resourceBasePath + "Meshes/" + name + ".obj";
+            string srcfile = resourceXML->Attribute("path");
+            string name = resourceXML->Attribute("name");
+            string destfile = m_resourceBasePath + folderName + "/" + name + "." + extension;
             FileCopy(srcfile, destfile);
 
             // Import the asset to the project
             string relativePath = AbsolutePathToProjectPath(destfile);
-            unsigned int guid = ImportResource(relativePath, "obj");
+            unsigned int guid = ImportResource(relativePath, extension);
             m_defaultResources[name] = guid;
 
-            meshXML = meshXML->NextSiblingElement();
+            resourceXML = resourceXML->NextSiblingElement();
         }
     }
+}
 
-    // TODO additional resource types
+void ResourceManager::ImportDefaultShaders(tinyxml2::XMLElement* subtree)
+{
+    if (subtree != NULL)
+    {
+        XMLElement* shaderXML = subtree->FirstChildElement();
+        while (shaderXML != NULL)
+        {
+            // Copy the asset to the project's asset folder
+            string vertSrcfile = shaderXML->Attribute("vertex-path");
+            string fragSrcfile = shaderXML->Attribute("fragment-path");
+            string name = shaderXML->Attribute("name");
+            string vertDestfile = m_resourceBasePath + "Shaders/" + name + ".vert.glsl";
+            FileCopy(vertSrcfile, vertDestfile);
+            string fragDestFile = m_resourceBasePath + "Shaders/" + name + ".frag.glsl";
+            FileCopy(fragSrcfile, fragDestFile);
+
+            // Import the asset to the project
+            string relativeVertPath = AbsolutePathToProjectPath(vertDestfile);
+            string relativeFragPath = AbsolutePathToProjectPath(fragDestFile);
+            unsigned int guid = ImportShader(relativeVertPath, relativeFragPath);
+            m_defaultResources[name] = guid;
+
+            shaderXML = shaderXML->NextSiblingElement();
+        }
+    }
 }
 
 void ResourceManager::LoadSceneResources(XMLElement* resources)
@@ -358,6 +400,19 @@ string ResourceManager::AbsolutePathToProjectPath(string& absolutePath)
     // Return the suffix following the project base path
     string projectPath = absolutePath.substr(basePathLen, absolutePathLen - basePathLen);
     return projectPath;
+}
+
+unsigned int ResourceManager::MakeGuid(string str)
+{
+    // Get timestamp
+    time_t timer;
+    time(&timer);
+    string timestamp = std::to_string(timer);
+
+    // Use filepath + timestamp to create guid for this resource
+    unsigned int guid = std::hash<string>()(str + timestamp);
+
+    return guid;
 }
 
 template<typename T>

@@ -17,8 +17,9 @@
     </Meshes>
 
     <Shaders>
-      <Shader vertex-path="..\\Engine\\Assets\\Shaders\\Unlit.vert.glsl" fragment-path="..\\Engine\\Assets\\Shaders\\Unlit.frag.glsl" />
-      <Shader vertex-path="..\\Engine\\Assets\\Shaders\\UnlitUniformColor.vert.glsl" fragment-path="..\\Engine\\Assets\\Shaders\\UnlitUniformColor.frag.glsl" />
+      <Shader name="shader_unlit" vertex-path="..\\Engine\\Assets\\Shaders\\Unlit.vert.glsl" fragment-path="..\\Engine\\Assets\\Shaders\\Unlit.frag.glsl" />
+      <Shader name="shader_unlit_unicolor" vertex-path="..\\Engine\\Assets\\Shaders\\UnlitUniformColor.vert.glsl" fragment-path="..\\Engine\\Assets\\Shaders\\UnlitUniformColor.frag.glsl" />
+      <Shader name="shader_gouraud" vertex-path="..\\Engine\\Assets\\Shaders\\Gouraud.vert.glsl" fragment-path="..\\Engine\\Assets\\Shaders\\Gouraud.frag.glsl" />
     </Shaders>
 
 </Dogwood-Default-Resources>

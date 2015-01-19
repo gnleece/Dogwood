@@ -49,6 +49,7 @@ public:
     void            ClearResourceMap();
     void            SerializeResourceMap(tinyxml2::XMLDocument& rootDoc, tinyxml2::XMLElement* parent);
     unsigned int    ImportResource(string& filepath, string type);
+    unsigned int    ImportShader(string vertpath, string fragpath);
     void            ImportDefaultResources();
 
     void            LoadSceneResources(tinyxml2::XMLElement* resources);
@@ -66,6 +67,11 @@ public:
     string          AbsolutePathToProjectPath(string& absolutePath);
 
 private:
+    unsigned int    MakeGuid(string str);
+    unsigned int    Import(ResourceInfo* resource);
+    void            ImportDefaultResourceType(tinyxml2::XMLElement* subtree, string folderName, string extension);
+    void            ImportDefaultShaders(tinyxml2::XMLElement* subtree);
+
     template<typename T>
     void AddResourcesToMap(tinyxml2::XMLElement* resources, string typeName);
 

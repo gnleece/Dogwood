@@ -438,6 +438,6 @@ void Scene::SerializeResourceList(unordered_set<unsigned int>& guids, tinyxml2::
     unordered_set<unsigned int>::iterator iter;
     for (iter = guids.begin(); iter != guids.end(); iter++)
     {
-        resourcesNode->InsertEndChild(WriteIntToXML(*iter, "Resource", "guid", rootDoc));
+        resourcesNode->InsertEndChild(WriteUnsignedIntToXML(*iter, "Resource", "guid", rootDoc));
     }
 }

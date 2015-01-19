@@ -423,8 +423,8 @@ void MainEditorWindow::AddMeshPrimitive(const QString& meshName)
             m_selectedGameObject->SetMesh(meshInstance);
             Material* material = new Material();
             meshInstance->SetMaterial(material);
-            // TODO this breaks scene saving, because this shader has no guid
-            material->SetShader(RenderManager::Singleton().GetCommonShader(RenderManager::eCommonShader::SHADER_GOURAUD));
+            ShaderProgram* shader = (ShaderProgram*)ResourceManager::Singleton().GetDefaultResource("shader_gouraud");
+            material->SetShader(shader);
         }
         else
         {
