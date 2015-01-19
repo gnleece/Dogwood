@@ -49,6 +49,7 @@ EDITOR (Thicket)
         * Add/remove assets (with guids)
         * typedef guid type?
         * Prompt for save on exit/unload
+        * Handle dialog cancels
 
     * Scene
         * New scene
@@ -84,8 +85,8 @@ EDITOR (Thicket)
         - Rotation tool behaviour is non-intuitive
 
         Hi pri
-        - Root is not handled properly
         - Clear window state on scene load
+        - Deselect object when clicking on nothing in hierarchy view
 
 ---------------------------------------------------------------------------
 

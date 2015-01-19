@@ -59,6 +59,12 @@
     <property name="alternatingRowColors">
      <bool>true</bool>
     </property>
+    <property name="rootIsDecorated">
+     <bool>true</bool>
+    </property>
+    <property name="headerHidden">
+     <bool>true</bool>
+    </property>
    </widget>
    <widget class="QTextEdit" name="textEdit_DebugOutput">
     <property name="enabled">

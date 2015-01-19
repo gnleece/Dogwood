@@ -333,7 +333,16 @@ void MainEditorWindow::CreateGameObject()
 {
     DebugLogger::Singleton().Log("Creating game object");
 
-    QModelIndex index = m_view->selectionModel()->selectedIndexes().first();
+    QModelIndex index;
+    if (!(m_view->selectionModel()->selectedIndexes().isEmpty()))
+    {
+        index = m_view->selectionModel()->selectedIndexes().first();
+    }
+    else
+    {
+        index = QModelIndex();      // create object at root level
+    }
+
     CreateGameObjectCommand* command = new CreateGameObjectCommand(m_model, m_view, index);
     CommandManager::Singleton().ExecuteCommand(command);
 }
@@ -342,9 +351,12 @@ void MainEditorWindow::DeleteGameObject()
 {
     DebugLogger::Singleton().Log("Deleting game object");
 
-    QModelIndex index = m_view->selectionModel()->selectedIndexes().first();
-    DeleteGameObjectCommand* command = new DeleteGameObjectCommand(m_model, m_view, index);
-    CommandManager::Singleton().ExecuteCommand(command);
+    if (!(m_view->selectionModel()->selectedIndexes().isEmpty()))
+    {
+        QModelIndex index = m_view->selectionModel()->selectedIndexes().first();
+        DeleteGameObjectCommand* command = new DeleteGameObjectCommand(m_model, m_view, index);
+        CommandManager::Singleton().ExecuteCommand(command);
+    }
 }
 
 void MainEditorWindow::CopyGameObject()

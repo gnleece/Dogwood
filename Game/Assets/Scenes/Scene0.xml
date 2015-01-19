@@ -4,6 +4,7 @@
         <Resource guid="3746892247"/>
         <Resource guid="1863496264"/>
         <Resource guid="3780387270"/>
+        <Resource guid="2282599710"/>
     </Resources>
     <Camera>
         <Position x="0.00000" y="1.00000" z="5.00000"/>
@@ -21,6 +22,13 @@
             <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
             <Scale x="1.00000" y="1.00000" z="1.00000"/>
         </Transform>
+        <GameObject name="GameObject">
+            <Transform>
+                <Position x="0.00000" y="0.00000" z="0.00000"/>
+                <Rotation x="0.00000" y="0.00000" z="0.00000"/>
+                <Scale x="1.00000" y="1.00000" z="1.00000"/>
+            </Transform>
+        </GameObject>
         <GameObject name="Yellow Sphere">
             <Transform>
                 <Position x="-1.00000" y="0.00000" z="0.00000"/>
@@ -81,6 +89,21 @@
                     <ColorSpecular r="1.00000" g="1.00000" b="1.00000"/>
                 </Material>
             </Mesh>
+            <GameObject name="GameObject">
+                <Transform>
+                    <Position x="0.00000" y="0.00000" z="0.00000"/>
+                    <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
+                    <Scale x="1.00000" y="1.00000" z="1.00000"/>
+                </Transform>
+                <Mesh guid="2282599710">
+                    <Material>
+                        <Shader guid="3746892247"/>
+                        <ColorDiffuse r="1.00000" g="1.00000" b="1.00000"/>
+                        <ColorAmbient r="0.10000" g="0.10000" b="0.10000"/>
+                        <ColorSpecular r="1.00000" g="1.00000" b="1.00000"/>
+                    </Material>
+                </Mesh>
+            </GameObject>
         </GameObject>
     </GameObject>
 </Scene>

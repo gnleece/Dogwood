@@ -18,14 +18,11 @@ HierarchyModel::HierarchyModel(GameObject* root, QObject *parent)
         return;
     }
 
-    // TODO fix root issues
-    m_rootItem = new GameObject("ROOT");
-    root->SetParent(m_rootItem);
+    m_rootItem = root;
 }
 
 HierarchyModel::~HierarchyModel()
 {
-    delete m_rootItem;
 }
 
 QModelIndex HierarchyModel::index(int row, int column, const QModelIndex &parent) const
@@ -72,14 +69,6 @@ QVariant HierarchyModel::data(const QModelIndex &index, int role) const
     }
 
     return QVariant(item->GetName().c_str());
-}
-
-QVariant HierarchyModel::headerData(int section, Qt::Orientation orientation, int role) const
-{
-    if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
-        return QVariant(m_rootItem->GetName().c_str());
-
-    return QVariant();
 }
 
 // This function is an implementation of a virtual function provided by QAbstractItemModel.

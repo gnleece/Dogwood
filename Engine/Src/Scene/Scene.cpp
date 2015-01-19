@@ -25,7 +25,7 @@ bool Scene::New(string filename)
     }
 
     m_filename = filename;
-    m_rootObject = new GameObject();
+    m_rootObject = new GameObject("ROOT");
 
     m_loaded = true;
     return true;
