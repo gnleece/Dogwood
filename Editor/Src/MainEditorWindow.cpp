@@ -42,6 +42,7 @@ MainEditorWindow::MainEditorWindow(QWidget *parent)
     m_sceneViewWidget = new SceneViewWidget(this, this);
     m_sceneViewWidget->setFixedSize(990, 610);      // TODO set this properly
     m_ui->verticalLayout->addWidget(m_sceneViewWidget);
+    m_scene = new Scene();
 
     // Game object widget (components list)
     SetupComponentWidgets();
@@ -228,19 +229,29 @@ void MainEditorWindow::SaveProject()
 
 void MainEditorWindow::NewScene()
 {
-    // TODO implement me
-    DebugLogger::Singleton().Log("New scene: not implemented yet");
+    UnloadScene();
+
+    // Open file dialog
+    string defaultPath = GameProject::Singleton().GetResourceBasePath();
+    QString fileName = QFileDialog::getSaveFileName(this, "New Scene", defaultPath.c_str(), "*.xml");
+    m_scene->New(fileName.toStdString() + ".xml");
+
+    // Open the new scene
+    HierarchyModel* model = new HierarchyModel(m_scene->GetRootObject());
+    SetHierarchyModel(model);
+    RenderManager::Singleton().SetRootObject(m_scene->GetRootObject());
+    m_sceneViewWidget->SetScene(m_scene);
 }
 
 void MainEditorWindow::OpenScene()
 {
     DebugLogger::Singleton().Log("Open scene");
 
+    UnloadScene();
+
     // Open file dialog
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open Scene"), "", tr("Scene Files (*.xml)"));
 
-    // TODO unload previous scene
-    m_scene = new Scene();
     if (m_scene->Load(fileName.toStdString()))
     {
         HierarchyModel* model = new HierarchyModel(m_scene->GetRootObject());
@@ -255,6 +266,20 @@ void MainEditorWindow::OpenScene()
     }
 }
 
+void MainEditorWindow::UnloadScene()
+{
+    if (m_scene == NULL)
+    {
+        m_scene = new Scene();
+    }
+
+    if (m_scene != NULL && m_scene->IsLoaded())
+    {
+        // TODO prompt user to save if there are unsaved changes
+        m_scene->Unload();
+    }
+}
+
 void MainEditorWindow::OpenTestProject()
 {
     GameProject::Singleton().Unload();
@@ -266,7 +291,6 @@ void MainEditorWindow::OpenTestProject()
         return;
     }
     
-    m_scene = new Scene();
     if (m_scene->Load("..\\Game\\Assets\\Scenes\\Scene0.xml"))
     {
         HierarchyModel* model = new HierarchyModel(m_scene->GetRootObject());

@@ -30,6 +30,7 @@ public:
     bool        Unload();
 
     GameObject* GetRootObject();
+    bool        IsLoaded();
 
 private:
     void        DoGlobalSetup(tinyxml2::XMLElement* sceneXML);

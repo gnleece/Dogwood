@@ -74,6 +74,7 @@ private slots:
     void SaveProject();
     void NewScene();
     void OpenScene();
+    void UnloadScene();
     void SaveScene();
     void SaveSceneAs();
 

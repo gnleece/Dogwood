@@ -8,8 +8,7 @@ ENGINE (Dogwood)
         * Fix custom component bindings
     * Resources
         * Unloading
-        * Fix Shader type
-        * Materials?
+        * Material type?
     
     * Text (2D)
     * Particles
@@ -49,14 +48,17 @@ EDITOR (Thicket)
         * Assets widget
         * Add/remove assets (with guids)
         * typedef guid type?
+        * Prompt for save on exit/unload
 
     * Scene
         * New scene
+        * Prompt for save on exit/unload
 
     * Game components
         * Built-in component widgets (mesh, material, texture, shader)
         * Custom component widget
         * Add/remove components
+            * Undo/redo on add mesh primitive
         * Enable/disable components
 
     * Visuals
@@ -84,7 +86,6 @@ EDITOR (Thicket)
         Hi pri
         - Root is not handled properly
         - Clear window state on scene load
-        - Scene save broken by adding default mesh
 
 ---------------------------------------------------------------------------
 

@@ -24,8 +24,11 @@ bool Scene::New(string filename)
         return false;
     }
 
-    // TODO implement me
-    return false;
+    m_filename = filename;
+    m_rootObject = new GameObject();
+
+    m_loaded = true;
+    return true;
 }
 
 bool Scene::Load(string filename)
@@ -128,6 +131,11 @@ bool Scene::Unload()
 GameObject* Scene::GetRootObject()
 {
     return m_rootObject;
+}
+
+bool Scene::IsLoaded()
+{
+    return m_loaded;
 }
 
 void Scene::DoGlobalSetup(XMLElement* sceneXML)
