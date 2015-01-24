@@ -207,7 +207,6 @@ bool HierarchyModel::dropMimeData(const QMimeData* data, Qt::DropAction action, 
         return false;
 
     GameObjectMimeData* goData = (GameObjectMimeData*)(data);
-
     ReparentGameObjectCommand* command = new ReparentGameObjectCommand(this, goData, parent);
     CommandManager::Singleton().ExecuteCommand(command);
 

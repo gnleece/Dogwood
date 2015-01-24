@@ -52,8 +52,8 @@ public:
     void SetTransformToolMode(TransformTool::eMode mode);
 
 private:
-    const float CAMERA_ROTATE_AMOUNT = 0.07f;
-    const float CAMERA_PAN_AMOUNT = 0.006f;
+    const float CAMERA_ROTATE_AMOUNT = 0.1f;
+    const float CAMERA_PAN_AMOUNT = 0.01f;
     const float CAMERA_ZOOM_AMOUNT = 0.01f;
 
     const static int GRID_SIZE = 10;

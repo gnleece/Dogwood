@@ -60,6 +60,7 @@ EDITOR (Thicket)
         * Custom component widget
         * Add/remove components
             * Undo/redo on add mesh primitive
+            * Refresh widget on component add/remove
         * Enable/disable components
 
     * Visuals
@@ -75,7 +76,6 @@ EDITOR (Thicket)
 
     BUGS:
         Lo pri
-        - Something wrong with redo stack (can't always redo all the way)
         - Items don't auto expand when reparented
         - Camera "up" is wrong / LookAt bug
         - Scene view resolution isn't set nicely
@@ -86,6 +86,7 @@ EDITOR (Thicket)
 
         Hi pri
         - Clear window state on scene load
+        - Undo/redo broken with delete/undo create. Need to avoid use of QModelIndex
 
 ---------------------------------------------------------------------------
 

@@ -11,19 +11,20 @@ namespace EditorCommands
     CreateGameObjectCommand::CreateGameObjectCommand(HierarchyModel* model, QTreeView* view, QModelIndex index)
     {
         m_model = model;
-        m_index = index;
+        m_index = index.isValid() ? index : QModelIndex();
         m_view = view;
+        m_position = m_model->rowCount(m_index);
     }
 
     void CreateGameObjectCommand::Execute()
     {
-        m_model->insertRow(0, m_index);
+        m_model->insertRow(m_position, m_index);
         m_view->setExpanded(m_index, true);
     }
 
     void CreateGameObjectCommand::Undo()
     {
-        m_model->removeRow(0, m_index);
+        m_model->removeRow(m_position, m_index);
     }
 
     //-----------------------------------------------------------------------------------------------
@@ -77,7 +78,8 @@ namespace EditorCommands
     {
         m_model = model;
         m_mimeData = mimeData;
-        m_newParentIndex = newParentIndex;
+        m_newParentIndex = newParentIndex.isValid() ? newParentIndex : QModelIndex();
+        m_position = m_model->rowCount(m_newParentIndex);
     }
 
     void ReparentGameObjectCommand::Execute()
@@ -85,26 +87,19 @@ namespace EditorCommands
         // Remove the original version of the child. Removal must be done first or Qt gets confused
         m_model->removeRow(m_mimeData->getOriginalRow(), m_mimeData->getOriginalParentIndex());
 
-        // Add the child to the new parent
-        if (m_newParentIndex.isValid())
-        {
-            m_model->insertChild(m_newParentIndex,
-                                 m_model->getItem(m_newParentIndex),
-                                 m_mimeData->getGameObject(),
-                                 0);
+        // Add the child to the new parent (at the end of the child list)
+        m_model->insertChild(m_newParentIndex,
+                             m_model->getItem(m_newParentIndex),
+                             m_mimeData->getGameObject(),
+                             m_position);
 
-            // TODO make auto-expand work here
-        }
-        else
-        {
-            // TODO handle dropping at top level (root)
-        }
+        // TODO make auto-expand work here
     }
 
     void ReparentGameObjectCommand::Undo()
     {
         // Remove the object from the new parent. Removal must be done first or Qt gets confused
-        m_model->removeRow(0, m_newParentIndex);
+        m_model->removeRow(m_position, m_newParentIndex);
 
         // Add the object back to the old parent
         m_model->insertChild(m_mimeData->getOriginalParentIndex(),

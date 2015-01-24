@@ -38,6 +38,7 @@ namespace EditorCommands
         HierarchyModel* m_model;
         QTreeView*      m_view;
         QModelIndex     m_index;
+        int             m_position;
     };
 
     class DeleteGameObjectCommand : public ICommand
@@ -78,6 +79,7 @@ namespace EditorCommands
         HierarchyModel*     m_model;
         GameObjectMimeData* m_mimeData;
         QModelIndex         m_newParentIndex;
+        int                 m_position;
     };
 
     class PasteGameObjectCommand : public ICommand

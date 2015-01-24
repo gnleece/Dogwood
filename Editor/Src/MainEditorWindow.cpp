@@ -252,7 +252,8 @@ void MainEditorWindow::OpenScene()
     UnloadScene();
 
     // Open file dialog
-    QString fileName = QFileDialog::getOpenFileName(this, tr("Open Scene"), "", tr("Scene Files (*.xml)"));
+    string defaultPath = GameProject::Singleton().GetResourceBasePath();
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open Scene"), defaultPath.c_str(), tr("Scene Files (*.xml)"));
 
     if (m_scene->Load(fileName.toStdString()))
     {
