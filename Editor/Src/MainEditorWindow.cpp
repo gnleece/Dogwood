@@ -30,7 +30,7 @@ MainEditorWindow::MainEditorWindow(QWidget *parent)
     // Window setup
     m_ui->setupUi(this);
     m_open = true;
-    setWindowTitle(tr("[DOGWOOD EDITOR]"));
+    setWindowTitle(tr("Dogwood Editor"));
 
     // Tree view setup
     m_view = new HierarchyView(this);
@@ -217,7 +217,21 @@ void MainEditorWindow::NewProject()
 
 void MainEditorWindow::OpenProject()
 {
-    // TODO implement me
+    GameProject::Singleton().Unload();
+
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open Project"), "..", tr("Dogwood Projects (*.xml)"));
+
+    bool success = GameProject::Singleton().Load(fileName.toStdString());
+    if (!success)
+    {
+        DebugLogger::Singleton().Log("Error loading project: " + fileName.toStdString());
+        return;
+    }
+
+    // TODO load startup scene (or last openeed scene)
+    m_sceneViewWidget->SetScene(NULL);
+
+    setWindowTitle(tr("Dogwood Editor - ") + QString(GameProject::Singleton().GetName().c_str()));
 }
 
 void MainEditorWindow::SaveProject()
@@ -302,8 +316,7 @@ void MainEditorWindow::OpenTestProject()
         m_sceneViewWidget->SetScene(m_scene);
     }
 
-
-    setWindowTitle(tr("[DOGWOOD EDITOR] Project: ") + QString(GameProject::Singleton().GetName().c_str()));
+    setWindowTitle(tr("Dogwood Editor - ") + QString(GameProject::Singleton().GetName().c_str()));
 }
 
 void MainEditorWindow::SaveScene()

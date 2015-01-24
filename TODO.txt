@@ -43,17 +43,17 @@ EDITOR (Thicket)
 
     * Project
         * Open project
-        * Indicate active project in editor window
         * Project settings window
         * Assets widget
-        * Add/remove assets (with guids)
         * typedef guid type?
         * Prompt for save on exit/unload
         * Handle dialog cancels
+        * Remove assets (un-import)
 
     * Scene
-        * New scene
         * Prompt for save on exit/unload
+        * Camera settings
+        * Light settings
 
     * Game components
         * Built-in component widgets (mesh, material, texture, shader)
@@ -85,7 +85,6 @@ EDITOR (Thicket)
         - Rotation tool behaviour is non-intuitive
 
         Hi pri
-        - Clear window state on scene load
         - Undo/redo broken with delete/undo create. Need to avoid use of QModelIndex
 
 ---------------------------------------------------------------------------
@@ -149,3 +148,6 @@ DESIGN DECISIONS
     Undo/redo 
     - Added undo stack right after first editor commands were implemented (create and delete)
     - Would be extremely painful to add in later after lots of commands were implemented
+
+    Error checking in Editor
+    - Make some assumptions about user choices for simplicity
