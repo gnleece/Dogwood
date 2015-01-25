@@ -22,13 +22,6 @@
             <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
             <Scale x="1.00000" y="1.00000" z="1.00000"/>
         </Transform>
-        <GameObject name="GameObject">
-            <Transform>
-                <Position x="0.00000" y="0.00000" z="0.00000"/>
-                <Rotation x="0.00000" y="0.00000" z="0.00000"/>
-                <Scale x="1.00000" y="1.00000" z="1.00000"/>
-            </Transform>
-        </GameObject>
         <GameObject name="Yellow Sphere">
             <Transform>
                 <Position x="-1.00000" y="0.00000" z="0.00000"/>
@@ -89,7 +82,7 @@
                     <ColorSpecular r="1.00000" g="1.00000" b="1.00000"/>
                 </Material>
             </Mesh>
-            <GameObject name="GameObject">
+            <GameObject name="Torus">
                 <Transform>
                     <Position x="0.00000" y="0.00000" z="0.00000"/>
                     <Rotation x="0.00000" y="-0.00000" z="0.00000"/>

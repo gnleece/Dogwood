@@ -1,7 +1,9 @@
 #include "Scene\ResourceManager.h"
 
 #include "Util.h"
+#include "Rendering\Material.h"
 #include "Rendering\Mesh.h"
+#include "Rendering\MeshInstance.h"
 #include "Rendering\Texture.h"
 
 #include <ctime>
@@ -22,6 +24,11 @@ struct TextureResourceInfo : ResourceInfo
     {
         return "Texture";
     }
+
+    virtual void AddToGameObject(GameObject* gameObject)
+    {
+        // TODO implement me
+    }
 };
 
 struct MeshResourceInfo : ResourceInfo
@@ -36,6 +43,22 @@ struct MeshResourceInfo : ResourceInfo
     virtual string TypeName()
     {
         return "Mesh";
+    }
+
+    virtual void AddToGameObject(GameObject* gameObject)
+    {
+        Mesh* mesh = ResourceManager::Singleton().GetMesh(guid);
+        MeshInstance* meshInstance = gameObject->GetMesh();
+        if (meshInstance == NULL)
+        {
+            meshInstance = new MeshInstance();
+            gameObject->SetMesh(meshInstance);
+        }
+        meshInstance->SetMesh(mesh);
+        Material* material = new Material();
+        meshInstance->SetMaterial(material);
+        ShaderProgram* shader = (ShaderProgram*)ResourceManager::Singleton().GetDefaultResource("shader_gouraud");
+        material->SetShader(shader);
     }
 };
 
@@ -73,6 +96,11 @@ struct ShaderResourceInfo : ResourceInfo
         xml->SetAttribute("fragment-path", fragmentpath.c_str());
         parent->InsertEndChild(xml);
     }
+
+    virtual void AddToGameObject(GameObject* gameObject)
+    {
+        // TODO implement me
+    }
 };
 
 void ResourceInfo::AddToMap(XMLElement* element, unordered_map<unsigned int, ResourceInfo*> & map)
@@ -88,6 +116,11 @@ void ResourceInfo::Serialize(XMLDocument& rootDoc, XMLElement* parent)
     xml->SetAttribute("guid", guid);
     xml->SetAttribute("path", path.c_str());
     parent->InsertEndChild(xml);
+}
+
+void ResourceInfo::Unload()
+{
+    // TODO implement me
 }
 
 void ResourceManager::Startup()
@@ -342,36 +375,36 @@ void ResourceManager::UnloadSceneResources()
     // TODO implement me
 }
 
-Resource* ResourceManager::GetResource(unsigned int guid)
+Resource* ResourceManager::GetResource(unsigned int guid, bool load)
 {
-    return m_loadedResources[guid];
-}
-
-Texture* ResourceManager::GetTexture(unsigned int guid)
-{
-    return (Texture*)m_loadedResources[guid];
-}
-
-Mesh* ResourceManager::GetMesh(unsigned int guid)
-{
-    return (Mesh*)m_loadedResources[guid];
-}
-
-ShaderProgram* ResourceManager::GetShader(unsigned int guid)
-{
-    return (ShaderProgram*)m_loadedResources[guid];
-}
-
-Resource* ResourceManager::GetDefaultResource(string name)
-{
-    unsigned int guid = m_defaultResources[name];
     Resource* resource = m_loadedResources[guid];
-    if (resource == NULL)
+    if (resource == NULL && load)
     {
         resource = m_resourceMap[guid]->Load();
         m_loadedResources[guid] = resource;
     }
     return resource;
+}
+
+Texture* ResourceManager::GetTexture(unsigned int guid, bool load)
+{
+    return (Texture*)GetResource(guid, load);
+}
+
+Mesh* ResourceManager::GetMesh(unsigned int guid, bool load)
+{
+    return (Mesh*)GetResource(guid, load);
+}
+
+ShaderProgram* ResourceManager::GetShader(unsigned int guid, bool load)
+{
+    return (ShaderProgram*)GetResource(guid, load);
+}
+
+Resource* ResourceManager::GetDefaultResource(string name, bool load)
+{
+    unsigned int guid = m_defaultResources[name];
+    return GetResource(guid, load);
 }
 
 void ResourceManager::SetResourceBasePath(string& path)

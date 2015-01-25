@@ -4,6 +4,7 @@
 #include <string>
 
 class AssetDatabaseModel;
+class MainEditorWindow;
 
 using std::string;
 
@@ -19,7 +20,7 @@ class AssetWidget : public QWidget
 public:
     enum eAssetType { ASSET_MESH, ASSET_TEXTURE, ASSET_SHADER, ASSET_SCRIPT, NUM_ASSET_TYPES };
 
-    AssetWidget(QWidget* parent = 0);
+    AssetWidget(MainEditorWindow* window, QWidget* parent = 0);
 
     void Init();
 
@@ -27,6 +28,7 @@ private:
     void MapHookup(QSignalMapper* signalMapper, QObject* sender, eAssetType assetType);
 
     Ui::AssetWidget*        m_ui;
+    MainEditorWindow*       m_window;
 
     AssetDatabaseModel*     m_sourceModel;
     QSortFilterProxyModel*  m_proxyModel;
@@ -38,4 +40,6 @@ private:
 private slots:
     void ImportAssetClicked();
     void ChangeTypeFilter(int filter);
+
+    void AddButtonClicked();
 };

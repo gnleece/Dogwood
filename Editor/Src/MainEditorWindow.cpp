@@ -468,23 +468,8 @@ void MainEditorWindow::AddMeshPrimitive(const QString& meshName)
             return;
         }
 
-        // TODO cleanup
-        Mesh* mesh = (Mesh*)ResourceManager::Singleton().GetDefaultResource(meshName.toStdString());
-        if (mesh != NULL)
-        {
-            MeshInstance* meshInstance = new MeshInstance();
-            meshInstance->SetMesh(mesh);
-            m_selectedGameObject->SetMesh(meshInstance);
-            Material* material = new Material();
-            meshInstance->SetMaterial(material);
-            ShaderProgram* shader = (ShaderProgram*)ResourceManager::Singleton().GetDefaultResource("shader_gouraud");
-            material->SetShader(shader);
-        }
-        else
-        {
-            DebugLogger::Singleton().Log("Error: mesh primitive missing from asset database.");
-            return;
-        }
+        Resource* mesh = ResourceManager::Singleton().GetDefaultResource(meshName.toStdString());
+        mesh->GetResourceInfo()->AddToGameObject(m_selectedGameObject);
     }
 }
 

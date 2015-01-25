@@ -11,6 +11,7 @@
 
 #include "Resource.h"
 
+class GameObject;
 class GameProject;
 class Mesh;
 class ShaderProgram;
@@ -25,8 +26,9 @@ struct ResourceInfo
     virtual void        Serialize(tinyxml2::XMLDocument& rootDoc, tinyxml2::XMLElement* parent);
 
     virtual Resource*   Load() = 0;
-    void                Unload();
+    virtual void        Unload();
     virtual string      TypeName() = 0;
+    virtual void        AddToGameObject(GameObject* gameObject) = 0;
 
     unsigned int        guid;
     string              path;
@@ -57,11 +59,11 @@ public:
     void            LoadSceneResources(tinyxml2::XMLElement* resources);
     void            UnloadSceneResources();
 
-    Resource*       GetResource(unsigned int guid);
-    Texture*        GetTexture(unsigned int guid);
-    Mesh*           GetMesh(unsigned int guid);
-    ShaderProgram*  GetShader(unsigned int guid);
-    Resource*       GetDefaultResource(string name);
+    Resource*       GetResource(unsigned int guid, bool load = true);
+    Texture*        GetTexture(unsigned int guid, bool load = true);
+    Mesh*           GetMesh(unsigned int guid, bool load = true);
+    ShaderProgram*  GetShader(unsigned int guid, bool load = true);
+    Resource*       GetDefaultResource(string name, bool load = true);
 
     void            SetResourceBasePath(string& path);
     string          GetResourceBasePath();

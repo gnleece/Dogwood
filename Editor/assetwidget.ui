@@ -112,6 +112,19 @@
     <bool>true</bool>
    </property>
   </widget>
+  <widget class="QPushButton" name="addButton">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>250</y>
+     <width>91</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Add to object</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>

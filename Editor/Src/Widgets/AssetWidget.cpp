@@ -4,17 +4,21 @@
 #include "Widgets\AssetWidget.h"
 #include "AssetDatabaseModel.h"
 #include "DebugLogger.h"
+#include "MainEditorWindow.h"
 #include "Scene\ResourceManager.h"
 
 #include "..\GeneratedFiles\ui_assetwidget.h"
 
 #include <qfileinfo.h>
 
-AssetWidget::AssetWidget(QWidget* parent)
-: m_ui(new Ui::AssetWidget), m_sourceModel(NULL), m_proxyModel(NULL)
+AssetWidget::AssetWidget(MainEditorWindow* window, QWidget* parent)
+: m_ui(new Ui::AssetWidget), m_window(window), m_sourceModel(NULL), m_proxyModel(NULL)
 {
     m_ui->setupUi(this);
     m_ui->meshTableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+
+    // Add-to-object button setup
+    connect(m_ui->addButton, SIGNAL(clicked()), this, SLOT(AddButtonClicked()));
 
     // Import button setup
     connect(m_ui->importButton, SIGNAL(clicked()), this, SLOT(ImportAssetClicked()));
@@ -102,6 +106,24 @@ void AssetWidget::ChangeTypeFilter(int filter)
     {
         bool checked = (i == filter);
         m_filterButtons[i]->setChecked(checked);
+    }
+}
+
+void AssetWidget::AddButtonClicked()
+{
+    if (!(m_ui->meshTableView->selectionModel()->selectedIndexes().isEmpty()))
+    {
+        QModelIndex proxyIndex = m_ui->meshTableView->selectionModel()->selectedIndexes().first();
+        QModelIndex index = m_proxyModel->mapToSource(proxyIndex);
+        ResourceInfo* info = m_sourceModel->getItem(index);
+        if (info != NULL)
+        {
+            GameObject* go = m_window->GetSelectedObject();
+            if (go != NULL)
+            {
+                info->AddToGameObject(go);
+            }
+        }
     }
 }
 
