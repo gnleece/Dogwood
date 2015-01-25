@@ -59,7 +59,7 @@ void AssetWidget::Init()
     m_ui->meshTableView->show();
 
     m_proxyModel->sort(1);      // Sort based on path column
-    m_proxyModel->setFilterRegExp("Texture");
+    ChangeTypeFilter(ASSET_MESH);
 }
 
 void AssetWidget::ImportAssetClicked()
@@ -85,6 +85,7 @@ void AssetWidget::ImportAssetClicked()
         if (success)
         {
             DebugLogger::Singleton().Log("Successfully imported asset.");
+            Init();     // TODO this rebuilds the whole model. fixme to just add new asset info
         }
         else
         {
