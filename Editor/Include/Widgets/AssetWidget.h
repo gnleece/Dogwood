@@ -1,8 +1,11 @@
 #pragma once
 
 #include <QtWidgets>
+#include <string>
 
 class AssetDatabaseModel;
+
+using std::string;
 
 namespace Ui
 {
@@ -14,13 +17,25 @@ class AssetWidget : public QWidget
     Q_OBJECT
 
 public:
+    enum eAssetType { ASSET_MESH, ASSET_TEXTURE, ASSET_SHADER, ASSET_SCRIPT, NUM_ASSET_TYPES };
+
     AssetWidget(QWidget* parent = 0);
 
-private:
-    Ui::AssetWidget*    m_ui;
+    void Init();
 
-    AssetDatabaseModel* m_model;
+private:
+    void MapHookup(QSignalMapper* signalMapper, QObject* sender, eAssetType assetType);
+
+    Ui::AssetWidget*        m_ui;
+
+    AssetDatabaseModel*     m_sourceModel;
+    QSortFilterProxyModel*  m_proxyModel;
+
+    QSignalMapper*          m_signalMapper;
+    QPushButton*            m_filterButtons[NUM_ASSET_TYPES];
+    string                  m_filterNames[NUM_ASSET_TYPES];
 
 private slots:
     void ImportAssetClicked();
+    void ChangeTypeFilter(int filter);
 };

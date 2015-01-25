@@ -402,6 +402,11 @@ string ResourceManager::AbsolutePathToProjectPath(string& absolutePath)
     return projectPath;
 }
 
+ResourceMap& ResourceManager::GetResourceMap()
+{
+    return m_resourceMap;
+}
+
 unsigned int ResourceManager::MakeGuid(string str)
 {
     // Get timestamp

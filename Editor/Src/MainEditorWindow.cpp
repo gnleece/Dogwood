@@ -232,6 +232,7 @@ void MainEditorWindow::OpenProject()
     m_sceneViewWidget->SetScene(NULL);
 
     setWindowTitle(tr("Dogwood Editor - ") + QString(GameProject::Singleton().GetName().c_str()));
+    m_assetWidget->Init();
 }
 
 void MainEditorWindow::SaveProject()
@@ -317,6 +318,7 @@ void MainEditorWindow::OpenTestProject()
     }
 
     setWindowTitle(tr("Dogwood Editor - ") + QString(GameProject::Singleton().GetName().c_str()));
+    m_assetWidget->Init();
 }
 
 void MainEditorWindow::SaveScene()

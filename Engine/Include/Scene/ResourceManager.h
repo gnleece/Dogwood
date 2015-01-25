@@ -32,6 +32,8 @@ struct ResourceInfo
     string              path;
 };
 
+typedef unordered_map<unsigned int, ResourceInfo*> ResourceMap;
+
 class ResourceManager
 {
 public:
@@ -66,6 +68,8 @@ public:
 
     string          AbsolutePathToProjectPath(string& absolutePath);
 
+    ResourceMap&    GetResourceMap();
+
 private:
     unsigned int    MakeGuid(string str);
     unsigned int    Import(ResourceInfo* resource);
@@ -75,7 +79,7 @@ private:
     template<typename T>
     void AddResourcesToMap(tinyxml2::XMLElement* resources, string typeName);
 
-    unordered_map<unsigned int, ResourceInfo*>   m_resourceMap;
+    ResourceMap                                  m_resourceMap;
     unordered_map<unsigned int, Resource*>       m_loadedResources;
     unordered_map<string, unsigned int>          m_defaultResources;
 

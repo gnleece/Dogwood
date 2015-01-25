@@ -26,49 +26,91 @@
     <string>Import asset...</string>
    </property>
   </widget>
-  <widget class="QTabWidget" name="tabWidget">
+  <widget class="QTableView" name="meshTableView">
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>0</y>
-     <width>581</width>
-     <height>251</height>
+     <y>30</y>
+     <width>571</width>
+     <height>211</height>
     </rect>
    </property>
-   <property name="currentIndex">
-    <number>2</number>
+   <attribute name="horizontalHeaderVisible">
+    <bool>false</bool>
+   </attribute>
+   <attribute name="horizontalHeaderStretchLastSection">
+    <bool>true</bool>
+   </attribute>
+   <attribute name="verticalHeaderVisible">
+    <bool>false</bool>
+   </attribute>
+  </widget>
+  <widget class="QPushButton" name="meshesButton">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>10</y>
+     <width>75</width>
+     <height>21</height>
+    </rect>
    </property>
-   <widget class="QWidget" name="meshTab">
-    <attribute name="title">
-     <string>Meshes</string>
-    </attribute>
-    <widget class="QTableView" name="meshTableView">
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>0</y>
-       <width>581</width>
-       <height>231</height>
-      </rect>
-     </property>
-     <attribute name="horizontalHeaderVisible">
-      <bool>false</bool>
-     </attribute>
-     <attribute name="verticalHeaderVisible">
-      <bool>false</bool>
-     </attribute>
-    </widget>
-   </widget>
-   <widget class="QWidget" name="textureTab">
-    <attribute name="title">
-     <string>Textures</string>
-    </attribute>
-   </widget>
-   <widget class="QWidget" name="shaderTab">
-    <attribute name="title">
-     <string>Shaders</string>
-    </attribute>
-   </widget>
+   <property name="text">
+    <string>Meshes</string>
+   </property>
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="texturesButton">
+   <property name="geometry">
+    <rect>
+     <x>80</x>
+     <y>10</y>
+     <width>75</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Textures</string>
+   </property>
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="shadersButton">
+   <property name="geometry">
+    <rect>
+     <x>160</x>
+     <y>10</y>
+     <width>75</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Shaders</string>
+   </property>
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="scriptsButton">
+   <property name="geometry">
+    <rect>
+     <x>240</x>
+     <y>10</y>
+     <width>75</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Scripts</string>
+   </property>
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
   </widget>
  </widget>
  <resources/>

@@ -11,17 +11,55 @@
 #include <qfileinfo.h>
 
 AssetWidget::AssetWidget(QWidget* parent)
-: m_ui(new Ui::AssetWidget)
+: m_ui(new Ui::AssetWidget), m_sourceModel(NULL), m_proxyModel(NULL)
 {
     m_ui->setupUi(this);
+    m_ui->meshTableView->setSelectionBehavior(QAbstractItemView::SelectRows);
 
-    // Model setup
-    m_model = new AssetDatabaseModel(this);
-    m_ui->meshTableView->setModel(m_model);
+    // Import button setup
+    connect(m_ui->importButton, SIGNAL(clicked()), this, SLOT(ImportAssetClicked()));
+
+    // Asset type filter button setup
+    m_signalMapper = new QSignalMapper(this);
+    connect(m_signalMapper, SIGNAL(mapped(int)), this, SLOT(ChangeTypeFilter(int)));
+
+    m_filterButtons[ASSET_MESH] = m_ui->meshesButton;
+    m_filterButtons[ASSET_TEXTURE] = m_ui->texturesButton;
+    m_filterButtons[ASSET_SHADER] = m_ui->shadersButton;
+    m_filterButtons[ASSET_SCRIPT] = m_ui->scriptsButton;
+    m_filterNames[ASSET_MESH] = "Mesh";
+    m_filterNames[ASSET_TEXTURE] = "Texture";
+    m_filterNames[ASSET_SHADER] = "Shader";
+    m_filterNames[ASSET_SCRIPT] = "Script";
+
+    for (int i = 0; i < NUM_ASSET_TYPES; i++)
+    {
+        MapHookup(m_signalMapper, m_filterButtons[i], (eAssetType)i);
+    }
+}
+
+void AssetWidget::Init()
+{
+    // Clear old model
+    if (m_sourceModel != NULL)
+    {
+        delete m_sourceModel;
+    }
+    if (m_proxyModel != NULL)
+    {
+        delete m_proxyModel;
+    }
+
+    // Prepare new model
+    m_sourceModel = new AssetDatabaseModel(this);
+    m_proxyModel = new QSortFilterProxyModel(this);
+    m_proxyModel->setSourceModel(m_sourceModel);
+    m_proxyModel->setFilterRole(AssetDatabaseModel::FilterRole);
+    m_ui->meshTableView->setModel(m_proxyModel);
     m_ui->meshTableView->show();
 
-    // Button setup
-    connect(m_ui->importButton, SIGNAL(clicked()), this, SLOT(ImportAssetClicked()));
+    m_proxyModel->sort(1);      // Sort based on path column
+    m_proxyModel->setFilterRegExp("Texture");
 }
 
 void AssetWidget::ImportAssetClicked()
@@ -53,4 +91,21 @@ void AssetWidget::ImportAssetClicked()
             DebugLogger::Singleton().Log("Error importing asset.");
         }
     }
+}
+
+void AssetWidget::ChangeTypeFilter(int filter)
+{
+    m_proxyModel->setFilterRegExp(m_filterNames[filter].c_str());
+
+    for (int i = 0; i < NUM_ASSET_TYPES; i++)
+    {
+        bool checked = (i == filter);
+        m_filterButtons[i]->setChecked(checked);
+    }
+}
+
+void AssetWidget::MapHookup(QSignalMapper* signalMapper, QObject* sender, eAssetType assetType)
+{
+    connect(sender, SIGNAL(clicked()), signalMapper, SLOT(map()));
+    signalMapper->setMapping(sender, assetType);
 }

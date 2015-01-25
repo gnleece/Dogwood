@@ -42,7 +42,6 @@ ENGINE (Dogwood)
 EDITOR (Thicket)
 
     * Project
-        * Open project
         * Project settings window
         * Assets widget
         * typedef guid type?
@@ -86,6 +85,7 @@ EDITOR (Thicket)
 
         Hi pri
         - Undo/redo broken with delete/undo create. Need to avoid use of QModelIndex
+        - Close scene on project load
 
 ---------------------------------------------------------------------------
 
