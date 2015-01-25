@@ -66,18 +66,21 @@ private:
     GameObject*             m_copiedGameObject;
     GameObject*             m_selectedGameObject;
 
+public slots:
+    void SaveProject();
+
 private slots:
     void SetupComponentWidgets();
     void SetupMenuCommands();
 
     void NewProject();
     void OpenProject();
-    void SaveProject();
     void NewScene();
     void OpenScene();
     void UnloadScene();
     void SaveScene();
     void SaveSceneAs();
+    void SaveAll();
 
     void Undo();
     void Redo();

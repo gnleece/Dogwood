@@ -339,6 +339,8 @@
     <addaction name="actionSave_Scene"/>
     <addaction name="actionSave_Scene_As"/>
     <addaction name="separator"/>
+    <addaction name="actionSave_All"/>
+    <addaction name="separator"/>
     <addaction name="actionQuit"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
@@ -385,9 +387,6 @@
    </property>
    <property name="text">
     <string>Save Scene</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+S</string>
    </property>
   </action>
   <action name="actionCreate_Game_Object">
@@ -547,6 +546,14 @@
    </property>
    <property name="toolTip">
     <string>Add torus mesh</string>
+   </property>
+  </action>
+  <action name="actionSave_All">
+   <property name="text">
+    <string>Save All</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
    </property>
   </action>
  </widget>

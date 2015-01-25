@@ -87,6 +87,7 @@ void MainEditorWindow::SetupMenuCommands()
     connect(m_ui->actionOpen_Scene,             SIGNAL(triggered()), this, SLOT(OpenScene()));
     connect(m_ui->actionSave_Scene,             SIGNAL(triggered()), this, SLOT(SaveScene()));
     connect(m_ui->actionSave_Scene_As,          SIGNAL(triggered()), this, SLOT(SaveSceneAs()));
+    connect(m_ui->actionSave_All,               SIGNAL(triggered()), this, SLOT(SaveAll()));
 
     // Edit menu
     connect(m_ui->actionUndo,                   SIGNAL(triggered()), this, SLOT(Undo()));
@@ -345,6 +346,12 @@ void MainEditorWindow::SaveSceneAs()
     {
         DebugLogger::Singleton().Log("No scene to save.");
     }
+}
+
+void MainEditorWindow::SaveAll()
+{
+    SaveProject();
+    SaveScene();
 }
 
 void MainEditorWindow::CreateGameObject()

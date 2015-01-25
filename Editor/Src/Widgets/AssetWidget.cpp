@@ -90,6 +90,7 @@ void AssetWidget::ImportAssetClicked()
         {
             DebugLogger::Singleton().Log("Successfully imported asset.");
             Init();     // TODO this rebuilds the whole model. fixme to just add new asset info
+            m_window->SaveProject();
         }
         else
         {
