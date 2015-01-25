@@ -27,7 +27,16 @@ struct TextureResourceInfo : ResourceInfo
 
     virtual void AddToGameObject(GameObject* gameObject)
     {
-        // TODO implement me
+        MeshInstance* meshInstance = gameObject->GetMesh();
+        if (meshInstance != NULL)
+        {
+            Material* mat = meshInstance->GetMaterial();
+            if (mat != NULL)
+            {
+                Texture* texture = ResourceManager::Singleton().GetTexture(guid);
+                mat->SetTexture(texture);
+            }
+        }
     }
 };
 
@@ -99,7 +108,16 @@ struct ShaderResourceInfo : ResourceInfo
 
     virtual void AddToGameObject(GameObject* gameObject)
     {
-        // TODO implement me
+        MeshInstance* meshInstance = gameObject->GetMesh();
+        if (meshInstance != NULL)
+        {
+            Material* mat = meshInstance->GetMaterial();
+            if (mat != NULL)
+            {
+                ShaderProgram* shader = ResourceManager::Singleton().GetShader(guid);
+                mat->SetShader(shader);
+            }
+        }
     }
 };
 

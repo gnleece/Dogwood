@@ -86,6 +86,8 @@ EDITOR (Thicket)
         Hi pri
         - Undo/redo broken with delete/undo create. Need to avoid use of QModelIndex
         - Close scene on project load
+        - Fix shader info in asset widget
+        - Save project on CTRL-S, asset import
 
 ---------------------------------------------------------------------------
 
