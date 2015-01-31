@@ -214,6 +214,8 @@ void MainEditorWindow::NewProject()
     GameProject::Singleton().Save();
 
     // TODO unload scene, refresh scene view
+
+    m_assetWidget->Init();
 }
 
 void MainEditorWindow::OpenProject()

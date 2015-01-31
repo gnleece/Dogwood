@@ -27,6 +27,9 @@ int AssetDatabaseModel::columnCount(const QModelIndex & /*parent*/) const
 
 QVariant AssetDatabaseModel::data(const QModelIndex &index, int role) const
 {
+    if (!index.isValid())
+        return QVariant();
+
     int row = index.row();
     int col = index.column();
 

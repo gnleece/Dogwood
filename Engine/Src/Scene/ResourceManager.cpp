@@ -93,6 +93,7 @@ struct ShaderResourceInfo : ResourceInfo
     {
         vertexpath = element->Attribute("vertex-path");
         fragmentpath = element->Attribute("fragment-path");
+        path = "";
         guid = element->UnsignedAttribute("guid");
         map[guid] = this;
     }

@@ -43,7 +43,6 @@ EDITOR (Thicket)
 
     * Project
         * Project settings window
-        * Assets widget
         * typedef guid type?
         * Prompt for save on exit/unload
         * Handle dialog cancels
@@ -54,12 +53,18 @@ EDITOR (Thicket)
         * Camera settings
         * Light settings
 
+    * Assets widget
+        * Enable drag & drop onto object
+
     * Game components
-        * Built-in component widgets (mesh, material, texture, shader)
+        * Built-in component widgets
+            * Mesh: hook up browse
+            * Texture: hook up browse
+            * Shader: show on material widget, hook up browse
         * Custom component widget
         * Add/remove components
-            * Undo/redo on add mesh primitive
-            * Refresh widget on component add/remove
+            * Undo/redo on add/remove
+            * Refresh widget on add/remove
         * Enable/disable components
 
     * Visuals
