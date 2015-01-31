@@ -10,7 +10,7 @@
 #include <vector>
 
 class Material;
-struct ResourceInfo;
+class ResourceInfo;
 
 class Mesh : public Resource
 {

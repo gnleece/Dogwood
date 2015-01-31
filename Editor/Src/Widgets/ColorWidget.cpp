@@ -10,7 +10,7 @@
 using std::string;
 
 ColorWidget::ColorWidget(QWidget* parent)
-: m_ui(new Ui::ColorWidget)
+: QWidget(parent), m_ui(new Ui::ColorWidget)
 {
     m_ui->setupUi(this);
     connect(m_ui->button, SIGNAL(clicked()), this, SLOT(OnButtonClick()));
@@ -52,7 +52,7 @@ void ColorWidget::SetButtonStyle()
     
     // Set the background color of the button to match the current color value
     char stylebuf[100];
-    sprintf(stylebuf, styleTemplate.c_str(), qPrintable(m_color.name()));
+    sprintf_s(stylebuf, styleTemplate.c_str(), qPrintable(m_color.name()));
     m_ui->button->setStyleSheet(stylebuf);
 }
 

@@ -3,7 +3,7 @@
 #include <cmath>
 #include <memory>
 
-#define M_PI 3.141592653589f
+#define MATH_PI 3.141592653589f
 
 enum eAXIS { AXIS_X, AXIS_Y, AXIS_Z };
 

@@ -195,7 +195,7 @@ QMimeData* HierarchyModel::mimeData(const QModelIndexList &indexes) const
     return mimeData;
 }
 
-bool HierarchyModel::dropMimeData(const QMimeData* data, Qt::DropAction action, int row, int column, const QModelIndex &parent)
+bool HierarchyModel::dropMimeData(const QMimeData* data, Qt::DropAction action, int /*row*/, int column, const QModelIndex &parent)
 {
     if (action == Qt::IgnoreAction)
         return true;

@@ -10,7 +10,7 @@ public:
     virtual void Execute() = 0;
     virtual void Undo() = 0;
 
-    virtual bool Collapse(ICommand* command) { return false; }
+    virtual bool Collapse(ICommand* /*command*/) { return false; }
 
     // TODO proper delete!
 };
@@ -25,7 +25,7 @@ public:
     }
     CommandManager() {}
 
-    const int MAX_STACK_SIZE = 20;
+    const unsigned int MAX_STACK_SIZE = 20;
 
     void ExecuteCommand(ICommand* command);
     bool Undo(int numCommands = 1);

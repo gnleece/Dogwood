@@ -23,9 +23,9 @@
 
 using namespace EditorCommands;
 
-MainEditorWindow::MainEditorWindow(QWidget *parent)
-: m_ui(new Ui::MainEditorWindow), m_copiedGameObject(NULL), m_selectedGameObject(NULL),
-  m_scene(NULL)
+MainEditorWindow::MainEditorWindow(QWidget* parent)
+: QMainWindow(parent), m_ui(new Ui::MainEditorWindow), m_copiedGameObject(NULL),
+  m_selectedGameObject(NULL), m_scene(NULL)
 {
     // Window setup
     m_ui->setupUi(this);
@@ -240,7 +240,7 @@ void MainEditorWindow::OpenProject()
 
 void MainEditorWindow::SaveProject()
 {
-    if (GameProject::Singleton().IsLoaded());
+    if (GameProject::Singleton().IsLoaded())
     {
         GameProject::Singleton().Save();
         DebugLogger::Singleton().Log("Project saved.");
@@ -507,7 +507,7 @@ void MainEditorWindow::SelectObject(GameObject* gameObject)
     }
 }
 
-void MainEditorWindow::OnSelectionChanged(const QItemSelection & selected, const QItemSelection & deselected)
+void MainEditorWindow::OnSelectionChanged(const QItemSelection& selected, const QItemSelection& /*deselected*/)
 {
     // Get the selected game object
     GameObject* selectedObject = NULL;
@@ -558,18 +558,18 @@ void MainEditorWindow::SwitchSelectObject(GameObject* gameobject)
     }
 }
 
-void MainEditorWindow::resizeEvent(QResizeEvent* resizeEvent)
+void MainEditorWindow::resizeEvent(QResizeEvent* /*resizeEvent*/)
 {
-    QSize newSize = resizeEvent->size();
-    int width = newSize.width();
-    int height = newSize.height();
+    //QSize newSize = resizeEvent->size();
+    //int width = newSize.width();
+    //int height = newSize.height();
 
-    DebugLogger::Singleton().Log("Window resize!");
+    //DebugLogger::Singleton().Log("Window resize!");
 
     //TODO: scale/reposition widgets
 }
 
-void MainEditorWindow::closeEvent(QCloseEvent *event)
+void MainEditorWindow::closeEvent(QCloseEvent* /*event*/)
 {
     m_open = false;
 }

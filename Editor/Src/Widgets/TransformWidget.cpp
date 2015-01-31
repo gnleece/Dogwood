@@ -9,7 +9,7 @@
 using namespace EditorCommands;
 
 TransformWidget::TransformWidget(QWidget* parent, MainEditorWindow* window)
-: m_ui(new Ui::TransformWidget), m_window(window), m_gameObject(NULL)
+: QWidget(parent), m_ui(new Ui::TransformWidget), m_window(window), m_gameObject(NULL)
 {
     m_ui->setupUi(this);
 

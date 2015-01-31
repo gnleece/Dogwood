@@ -37,7 +37,7 @@ void GameWindow::SwapBuffers()
 
 bool GameWindow::ShouldClose()
 {
-    return glfwWindowShouldClose(m_window);
+    return glfwWindowShouldClose(m_window) != 0;
 }
 
 int GameWindow::GetWidth()

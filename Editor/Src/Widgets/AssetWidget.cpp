@@ -12,7 +12,7 @@
 #include <qfileinfo.h>
 
 AssetWidget::AssetWidget(MainEditorWindow* window, QWidget* parent)
-: m_ui(new Ui::AssetWidget), m_window(window), m_sourceModel(NULL), m_proxyModel(NULL)
+: QWidget(parent), m_ui(new Ui::AssetWidget), m_window(window), m_sourceModel(NULL), m_proxyModel(NULL)
 {
     m_ui->setupUi(this);
     m_ui->meshTableView->setSelectionBehavior(QAbstractItemView::SelectRows);

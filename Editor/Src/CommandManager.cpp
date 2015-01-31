@@ -17,7 +17,7 @@ void CommandManager::ExecuteCommand(ICommand* command)
     }
 
     // Since a new command was just executed, we clear the previous undo stack
-    for (int i = 0; i < m_undoStack.size(); i++)
+    for (unsigned int i = 0; i < m_undoStack.size(); i++)
     {
         delete m_undoStack.front();
         m_undoStack.pop_front();

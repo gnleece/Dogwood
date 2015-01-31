@@ -20,8 +20,9 @@ class Texture;
 using std::string;
 using std::unordered_map;
 
-struct ResourceInfo
+class ResourceInfo
 {
+public:
     virtual void        AddToMap(tinyxml2::XMLElement* element, unordered_map<unsigned int, ResourceInfo*> & map);
     virtual void        Serialize(tinyxml2::XMLDocument& rootDoc, tinyxml2::XMLElement* parent);
 

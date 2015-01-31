@@ -5,7 +5,7 @@
 #include <qfileinfo.h>
 
 AssetDatabaseModel::AssetDatabaseModel(QObject *parent)
-:QAbstractTableModel(parent)
+: QAbstractTableModel(parent)
 {
     ResourceMap map = ResourceManager::Singleton().GetResourceMap();
     ResourceMap::iterator iter = map.begin();

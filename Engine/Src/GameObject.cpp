@@ -156,6 +156,7 @@ bool GameObject::InsertChild(int position, GameObject* child)
         return false;
 
     child->SetParent(this, position);
+    return true;
 }
 
 bool GameObject::RemoveChildren(int position, int count)

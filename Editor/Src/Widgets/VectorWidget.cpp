@@ -3,7 +3,7 @@
 #include "..\GeneratedFiles\ui_VectorWidget.h"
 
 VectorWidget::VectorWidget(QWidget* parent)
-: m_ui(new Ui::VectorWidget)
+: QWidget(parent), m_ui(new Ui::VectorWidget)
 {
     m_ui->setupUi(this);
 

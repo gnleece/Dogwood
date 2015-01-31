@@ -1,6 +1,6 @@
 #pragma once
 
-struct ResourceInfo;
+class ResourceInfo;
 
 class Resource
 {

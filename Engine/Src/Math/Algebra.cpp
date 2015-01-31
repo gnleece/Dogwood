@@ -584,12 +584,12 @@ Vector4 operator *(const Vector4& v, const Matrix4x4& m)
 
 float DegreesToRadians(float degrees)
 {
-    return degrees * M_PI / 180.0f;
+    return degrees * MATH_PI / 180.0f;
 }
 
 float RadiansToDegrees(float radians)
 {
-    return radians * 180.0f / M_PI;
+    return radians * 180.0f / MATH_PI;
 }
 
 float Clamp(float value, float min, float max)

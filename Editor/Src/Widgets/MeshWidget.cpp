@@ -12,7 +12,7 @@
 using namespace EditorCommands;
 
 MeshWidget::MeshWidget(QWidget* parent)
-: m_ui(new Ui::MeshWidget), m_meshInstance(NULL)
+    : QWidget(parent), m_ui(new Ui::MeshWidget), m_meshInstance(NULL)
 {
     m_ui->setupUi(this);
     setFixedHeight(240);

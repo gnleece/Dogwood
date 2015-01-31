@@ -42,5 +42,7 @@ void GLWidget::initializeGL()
 void GLWidget::paintGL()
 {}
 
-void GLWidget::resizeGL(int width, int height)
-{}
+void GLWidget::resizeGL(int /*width*/, int /*height*/)
+{
+    // TODO implement me
+}

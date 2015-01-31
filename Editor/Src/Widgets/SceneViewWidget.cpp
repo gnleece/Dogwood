@@ -147,12 +147,12 @@ void SceneViewWidget::keyReleaseEvent(QKeyEvent* event)
     m_keyStates[key] = false;
 }
 
-void SceneViewWidget::focusInEvent(QFocusEvent* event)
+void SceneViewWidget::focusInEvent(QFocusEvent* /*event*/)
 {
     m_hasFocus = true;
 }
 
-void SceneViewWidget::focusOutEvent(QFocusEvent* event)
+void SceneViewWidget::focusOutEvent(QFocusEvent* /*event*/)
 {
     m_hasFocus = false;
     ClearMouseButtonState();
