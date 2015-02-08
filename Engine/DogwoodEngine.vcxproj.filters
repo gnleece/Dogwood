@@ -147,6 +147,12 @@
     <ClInclude Include="Include\Math\Raycast.h">
       <Filter>Header Files\Math</Filter>
     </ClInclude>
+    <ClInclude Include="Include\Input\GamePad.h">
+      <Filter>Header Files\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Input\XInputGamePad.h">
+      <Filter>Header Files\Input</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Debugging\DebugCameraControls.cpp">
@@ -166,9 +172,6 @@
     </ClCompile>
     <ClCompile Include="Src\Math\Transformations.cpp">
       <Filter>Source Files\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Rendering\Camera.cpp">
-      <Filter>Source Files\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="Src\Rendering\Colour.cpp">
       <Filter>Source Files\Rendering</Filter>
@@ -232,6 +235,12 @@
     </ClCompile>
     <ClCompile Include="Src\Math\Raycast.cpp">
       <Filter>Source Files\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Input\GamePad.cpp">
+      <Filter>Source Files\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Input\XInputGamePad.cpp">
+      <Filter>Source Files\Input</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

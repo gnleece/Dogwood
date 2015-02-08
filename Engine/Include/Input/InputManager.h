@@ -7,11 +7,14 @@
 #include <GLFW/glfw3.h>
 
 #include <utility>
+#include <unordered_map>
 #include "..\Debugging\DebugCameraControls.h"
 
+class GamePad;
 class GameWindow;
 
 using std::pair;
+using std::unordered_map;
 typedef pair<float, float> CursorPos;
 
 enum eKeyState
@@ -37,10 +40,10 @@ public:
     }
     InputManager() {}
 
-    void Startup(GameWindow* gameWindow);
-    void Shutdown();
+    void                Startup(GameWindow* gameWindow);
+    void                Shutdown();
 
-    void PollEvents(float deltaTime);
+    void                PollEvents(float deltaTime);
 
     // TODO: define own key enum so client code doesn't touch GLFW
     eKeyState           GetKey(int key);
@@ -49,11 +52,16 @@ public:
     bool                GetMouseButtonPressed(int button);
     CursorPos           GetCursorPos();
 
-    void EnableDebugCameraControls(bool enable);
+    GamePad*            GetGamePad(unsigned int id);
+    bool                EnableGamePad(GamePad* pad, unsigned int id, bool enable = true);
+
+    // TODO temp for debugging, remove me
+    void                EnableDebugCameraControls(bool enable);
 
 private:
-    GameWindow* m_gameWindow;
+    GameWindow*                             m_gameWindow;
+    unordered_map<unsigned int, GamePad*>   m_gamePads;
 
-    bool                m_enableDebugCameraControls;
-    DebugCameraControls m_debugCameraControls;
+    bool                                    m_enableDebugCameraControls;
+    DebugCameraControls                     m_debugCameraControls;
 };

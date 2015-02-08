@@ -14,6 +14,8 @@ public:
 private:
     void CheckKeys(float deltaTime);
     void CheckMouse(float deltaTime);
+    void CheckGamePad(float deltaTime);
+
     void MoveCamera(Vector3 localSpaceOffset);
     void RotateCamera(eAXIS axis, float degrees);
 

@@ -1,4 +1,5 @@
 #include "Input\InputManager.h"
+#include "Input\GamePad.h"
 #include "Window\GameWindow.h"
 
 void InputManager::Startup(GameWindow* gameWindow)
@@ -8,11 +9,21 @@ void InputManager::Startup(GameWindow* gameWindow)
 }
 
 void InputManager::Shutdown()
-{}
+{
+    // TODO clean up gamepads
+}
 
 void InputManager::PollEvents(float deltaTime)
 {
+    // Mouse / keyboard input
     glfwPollEvents();
+
+    // Gamepad input
+    unordered_map<unsigned int, GamePad*>::iterator iter = m_gamePads.begin();
+    for (; iter != m_gamePads.end(); iter++)
+    {
+        iter->second->Refresh();
+    }
 
     if (m_enableDebugCameraControls)
     {
@@ -54,5 +65,34 @@ CursorPos InputManager::GetCursorPos()
 {
     double xPos, yPos;
     glfwGetCursorPos(m_gameWindow->GetGLFWWindow(), &xPos, &yPos);
+
     return CursorPos((float)xPos, (float)yPos);
+}
+
+GamePad* InputManager::GetGamePad(unsigned int id)
+{
+    if (m_gamePads.count(id) == 0)
+        return NULL;
+
+    return m_gamePads[id];
+}
+
+bool InputManager::EnableGamePad(GamePad* pad, unsigned int id, bool enable)
+{
+    if (enable)
+    {
+        // Add pad to map if it doesn't exist already
+        if (m_gamePads.count(id) != 0)
+            return false;
+
+        m_gamePads[id] = pad;
+    }
+    else
+    {
+        // Clear pad from map, if it exists
+        if (m_gamePads.count(id) == 0)
+            return false;
+
+        m_gamePads.erase(id);
+    }
 }

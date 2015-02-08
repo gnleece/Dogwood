@@ -6,6 +6,7 @@
 #include <thread>
 
 #include "Input\InputManager.h"
+#include "Input\XInputGamePad.h"
 #include "Rendering\RenderManager.h"
 #include "Scene\ResourceManager.h"
 #include "Scene\Scene.h"
@@ -35,7 +36,10 @@ void Game::Init(string projectPath)
     renderConfig.height = windowHeight;
     RenderManager::Singleton().Startup(renderConfig);
 
+    // Input setup
     InputManager::Singleton().Startup(&m_gameWindow);
+    XInputGamepad* xbox360controller = new XInputGamepad(0);            // TODO make this configurable
+    InputManager::Singleton().EnableGamePad(xbox360controller, 0);
 }
 
 void Game::Run(GameObject* sceneRoot)

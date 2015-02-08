@@ -35,6 +35,8 @@ ENGINE (Dogwood)
         * Add missing matrix maths (e.g. addition)
         * Engine provided assets (e.g. default shaders, primitive meshes)
         * Input wrappers
+            * Configurable gamepad setup
+            * #define to compile without XInput?
         
 
 ---------------------------------------------------------------------------

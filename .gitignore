@@ -20,3 +20,5 @@
 
 *.pro.user
 *.ui.autosave
+
+*.vcxproj.user

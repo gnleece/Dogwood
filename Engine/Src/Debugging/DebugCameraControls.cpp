@@ -1,11 +1,13 @@
 #include "Debugging\DebugCameraControls.h"
 #include "Input\InputManager.h"
+#include "Input\GamePad.h"
 #include "Rendering\RenderManager.h"
 
 void DebugCameraControls::Update(float deltaTime)
 {
     CheckKeys(deltaTime);
     CheckMouse(deltaTime);
+    CheckGamePad(deltaTime);
 }
 
 void DebugCameraControls::CheckKeys(float deltaTime)
@@ -64,6 +66,14 @@ void DebugCameraControls::CheckMouse(float deltaTime)
     {
         m_mouseDragging = false;
     }
+}
+
+void DebugCameraControls::CheckGamePad(float deltaTime)
+{
+    // TODO temp debugging, remove me
+    GamePad* pad = InputManager::Singleton().GetGamePad(0);
+
+    printf("%f\n", pad->GetAxisValue(AbstractGamepadAxes::GAMEPAD_LTRIGGER));
 }
 
 void DebugCameraControls::MoveCamera(Vector3 localSpaceOffset)
