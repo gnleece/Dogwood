@@ -2,6 +2,27 @@
 #include <limits>
 #include <math.h>
 
+WORD AbstractButtonToXInputButton[] =
+{
+    XINPUT_GAMEPAD_START,           // GAMEPAD_START
+    XINPUT_GAMEPAD_BACK,            // GAMEPAD_PAUSE
+
+    XINPUT_GAMEPAD_DPAD_UP,         // GAMEPAD_LPAD_UP
+    XINPUT_GAMEPAD_DPAD_DOWN,       // GAMEPAD_LPAD_DOWN
+    XINPUT_GAMEPAD_DPAD_LEFT,       // GAMEPAD_LPAD_LEFT
+    XINPUT_GAMEPAD_DPAD_RIGHT,      // GAMEPAD_LPAD_RIGHT
+
+    XINPUT_GAMEPAD_Y,               // GAMEPAD_RPAD_UP
+    XINPUT_GAMEPAD_A,               // GAMEPAD_RPAD_DOWN
+    XINPUT_GAMEPAD_X,               // GAMEPAD_RPAD_LEFT
+    XINPUT_GAMEPAD_B,               // GAMEPAD_RPAD_RIGHT
+
+    XINPUT_GAMEPAD_LEFT_THUMB,      // GAMEPAD_LSTICK_BUTTON
+    XINPUT_GAMEPAD_RIGHT_THUMB,     // GAMEPAD_RSTICK_BUTTON
+
+    XINPUT_GAMEPAD_LEFT_SHOULDER,   // GAMEPAD_LSHOULDER
+    XINPUT_GAMEPAD_RIGHT_SHOULDER,  // GAMEPAD_RSHOULDER
+};
 
 XInputGamepad::XInputGamepad(unsigned int id)
 : GamePad(id), m_deadzoneX(0.05f), m_deadzoneY(0.02f)
@@ -43,9 +64,8 @@ bool XInputGamepad::Refresh()
 
 bool XInputGamepad::IsPressed(AbstractGamepadButtons button)
 {
-    // TODO fix me (map from Xinput buttons to AbstractGamepadButtons)
-    //return (m_state.Gamepad.wButtons & /*button*/) != 0;
-    return false;
+    WORD XInputButton = AbstractButtonToXInputButton[button];
+    return (m_state.Gamepad.wButtons & XInputButton) != 0;
 }
 
 float XInputGamepad::GetAxisValue(AbstractGamepadAxes axis)
