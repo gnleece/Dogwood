@@ -73,7 +73,8 @@ void DebugCameraControls::CheckGamePad(float deltaTime)
     // TODO temp debugging, remove me
     GamePad* pad = InputManager::Singleton().GetGamePad(0);
 
-    printf("%f\n", pad->GetAxisValue(AbstractGamepadAxes::GAMEPAD_LTRIGGER));
+    //printf("%f\n", pad->GetAxisValue(AbstractGamepadAxes::GAMEPAD_LSTICK_X));
+    //printf("%f\n", pad->GetAxisValue(AbstractGamepadAxes::GAMEPAD_LSTICK_Y));
 }
 
 void DebugCameraControls::MoveCamera(Vector3 localSpaceOffset)

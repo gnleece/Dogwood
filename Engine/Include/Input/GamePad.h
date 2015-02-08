@@ -35,7 +35,7 @@ enum AbstractGamepadAxes
     GAMEPAD_LSTICK_X,
     GAMEPAD_LSTICK_Y,
     GAMEPAD_RSTICK_X,
-    GAMEAPD_RSTICK_Y,
+    GAMEPAD_RSTICK_Y,
 
     // Trigger axes
     GAMEPAD_LTRIGGER,

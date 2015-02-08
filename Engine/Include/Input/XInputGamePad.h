@@ -8,8 +8,7 @@
 class XInputGamepad : public GamePad
 {
 public:
-    XInputGamepad(unsigned int id);
-    XInputGamepad(unsigned int id, float deadzoneX, float deadzoneY);
+    XInputGamepad(unsigned int id, float deadzone = 0.25f);
 
     virtual bool    Refresh();
 
@@ -18,13 +17,12 @@ public:
 
 private:
     void            Reset();
-    float           NormalizeStickAxis(SHORT value, float deadzone);
+    void            NormalizeStickAxis(float x, float y, float& xNorm, float& yNorm);
     float           NormalizeTriggerAxis(BYTE value);
 
     XINPUT_STATE    m_state;
 
-    float           m_deadzoneX;
-    float           m_deadzoneY;
+    float           m_deadzone;
 
     float           m_axisValues[AbstractGamepadAxes::GAMEPAD_NUM_AXES];
 };

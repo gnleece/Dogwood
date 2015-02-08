@@ -1,6 +1,9 @@
 #include "Input\XInputGamepad.h"
+#include "Math\Algebra.h"
 #include <limits>
 #include <math.h>
+
+#include <stdio.h>
 
 WORD AbstractButtonToXInputButton[] =
 {
@@ -24,14 +27,8 @@ WORD AbstractButtonToXInputButton[] =
     XINPUT_GAMEPAD_RIGHT_SHOULDER,  // GAMEPAD_RSHOULDER
 };
 
-XInputGamepad::XInputGamepad(unsigned int id)
-: GamePad(id), m_deadzoneX(0.05f), m_deadzoneY(0.02f)
-{
-    Reset();
-}
-
-XInputGamepad::XInputGamepad(unsigned int id, float deadzoneX, float deadzoneY)
-: GamePad(id), m_deadzoneX(deadzoneX), m_deadzoneY(deadzoneY)
+XInputGamepad::XInputGamepad(unsigned int id, float deadzone)
+: GamePad(id), m_deadzone(deadzone)
 {
     Reset();
 }
@@ -46,10 +43,15 @@ bool XInputGamepad::Refresh()
 
     if (dwResult == ERROR_SUCCESS)
     {
-        m_axisValues[GAMEPAD_LSTICK_X] = NormalizeStickAxis(m_state.Gamepad.sThumbLX, m_deadzoneX);
-        m_axisValues[GAMEPAD_LSTICK_Y] = NormalizeStickAxis(m_state.Gamepad.sThumbLX, m_deadzoneX);
-        m_axisValues[GAMEPAD_RSTICK_X] = NormalizeStickAxis(m_state.Gamepad.sThumbLX, m_deadzoneX);
-        m_axisValues[GAMEAPD_RSTICK_Y] = NormalizeStickAxis(m_state.Gamepad.sThumbLX, m_deadzoneX);
+        float xNorm, yNorm;
+
+        NormalizeStickAxis(m_state.Gamepad.sThumbLX, m_state.Gamepad.sThumbLY, xNorm, yNorm);
+        m_axisValues[GAMEPAD_LSTICK_X] = xNorm;
+        m_axisValues[GAMEPAD_LSTICK_Y] = yNorm;
+
+        NormalizeStickAxis(m_state.Gamepad.sThumbRX, m_state.Gamepad.sThumbRY, xNorm, yNorm);
+        m_axisValues[GAMEPAD_RSTICK_X] = xNorm;
+        m_axisValues[GAMEPAD_RSTICK_Y] = yNorm;
 
         m_axisValues[GAMEPAD_LTRIGGER] = NormalizeTriggerAxis(m_state.Gamepad.bLeftTrigger);
         m_axisValues[GAMEPAD_RTRIGGER] = NormalizeTriggerAxis(m_state.Gamepad.bRightTrigger);
@@ -88,18 +90,37 @@ void XInputGamepad::Reset()
     m_connected = false;
 }
 
-float XInputGamepad::NormalizeStickAxis(SHORT value, float deadzone)
+
+void XInputGamepad::NormalizeStickAxis(float x, float y, float& xNorm, float& yNorm)
 {
-    // TODO fix me (deadzone calculation is wrong)
-    float norm = fmaxf(-1, (float)value / SHRT_MAX);
-    float normalized = (abs(norm) < deadzone ? 0 : (abs(norm) - deadzone) * (norm / abs(norm)));
+    // Dead-zone example code based on https://msdn.microsoft.com/en-us/library/windows/desktop/ee417001
 
-    if (deadzone > 0)
+    xNorm = x;
+    yNorm = y;
+
+    // Determine how far the controller is pushed
+    float magnitude = sqrt(x*x + y*y) / SHRT_MAX;
+
+    // Check if the controller is outside a circular dead zone
+    if (magnitude > m_deadzone)
     {
-        normalized *= 1 / (1 - m_deadzoneX);
-    }
+        // Clip the magnitude at its expected min/max values
+        xNorm = Clamp(xNorm, SHRT_MIN, SHRT_MAX);
+        yNorm = Clamp(yNorm, SHRT_MIN, SHRT_MAX);
 
-    return normalized;
+        // Adjust magnitude relative to the end of the dead zone
+        xNorm += m_deadzone * (xNorm > 0 ? -1 : 1);
+        yNorm += m_deadzone * (yNorm > 0 ? -1 : 1);
+
+        // Normalize to [-1, 1] range
+        xNorm = Clamp(xNorm / (SHRT_MAX - m_deadzone), -1, 1);
+        yNorm = Clamp(yNorm / (SHRT_MAX - m_deadzone), -1, 1);
+    }
+    else // If the controller is in the deadzone zero out the magnitude
+    {
+        xNorm = 0.0f;
+        yNorm = 0.0f;
+    }
 }
 
 float XInputGamepad::NormalizeTriggerAxis(BYTE value)
