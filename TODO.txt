@@ -47,7 +47,6 @@ EDITOR (Thicket)
         * Project settings window
         * typedef guid type?
         * Prompt for save on exit/unload
-        * Handle dialog cancels
         * Remove assets (un-import)
 
     * Scene
@@ -93,7 +92,6 @@ EDITOR (Thicket)
 
         Hi pri
         - Undo/redo broken with delete/undo create. Need to avoid use of QModelIndex
-        - Close scene on project load
         - Fix shader info in asset widget
 
 ---------------------------------------------------------------------------

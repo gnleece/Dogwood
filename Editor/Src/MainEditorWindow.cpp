@@ -193,10 +193,16 @@ void MainEditorWindow::Redo()
 void MainEditorWindow::NewProject()
 {
     // Choose project name
-    string projectName = QInputDialog::getText(this, "New Project", "Project Name").toStdString();
+    QString projectName = QInputDialog::getText(this, "New Project", "Project Name");
+
+    if (projectName.isNull())
+        return;
 
     // Choose project directory
     QString dirPath = QFileDialog::getExistingDirectory(this, "Choose project directory", "..");
+
+    if (dirPath.isNull())
+        return;
 
     // Create Assets directory inside project directory
     QDir dir(dirPath);
@@ -207,10 +213,11 @@ void MainEditorWindow::NewProject()
     dir.mkpath("Assets/Textures");
 
     // Set up new project and save it
-    string projectFilename = dirPath.toStdString() + "/" + projectName + ".xml";
+    string projectNameString = projectName.toStdString();
+    string projectFilename = dirPath.toStdString() + "/" + projectNameString + ".xml";
     string assetsPath = dirPath.toStdString() + "/Assets/";
     GameProject::Singleton().Unload();
-    GameProject::Singleton().New(projectName, projectFilename, assetsPath);
+    GameProject::Singleton().New(projectNameString, projectFilename, assetsPath);
     GameProject::Singleton().Save();
 
     m_assetWidget->Init();
@@ -220,9 +227,12 @@ void MainEditorWindow::NewProject()
 
 void MainEditorWindow::OpenProject()
 {
-    GameProject::Singleton().Unload();
-
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open Project"), "..", tr("Dogwood Projects (*.xml)"));
+
+    if (fileName.isNull())
+        return;
+
+    GameProject::Singleton().Unload();
 
     bool success = GameProject::Singleton().Load(fileName.toStdString());
     if (!success)
@@ -231,7 +241,7 @@ void MainEditorWindow::OpenProject()
         return;
     }
 
-    // TODO load startup scene (or last openeed scene)
+    // TODO load startup scene (or last opened scene)
     m_sceneViewWidget->SetScene(NULL);
 
     setWindowTitle(tr("Dogwood Editor - ") + QString(GameProject::Singleton().GetName().c_str()));
@@ -254,6 +264,10 @@ void MainEditorWindow::NewScene()
     // Open file dialog
     string defaultPath = GameProject::Singleton().GetResourceBasePath();
     QString fileName = QFileDialog::getSaveFileName(this, "New Scene", defaultPath.c_str(), "*.xml");
+
+    if (fileName.isNull())
+        return;
+
     m_scene->New(fileName.toStdString() + ".xml");
 
     // Open the new scene
@@ -267,11 +281,14 @@ void MainEditorWindow::OpenScene()
 {
     DebugLogger::Singleton().Log("Open scene");
 
-    UnloadScene();
-
     // Open file dialog
     string defaultPath = GameProject::Singleton().GetResourceBasePath();
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open Scene"), defaultPath.c_str(), tr("Scene Files (*.xml)"));
+
+    if (fileName.isNull())
+        return;
+
+    UnloadScene();
 
     if (m_scene->Load(fileName.toStdString()))
     {
@@ -342,7 +359,10 @@ void MainEditorWindow::SaveSceneAs()
     {
         // Open file dialog
         QString fileName = QFileDialog::getSaveFileName(this, "Save Scene As", "", "*.xml");
-        m_scene->Save(fileName.toStdString());
+        if (!fileName.isNull())
+        {
+            m_scene->Save(fileName.toStdString());
+        }
     }
     else
     {
