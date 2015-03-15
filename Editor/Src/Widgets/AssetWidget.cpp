@@ -72,7 +72,7 @@ void AssetWidget::ImportAssetClicked()
     QString fileName = QFileDialog::getOpenFileName(this,
                                                     tr("Import Asset"),
                                                     "..\\Game\\Assets",
-                                                    "Meshes (*.obj);;Textures (*.bmp);;Shaders (*.glsl)"
+                                                    "Meshes (*.obj);;Textures (*.bmp);;Shaders (*.glsl);;Scripts (*.h)"
     );
 
     QFileInfo fileInfo(fileName);

@@ -71,6 +71,26 @@ struct MeshResourceInfo : ResourceInfo
     }
 };
 
+struct ScriptResourceInfo : ResourceInfo
+{
+    virtual Resource* Load()
+    {
+        // TODO implement me
+        return NULL;
+    }
+
+    virtual string TypeName()
+    {
+        return "Script";
+    }
+
+    virtual void AddToGameObject(GameObject* gameObject)
+    {
+        // TODO implement me
+        return;
+    }
+};
+
 struct ShaderResourceInfo : ResourceInfo
 {
     string vertexpath;
@@ -165,6 +185,7 @@ void ResourceManager::LoadResourceMap(XMLElement* resources)
     AddResourcesToMap<TextureResourceInfo>(resources, "Textures");
     AddResourcesToMap<MeshResourceInfo>(resources, "Meshes");
     AddResourcesToMap<ShaderResourceInfo>(resources, "Shaders");
+    AddResourcesToMap<ScriptResourceInfo>(resources, "Scripts");
 
     // Load default resource map
     XMLElement* elements = resources->FirstChildElement("DefaultResources");
@@ -205,9 +226,11 @@ void ResourceManager::SerializeResourceMap(XMLDocument& rootDoc, XMLElement* par
     XMLElement* textureXML = rootDoc.NewElement("Textures");
     XMLElement* meshXML = rootDoc.NewElement("Meshes");
     XMLElement* shaderXML = rootDoc.NewElement("Shaders");
+    XMLElement* scriptXML = rootDoc.NewElement("Scripts");
     parent->InsertEndChild(textureXML);
     parent->InsertEndChild(meshXML);
     parent->InsertEndChild(shaderXML);
+    parent->InsertEndChild(scriptXML);
 
     // Serialize lookup table
     unordered_map<unsigned int, ResourceInfo*>::iterator iter;
@@ -226,6 +249,10 @@ void ResourceManager::SerializeResourceMap(XMLDocument& rootDoc, XMLElement* par
         else if (strcmp(iter->second->TypeName().c_str(), "Shader") == 0)
         {
             resourceParent = shaderXML;
+        }
+        else if (strcmp(iter->second->TypeName().c_str(), "Script") == 0)
+        {
+            resourceParent = scriptXML;
         }
 
         if (resourceParent != NULL)
@@ -260,6 +287,10 @@ unsigned int ResourceManager::ImportResource(string& filepath, string type)
     {
         // Texture
         resource = new TextureResourceInfo();
+    }
+    else if (strcmp(type.c_str(), "h") == 0)
+    {
+        resource = new ScriptResourceInfo();
     }
 
     if (resource == NULL)
