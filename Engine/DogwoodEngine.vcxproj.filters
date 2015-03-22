@@ -153,6 +153,9 @@
     <ClInclude Include="Include\Input\XInputGamePad.h">
       <Filter>Header Files\Input</Filter>
     </ClInclude>
+    <ClInclude Include="Include\ToolsideGameComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Debugging\DebugCameraControls.cpp">

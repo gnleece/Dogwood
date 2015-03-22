@@ -108,6 +108,7 @@
     <ClInclude Include="Include\Scene\Resource.h" />
     <ClInclude Include="Include\Scene\ResourceManager.h" />
     <ClInclude Include="Include\Scene\Scene.h" />
+    <ClInclude Include="Include\ToolsideGameComponent.h" />
     <ClInclude Include="Include\Util.h" />
     <ClInclude Include="Include\Window\GameWindow.h" />
   </ItemGroup>
