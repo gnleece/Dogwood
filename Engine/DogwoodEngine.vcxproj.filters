@@ -245,6 +245,9 @@
     <ClCompile Include="Src\Input\XInputGamePad.cpp">
       <Filter>Source Files\Input</Filter>
     </ClCompile>
+    <ClCompile Include="Src\ToolsideGameComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Src\Shaders\UnlitUniformColor.frag.glsl">

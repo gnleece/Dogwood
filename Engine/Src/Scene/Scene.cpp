@@ -2,6 +2,7 @@
 
 #include "Scene\ResourceManager.h"
 #include "GameObject.h"
+#include "ToolsideGameComponent.h"
 #include "Util.h"
 #include "Rendering\Camera.h"
 #include "Rendering\Mesh.h"
@@ -306,34 +307,27 @@ void Scene::ApplyMaterialColor(XMLElement* xmlnode, Material* material, string c
     material->SetColour(type, color);
 }
 
-void Scene::AddGameComponents(GameObject* go, XMLElement* xmlnode)
+void Scene::AddGameComponents(GameObject* go, XMLElement* xmlnode, bool toolside)
 {
-    // TODO fix me!
-
-    /*
-    XMLElement* gameComponents = xmlnode->FirstChildElement("GameComponents");
+    XMLElement* gameComponents = xmlnode->FirstChildElement("Components");
     if (gameComponents)
     {
-        XMLElement* gameComponentXML = gameComponents->FirstChildElement("GameComponent");
+        XMLElement* gameComponentXML = gameComponents->FirstChildElement("Component");
         while (gameComponentXML)
         {
-            // create & attach component
-            unsigned int guid = gameComponentXML->UnsignedAttribute("guid");
-            GameComponent* comp = CreateComponentByGUID(guid);
-            go->AddComponent(comp);
-
-            // set component parameters
-            XMLElement* paramXML = gameComponentXML->FirstChildElement("Param");
-            while (paramXML)
+            if (toolside)
             {
-                SetComponentParameter(guid, comp, paramXML);
-                paramXML = paramXML->NextSiblingElement("Param");
+                // TODO attach toolside component to game object
+                ToolsideGameComponent* component = new ToolsideGameComponent();
+                component->Load(gameComponentXML);
             }
-
-            gameComponentXML = gameComponentXML->NextSiblingElement("GameComponent");
+            else
+            {
+                // TODO implement me
+            }
+            gameComponentXML = gameComponentXML->NextSiblingElement("Component");
         }
     }
-    */
 }
 
 void Scene::SerializeGlobalSettings(XMLElement* parentNode, XMLDocument& rootDoc)

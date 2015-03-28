@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <tinyxml2.h>
 #include <unordered_map>
 
 #include "Math\Algebra.h"
@@ -17,6 +18,14 @@ public:
         TYPE_INT, TYPE_FLOAT, TYPE_BOOL, TYPE_STRING, TYPE_VECTOR3, TYPE_COLOR
     };
 
+    ComponentParameter() {}
+    ComponentParameter(string name, ParameterType type)
+    {
+        Name = name; Type = type;
+    }
+
+    bool operator==(const ComponentParameter &other) const;
+
     string          Name;
     ParameterType   Type;
 };
@@ -25,6 +34,8 @@ public:
 struct ComponentValue
 {
 public:
+    ComponentValue();
+
     int         i;
     float       f;
     bool        b;
@@ -55,13 +66,15 @@ class ToolsideGameComponent
 {
 public:
     void            Create(int guid);
-    void            Load();
+    void            Load(tinyxml2::XMLElement* componentXML);
     void            Serialize();
 
     ParamMap*       GetParameterList();
     void            SetParameter(ComponentParameter param, ComponentValue value);
 
 private:
+    void            AddParameterToList(tinyxml2::XMLElement* paramXML);
+
     unsigned int    m_guid;
     ParamMap        m_map;
 };
