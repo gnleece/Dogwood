@@ -65,7 +65,7 @@ typedef unordered_map < ComponentParameter, ComponentValue > ParamMap;
 class ToolsideGameComponent
 {
 public:
-    void            Create(int guid);
+    void            Create(unsigned int guid);
     void            Load(tinyxml2::XMLElement* componentXML);
     void            Serialize();
 
@@ -77,4 +77,14 @@ private:
 
     unsigned int    m_guid;
     ParamMap        m_map;
+};
+
+class ToolsideComponentSchema
+{
+public:
+    bool            Load(string filename);
+    ParamMap*       GetDefaultParameterList(unsigned int guid);
+
+private:
+    unordered_map<unsigned int, ParamMap*> m_schema;
 };

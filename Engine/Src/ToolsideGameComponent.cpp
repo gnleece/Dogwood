@@ -1,7 +1,9 @@
 #include "ToolsideGameComponent.h"
 #include "Util.h"
 
+using tinyxml2::XMLDocument;
 using tinyxml2::XMLElement;
+using tinyxml2::XMLError;
 
 bool ComponentParameter::operator==(const ComponentParameter &other) const
 {
@@ -73,4 +75,16 @@ void ToolsideGameComponent::AddParameterToList(XMLElement* paramXML)
     }
 
     m_map[key] = value; 
+}
+
+bool ToolsideComponentSchema::Load(string filename)
+{
+    XMLDocument schemaDoc;
+    XMLError result = schemaDoc.LoadFile(filename.c_str());
+    if (result != tinyxml2::XML_SUCCESS)
+    {
+        printf("Error reading schema file %s.\nXMLError %d\n", filename.c_str(), result);
+        return false;
+    }
+    XMLElement* scriptsXML = schemaDoc.FirstChildElement("Scripts");
 }

@@ -16,6 +16,7 @@ class GameProject;
 class Mesh;
 class ShaderProgram;
 class Texture;
+class ToolsideComponentSchema;
 
 using std::string;
 using std::unordered_map;
@@ -53,6 +54,8 @@ public:
     void            LoadResourceMap(tinyxml2::XMLElement* resources);
     void            ClearResourceMap();
     void            SerializeResourceMap(tinyxml2::XMLDocument& rootDoc, tinyxml2::XMLElement* parent);
+    void            LoadComponentSchema();
+
     unsigned int    ImportResource(string& filepath, string type);
     unsigned int    ImportShader(string vertpath, string fragpath);
     void            ImportDefaultResources();
@@ -85,6 +88,7 @@ private:
     ResourceMap                                  m_resourceMap;
     unordered_map<unsigned int, Resource*>       m_loadedResources;
     unordered_map<string, unsigned int>          m_defaultResources;
+    ToolsideComponentSchema*                     m_componentSchema;
 
     bool m_lookupTableLoaded;
 

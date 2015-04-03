@@ -5,6 +5,7 @@
 #include "Rendering\Mesh.h"
 #include "Rendering\MeshInstance.h"
 #include "Rendering\Texture.h"
+#include "ToolsideGameComponent.h"
 
 #include <ctime>
 #include "tinyxml2.h"
@@ -272,6 +273,16 @@ void ResourceManager::SerializeResourceMap(XMLDocument& rootDoc, XMLElement* par
         xml->SetAttribute("guid", defIter->second);
         defaultXML->InsertEndChild(xml);
     }
+}
+
+void ResourceManager::LoadComponentSchema()
+{
+    if (m_componentSchema == NULL)
+    {
+        m_componentSchema = new ToolsideComponentSchema();
+    }
+
+    m_componentSchema->Load(m_resourceBasePath + "Schema.xml");
 }
 
 unsigned int ResourceManager::ImportResource(string& filepath, string type)
