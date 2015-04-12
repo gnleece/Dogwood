@@ -36,6 +36,8 @@ struct ComponentValue
 public:
     ComponentValue();
 
+    void SetValue(ComponentParameter::ParameterType type, tinyxml2::XMLElement* xml);
+
     int         i;
     float       f;
     bool        b;
@@ -83,6 +85,7 @@ class ToolsideComponentSchema
 {
 public:
     bool            Load(string filename);
+    void            Unload();
     ParamMap*       GetDefaultParameterList(unsigned int guid);
 
 private:

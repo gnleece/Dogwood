@@ -77,7 +77,6 @@ bool GameProject::Load(string filename)
 
     // TODO this should only happen in Editor, figure out how to do that properly
     ResourceManager::Singleton().LoadComponentSchema();
-    printf("Editor mode!");
 
     m_loaded = true;
     return true;
