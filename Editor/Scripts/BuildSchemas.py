@@ -7,7 +7,7 @@ testAssetsPath = "C:\\Users\\Gwynneth\\Coding\\Dogwood\\Game\\Assets\\"
 START_REGION_STRING = "#pragma region Serializable"
 END_REGION_STRING = "#pragma endregion"
 
-paramTypeStringToEnum = { "int" : 0, "float" : 1, "bool" : 2, "string" : 3, "Vector3" : 4, "ColourRGB" : 5 }
+paramTypeStringToEnum = { "int" : "0", "float" : "1", "bool" : "2", "string" : "3", "Vector3" : "4", "ColourRGB" : "5" }
 
 def GetScriptList(projectFilepath):
     root = ET.parse(projectFilepath).getroot()
@@ -55,20 +55,32 @@ def GetSerializableMembers(filename):
         return serializableLines
 
 def SetDefaultValue(rawValue, paramType, XMLelement):
-    if (paramType == 0):
-        XMLelement.attribute["value"] = rawValue
-    elif (paramType == 1):
-        XMLelement.attribute["value"] = rawValue.rstrip(".f")
-    elif (paramType == 2):
-        XMLelement.attribute["value"] = rawValue
-    elif (paramType == 3):
-        XMLelement.attribute["value"] = rawValue.strip('"')
-    elif (paramType == 4):
-        XMLelement.attribute["value"] = ""
-        ET.SubElement(XMLelement, "value", x = 0, y = 0, z = 0)
-    elif (paramType == 5):
-        XMLelement.attribute["value"] = ""
-        ET.SubElement(XMLelement, "value", r = 0, g = 0, b = 0)
+    if (paramType == "0"):
+        XMLelement.attrib["value"] = rawValue[0]
+    elif (paramType == "1"):
+        XMLelement.attrib["value"] = rawValue[0].rstrip(".f")
+    elif (paramType == "2"):
+        XMLelement.attrib["value"] = rawValue[0]
+    elif (paramType == "3"):
+        XMLelement.attrib["value"] = rawValue[0].strip('"')
+    elif (paramType == "4"):
+        XMLelement.attrib["value"] = ""
+        ParseVector(rawValue, XMLelement)
+    elif (paramType == "5"):
+        XMLelement.attrib["value"] = ""
+        ParseColor(rawValue, XMLelement)
+
+def ParseVector(valueTokens, XMLelement):
+    cleanTokens = [t.strip(",()f") for t in valueTokens]
+    cleanTokens[0] = (cleanTokens[0])[len("Vector3("):]
+    print(cleanTokens)
+    ET.SubElement(XMLelement, "value", x = cleanTokens[0] , y = cleanTokens[1] , z = cleanTokens[2])
+
+def ParseColor(valueTokens, XMLelement):
+    cleanTokens = [t.strip(",()f") for t in valueTokens]
+    cleanTokens[0] = (cleanTokens[0])[len("ColourRGB("):]
+    print(cleanTokens)
+    ET.SubElement(XMLelement, "value", r = cleanTokens[0] , g = cleanTokens[1] , b = cleanTokens[2])
 
 def BuildSchemas(projectFilepath):
     # Create root XML elemnt
@@ -85,18 +97,19 @@ def BuildSchemas(projectFilepath):
             for memberLine in serializableMembers:
                 # Member should be in the form: {TYPE} {NAME} = {DEFAULTVALUE}
                 tokens = [x for x in memberLine.split(' ') if x is not '']
+                if (len(tokens) < 2):
+                    continue
                 paramType = paramTypeStringToEnum[tokens[0]]
                 paramName = tokens[1]
                 paramXML = ET.SubElement(scriptXML, "Param", type = paramType, name = paramName)
                 if (len(tokens) >= 4 and tokens[2] == "="):
-                    paramDefaultValue = tokens[3]
+                    paramDefaultValue = tokens[3:]
+                    print(paramDefaultValue)
                     SetDefaultValue(paramDefaultValue, paramType, paramXML)
 
     # Write XML to file
     tree = ET.ElementTree(rootXML)
     tree.write("Schema.xml")
-
-
 
 
 BuildSchemas(testProjectPath)
