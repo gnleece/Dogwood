@@ -89,6 +89,7 @@ EDITOR (Thicket)
         - Non-uniform scaling breaks object picking
         - Rotation tool behaviour is non-intuitive
         - Saving project should write asset list in consistent order
+        - Fix GameObject child removal
 
         Hi pri
         - Undo/redo broken with delete/undo create. Need to avoid use of QModelIndex

@@ -12,6 +12,7 @@ using std::vector;
 
 class GameComponent;
 class MeshInstance;
+class ToolsideGameComponent;
 
 class GameObject
 {
@@ -56,6 +57,9 @@ public:
     void            SetSelected(bool selected);
     GameObject*     BoundingSphereRaycast(Vector3 rayOrigin, Vector3 rayDirection, Transform& parentWorldTransform, float& distance);
 
+    void            AddToolsideComponent(ToolsideGameComponent* component);
+    vector<ToolsideGameComponent*>& GetToolsideComponentList();
+
     static vector<GameObject*> ActiveGameObjects;
 
 private:
@@ -78,5 +82,7 @@ private:
     GameObject*             m_parent;
     vector<GameObject*>     m_children;
 
-    vector<GameComponent*>  m_components;
+    vector<GameComponent*>          m_components;       // TODO this should only exist at (game) runtime
+    vector<ToolsideGameComponent*>  m_toolComponents;   // TODO this should only exist in editor
+
 };

@@ -317,9 +317,9 @@ void Scene::AddGameComponents(GameObject* go, XMLElement* xmlnode, bool toolside
         {
             if (toolside)
             {
-                // TODO attach toolside component to game object
                 ToolsideGameComponent* component = new ToolsideGameComponent();
                 component->Load(gameComponentXML);
+                go->AddToolsideComponent(component);
             }
             else
             {

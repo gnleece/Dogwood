@@ -1,9 +1,11 @@
 #include "MainEditorWindow.h"
+#Include "ComponentModel.h"
 #include "DebugLogger.h"
 #include "HierarchyModel.h"
 #include "HierarchyView.h"
 #include "GameObject.h"
 #include "GameProject.h"
+#include "ToolsideGameComponent.h"
 #include "ui_maineditorwindow.h"
 #include "Rendering\MeshInstance.h"
 #include "Rendering\RenderManager.h"
@@ -11,6 +13,7 @@
 #include "Scene\Scene.h"
 #include "Tools\TransformTool.h"
 #include "Widgets\AssetWidget.h"
+#include "Widgets\ComponentWidget.h"
 #include "Widgets\MeshWidget.h"
 #include "Widgets\SceneViewWidget.h"
 #include "Widgets\ScrollWidget.h"
@@ -54,8 +57,6 @@ MainEditorWindow::MainEditorWindow(QWidget* parent)
 
     // Debug logging
     DebugLogger::Singleton().SetTextEditTarget(m_ui->textEdit_DebugOutput);
-
-    showMaximized();
 }
 
 void MainEditorWindow::SetupComponentWidgets()
@@ -75,6 +76,12 @@ void MainEditorWindow::SetupComponentWidgets()
     m_meshWidget = new MeshWidget(componentsWidget);
     componentsWidget->AddChildWidget(m_meshWidget);
     m_meshWidget->hide();
+
+    // Components widget
+    m_componentWidget = new ComponentWidget(componentsWidget);
+    componentsWidget->AddChildWidget(m_componentWidget);
+    m_componentWidget->hide();
+
 }
 
 void MainEditorWindow::SetupMenuCommands()
@@ -502,6 +509,15 @@ void MainEditorWindow::AddMeshPrimitive(const QString& meshName)
     }
 }
 
+void MainEditorWindow::AddGameComponent(unsigned int guid)
+{
+    if (m_selectedGameObject != NULL)
+    {
+        // TODO This will need to be seriously refactored
+        ParamMap* paramMap = ResourceManager::Singleton().GetComponentParamMap(guid);
+    }
+}
+
 void MainEditorWindow::SelectObject(GameObject* gameObject)
 {
     // Clear previous selection
@@ -553,6 +569,7 @@ void MainEditorWindow::SwitchSelectObject(GameObject* gameobject)
         // Show the components for the selected game object
         m_transformWidget->SetGameObject(gameobject);       // TODO add some kind of component widget base class to clean this up
         m_transformWidget->show();
+        
         if (gameobject->GetMesh())
         {
             m_meshWidget->SetMeshInstance(gameobject->GetMesh());
@@ -563,6 +580,9 @@ void MainEditorWindow::SwitchSelectObject(GameObject* gameobject)
             m_meshWidget->SetMeshInstance(NULL);
             m_meshWidget->hide();
         }
+
+        m_componentWidget->Init(gameobject);
+        m_componentWidget->show();
 
         // Notify the game object that it's been selected
         gameobject->SetSelected(true);
@@ -575,6 +595,7 @@ void MainEditorWindow::SwitchSelectObject(GameObject* gameobject)
         m_transformWidget->hide();
         m_meshWidget->SetMeshInstance(NULL);
         m_meshWidget->hide();
+        m_componentWidget->hide();
     }
 }
 

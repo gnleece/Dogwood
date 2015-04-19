@@ -119,6 +119,15 @@
     <CustomBuild Include="Include\HierarchyView.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
+    <CustomBuild Include="componentwidget.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Include\Widgets\ComponentWidget.h">
+      <Filter>Header Files\Widgets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Include\ComponentModel.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\CommandManager.h">
@@ -159,6 +168,12 @@
     </ClInclude>
     <ClInclude Include="GeneratedFiles\ui_assetwidget.h">
       <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_componentwidget.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\ComponentModelItem.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -222,13 +237,19 @@
     <ClCompile Include="Src\HierarchyView.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_HierarchyView.cpp">
-      <Filter>Generated Files\Debug</Filter>
+    <ClCompile Include="Src\Widgets\ComponentWidget.cpp">
+      <Filter>Source Files\Widgets</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_AssetDatabaseModel.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_AssetDatabaseModel.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_HierarchyView.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_HierarchyView.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_GameObjectMimeData.cpp">
@@ -297,8 +318,23 @@
     <ClCompile Include="GeneratedFiles\Release\moc_GLWidget.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_HierarchyView.cpp">
+    <ClCompile Include="GeneratedFiles\Debug\moc_ComponentWidget.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_ComponentWidget.cpp">
       <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\ComponentModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_ComponentModel.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_ComponentModel.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\ComponentModelItem.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

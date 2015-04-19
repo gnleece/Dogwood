@@ -136,3 +136,8 @@ void ToolsideComponentSchema::Unload()
     }
     m_schema.clear();
 }
+
+ParamMap* ToolsideComponentSchema::GetDefaultParameterList(unsigned int guid)
+{
+    return m_schema[guid];
+}

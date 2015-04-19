@@ -5,12 +5,15 @@
 #include <QMainWindow>
 #include <QSignalMapper>
 #include <string>
+#include <unordered_map>
 
 #include "CommandManager.h"
 #include "EditorCommands.h"
 #include "Math\Algebra.h"
 
 class AssetWidget;
+class ComponentWidget;
+class ComponentModel;
 class GameObject;
 class HierarchyModel;
 class HierarchyView;
@@ -21,6 +24,7 @@ class SceneViewWidget;
 class TransformWidget;
 
 using std::string;
+using std::unordered_map;
 
 namespace Ui
 {
@@ -53,6 +57,7 @@ private:
 
     Ui::MainEditorWindow*   m_ui;
     AssetWidget*            m_assetWidget;
+    ComponentWidget*        m_componentWidget;
     SceneViewWidget*        m_sceneViewWidget;
     TransformWidget*        m_transformWidget;
     MeshWidget*             m_meshWidget;
@@ -98,6 +103,8 @@ private slots:
     void TransformScaleButton();
 
     void AddMeshPrimitive(const QString& meshName);
+
+    void AddGameComponent(unsigned int guid);
 
     void OnSelectionChanged(const QItemSelection & selected, const QItemSelection & deselected);
     void SwitchSelectObject(GameObject* gameobject);

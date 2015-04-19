@@ -76,7 +76,7 @@ struct ScriptResourceInfo : ResourceInfo
 {
     virtual Resource* Load()
     {
-        // TODO implement me
+        // TODO as long as the script schema info is stored in one file per project, there's nothing to do here
         return NULL;
     }
 
@@ -87,7 +87,6 @@ struct ScriptResourceInfo : ResourceInfo
 
     virtual void AddToGameObject(GameObject* gameObject)
     {
-        // TODO implement me
         return;
     }
 };
@@ -499,6 +498,11 @@ string ResourceManager::AbsolutePathToProjectPath(string& absolutePath)
 ResourceMap& ResourceManager::GetResourceMap()
 {
     return m_resourceMap;
+}
+
+ParamMap* ResourceManager::GetComponentParamMap(unsigned int guid)
+{
+    return m_componentSchema->GetDefaultParameterList(guid);
 }
 
 unsigned int ResourceManager::MakeGuid(string str)

@@ -339,3 +339,16 @@ GameObject* GameObject::BoundingSphereRaycast(Vector3 rayOrigin, Vector3 rayDire
     distance = FLT_MAX;
     return NULL;
 }
+
+void GameObject::AddToolsideComponent(ToolsideGameComponent* component)
+{
+    if (component)
+    {
+        m_toolComponents.push_back(component);
+    }
+}
+
+vector<ToolsideGameComponent*>& GameObject::GetToolsideComponentList()
+{
+    return m_toolComponents;
+}

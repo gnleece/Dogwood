@@ -10,6 +10,7 @@
 #include <unordered_map>
 
 #include "Resource.h"
+#include "ToolsideGameComponent.h"
 
 class GameObject;
 class GameProject;
@@ -75,6 +76,7 @@ public:
     string          AbsolutePathToProjectPath(string& absolutePath);
 
     ResourceMap&    GetResourceMap();
+    ParamMap*       GetComponentParamMap(unsigned int guid);
 
 private:
     unsigned int    MakeGuid(string str);

@@ -26,4 +26,5 @@ FORMS    += maineditorwindow.ui \
     scrollwidget.ui \
     meshwidget.ui \
     colorwidget.ui \
-    assetwidget.ui
+    assetwidget.ui \
+    componentwidget.ui
