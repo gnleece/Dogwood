@@ -4,6 +4,7 @@
 #include <string>
 #include <EditorCommands.h>
 #include "GameObjectMimeData.h"
+#include "DebugLogger.h"
 
 using std::string;
 using namespace EditorCommands;

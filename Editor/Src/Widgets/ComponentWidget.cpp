@@ -18,6 +18,6 @@ void ComponentWidget::Init(GameObject* go)
 
     // Prepare new model
     m_sourceModel = new ComponentModel(this, go);
-    m_ui->treeView->setModel(m_sourceModel);
-    m_ui->treeView->show();
+    m_ui->tableView->setModel(m_sourceModel);
+    m_ui->tableView->show();
 }

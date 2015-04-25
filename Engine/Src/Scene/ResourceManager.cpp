@@ -87,6 +87,7 @@ struct ScriptResourceInfo : ResourceInfo
 
     virtual void AddToGameObject(GameObject* gameObject)
     {
+        // TODO implement me
         return;
     }
 };

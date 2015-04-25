@@ -1,5 +1,4 @@
 #include "MainEditorWindow.h"
-#Include "ComponentModel.h"
 #include "DebugLogger.h"
 #include "HierarchyModel.h"
 #include "HierarchyView.h"
@@ -513,8 +512,7 @@ void MainEditorWindow::AddGameComponent(unsigned int guid)
 {
     if (m_selectedGameObject != NULL)
     {
-        // TODO This will need to be seriously refactored
-        ParamMap* paramMap = ResourceManager::Singleton().GetComponentParamMap(guid);
+        // TODO implement me
     }
 }
 

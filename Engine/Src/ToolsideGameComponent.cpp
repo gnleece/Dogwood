@@ -1,4 +1,5 @@
 #include "ToolsideGameComponent.h"
+#include "Scene\ResourceManager.h"
 #include "Util.h"
 
 using tinyxml2::XMLDocument;
@@ -56,6 +57,12 @@ void ComponentValue::SetValue(ComponentParameter::ParameterType type, tinyxml2::
     }
 }
 
+void ToolsideGameComponent::Create(unsigned int guid)
+{
+    m_guid = guid;
+    m_map = *(ResourceManager::Singleton().GetComponentParamMap(m_guid));
+}
+
 void ToolsideGameComponent::Load(XMLElement* componentXML)
 {
     m_guid = componentXML->UnsignedAttribute("guid");
@@ -79,6 +86,7 @@ void ToolsideGameComponent::AddParameterToList(XMLElement* paramXML)
     ComponentValue value;
     value.SetValue(type, paramXML);
 
+    // TODO validate against schema
     m_map[key] = value;
 }
 
