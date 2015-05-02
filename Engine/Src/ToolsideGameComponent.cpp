@@ -76,6 +76,11 @@ void ToolsideGameComponent::Load(XMLElement* componentXML)
     }
 }
 
+ParamMap* ToolsideGameComponent::GetParameterList()
+{
+    return &m_map;
+}
+
 void ToolsideGameComponent::AddParameterToList(XMLElement* paramXML)
 {
     string name = paramXML->Attribute("name");

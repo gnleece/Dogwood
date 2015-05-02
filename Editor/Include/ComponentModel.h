@@ -5,6 +5,7 @@
 
 class GameObject;
 class ResourceInfo;
+class ToolsideGameComponent;
 
 using std::vector;
 
@@ -19,8 +20,9 @@ public:
     int             columnCount(const QModelIndex &parent = QModelIndex()) const;
     QVariant        data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
-    //ResourceInfo*   getItem(const QModelIndex &index) const;
-
 private:
     GameObject* m_gameObject;
+    int         m_rowCount;
+    vector<ToolsideGameComponent*> m_componentList;
+    vector<int> m_accSizes;
 };

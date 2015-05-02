@@ -62,6 +62,7 @@ namespace std
     };
 }
 
+// TODO change this to an (ordered) array instead of an unordered map
 typedef unordered_map < ComponentParameter, ComponentValue > ParamMap;
 
 class ToolsideGameComponent

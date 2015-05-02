@@ -14,13 +14,25 @@ using namespace EditorCommands;
 ComponentModel::ComponentModel(QObject *parent, GameObject* go)
     : m_gameObject(go), QAbstractTableModel(parent)
 {
-    vector<ToolsideGameComponent* > componentList = go->GetToolsideComponentList();
+    m_componentList = go->GetToolsideComponentList();
+
+    m_rowCount = 0;
+    vector<ToolsideGameComponent*>::iterator iter = m_componentList.begin();
+    for (; iter != m_componentList.end(); iter++)
+    {
+        if (*iter != NULL)
+        {
+            int size = (*iter)->GetParameterList()->size();
+            m_rowCount += (1 + size);
+            m_accSizes.push_back(m_rowCount);
+        }
+    }
 }
 
 
 int ComponentModel::rowCount(const QModelIndex &parent) const
 {
-    return 6;
+    return m_rowCount;
 }
 
 int ComponentModel::columnCount(const QModelIndex & parent) const
@@ -36,20 +48,26 @@ QVariant ComponentModel::data(const QModelIndex &index, int role) const
     if (role != Qt::DisplayRole && role != Qt::EditRole)
         return QVariant();
 
-    //ComponentModelItem *item = getItem(index);
+    int row = index.row();
+    int col = index.column();
 
+    // TODO this is pretty hacky
+    int componentIndex = 0;
+    while(m_accSizes[componentIndex] < row)
+    {
+        componentIndex++;
+    }
+
+    int offset = 0;
+    if (componentIndex > 0)
+    {
+        offset = m_accSizes[componentIndex - 1];
+    }
+    int paramIndex = row - offset - 2;
+
+    // TODO testing, remove
+    if (paramIndex == 0)
+        return QVariant("ComponentName");
     return QVariant("Parameter");
     //return QVariant(item->GetName().c_str());
 }
-/*
-ComponentModelItem* ComponentModel::getItem(const QModelIndex &index) const
-{
-    if (index.isValid())
-    {
-        ComponentModelItem *item = static_cast<ComponentModelItem*>(index.internalPointer());
-        if (item)
-            return item;
-    }
-    return m_itemRoot;
-}
-*/
