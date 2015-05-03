@@ -53,7 +53,7 @@ QVariant ComponentModel::data(const QModelIndex &index, int role) const
 
     // TODO this is pretty hacky
     int componentIndex = 0;
-    while(m_accSizes[componentIndex] < row)
+    while(m_accSizes[componentIndex] <= row)
     {
         componentIndex++;
     }
@@ -63,11 +63,11 @@ QVariant ComponentModel::data(const QModelIndex &index, int role) const
     {
         offset = m_accSizes[componentIndex - 1];
     }
-    int paramIndex = row - offset - 2;
+    int paramIndex = row - offset;
 
     // TODO testing, remove
     if (paramIndex == 0)
-        return QVariant("ComponentName");
+        return QVariant(m_componentList[componentIndex]->GetGuid());    // TODO use script name instead of guid
     return QVariant("Parameter");
     //return QVariant(item->GetName().c_str());
 }

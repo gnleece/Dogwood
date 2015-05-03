@@ -81,6 +81,11 @@ ParamMap* ToolsideGameComponent::GetParameterList()
     return &m_map;
 }
 
+unsigned int ToolsideGameComponent::GetGuid()
+{
+    return m_guid;
+}
+
 void ToolsideGameComponent::AddParameterToList(XMLElement* paramXML)
 {
     string name = paramXML->Attribute("name");

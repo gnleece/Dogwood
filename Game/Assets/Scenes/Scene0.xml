@@ -5,6 +5,8 @@
         <Resource guid="1863496264"/>
         <Resource guid="3780387270"/>
         <Resource guid="2282599710"/>
+      <Resource guid="3075022151"/>
+      <Resource guid="1515607268"/>
     </Resources>
     <Camera>
         <Position x="0.00000" y="1.00000" z="5.00000"/>
@@ -37,8 +39,15 @@
                 </Material>
             </Mesh>
           <Components>
-            <Component guid ="12345">
-              <Param name="speed" type="1" value="5.0"/>
+            <Component guid ="3075022151">
+              <Param name="Speed" type="1" value="50.0"/>
+              <Param name="Label" type="3" value=""/>
+              <Param name="EnableSpinning" type="2" value="false"/>
+              <Param name="NumRotations" type="0"/>
+            </Component>
+            <Component guid ="1515607268">
+              <Param name="BarParam" type="1"/>
+              <Param name="BazParam" type="2"/>
             </Component>
           </Components>
             <GameObject name="Red Sphere">

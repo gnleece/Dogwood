@@ -75,6 +75,8 @@ public:
     ParamMap*       GetParameterList();
     void            SetParameter(ComponentParameter param, ComponentValue value);
 
+    unsigned int    GetGuid();
+
 private:
     void            AddParameterToList(tinyxml2::XMLElement* paramXML);
 
