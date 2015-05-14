@@ -45,7 +45,7 @@ QVariant ComponentModel::data(const QModelIndex &index, int role) const
     if (!index.isValid())
         return QVariant();
 
-    if (role != Qt::DisplayRole && role != Qt::EditRole)
+    if (role != Qt::DisplayRole && role != Qt::EditRole && role != Qt::BackgroundRole)
         return QVariant();
 
     int row = index.row();
@@ -67,7 +67,17 @@ QVariant ComponentModel::data(const QModelIndex &index, int role) const
 
     // TODO testing, remove
     if (paramIndex == 0)
-        return QVariant(m_componentList[componentIndex]->GetGuid());    // TODO use script name instead of guid
+    {
+        if (role == Qt::BackgroundRole)
+        {
+            QColor color(150, 150, 150);
+            return QBrush(color);
+        }
+        if (col == 0)
+        {
+            return QVariant(m_componentList[componentIndex]->GetGuid());    // TODO use script name instead of guid
+        }
+        return QVariant();
+    }
     return QVariant("Parameter");
-    //return QVariant(item->GetName().c_str());
 }

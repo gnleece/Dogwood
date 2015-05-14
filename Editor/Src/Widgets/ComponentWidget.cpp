@@ -6,6 +6,10 @@
 ComponentWidget::ComponentWidget(QWidget* parent) : m_ui(new Ui::ComponentWidget), m_sourceModel(NULL)
 {
     m_ui->setupUi(this);
+
+    QHeaderView *verticalHeader = m_ui->tableView->verticalHeader();
+    verticalHeader->sectionResizeMode(QHeaderView::Fixed);
+    verticalHeader->setDefaultSectionSize(24);
 }
 
 void ComponentWidget::Init(GameObject* go)
