@@ -76,7 +76,7 @@ public:
     string          AbsolutePathToProjectPath(string& absolutePath);
 
     ResourceMap&    GetResourceMap();
-    ParamMap*       GetComponentParamMap(unsigned int guid);
+    ParamList*      GetComponentParamList(unsigned int guid);
 
 private:
     unsigned int    MakeGuid(string str);

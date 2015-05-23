@@ -501,7 +501,7 @@ ResourceMap& ResourceManager::GetResourceMap()
     return m_resourceMap;
 }
 
-ParamMap* ResourceManager::GetComponentParamMap(unsigned int guid)
+ParamList* ResourceManager::GetComponentParamList(unsigned int guid)
 {
     return m_componentSchema->GetDefaultParameterList(guid);
 }

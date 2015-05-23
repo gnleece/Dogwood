@@ -57,10 +57,25 @@ void ComponentValue::SetValue(ComponentParameter::ParameterType type, tinyxml2::
     }
 }
 
+string ComponentValue::GetValueString(ComponentParameter::ParameterType type)
+{
+    switch (type)
+    {
+    case ComponentParameter::TYPE_INT:      return std::to_string(i);
+    case ComponentParameter::TYPE_FLOAT:    return std::to_string(f);
+    case ComponentParameter::TYPE_BOOL:     return b ? "true" : "false";
+    case ComponentParameter::TYPE_STRING:   return str;
+    case ComponentParameter::TYPE_VECTOR3:  return "";      // TODO implement me
+    case ComponentParameter::TYPE_COLOR:    return "";      // TODO implement me
+    }
+
+    return "";
+}
+
 void ToolsideGameComponent::Create(unsigned int guid)
 {
     m_guid = guid;
-    m_map = *(ResourceManager::Singleton().GetComponentParamMap(m_guid));
+    m_paramList = *(ResourceManager::Singleton().GetComponentParamList(m_guid));
 }
 
 void ToolsideGameComponent::Load(XMLElement* componentXML)
@@ -76,9 +91,9 @@ void ToolsideGameComponent::Load(XMLElement* componentXML)
     }
 }
 
-ParamMap* ToolsideGameComponent::GetParameterList()
+ParamList& ToolsideGameComponent::GetParameterList()
 {
-    return &m_map;
+    return m_paramList;
 }
 
 unsigned int ToolsideGameComponent::GetGuid()
@@ -97,7 +112,8 @@ void ToolsideGameComponent::AddParameterToList(XMLElement* paramXML)
     value.SetValue(type, paramXML);
 
     // TODO validate against schema
-    m_map[key] = value;
+    ParamPair pair(key, value);
+    m_paramList.push_back(pair);
 }
 
 bool ToolsideComponentSchema::Load(string filename)
@@ -119,7 +135,7 @@ bool ToolsideComponentSchema::Load(string filename)
     while (scriptXML != NULL)
     {
         // Build the param map for this script
-        ParamMap* map = new ParamMap();
+        ParamList* paramList = new ParamList();
         XMLElement* paramXML = scriptXML->FirstChildElement("Param");
         while (paramXML != NULL)
         {
@@ -130,13 +146,14 @@ bool ToolsideComponentSchema::Load(string filename)
             ComponentValue value;
             value.SetValue(param.Type, paramXML);
 
-            (*map)[param] = value;
+            ParamPair pair(param, value);
+            paramList->push_back(pair);
             paramXML = paramXML->NextSiblingElement("Param");
         }
 
         // Add the map to the schema
         unsigned int guid = scriptXML->UnsignedAttribute("guid");
-        m_schema[guid] = map;
+        m_schema[guid] = paramList;
 
         // Move to the next script
         scriptXML = scriptXML->NextSiblingElement("Script");
@@ -147,7 +164,7 @@ bool ToolsideComponentSchema::Load(string filename)
 
 void ToolsideComponentSchema::Unload()
 {
-    unordered_map<unsigned int, ParamMap*>::iterator iter;
+    unordered_map<unsigned int, ParamList*>::iterator iter;
     for (iter = m_schema.begin(); iter != m_schema.end(); iter++)
     {
         delete m_schema[iter->first];
@@ -155,7 +172,7 @@ void ToolsideComponentSchema::Unload()
     m_schema.clear();
 }
 
-ParamMap* ToolsideComponentSchema::GetDefaultParameterList(unsigned int guid)
+ParamList* ToolsideComponentSchema::GetDefaultParameterList(unsigned int guid)
 {
     return m_schema[guid];
 }

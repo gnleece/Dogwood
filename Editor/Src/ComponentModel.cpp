@@ -22,7 +22,7 @@ ComponentModel::ComponentModel(QObject *parent, GameObject* go)
     {
         if (*iter != NULL)
         {
-            int size = (*iter)->GetParameterList()->size();
+            int size = (*iter)->GetParameterList().size();
             m_rowCount += (1 + size);
             m_accSizes.push_back(m_rowCount);
         }
@@ -65,9 +65,9 @@ QVariant ComponentModel::data(const QModelIndex &index, int role) const
     }
     int paramIndex = row - offset;
 
-    // TODO testing, remove
     if (paramIndex == 0)
     {
+        // The entry is the component name
         if (role == Qt::BackgroundRole)
         {
             QColor color(150, 150, 150);
@@ -79,5 +79,17 @@ QVariant ComponentModel::data(const QModelIndex &index, int role) const
         }
         return QVariant();
     }
-    return QVariant("Parameter");
+
+    // The entry is a parameter
+    ToolsideGameComponent* component = m_componentList[componentIndex];
+    ParamList params = component->GetParameterList();
+    ParamPair pair = params[paramIndex-1];
+    if (col != 0)
+    {
+        // Value column
+        string valueString = pair.second.GetValueString(pair.first.Type);
+        return QVariant(valueString.c_str());
+    }
+    // Name column
+    return QVariant(pair.first.Name.c_str());
 }

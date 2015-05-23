@@ -3,12 +3,16 @@
 #include <string>
 #include <tinyxml2.h>
 #include <unordered_map>
+#include <utility>
+#include <vector>
 
 #include "Math\Algebra.h"
 #include "Rendering\Colour.h"
 
+using std::pair;
 using std::string;
 using std::unordered_map;
+using std::vector;
 
 struct ComponentParameter
 {
@@ -36,7 +40,8 @@ struct ComponentValue
 public:
     ComponentValue();
 
-    void SetValue(ComponentParameter::ParameterType type, tinyxml2::XMLElement* xml);
+    void    SetValue(ComponentParameter::ParameterType type, tinyxml2::XMLElement* xml);
+    string  GetValueString(ComponentParameter::ParameterType type);
 
     int         i;
     float       f;
@@ -62,8 +67,8 @@ namespace std
     };
 }
 
-// TODO change this to an (ordered) array instead of an unordered map
-typedef unordered_map < ComponentParameter, ComponentValue > ParamMap;
+typedef pair <ComponentParameter, ComponentValue> ParamPair;
+typedef vector <ParamPair> ParamList;
 
 class ToolsideGameComponent
 {
@@ -72,7 +77,7 @@ public:
     void            Load(tinyxml2::XMLElement* componentXML);
     void            Serialize();
 
-    ParamMap*       GetParameterList();
+    ParamList&      GetParameterList();
     void            SetParameter(ComponentParameter param, ComponentValue value);
 
     unsigned int    GetGuid();
@@ -81,7 +86,7 @@ private:
     void            AddParameterToList(tinyxml2::XMLElement* paramXML);
 
     unsigned int    m_guid;
-    ParamMap        m_map;
+    ParamList       m_paramList;
 };
 
 class ToolsideComponentSchema
@@ -89,8 +94,8 @@ class ToolsideComponentSchema
 public:
     bool            Load(string filename);
     void            Unload();
-    ParamMap*       GetDefaultParameterList(unsigned int guid);
+    ParamList*      GetDefaultParameterList(unsigned int guid);
 
 private:
-    unordered_map<unsigned int, ParamMap*> m_schema;
+    unordered_map<unsigned int, ParamList*> m_schema;
 };
