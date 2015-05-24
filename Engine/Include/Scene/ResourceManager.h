@@ -70,6 +70,8 @@ public:
     ShaderProgram*  GetShader(unsigned int guid, bool load = true);
     Resource*       GetDefaultResource(string name, bool load = true);
 
+    ResourceInfo*   GetResourceInfo(unsigned int guid);
+
     void            SetResourceBasePath(string& path);
     string          GetResourceBasePath();
 

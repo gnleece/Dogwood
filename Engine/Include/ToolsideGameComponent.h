@@ -51,22 +51,6 @@ public:
     ColourRGB   c;
 };
 
-namespace std
-{
-    template <> struct hash<ComponentParameter>
-    {
-        size_t operator()(const ComponentParameter & c) const
-        {
-            using std::size_t;
-            using std::hash;
-
-            // TODO this hash function is terrible, fix it
-            return ((hash<string>()(c.Name)
-                ^ (hash<int>()((int)c.Type) << 1)) >> 1);
-        }
-    };
-}
-
 typedef pair <ComponentParameter, ComponentValue> ParamPair;
 typedef vector <ParamPair> ParamList;
 
@@ -77,15 +61,17 @@ public:
     void            Load(tinyxml2::XMLElement* componentXML);
     void            Serialize();
 
+    unsigned int    GetGuid();
+    string          GetDisplayName();
+
     ParamList&      GetParameterList();
     void            SetParameter(ComponentParameter param, ComponentValue value);
-
-    unsigned int    GetGuid();
-
 private:
     void            AddParameterToList(tinyxml2::XMLElement* paramXML);
+    void            SetDisplayName();
 
     unsigned int    m_guid;
+    string          m_displayName;
     ParamList       m_paramList;
 };
 

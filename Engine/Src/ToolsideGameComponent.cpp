@@ -76,6 +76,7 @@ void ToolsideGameComponent::Create(unsigned int guid)
 {
     m_guid = guid;
     m_paramList = *(ResourceManager::Singleton().GetComponentParamList(m_guid));
+    SetDisplayName();
 }
 
 void ToolsideGameComponent::Load(XMLElement* componentXML)
@@ -89,6 +90,17 @@ void ToolsideGameComponent::Load(XMLElement* componentXML)
         AddParameterToList(paramXML);
         paramXML = paramXML->NextSiblingElement("Param");
     }
+    SetDisplayName();
+}
+
+unsigned int ToolsideGameComponent::GetGuid()
+{
+    return m_guid;
+}
+
+string ToolsideGameComponent::GetDisplayName()
+{
+    return m_displayName;
 }
 
 ParamList& ToolsideGameComponent::GetParameterList()
@@ -96,10 +108,6 @@ ParamList& ToolsideGameComponent::GetParameterList()
     return m_paramList;
 }
 
-unsigned int ToolsideGameComponent::GetGuid()
-{
-    return m_guid;
-}
 
 void ToolsideGameComponent::AddParameterToList(XMLElement* paramXML)
 {
@@ -114,6 +122,15 @@ void ToolsideGameComponent::AddParameterToList(XMLElement* paramXML)
     // TODO validate against schema
     ParamPair pair(key, value);
     m_paramList.push_back(pair);
+}
+
+void ToolsideGameComponent::SetDisplayName()
+{
+    string path = ResourceManager::Singleton().GetResourceInfo(m_guid)->path;
+    unsigned int startpos = path.find_last_of('/') + 1;
+    unsigned int endpos = path.find_last_of('.') - 1;
+    unsigned int length = endpos - startpos + 1;
+    m_displayName = path.substr(startpos, length);
 }
 
 bool ToolsideComponentSchema::Load(string filename)

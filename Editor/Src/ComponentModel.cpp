@@ -75,7 +75,7 @@ QVariant ComponentModel::data(const QModelIndex &index, int role) const
         }
         if (col == 0)
         {
-            return QVariant(m_componentList[componentIndex]->GetGuid());    // TODO use script name instead of guid
+            return QVariant(m_componentList[componentIndex]->GetDisplayName().c_str());
         }
         return QVariant();
     }

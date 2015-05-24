@@ -468,6 +468,11 @@ Resource* ResourceManager::GetDefaultResource(string name, bool load)
     return GetResource(guid, load);
 }
 
+ResourceInfo* ResourceManager::GetResourceInfo(unsigned int guid)
+{
+    return m_resourceMap[guid];
+}
+
 void ResourceManager::SetResourceBasePath(string& path)
 {
     m_resourceBasePath = path;
