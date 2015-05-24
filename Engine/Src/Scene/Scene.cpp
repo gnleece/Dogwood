@@ -2,6 +2,7 @@
 
 #include "Scene\ResourceManager.h"
 #include "GameObject.h"
+#include "GameProject.h"
 #include "ToolsideGameComponent.h"
 #include "Util.h"
 #include "Rendering\Camera.h"
@@ -307,7 +308,7 @@ void Scene::ApplyMaterialColor(XMLElement* xmlnode, Material* material, string c
     material->SetColour(type, color);
 }
 
-void Scene::AddGameComponents(GameObject* go, XMLElement* xmlnode, bool toolside)
+void Scene::AddGameComponents(GameObject* go, XMLElement* xmlnode)
 {
     XMLElement* gameComponents = xmlnode->FirstChildElement("Components");
     if (gameComponents)
@@ -315,7 +316,7 @@ void Scene::AddGameComponents(GameObject* go, XMLElement* xmlnode, bool toolside
         XMLElement* gameComponentXML = gameComponents->FirstChildElement("Component");
         while (gameComponentXML)
         {
-            if (toolside)
+            if (GameProject::Singleton().IsToolside())
             {
                 ToolsideGameComponent* component = new ToolsideGameComponent();
                 component->Load(gameComponentXML);

@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
     
     // Other manager setup
     ResourceManager::Singleton().Startup();
-    GameProject::Singleton().Startup();
+    GameProject::Singleton().Startup(true);     // toolside = true
 
     // Post-setup step
     window.PostSetup();

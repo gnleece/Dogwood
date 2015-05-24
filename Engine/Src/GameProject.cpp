@@ -5,8 +5,9 @@
 
 using namespace tinyxml2;
 
-void GameProject::Startup()
+void GameProject::Startup(bool toolside)
 {
+    m_toolside = toolside;
     m_loaded = false;
     m_filename = "";
     m_resourceDir = "";
@@ -15,6 +16,11 @@ void GameProject::Startup()
 void GameProject::Shutdown()
 {
     Unload();
+}
+
+bool GameProject::IsToolside()
+{
+    return m_toolside;
 }
 
 bool GameProject::New(string name, string filename, string resourcePath)

@@ -17,7 +17,7 @@ public:
     }
     GameProject() {}
 
-    void    Startup();
+    void    Startup(bool toolside = false);
     void    Shutdown();
 
     bool    New(string name, string filename, string resourcePath);
@@ -25,6 +25,7 @@ public:
     bool    Save(string filename = "");
     bool    Unload();
     bool    IsLoaded();
+    bool    IsToolside();
 
     string  GetName();
     void    SetName(string name);
@@ -48,6 +49,8 @@ private:
     bool    m_loaded;
     string  m_filename;
     string  m_name;
+
+    bool    m_toolside;
 
     int     m_width;
     int     m_height;

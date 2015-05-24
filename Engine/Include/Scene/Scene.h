@@ -41,7 +41,7 @@ private:
     void        AddTransform(GameObject* go, tinyxml2::XMLElement* xmlnode);
     void        AddMesh(GameObject* go, tinyxml2::XMLElement* xmlnode);
     void        AddMaterial(MeshInstance* meshInstance, tinyxml2::XMLElement* xmlnode);
-    void        AddGameComponents(GameObject* go, tinyxml2::XMLElement* xmlnode, bool toolside = true);
+    void        AddGameComponents(GameObject* go, tinyxml2::XMLElement* xmlnode);
     void        ApplyMaterialColor(tinyxml2::XMLElement* xmlnode, Material* material, string colorName, Material::eMatColourType type, ColourRGB defaultColor);
     
     // Scene saving helper functions
