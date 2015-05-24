@@ -117,6 +117,7 @@ SCENE/EDITOR REQUIREMENTS
     - Add user defined (C++) components to game objects
     - Set the values of user defined (C++) components of game objects
     - Instance/duplicate game objects
+    - Component guid in list of scene resources?
 
     - Position the camera
     - Position the light source(s), set parameters

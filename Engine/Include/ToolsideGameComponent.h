@@ -41,6 +41,7 @@ public:
     ComponentValue();
 
     void    SetValue(ComponentParameter::ParameterType type, tinyxml2::XMLElement* xml);
+    void    SerializeValue(ComponentParameter::ParameterType type, tinyxml2::XMLElement* parentNode, tinyxml2::XMLDocument& rootDoc);
     string  GetValueString(ComponentParameter::ParameterType type);
 
     int         i;
@@ -59,7 +60,7 @@ class ToolsideGameComponent
 public:
     void            Create(unsigned int guid);
     void            Load(tinyxml2::XMLElement* componentXML);
-    void            Serialize();
+    void            Serialize(tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc);
 
     unsigned int    GetGuid();
     string          GetDisplayName();

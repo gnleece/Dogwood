@@ -5,8 +5,6 @@
         <Resource guid="1863496264"/>
         <Resource guid="3780387270"/>
         <Resource guid="2282599710"/>
-      <Resource guid="3075022151"/>
-      <Resource guid="1515607268"/>
     </Resources>
     <Camera>
         <Position x="0.00000" y="1.00000" z="5.00000"/>
@@ -24,6 +22,7 @@
             <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
             <Scale x="1.00000" y="1.00000" z="1.00000"/>
         </Transform>
+        <Components/>
         <GameObject name="Yellow Sphere">
             <Transform>
                 <Position x="-1.00000" y="0.00000" z="0.00000"/>
@@ -38,18 +37,20 @@
                     <ColorSpecular r="1.00000" g="1.00000" b="1.00000"/>
                 </Material>
             </Mesh>
-          <Components>
-            <Component guid ="3075022151">
-              <Param name="Speed" type="1" value="50.0"/>
-              <Param name="Label" type="3" value=""/>
-              <Param name="EnableSpinning" type="2" value="false"/>
-              <Param name="NumRotations" type="0"/>
-            </Component>
-            <Component guid ="1515607268">
-              <Param name="BarParam" type="1"/>
-              <Param name="BazParam" type="2"/>
-            </Component>
-          </Components>
+            <Components>
+                <Component guid="3075022151">
+                    <Param name="Speed" type="1" value="50"/>
+                    <Param name="Label" type="3" value=""/>
+                    <Param name="EnableSpinning" type="2" value="0"/>
+                    <Param name="NumRotations" type="0" value="0"/>
+                    <Param name="Offset" type="4" value="">
+                        <value x="1.00000" y="2.00000" z="3.00000"/>
+                    </Param>
+                    <Param name="SpinColor" type="5" value="">
+                        <value r="0.50000" g="0.50000" b="0.00000"/>
+                    </Param>
+                </Component>
+            </Components>
             <GameObject name="Red Sphere">
                 <Transform>
                     <Position x="0.00000" y="1.50000" z="0.00000"/>
@@ -64,6 +65,12 @@
                         <ColorSpecular r="1.00000" g="1.00000" b="1.00000"/>
                     </Material>
                 </Mesh>
+                <Components>
+                    <Component guid="1515607268">
+                        <Param name="BarParam" type="1" value="0"/>
+                        <Param name="BazParam" type="2" value="0"/>
+                    </Component>
+                </Components>
                 <GameObject name="Blue Sphere">
                     <Transform>
                         <Position x="0.00000" y="1.50000" z="0.00000"/>
@@ -78,6 +85,7 @@
                             <ColorSpecular r="1.00000" g="1.00000" b="1.00000"/>
                         </Material>
                     </Mesh>
+                    <Components/>
                 </GameObject>
             </GameObject>
         </GameObject>
@@ -96,6 +104,20 @@
                     <ColorSpecular r="1.00000" g="1.00000" b="1.00000"/>
                 </Material>
             </Mesh>
+            <Components>
+                <Component guid="3075022151">
+                    <Param name="Speed" type="1" value="50"/>
+                    <Param name="Label" type="3" value=""/>
+                    <Param name="EnableSpinning" type="2" value="0"/>
+                    <Param name="NumRotations" type="0" value="0"/>
+                    <Param name="Offset" type="4" value="">
+                        <value x="1.00000" y="2.00000" z="3.00000"/>
+                    </Param>
+                    <Param name="SpinColor" type="5" value="">
+                        <value r="0.50000" g="0.50000" b="0.00000"/>
+                    </Param>
+                </Component>
+            </Components>
             <GameObject name="Torus">
                 <Transform>
                     <Position x="0.00000" y="0.00000" z="0.00000"/>
@@ -110,6 +132,7 @@
                         <ColorSpecular r="1.00000" g="1.00000" b="1.00000"/>
                     </Material>
                 </Mesh>
+                <Components/>
             </GameObject>
         </GameObject>
     </GameObject>

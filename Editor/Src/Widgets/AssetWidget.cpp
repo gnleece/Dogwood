@@ -123,6 +123,7 @@ void AssetWidget::AddButtonClicked()
             if (go != NULL)
             {
                 info->AddToGameObject(go);
+                // TODO refresh widgets
             }
         }
     }

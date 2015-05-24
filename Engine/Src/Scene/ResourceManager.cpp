@@ -1,5 +1,6 @@
 #include "Scene\ResourceManager.h"
 
+#include "GameProject.h"
 #include "Util.h"
 #include "Rendering\Material.h"
 #include "Rendering\Mesh.h"
@@ -87,8 +88,17 @@ struct ScriptResourceInfo : ResourceInfo
 
     virtual void AddToGameObject(GameObject* gameObject)
     {
-        // TODO implement me
-        return;
+        if (GameProject::Singleton().IsToolside())
+        {
+            ToolsideGameComponent* component = new ToolsideGameComponent();
+            component->Create(guid);
+            gameObject->AddToolsideComponent(component);
+        }
+        else
+        {
+            // TODO implement me
+            return;
+        }
     }
 };
 

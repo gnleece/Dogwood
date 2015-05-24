@@ -430,7 +430,19 @@ void Scene::SerializeMaterial(GameObject* gameObject, XMLNode* parentNode, XMLDo
 
 void Scene::SerializeComponents(GameObject* gameObject, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc)
 {
-    // TODO implement me
+    if (gameObject == NULL)
+        return;
+
+    XMLElement* componentsNode = rootDoc.NewElement("Components");
+    parentNode->InsertEndChild(componentsNode);
+
+    std::vector<ToolsideGameComponent*> compList = gameObject->GetToolsideComponentList();
+    std::vector<ToolsideGameComponent*>::iterator compIter;
+    for (compIter = compList.begin(); compIter != compList.end(); compIter++)
+    {
+        ToolsideGameComponent* comp = *compIter;
+        comp->Serialize(componentsNode, rootDoc);
+    }
 }
 
 void Scene::SerializeResourceList(unordered_set<unsigned int>& guids, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc)

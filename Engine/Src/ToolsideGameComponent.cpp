@@ -57,6 +57,37 @@ void ComponentValue::SetValue(ComponentParameter::ParameterType type, tinyxml2::
     }
 }
 
+void ComponentValue::SerializeValue(ComponentParameter::ParameterType type, tinyxml2::XMLElement* parentNode, tinyxml2::XMLDocument& rootDoc)
+{
+    switch (type)
+    {
+    case ComponentParameter::TYPE_INT:
+        parentNode->SetAttribute("value", i);
+        break;
+    case ComponentParameter::TYPE_FLOAT:
+        parentNode->SetAttribute("value", f);
+        break;
+    case ComponentParameter::TYPE_BOOL:
+        parentNode->SetAttribute("value", b);
+        break;
+    case ComponentParameter::TYPE_STRING:
+        parentNode->SetAttribute("value", str.c_str());
+        break;
+    case ComponentParameter::TYPE_VECTOR3:
+    {
+        parentNode->SetAttribute("value", "");
+        parentNode->InsertEndChild(WriteVector3ToXML(v, "value", rootDoc));
+        break;
+    }
+    case ComponentParameter::TYPE_COLOR:
+    {
+        parentNode->SetAttribute("value", "");
+        parentNode->InsertEndChild(WriteColourToXML(c, "value", rootDoc));
+        break;
+    }
+    }
+}
+
 string ComponentValue::GetValueString(ComponentParameter::ParameterType type)
 {
     switch (type)
@@ -91,6 +122,26 @@ void ToolsideGameComponent::Load(XMLElement* componentXML)
         paramXML = paramXML->NextSiblingElement("Param");
     }
     SetDisplayName();
+}
+
+void ToolsideGameComponent::Serialize(tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc)
+{
+    XMLElement* componentNode = rootDoc.NewElement("Component");
+    parentNode->InsertEndChild(componentNode);
+    componentNode->SetAttribute("guid", m_guid);
+
+    ParamList::iterator iter = m_paramList.begin();
+    for (; iter != m_paramList.end(); iter++)
+    {
+        ParamPair pair = *iter;
+
+        XMLElement* paramNode = rootDoc.NewElement("Param");
+        componentNode->InsertEndChild(paramNode);
+
+        paramNode->SetAttribute("name", pair.first.Name.c_str());
+        paramNode->SetAttribute("type", pair.first.Type);
+        pair.second.SerializeValue(pair.first.Type, paramNode, rootDoc);
+    }
 }
 
 unsigned int ToolsideGameComponent::GetGuid()
