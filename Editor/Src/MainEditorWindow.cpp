@@ -114,6 +114,9 @@ void MainEditorWindow::SetupMenuCommands()
     connect(m_ui->transformButton_Rotate,       SIGNAL(clicked()),   this, SLOT(TransformRotateButton()));
     connect(m_ui->transformButton_Scale,        SIGNAL(clicked()),   this, SLOT(TransformScaleButton()));
 
+    // Component menu
+    connect(m_ui->actionRebuild_Script_Info, SIGNAL(triggered()), this, SLOT(RebuildComponentSchema()));
+
     // Mesh component menu
     m_addMeshSignalMapper = new QSignalMapper(this);
     connect(m_addMeshSignalMapper, SIGNAL(mapped(const QString &)), this, SLOT(AddMeshPrimitive(const QString &)));
@@ -261,6 +264,16 @@ void MainEditorWindow::SaveProject()
         GameProject::Singleton().Save();
         DebugLogger::Singleton().Log("Project saved.");
     }
+}
+
+void MainEditorWindow::RebuildComponentSchema()
+{
+    DebugLogger::Singleton().Log("Rebuilding component schema. Running BuildSchema.py...");
+    QProcess *process = new QProcess(this);
+    QString cmd = "python C:/Users/Gwynneth/Coding/Dogwood/Editor/Scripts/BuildSchema.py";
+    process->start(cmd);
+    process->waitForFinished();
+    DebugLogger::Singleton().Log("Done rebuilding schema.");
 }
 
 void MainEditorWindow::NewScene()

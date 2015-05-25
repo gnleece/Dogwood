@@ -21,6 +21,7 @@ ENGINE (Dogwood)
     * Prefabs
 
     * Shading
+        * Combine vert & frag shaders into a single asset/file
         * Multiple light sources?
     * Transform math helpers
 
@@ -67,6 +68,12 @@ EDITOR (Thicket)
             * Undo/redo on add/remove
             * Refresh widget on add/remove
         * Enable/disable components
+        * PIPELINE
+            - Rebuild schema from editor (call python script), load re-built schema
+            - Validate existing toolside component instances against schema (add/remove)
+            - Fix hardcoded paths in BuildSchema.py
+            - Add runtime components in game
+            - Load serialized param values at game runtime
 
     * Visuals
         * Change transform tool shape based on mode
@@ -90,6 +97,7 @@ EDITOR (Thicket)
         - Rotation tool behaviour is non-intuitive
         - Saving project should write asset list in consistent order
         - Fix GameObject child removal
+        - Component guid in list of scene resources?
 
         Hi pri
         - Undo/redo broken with delete/undo create. Need to avoid use of QModelIndex
@@ -117,7 +125,6 @@ SCENE/EDITOR REQUIREMENTS
     - Add user defined (C++) components to game objects
     - Set the values of user defined (C++) components of game objects
     - Instance/duplicate game objects
-    - Component guid in list of scene resources?
 
     - Position the camera
     - Position the light source(s), set parameters

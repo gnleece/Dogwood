@@ -340,7 +340,7 @@ unsigned int ResourceManager::Import(ResourceInfo* resource)
     if (m_resourceMap.count(resource->guid) != 0)
     {
         // Because the guid is a hash of filepath + timestamp, this should basically never happen
-        printf("ResourceManager error: trying to add a resource with an exisiting guid.\n");
+        printf("ResourceManager error: trying to add a resource with an existing guid.\n");
         delete resource;
         return 0;
     }

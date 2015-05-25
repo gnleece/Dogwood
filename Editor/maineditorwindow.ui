@@ -315,6 +315,8 @@
     </widget>
     <addaction name="menuAdd_Mesh"/>
     <addaction name="actionAdd_Component"/>
+    <addaction name="separator"/>
+    <addaction name="actionRebuild_Script_Info"/>
    </widget>
    <widget class="QMenu" name="menuGame_Object">
     <property name="title">
@@ -554,6 +556,14 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionRebuild_Script_Info">
+   <property name="text">
+    <string>Rebuild Script Info</string>
+   </property>
+   <property name="toolTip">
+    <string>Rebuild metadata for game component scripts</string>
    </property>
   </action>
  </widget>

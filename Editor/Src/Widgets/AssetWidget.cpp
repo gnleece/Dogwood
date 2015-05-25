@@ -89,6 +89,13 @@ void AssetWidget::ImportAssetClicked()
         if (success)
         {
             DebugLogger::Singleton().Log("Successfully imported asset.");
+
+            // If the imported asset was a script, we need to rebuild the component schema
+            if (strcmp(suffix.c_str(), "h") == 0)
+            {
+                m_window->RebuildComponentSchema();
+            }
+
             Init();     // TODO this rebuilds the whole model. fixme to just add new asset info
             m_window->SaveProject();
         }

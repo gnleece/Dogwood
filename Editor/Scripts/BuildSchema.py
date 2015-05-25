@@ -109,7 +109,7 @@ def BuildSchemas(projectFilepath):
 
     # Write XML to file
     tree = ET.ElementTree(rootXML)
-    tree.write("Schema.xml")
+    tree.write(testAssetsPath + "Schema.xml")
 
 
 BuildSchemas(testProjectPath)

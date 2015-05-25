@@ -26,6 +26,9 @@ class TransformWidget;
 using std::string;
 using std::unordered_map;
 
+// TODO This class is pretty bloated and should be majorly refactored,
+// it's become a catch-all for editor side functionality
+
 namespace Ui
 {
     class MainEditorWindow;
@@ -73,6 +76,7 @@ private:
 
 public slots:
     void SaveProject();
+    void RebuildComponentSchema();
 
 private slots:
     void SetupComponentWidgets();
@@ -103,7 +107,6 @@ private slots:
     void TransformScaleButton();
 
     void AddMeshPrimitive(const QString& meshName);
-
     void AddGameComponent(unsigned int guid);
 
     void OnSelectionChanged(const QItemSelection & selected, const QItemSelection & deselected);
