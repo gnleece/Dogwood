@@ -269,10 +269,17 @@ void MainEditorWindow::SaveProject()
 void MainEditorWindow::RebuildComponentSchema()
 {
     DebugLogger::Singleton().Log("Rebuilding component schema. Running BuildSchema.py...");
+
+    // Save project file, to make sure any newly imported scripts are added to the list
+    GameProject::Singleton().Save();
+
     QProcess *process = new QProcess(this);
-    QString cmd = "python C:/Users/Gwynneth/Coding/Dogwood/Editor/Scripts/BuildSchema.py";
+    QString cmd = "python C:/Users/Gwynneth/Coding/Dogwood/Editor/Scripts/BuildSchema.py";  // TODO fix hardcoded path
     process->start(cmd);
     process->waitForFinished();
+
+    ResourceManager::Singleton().LoadComponentSchema();
+
     DebugLogger::Singleton().Log("Done rebuilding schema.");
 }
 

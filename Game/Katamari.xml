@@ -26,6 +26,7 @@
         <Scripts>
             <Script guid="3075022151" path="Scripts/SpinningComponent.h"/>
             <Script guid="1515607268" path="Scripts/FooComponent.h"/>
+            <Script guid="3988628104" path="Scripts/Bouncer.h"/>
         </Scripts>
         <DefaultResources>
             <Asset name="mesh_torus" guid="2282599710"/>
