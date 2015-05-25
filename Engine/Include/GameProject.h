@@ -5,6 +5,7 @@
 
 using std::string;
 
+class GameComponentFactory;
 class Scene;
 
 class GameProject
@@ -26,6 +27,9 @@ public:
     bool    Unload();
     bool    IsLoaded();
     bool    IsToolside();
+
+    void    SetRuntimeComponentFactory(GameComponentFactory* factory);
+    GameComponentFactory* GetRuntimeComponentFactory();
 
     string  GetName();
     void    SetName(string name);
@@ -56,4 +60,6 @@ private:
     int     m_height;
 
     string  m_resourceDir;
+
+    GameComponentFactory* m_componentFactory;
 };

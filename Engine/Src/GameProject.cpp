@@ -141,6 +141,16 @@ bool GameProject::IsLoaded()
     return m_loaded;
 }
 
+void GameProject::SetRuntimeComponentFactory(GameComponentFactory* factory)
+{
+    m_componentFactory = factory;
+}
+
+GameComponentFactory* GameProject::GetRuntimeComponentFactory()
+{
+    return m_componentFactory;
+}
+
 string GameProject::GetName()
 {
     return m_name;

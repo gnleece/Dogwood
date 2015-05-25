@@ -1,10 +1,5 @@
 #pragma once
 
-#define GLEW_STATIC
-#include <GL/glew.h>
-
-#define GLFW_INCLUDE_GLU
-#include <GLFW/glfw3.h>
 
 #include <list>
 #include <string>
@@ -14,6 +9,7 @@
 using std::list;
 using std::string;
 
+class GameComponentFactory;
 class GameObject;
 
 class Game
@@ -28,7 +24,7 @@ public:
     }
     Game() {}
 
-    void Init(string projectPath);
+    void Init(string projectPath, GameComponentFactory* componentFactory);
     void Run(GameObject* sceneRoot);
     
 private:

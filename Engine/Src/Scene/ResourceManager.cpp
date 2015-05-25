@@ -430,7 +430,7 @@ void ResourceManager::LoadSceneResources(XMLElement* resources)
         ResourceInfo* info = m_resourceMap[guid];
         if (info)
         {
-            printf("Loading guid %d\n", guid);
+            printf("Loading guid %u\n", guid);
             m_loadedResources[guid] = info->Load();
         }
         else

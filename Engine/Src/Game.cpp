@@ -13,7 +13,7 @@
 #include "GameObject.h"
 #include "GameProject.h"
 
-void Game::Init(string projectPath)
+void Game::Init(string projectPath, GameComponentFactory* componentFactory)
 {
     printf("=============== GAME INIT ===============\n");
 
@@ -24,6 +24,7 @@ void Game::Init(string projectPath)
     bool success = GameProject::Singleton().Load(projectPath);
     if (!success)
         return;
+    GameProject::Singleton().SetRuntimeComponentFactory(componentFactory);
 
     // Window setup
     int windowWidth, windowHeight;

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "..\Engine\GameComponent.h"
+#include "GameComponent.h"
 
 class Bouncer : public GameComponent
 {

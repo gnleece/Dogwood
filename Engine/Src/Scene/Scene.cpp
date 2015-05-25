@@ -1,6 +1,7 @@
 #include "Scene\Scene.h"
 
 #include "Scene\ResourceManager.h"
+#include "GameComponentFactory.h"
 #include "GameObject.h"
 #include "GameProject.h"
 #include "ToolsideGameComponent.h"
@@ -10,7 +11,6 @@
 #include "Rendering\MeshInstance.h"
 #include "Rendering\RenderManager.h"
 #include "Rendering\Texture.h"
-//#include "..\..\Generated\GameComponentBindings.h"
 
 using namespace tinyxml2;
 
@@ -313,20 +313,24 @@ void Scene::AddGameComponents(GameObject* go, XMLElement* xmlnode)
     XMLElement* gameComponents = xmlnode->FirstChildElement("Components");
     if (gameComponents)
     {
-        XMLElement* gameComponentXML = gameComponents->FirstChildElement("Component");
-        while (gameComponentXML)
+        XMLElement* componentXML = gameComponents->FirstChildElement("Component");
+        while (componentXML)
         {
             if (GameProject::Singleton().IsToolside())
             {
                 ToolsideGameComponent* component = new ToolsideGameComponent();
-                component->Load(gameComponentXML);
+                component->Load(componentXML);
                 go->AddToolsideComponent(component);
             }
             else
             {
-                // TODO implement me
+                // TODO CreateComponent needs to take parameter values as well
+                unsigned int guid = componentXML->UnsignedAttribute("guid");
+                GameComponentFactory* factory = GameProject::Singleton().GetRuntimeComponentFactory();
+                GameComponent* component = factory->CreateComponent(guid);
+                go->AddComponent(component);
             }
-            gameComponentXML = gameComponentXML->NextSiblingElement("Component");
+            componentXML = componentXML->NextSiblingElement("Component");
         }
     }
 }

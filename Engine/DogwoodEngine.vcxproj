@@ -84,6 +84,7 @@
     <ClInclude Include="Include\Debugging\DebugDraw.h" />
     <ClInclude Include="Include\Game.h" />
     <ClInclude Include="Include\GameComponent.h" />
+    <ClInclude Include="Include\GameComponentFactory.h" />
     <ClInclude Include="Include\GameObject.h" />
     <ClInclude Include="Include\GameProject.h" />
     <ClInclude Include="Include\Input\GamePad.h" />
