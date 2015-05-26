@@ -39,7 +39,7 @@
             </Mesh>
             <Components>
                 <Component guid="3075022151">
-                    <Param name="Speed" type="1" value="50"/>
+                    <Param name="Speed" type="1" value="42"/>
                     <Param name="Label" type="3" value=""/>
                     <Param name="EnableSpinning" type="2" value="0"/>
                     <Param name="NumRotations" type="0" value="0"/>

@@ -16,11 +16,11 @@
     <Filter Include="Generated">
       <UniqueIdentifier>{df731d4f-fe4b-43f6-81ed-0b6b3fc8f713}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Components">
-      <UniqueIdentifier>{9bb33fad-0037-4835-93c4-3dbd9dbc9b31}</UniqueIdentifier>
+    <Filter Include="Header Files\Scripts">
+      <UniqueIdentifier>{0ac53370-2c0a-48cb-9b4b-5aac2b13a3ab}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Components">
-      <UniqueIdentifier>{33d15c3b-2016-4ac2-9fa3-98352c548b63}</UniqueIdentifier>
+    <Filter Include="Source Files\Scripts">
+      <UniqueIdentifier>{a208ad26-0ef2-4fdb-bd2f-cc471db1f5b2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -30,19 +30,22 @@
     <ClInclude Include="Generated\GameComponentBindings.h">
       <Filter>Generated</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Components\FooComponent.h">
-      <Filter>Header Files\Components</Filter>
+    <ClInclude Include="Assets\Scripts\Bouncer.h">
+      <Filter>Header Files\Scripts</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Components\SpinningComponent.h">
-      <Filter>Header Files\Components</Filter>
+    <ClInclude Include="Assets\Scripts\FooComponent.h">
+      <Filter>Header Files\Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\SpinningComponent.h">
+      <Filter>Header Files\Scripts</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Components\SpinningComponent.cpp">
-      <Filter>Source Files\Components</Filter>
+    <ClCompile Include="Assets\Scripts\SpinningComponent.cpp">
+      <Filter>Source Files\Scripts</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

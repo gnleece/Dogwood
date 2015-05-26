@@ -12,6 +12,7 @@ class SpinningComponent : public GameComponent
 public:
 
 #pragma region Serializable
+    int     SpinType;
     float   Speed = 50.0f;
     string  Label = "";
     bool    EnableSpinning = false;

@@ -71,7 +71,6 @@ EDITOR (Thicket)
         * PIPELINE
             - Validate existing toolside component instances against schema (add/remove)
             - Fix hardcoded paths in BuildSchema.py
-            - Add runtime components in game
             - Load serialized param values at game runtime
             - Allow editing param values
 

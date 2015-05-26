@@ -122,6 +122,7 @@ void ToolsideGameComponent::Load(XMLElement* componentXML)
         paramXML = paramXML->NextSiblingElement("Param");
     }
     SetDisplayName();
+    ValidateParameters();
 }
 
 void ToolsideGameComponent::Serialize(tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc)
@@ -182,6 +183,33 @@ void ToolsideGameComponent::SetDisplayName()
     unsigned int endpos = path.find_last_of('.') - 1;
     unsigned int length = endpos - startpos + 1;
     m_displayName = path.substr(startpos, length);
+}
+
+void ToolsideGameComponent::ValidateParameters()
+{
+    // Validate parameter list by removing any parameters that no longer exist in the schema, and adding
+    // any new values that did not exist before (while preserving non-default values for params that remain)
+
+    ParamList currentParams = *(ResourceManager::Singleton().GetComponentParamList(m_guid));
+
+    // This is pretty inefficient, but the list of parameters will typically be small
+    ParamList::iterator oldIter = m_paramList.begin();
+    for (; oldIter != m_paramList.end(); oldIter++)
+    {
+        // If this entry from the old list still exists in the new list, copy over its value
+        ComponentParameter oldParam = oldIter->first;
+        ParamList::iterator newIter = currentParams.begin();
+        for (; newIter != currentParams.end(); newIter++)
+        {
+            ComponentParameter newParam = newIter->first;
+            if (newParam == oldParam)
+            {
+                newIter->second = oldIter->second;
+                continue;
+            }
+        }
+    }
+    m_paramList = currentParams;
 }
 
 bool ToolsideComponentSchema::Load(string filename)

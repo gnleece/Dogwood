@@ -6,7 +6,7 @@ class FooComponent : public GameComponent
 {
 public:
 #pragma region Serializable
-    float BarParam;
-    bool BazParam;
+    float   BarParam;
+    int     IntParam = 12;
 #pragma endregion
 };
