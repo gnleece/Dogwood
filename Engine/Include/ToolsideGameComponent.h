@@ -67,11 +67,12 @@ public:
 
     ParamList&      GetParameterList();
     void            SetParameter(ComponentParameter param, ComponentValue value);
+
+    void            ValidateParameters();
+
 private:
     void            AddParameterToList(tinyxml2::XMLElement* paramXML);
     void            SetDisplayName();
-
-    void            ValidateParameters();
 
     unsigned int    m_guid;
     string          m_displayName;

@@ -160,31 +160,6 @@ ParamList& ToolsideGameComponent::GetParameterList()
     return m_paramList;
 }
 
-
-void ToolsideGameComponent::AddParameterToList(XMLElement* paramXML)
-{
-    string name = paramXML->Attribute("name");
-
-    ComponentParameter::ParameterType type = (ComponentParameter::ParameterType)(paramXML->IntAttribute("type"));
-    ComponentParameter key(name, type);
-
-    ComponentValue value;
-    value.SetValue(type, paramXML);
-
-    // TODO validate against schema
-    ParamPair pair(key, value);
-    m_paramList.push_back(pair);
-}
-
-void ToolsideGameComponent::SetDisplayName()
-{
-    string path = ResourceManager::Singleton().GetResourceInfo(m_guid)->path;
-    unsigned int startpos = path.find_last_of('/') + 1;
-    unsigned int endpos = path.find_last_of('.') - 1;
-    unsigned int length = endpos - startpos + 1;
-    m_displayName = path.substr(startpos, length);
-}
-
 void ToolsideGameComponent::ValidateParameters()
 {
     // Validate parameter list by removing any parameters that no longer exist in the schema, and adding
@@ -210,6 +185,30 @@ void ToolsideGameComponent::ValidateParameters()
         }
     }
     m_paramList = currentParams;
+}
+
+void ToolsideGameComponent::AddParameterToList(XMLElement* paramXML)
+{
+    string name = paramXML->Attribute("name");
+
+    ComponentParameter::ParameterType type = (ComponentParameter::ParameterType)(paramXML->IntAttribute("type"));
+    ComponentParameter key(name, type);
+
+    ComponentValue value;
+    value.SetValue(type, paramXML);
+
+    // TODO validate against schema
+    ParamPair pair(key, value);
+    m_paramList.push_back(pair);
+}
+
+void ToolsideGameComponent::SetDisplayName()
+{
+    string path = ResourceManager::Singleton().GetResourceInfo(m_guid)->path;
+    unsigned int startpos = path.find_last_of('/') + 1;
+    unsigned int endpos = path.find_last_of('.') - 1;
+    unsigned int length = endpos - startpos + 1;
+    m_displayName = path.substr(startpos, length);
 }
 
 bool ToolsideComponentSchema::Load(string filename)

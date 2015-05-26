@@ -69,7 +69,6 @@ EDITOR (Thicket)
             * Refresh widget on add/remove
         * Enable/disable components
         * PIPELINE
-            - Validate existing toolside component instances against schema (add/remove)
             - Fix hardcoded paths in BuildSchema.py
             - Load serialized param values at game runtime
             - Allow editing param values
@@ -97,6 +96,7 @@ EDITOR (Thicket)
         - Saving project should write asset list in consistent order
         - Fix GameObject child removal
         - Component guid in list of scene resources?
+        - Refresh widgets on schema rebuild
 
         Hi pri
         - Undo/redo broken with delete/undo create. Need to avoid use of QModelIndex

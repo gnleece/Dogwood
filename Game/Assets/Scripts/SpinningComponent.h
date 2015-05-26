@@ -14,9 +14,8 @@ public:
 #pragma region Serializable
     int     SpinType;
     float   Speed = 50.0f;
-    string  Label = "";
     bool    EnableSpinning = false;
-    int     NumRotations;
+    string  SpinLabel = "abcdef";
     Vector3 Offset = Vector3(1.0f, 2.0f, 3.0f);
     ColourRGB SpinColor = ColourRGB(0.5f, 0.5f, 0.0f);
 #pragma endregion
