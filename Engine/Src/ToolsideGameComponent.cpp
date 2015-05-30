@@ -29,31 +29,56 @@ void ComponentValue::SetValue(ComponentParameter::ParameterType type, tinyxml2::
     {
         switch (type)
         {
+            case ComponentParameter::TYPE_INT:
+                i = xml->IntAttribute(valueStr);
+                break;
+            case ComponentParameter::TYPE_FLOAT:
+                f = xml->FloatAttribute(valueStr);
+                break;
+            case ComponentParameter::TYPE_BOOL:
+                b = xml->BoolAttribute(valueStr);
+                break;
+            case ComponentParameter::TYPE_STRING:
+                str = xml->Attribute(valueStr);
+                break;
+            case ComponentParameter::TYPE_VECTOR3:
+            {
+                XMLElement* vectorXML = xml->FirstChildElement(valueStr);
+                v = ReadVector3FromXML(vectorXML);
+                break;
+            }
+            case ComponentParameter::TYPE_COLOR:
+            {
+                XMLElement* colorXML = xml->FirstChildElement(valueStr);
+                c = ReadColourFromXML(colorXML);
+                break;
+            }
+        }
+    }
+}
+
+void ComponentValue::SetValue(ComponentParameter::ParameterType type, string text)
+{
+    switch (type)
+    {
         case ComponentParameter::TYPE_INT:
-            i = xml->IntAttribute(valueStr);
+            i = std::stoi(text);
             break;
         case ComponentParameter::TYPE_FLOAT:
-            f = xml->FloatAttribute(valueStr);
+            f = std::stof(text);
             break;
         case ComponentParameter::TYPE_BOOL:
-            b = xml->BoolAttribute(valueStr);
+            b = (text.compare("true") == 0);    // TODO this field should be a checkbox in the editor      
             break;
         case ComponentParameter::TYPE_STRING:
-            str = xml->Attribute(valueStr);
+            str = text;
             break;
         case ComponentParameter::TYPE_VECTOR3:
-        {
-            XMLElement* vectorXML = xml->FirstChildElement(valueStr);
-            v = ReadVector3FromXML(vectorXML);
+            // TODO implement me
             break;
-        }
         case ComponentParameter::TYPE_COLOR:
-        {
-            XMLElement* colorXML = xml->FirstChildElement(valueStr);
-            c = ReadColourFromXML(colorXML);
+            // TODO implement me
             break;
-        }
-        }
     }
 }
 
@@ -61,30 +86,26 @@ void ComponentValue::SerializeValue(ComponentParameter::ParameterType type, tiny
 {
     switch (type)
     {
-    case ComponentParameter::TYPE_INT:
-        parentNode->SetAttribute("value", i);
-        break;
-    case ComponentParameter::TYPE_FLOAT:
-        parentNode->SetAttribute("value", f);
-        break;
-    case ComponentParameter::TYPE_BOOL:
-        parentNode->SetAttribute("value", b);
-        break;
-    case ComponentParameter::TYPE_STRING:
-        parentNode->SetAttribute("value", str.c_str());
-        break;
-    case ComponentParameter::TYPE_VECTOR3:
-    {
-        parentNode->SetAttribute("value", "");
-        parentNode->InsertEndChild(WriteVector3ToXML(v, "value", rootDoc));
-        break;
-    }
-    case ComponentParameter::TYPE_COLOR:
-    {
-        parentNode->SetAttribute("value", "");
-        parentNode->InsertEndChild(WriteColourToXML(c, "value", rootDoc));
-        break;
-    }
+        case ComponentParameter::TYPE_INT:
+            parentNode->SetAttribute("value", i);
+            break;
+        case ComponentParameter::TYPE_FLOAT:
+            parentNode->SetAttribute("value", f);
+            break;
+        case ComponentParameter::TYPE_BOOL:
+            parentNode->SetAttribute("value", b);
+            break;
+        case ComponentParameter::TYPE_STRING:
+            parentNode->SetAttribute("value", str.c_str());
+            break;
+        case ComponentParameter::TYPE_VECTOR3:
+            parentNode->SetAttribute("value", "");
+            parentNode->InsertEndChild(WriteVector3ToXML(v, "value", rootDoc));
+            break;
+        case ComponentParameter::TYPE_COLOR:
+            parentNode->SetAttribute("value", "");
+            parentNode->InsertEndChild(WriteColourToXML(c, "value", rootDoc));
+            break;
     }
 }
 
@@ -92,12 +113,12 @@ string ComponentValue::GetValueString(ComponentParameter::ParameterType type)
 {
     switch (type)
     {
-    case ComponentParameter::TYPE_INT:      return std::to_string(i);
-    case ComponentParameter::TYPE_FLOAT:    return std::to_string(f);
-    case ComponentParameter::TYPE_BOOL:     return b ? "true" : "false";
-    case ComponentParameter::TYPE_STRING:   return str;
-    case ComponentParameter::TYPE_VECTOR3:  return "";      // TODO implement me
-    case ComponentParameter::TYPE_COLOR:    return "";      // TODO implement me
+        case ComponentParameter::TYPE_INT:      return std::to_string(i);
+        case ComponentParameter::TYPE_FLOAT:    return std::to_string(f);
+        case ComponentParameter::TYPE_BOOL:     return b ? "true" : "false";
+        case ComponentParameter::TYPE_STRING:   return str;
+        case ComponentParameter::TYPE_VECTOR3:  return "";      // TODO implement me
+        case ComponentParameter::TYPE_COLOR:    return "";      // TODO implement me
     }
 
     return "";
@@ -158,6 +179,20 @@ string ToolsideGameComponent::GetDisplayName()
 ParamList& ToolsideGameComponent::GetParameterList()
 {
     return m_paramList;
+}
+
+void ToolsideGameComponent::SetParameter(ComponentParameter param, ComponentValue value)
+{
+    ParamList::iterator iter = m_paramList.begin();
+    for (; iter != m_paramList.end(); iter++)
+    {
+        ComponentParameter existingParam = iter->first;
+        if (existingParam == param)
+        {
+            iter->second = value;
+            break;
+        }
+    }
 }
 
 void ToolsideGameComponent::ValidateParameters()

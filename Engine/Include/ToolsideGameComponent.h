@@ -41,6 +41,7 @@ public:
     ComponentValue();
 
     void    SetValue(ComponentParameter::ParameterType type, tinyxml2::XMLElement* xml);
+    void    SetValue(ComponentParameter::ParameterType type, string text);
     void    SerializeValue(ComponentParameter::ParameterType type, tinyxml2::XMLElement* parentNode, tinyxml2::XMLDocument& rootDoc);
     string  GetValueString(ComponentParameter::ParameterType type);
 

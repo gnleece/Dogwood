@@ -50,20 +50,8 @@ QVariant ComponentModel::data(const QModelIndex &index, int role) const
 
     int row = index.row();
     int col = index.column();
-
-    // TODO this is pretty hacky
-    int componentIndex = 0;
-    while(m_accSizes[componentIndex] <= row)
-    {
-        componentIndex++;
-    }
-
-    int offset = 0;
-    if (componentIndex > 0)
-    {
-        offset = m_accSizes[componentIndex - 1];
-    }
-    int paramIndex = row - offset;
+    int componentIndex = CalculateComponentIndex(row);
+    int paramIndex = CalculateParamIndex(row, componentIndex);
 
     if (paramIndex == 0)
     {
@@ -92,4 +80,75 @@ QVariant ComponentModel::data(const QModelIndex &index, int role) const
     }
     // Name column
     return QVariant(pair.first.Name.c_str());
+}
+
+bool ComponentModel::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+    if (role != Qt::EditRole || !IsEditable(index))
+        return false;
+
+    // TODO set data using Editor Commands
+    int row = index.row();
+    int componentIndex = CalculateComponentIndex(row);
+    int paramIndex = CalculateParamIndex(row, componentIndex);
+
+    ToolsideGameComponent* component = m_componentList[componentIndex];
+    ParamList params = component->GetParameterList();
+    ParamPair& pair = params[paramIndex - 1];
+    pair.second.SetValue(pair.first.Type, value.toString().toStdString());
+    component->SetParameter(pair.first, pair.second);
+
+    return true;
+}
+
+Qt::ItemFlags ComponentModel::flags(const QModelIndex &index) const
+{
+    Qt::ItemFlags defaultFlags = QAbstractTableModel::flags(index);
+
+    if (index.isValid() && IsEditable(index))
+    {
+        return  Qt::ItemIsEditable | defaultFlags;
+    }
+    else
+        return defaultFlags;
+}
+
+int ComponentModel::CalculateComponentIndex(int row) const
+{
+    // TODO this is pretty hacky
+    int componentIndex = 0;
+    while (m_accSizes[componentIndex] <= row)
+    {
+        componentIndex++;
+    }
+    return componentIndex;
+}
+
+int ComponentModel::CalculateParamIndex(int row, int componentIndex) const
+{
+    int offset = 0;
+    if (componentIndex > 0)
+    {
+        offset = m_accSizes[componentIndex - 1];
+    }
+    int paramIndex = row - offset;
+
+    return paramIndex;
+}
+
+bool ComponentModel::IsEditable(const QModelIndex &index) const
+{
+    if (!index.isValid())
+        return false;
+
+    int row = index.row();
+    int col = index.column();
+    int componentIndex = CalculateComponentIndex(row);
+    int paramIndex = CalculateParamIndex(row, componentIndex);
+
+    // If the entry is a component name, or a parameter name, it can't be edited
+    if (paramIndex == 0 || col == 0)
+        return false;
+
+    return true;
 }

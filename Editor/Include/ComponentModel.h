@@ -19,8 +19,14 @@ public:
     int             rowCount(const QModelIndex &parent = QModelIndex()) const;
     int             columnCount(const QModelIndex &parent = QModelIndex()) const;
     QVariant        data(const QModelIndex &index, int role = Qt::DisplayRole) const;
+    bool            setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
+    Qt::ItemFlags   flags(const QModelIndex &index) const;
 
 private:
+    int             CalculateComponentIndex(int row) const;
+    int             CalculateParamIndex(int row, int componentIndex) const;
+    bool            IsEditable(const QModelIndex &index) const;
+
     GameObject* m_gameObject;
     int         m_rowCount;
     vector<ToolsideGameComponent*> m_componentList;

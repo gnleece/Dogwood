@@ -1,4 +1,4 @@
-#include "Components\SpinningComponent.h"
+#include "SpinningComponent.h"
 
 #include "Math\Transformations.h"
 

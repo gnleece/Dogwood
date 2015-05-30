@@ -71,7 +71,9 @@ EDITOR (Thicket)
         * PIPELINE
             - Fix hardcoded paths in BuildSchema.py
             - Load serialized param values at game runtime
-            - Allow editing param values
+            - Allow displaying/editing vectors/colors
+            - Show bool values as check boxes
+            - Set data using EditorCommands for undo/redo
 
     * Visuals
         * Change transform tool shape based on mode
