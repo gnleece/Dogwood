@@ -5,6 +5,7 @@
 #include <string>
 
 #include "GameComponentFactory.h"
+#include "ToolsideGameComponent.h"
 
 // TODO this block of includes would be auto generated based on project file
 #include "Bouncer.h"
@@ -12,89 +13,61 @@
 #include "SpinningComponent.h"
 
 using std::string;
+using std::unordered_map;
 
 class GameComponent;
 
-// TODO unsure yet if this design is terrible or not
-// How to avoid regenerating entire file every time a single component changes? Ugh.
+void SetParameter_GUID_3075022151(SpinningComponent* comp, RuntimeParamList* params);
+void SetParameter_GUID_1515607268(FooComponent* comp, RuntimeParamList* params);
+void SetParameter_GUID_3988628104(Bouncer* comp, RuntimeParamList* params);
 
 class MyFactory : public GameComponentFactory
 {
     GameComponent* CreateComponent(unsigned int guid)
     {
-        // TODO this should be a hash map not a giant switch statement
         switch (guid)
         {
         case 3075022151: return new SpinningComponent();
         case 1515607268: return new FooComponent();
         case 3988628104: return new Bouncer();
+
+        default: printf("Error: missing guid in generated bindings file: %d\n", guid); break;
         }
         return NULL;
     }
+
+    void SetParams(unsigned int guid, GameComponent* component, RuntimeParamList* params)
+    {
+        switch (guid)
+        {
+        case 3075022151: return SetParameter_GUID_3075022151((SpinningComponent*)component, params);
+        case 1515607268: return SetParameter_GUID_1515607268((FooComponent*)component, params);
+        case 3988628104: return SetParameter_GUID_3988628104((Bouncer*)component, params);
+
+        default: printf("Error: missing guid in generated bindings file: %d\n", guid); break;
+        }
+    }
 };
 
-
-
-/*
-void SetParameter_GUID_4001(SpinningComponent* comp, XMLElement* param)
+void SetParameter_GUID_3075022151(SpinningComponent* comp, RuntimeParamList* params)
 {
-    if (param == NULL)
+    if (params->size() < 6)
         return;
 
-    // TODO generate numeric codes for each parameter, to avoid string compare?
-    const char* name = param->Attribute("name");
-    if (strcmp(name, "Speed") == 0)
-    {
-        comp->Speed = param->FloatAttribute("value");
-    }
-    else if (strcmp(name, "Label") == 0)
-    {
-        comp->Label = param->Attribute("value");
-    }
-    else if (strcmp(name, "EnableSpinning") == 0)
-    {
-        comp->EnableSpinning = param->BoolAttribute("value");
-    }
+    comp->SpinType = (*params)[0].i;
+    comp->Speed = (*params)[1].f;
+    comp->EnableSpinning = (*params)[2].b;
+    comp->SpinLabel = (*params)[3].str;
+    comp->Offset = (*params)[4].v;
+    comp->SpinColor = (*params)[5].c;
 }
 
-void SetParameter_GUID_4002(FooComponent* comp, XMLElement* param)
+void SetParameter_GUID_1515607268(FooComponent* comp, RuntimeParamList* params)
 {
-    if (param == NULL)
-        return;
 
-    // TODO generate numeric codes for each parameter, to avoid string compare?
-    const char* name = param->Attribute("name");
-    if (strcmp(name, "BarParam") == 0)
-    {
-        comp->BarParam = param->FloatAttribute("value");
-    }
-    else if (strcmp(name, "BazParam") == 0)
-    {
-        comp->BazParam = param->BoolAttribute("value");
-    }
 }
 
-void SetComponentParameter(unsigned int guid, GameComponent* comp, XMLElement* param)
+void SetParameter_GUID_3988628104(Bouncer* comp, RuntimeParamList* params)
 {
-    // TODO make this a hash map of function pointers instead of a giant switch statement?
 
-    switch (guid)
-    {
-        case 4001:  // SpinningComponent
-        {
-            SetParameter_GUID_4001((SpinningComponent*)comp, param);
-            break;
-        }
-        case 4002:  // FooComponent
-        {
-            SetParameter_GUID_4002((FooComponent*)comp, param);
-            break;
-        }
-        default:
-        {
-            printf("Error: missing guid in generated bindings file: %d\n", guid);
-            break;
-        }
-    }
 }
-*/

@@ -14,6 +14,13 @@ using std::string;
 using std::unordered_map;
 using std::vector;
 
+struct ComponentParameter;
+struct ComponentValue;
+
+typedef pair <ComponentParameter, ComponentValue> ParamPair;
+typedef vector <ParamPair> ParamList;
+typedef vector<ComponentValue> RuntimeParamList;
+
 struct ComponentParameter
 {
 public:
@@ -39,11 +46,14 @@ struct ComponentValue
 {
 public:
     ComponentValue();
+    ComponentValue(ComponentParameter::ParameterType type, tinyxml2::XMLElement* xml);
 
     void    SetValue(ComponentParameter::ParameterType type, tinyxml2::XMLElement* xml);
     void    SetValue(ComponentParameter::ParameterType type, string text);
     void    SerializeValue(ComponentParameter::ParameterType type, tinyxml2::XMLElement* parentNode, tinyxml2::XMLDocument& rootDoc);
     string  GetValueString(ComponentParameter::ParameterType type);
+
+    static RuntimeParamList ParseRuntimeParams(tinyxml2::XMLElement* xml);
 
     int         i;
     float       f;
@@ -52,9 +62,6 @@ public:
     Vector3     v;
     ColourRGB   c;
 };
-
-typedef pair <ComponentParameter, ComponentValue> ParamPair;
-typedef vector <ParamPair> ParamList;
 
 class ToolsideGameComponent
 {

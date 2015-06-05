@@ -22,6 +22,11 @@ ComponentValue::ComponentValue()
     c = ColourRGB::Black;
 }
 
+ComponentValue::ComponentValue(ComponentParameter::ParameterType type, tinyxml2::XMLElement* xml)
+{
+    SetValue(type, xml);
+}
+
 void ComponentValue::SetValue(ComponentParameter::ParameterType type, tinyxml2::XMLElement* xml)
 {
     char* valueStr = "value";
@@ -122,6 +127,23 @@ string ComponentValue::GetValueString(ComponentParameter::ParameterType type)
     }
 
     return "";
+}
+
+RuntimeParamList ComponentValue::ParseRuntimeParams(tinyxml2::XMLElement* xml)
+{
+    RuntimeParamList params;
+
+    XMLElement* paramXML = xml->FirstChildElement("Param");
+    while (paramXML)
+    {
+        ComponentParameter::ParameterType type = (ComponentParameter::ParameterType)(paramXML->IntAttribute("type"));
+        ComponentValue value(type, paramXML);
+        params.push_back(value);
+
+        paramXML = paramXML->NextSiblingElement("Param");
+    }
+
+    return params;
 }
 
 void ToolsideGameComponent::Create(unsigned int guid)
@@ -232,7 +254,6 @@ void ToolsideGameComponent::AddParameterToList(XMLElement* paramXML)
     ComponentValue value;
     value.SetValue(type, paramXML);
 
-    // TODO validate against schema
     ParamPair pair(key, value);
     m_paramList.push_back(pair);
 }

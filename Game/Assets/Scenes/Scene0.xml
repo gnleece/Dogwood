@@ -40,7 +40,7 @@
             <Components>
                 <Component guid="3075022151">
                     <Param name="SpinType" type="0" value="0"/>
-                    <Param name="Speed" type="1" value="50"/>
+                    <Param name="Speed" type="1" value="0.5"/>
                     <Param name="EnableSpinning" type="2" value="0"/>
                     <Param name="SpinLabel" type="3" value="abcdef"/>
                     <Param name="Offset" type="4" value="">
@@ -119,7 +119,7 @@
             <Components>
                 <Component guid="3075022151">
                     <Param name="SpinType" type="0" value="0"/>
-                    <Param name="Speed" type="1" value="50"/>
+                    <Param name="Speed" type="1" value="300"/>
                     <Param name="EnableSpinning" type="2" value="0"/>
                     <Param name="SpinLabel" type="3" value="abcdef"/>
                     <Param name="Offset" type="4" value="">

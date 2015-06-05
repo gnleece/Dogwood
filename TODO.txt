@@ -63,14 +63,13 @@ EDITOR (Thicket)
             * Mesh: hook up browse
             * Texture: hook up browse
             * Shader: show on material widget, hook up browse
-        * Custom component widget
-        * Add/remove components
+        * Remove components
             * Undo/redo on add/remove
             * Refresh widget on add/remove
         * Enable/disable components
         * PIPELINE
             - Fix hardcoded paths in BuildSchema.py
-            - Load serialized param values at game runtime
+            - Auto generate component bindings
             - Allow displaying/editing vectors/colors
             - Show bool values as check boxes
             - Set data using EditorCommands for undo/redo

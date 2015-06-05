@@ -328,6 +328,8 @@ void Scene::AddGameComponents(GameObject* go, XMLElement* xmlnode)
                 unsigned int guid = componentXML->UnsignedAttribute("guid");
                 GameComponentFactory* factory = GameProject::Singleton().GetRuntimeComponentFactory();
                 GameComponent* component = factory->CreateComponent(guid);
+                RuntimeParamList params = ComponentValue::ParseRuntimeParams(componentXML);
+                factory->SetParams(guid, component, &params);
                 go->AddComponent(component);
             }
             componentXML = componentXML->NextSiblingElement("Component");
