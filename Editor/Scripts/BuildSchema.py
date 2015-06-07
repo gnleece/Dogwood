@@ -1,8 +1,6 @@
 import os
+import sys
 import xml.etree.cElementTree as ET
-
-testProjectPath = "C:\\Users\\Gwynneth\\Coding\\Dogwood\\Game\\Katamari.xml"
-testAssetsPath = "C:\\Users\\Gwynneth\\Coding\\Dogwood\\Game\\Assets\\"
 
 START_REGION_STRING = "#pragma region Serializable"
 END_REGION_STRING = "#pragma endregion"
@@ -11,17 +9,21 @@ paramTypeStringToEnum = { "int" : "0", "float" : "1", "bool" : "2", "string" : "
 
 def GetScriptList(projectFilepath):
     root = ET.parse(projectFilepath).getroot()
+
+    settingsXML = root.find("Settings")
+    assetPathXML = settingsXML.find("Resource-Root-Path")
+    assetPath = assetPathXML.get("path")
+
     resourcesXML = root.find("Resources")
     scriptsXML = resourcesXML.find("Scripts")
     scriptsDict = {}
     for script in scriptsXML.iter("Script"):
         scriptsDict[script.get("guid")] = script.get("path")
-    return scriptsDict
+    return [assetPath, scriptsDict]
 
 
-def GetSerializableMembers(filename):
-    fullPath = testAssetsPath + filename
-    with open(fullPath) as f:
+def GetSerializableMembers(filePath):
+    with open(filePath) as f:
         
         # Search for start of serializable region
         foundRegion = False
@@ -51,7 +53,7 @@ def GetSerializableMembers(filename):
             print("Error: could not find end of Serializable region in "  + filename)
             return
 
-        print("Successfully processed " + filename)
+        print("Successfully processed " + filePath)
         return serializableLines
 
 def SetDefaultValue(rawValue, paramType, XMLelement):
@@ -82,17 +84,17 @@ def ParseColor(valueTokens, XMLelement):
     print(cleanTokens)
     ET.SubElement(XMLelement, "value", r = cleanTokens[0] , g = cleanTokens[1] , b = cleanTokens[2])
 
-def BuildSchemas(projectFilepath):
+def BuildSchemas(projectFilePath):
     # Create root XML elemnt
     rootXML = ET.Element("Scripts")
 
-    # Get script list from project file
-    scriptsDict = GetScriptList(projectFilepath)
+    # Get script list and asset path from project file
+    assetPath, scriptsDict = GetScriptList(projectFilePath)
 
     # Process each script
-    for guid, path in scriptsDict.items():
-        scriptXML = ET.SubElement(rootXML, "Script", guid = str(guid), path = path)
-        serializableMembers = GetSerializableMembers(path)
+    for guid, relativepath in scriptsDict.items():
+        scriptXML = ET.SubElement(rootXML, "Script", guid = str(guid), path = relativepath)
+        serializableMembers = GetSerializableMembers(assetPath + relativepath)
         if (serializableMembers is not None):
             for memberLine in serializableMembers:
                 # Member should be in the form: {TYPE} {NAME} = {DEFAULTVALUE}
@@ -109,7 +111,7 @@ def BuildSchemas(projectFilepath):
 
     # Write XML to file
     tree = ET.ElementTree(rootXML)
-    tree.write(testAssetsPath + "Schema.xml")
+    tree.write(assetPath + "Schema.xml")
 
-
-BuildSchemas(testProjectPath)
+if __name__ == "__main__":
+    BuildSchemas(sys.argv[1])

@@ -34,6 +34,8 @@ public:
     string  GetName();
     void    SetName(string name);
 
+    string  GetFilename();
+
     void    GetResolution(int& width, int& height);
     void    SetResolution(int width, int height);
 

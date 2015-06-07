@@ -161,6 +161,11 @@ void GameProject::SetName(string name)
     m_name = name;
 }
 
+string GameProject::GetFilename()
+{
+    return m_filename;
+}
+
 void GameProject::GetResolution(int& width, int& height)
 {
     width = m_width;

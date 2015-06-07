@@ -24,6 +24,7 @@
 #include <QtWidgets>
 
 using namespace EditorCommands;
+using std::string;
 
 MainEditorWindow::MainEditorWindow(QWidget* parent)
 : QMainWindow(parent), m_ui(new Ui::MainEditorWindow), m_copiedGameObject(NULL),
@@ -274,8 +275,8 @@ void MainEditorWindow::RebuildComponentSchema()
     GameProject::Singleton().Save();
 
     QProcess *process = new QProcess(this);
-    QString cmd = "python C:/Users/Gwynneth/Coding/Dogwood/Editor/Scripts/BuildSchema.py";  // TODO fix hardcoded path
-    process->start(cmd);
+    string cmd = string("python Scripts/BuildSchema.py ") + GameProject::Singleton().GetFilename();
+    process->start(QString(cmd.c_str()));
     process->waitForFinished();
 
     ResourceManager::Singleton().LoadComponentSchema();

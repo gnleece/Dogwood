@@ -68,7 +68,6 @@ EDITOR (Thicket)
             * Refresh widget on add/remove
         * Enable/disable components
         * PIPELINE
-            - Fix hardcoded paths in BuildSchema.py
             - Auto generate component bindings
             - Allow displaying/editing vectors/colors
             - Show bool values as check boxes

@@ -22,3 +22,5 @@
 *.ui.autosave
 
 *.vcxproj.user
+
+*__pycache__
