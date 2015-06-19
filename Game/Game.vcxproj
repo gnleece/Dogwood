@@ -86,11 +86,13 @@
     <ClInclude Include="Assets\Scripts\Bouncer.h" />
     <ClInclude Include="Assets\Scripts\FooComponent.h" />
     <ClInclude Include="Assets\Scripts\SpinningComponent.h" />
+    <ClInclude Include="Assets\Scripts\Translator.h" />
     <ClInclude Include="Generated\GameComponentBindings.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Assets\Scripts\SpinningComponent.cpp" />
+    <ClCompile Include="Assets\Scripts\Translator.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>

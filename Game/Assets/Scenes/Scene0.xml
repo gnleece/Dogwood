@@ -1,5 +1,6 @@
 <Scene>
     <Resources>
+        <Resource guid="489851566"/>
         <Resource guid="396944253"/>
         <Resource guid="3746892247"/>
         <Resource guid="1863496264"/>
@@ -146,6 +147,26 @@
                 </Mesh>
                 <Components/>
             </GameObject>
+        </GameObject>
+        <GameObject name="Cone">
+            <Transform>
+                <Position x="0.00000" y="0.00000" z="-1.35300"/>
+                <Rotation x="0.00000" y="0.00000" z="0.00000"/>
+                <Scale x="0.30000" y="0.30000" z="0.30000"/>
+            </Transform>
+            <Mesh guid="489851566">
+                <Material>
+                    <Shader guid="3746892247"/>
+                    <ColorDiffuse r="1.00000" g="0.66667" b="0.00000"/>
+                    <ColorAmbient r="1.00000" g="1.00000" b="1.00000"/>
+                    <ColorSpecular r="1.00000" g="1.00000" b="1.00000"/>
+                </Material>
+            </Mesh>
+            <Components>
+                <Component guid="943277816">
+                    <Param name="Speed" type="1" value="0.5"/>
+                </Component>
+            </Components>
         </GameObject>
     </GameObject>
 </Scene>
