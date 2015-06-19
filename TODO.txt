@@ -49,6 +49,7 @@ EDITOR (Thicket)
         * typedef guid type?
         * Prompt for save on exit/unload
         * Remove assets (un-import)
+        * Save/load scene list
 
     * Scene
         * Prompt for save on exit/unload
@@ -68,7 +69,6 @@ EDITOR (Thicket)
             * Refresh widget on add/remove
         * Enable/disable components
         * PIPELINE
-            - Auto generate component bindings
             - Allow displaying/editing vectors/colors
             - Show bool values as check boxes
             - Set data using EditorCommands for undo/redo

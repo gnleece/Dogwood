@@ -269,13 +269,13 @@ void MainEditorWindow::SaveProject()
 
 void MainEditorWindow::RebuildComponentSchema()
 {
-    DebugLogger::Singleton().Log("Rebuilding component schema. Running BuildSchema.py...");
+    DebugLogger::Singleton().Log("Rebuilding component schema. Running ProcessScripts.py...");
 
     // Save project file, to make sure any newly imported scripts are added to the list
     GameProject::Singleton().Save();
 
     QProcess *process = new QProcess(this);
-    string cmd = string("python Scripts/BuildSchema.py ") + GameProject::Singleton().GetFilename();
+    string cmd = string("python Scripts/ProcessScripts.py ") + GameProject::Singleton().GetFilename();
     process->start(QString(cmd.c_str()));
     process->waitForFinished();
 

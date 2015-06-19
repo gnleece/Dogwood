@@ -1,11 +1,19 @@
 import os
 import sys
 import xml.etree.cElementTree as ET
+import ComponentBindings
 
 START_REGION_STRING = "#pragma region Serializable"
 END_REGION_STRING = "#pragma endregion"
 
 paramTypeStringToEnum = { "int" : "0", "float" : "1", "bool" : "2", "string" : "3", "Vector3" : "4", "ColourRGB" : "5" }
+
+class Component:
+    def __init__(self, guid, path, params):
+        self.guid = guid;
+        self.path = path;
+        self.params = params;
+        self.name = path[path.rfind('/')+1:path.rfind('.')]     # Remove path and file extension
 
 def GetScriptList(projectFilepath):
     root = ET.parse(projectFilepath).getroot()
@@ -84,7 +92,7 @@ def ParseColor(valueTokens, XMLelement):
     print(cleanTokens)
     ET.SubElement(XMLelement, "value", r = cleanTokens[0] , g = cleanTokens[1] , b = cleanTokens[2])
 
-def BuildSchemas(projectFilePath):
+def ProcessScripts(projectFilePath):
     # Create root XML elemnt
     rootXML = ET.Element("Scripts")
 
@@ -92,9 +100,11 @@ def BuildSchemas(projectFilePath):
     assetPath, scriptsDict = GetScriptList(projectFilePath)
 
     # Process each script
+    componentList = []
     for guid, relativepath in scriptsDict.items():
         scriptXML = ET.SubElement(rootXML, "Script", guid = str(guid), path = relativepath)
         serializableMembers = GetSerializableMembers(assetPath + relativepath)
+        paramList = []
         if (serializableMembers is not None):
             for memberLine in serializableMembers:
                 # Member should be in the form: {TYPE} {NAME} = {DEFAULTVALUE}
@@ -104,14 +114,21 @@ def BuildSchemas(projectFilePath):
                 paramType = paramTypeStringToEnum[tokens[0]]
                 paramName = tokens[1]
                 paramXML = ET.SubElement(scriptXML, "Param", type = paramType, name = paramName)
+                paramList.append([paramType, paramName])
                 if (len(tokens) >= 4 and tokens[2] == "="):
                     paramDefaultValue = tokens[3:]
                     print(paramDefaultValue)
                     SetDefaultValue(paramDefaultValue, paramType, paramXML)
+        component = Component(guid, relativepath, paramList)
+        componentList.append(component)
 
-    # Write XML to file
+    # Write schema XML to file
     tree = ET.ElementTree(rootXML)
     tree.write(assetPath + "Schema.xml")
 
+    # Use component list to generate bindings code
+    ComponentBindings.GenerateBindings(componentList, assetPath)
+
+
 if __name__ == "__main__":
-    BuildSchemas(sys.argv[1])
+    ProcessScripts(sys.argv[1])
