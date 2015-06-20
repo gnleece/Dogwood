@@ -21,7 +21,6 @@ ENGINE (Dogwood)
     * Prefabs
 
     * Shading
-        * Combine vert & frag shaders into a single asset/file
         * Multiple light sources?
     * Transform math helpers
 
@@ -166,3 +165,9 @@ DESIGN DECISIONS
 
     Error checking in Editor
     - Make some assumptions about user choices for simplicity
+
+    Reworking shader asset
+    - Initially shaders were a weird special case of asset with two source files (vert shader and frag shader)
+    - This cause a lot of ugly special case code all over the place
+    - Eventually changed it so that a shader is just one file, with annotation separating vert part from frag part
+    - Wish I had done the change sooner, had to change project and scene files by hand to fix it

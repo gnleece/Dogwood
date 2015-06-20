@@ -1,35 +1,39 @@
 #include "Rendering\ShaderProgram.h"
 
+#include <iostream>
+#include <sstream>
+
 #include "Rendering\RenderManager.h"
 
-ShaderProgram::ShaderProgram(std::string vertexShaderPath, std::string fragmentShaderPath, ResourceInfo* resourceInfo)
+ShaderProgram::ShaderProgram(string path, ResourceInfo* resourceInfo)
 {
     m_resourceInfo = resourceInfo;
-    Load(vertexShaderPath, fragmentShaderPath);
+    Load(path);
 }
 
-void ShaderProgram::Load(std::string vertexShaderPath, std::string fragmentShaderPath)
+void ShaderProgram::Load(string path)
 {
     //TODO check if already loaded and delete
-    m_vertexID = LoadShaderFromFile(vertexShaderPath, GL_VERTEX_SHADER);
-    m_fragmentID = LoadShaderFromFile(fragmentShaderPath, GL_FRAGMENT_SHADER);
+    bool success = LoadShaderFromFile(path);
+    if (success)
+    {
+        LinkProgram();
 
-    m_programID = LinkProgram(m_vertexID, m_fragmentID);
+        m_paramLocations[ATTRIB_POS] = glGetAttribLocation(m_programID, "position");
+        m_paramLocations[ATTRIB_NORMAL] = glGetAttribLocation(m_programID, "normal");
+        m_paramLocations[ATTRIB_TEXCOORD] = glGetAttribLocation(m_programID, "texcoord");
+        m_paramLocations[ATTRIB_COLOUR] = glGetAttribLocation(m_programID, "color");
 
-    m_paramLocations[ATTRIB_POS]            = glGetAttribLocation(m_programID, "position");
-    m_paramLocations[ATTRIB_NORMAL]         = glGetAttribLocation(m_programID, "normal");
-    m_paramLocations[ATTRIB_TEXCOORD]       = glGetAttribLocation(m_programID, "texcoord");
-    m_paramLocations[ATTRIB_COLOUR]         = glGetAttribLocation(m_programID, "color");
-
-    m_paramLocations[UNI_MODEL]             = glGetUniformLocation(m_programID, "model");
-    m_paramLocations[UNI_VIEW]              = glGetUniformLocation(m_programID, "view");
-    m_paramLocations[UNI_PROJ]              = glGetUniformLocation(m_programID, "proj");
-    m_paramLocations[UNI_LIGHT_POS]         = glGetUniformLocation(m_programID, "lightPos");
-    m_paramLocations[UNI_LIGHT_COLOUR]      = glGetUniformLocation(m_programID, "lightColor");
-    m_paramLocations[UNI_LIGHT_POWER]       = glGetUniformLocation(m_programID, "lightPower");
-    m_paramLocations[UNI_COLOUR_DIFFUSE]    = glGetUniformLocation(m_programID, "matColorDiffuse");
-    m_paramLocations[UNI_COLOUR_AMBIENT]    = glGetUniformLocation(m_programID, "matColorAmbient");
-    m_paramLocations[UNI_COLOUR_SPECULAR]   = glGetUniformLocation(m_programID, "matColorSpecular");
+        m_paramLocations[UNI_MODEL] = glGetUniformLocation(m_programID, "model");
+        m_paramLocations[UNI_VIEW] = glGetUniformLocation(m_programID, "view");
+        m_paramLocations[UNI_PROJ] = glGetUniformLocation(m_programID, "proj");
+        m_paramLocations[UNI_LIGHT_POS] = glGetUniformLocation(m_programID, "lightPos");
+        m_paramLocations[UNI_LIGHT_COLOUR] = glGetUniformLocation(m_programID, "lightColor");
+        m_paramLocations[UNI_LIGHT_POWER] = glGetUniformLocation(m_programID, "lightPower");
+        m_paramLocations[UNI_COLOUR_DIFFUSE] = glGetUniformLocation(m_programID, "matColorDiffuse");
+        m_paramLocations[UNI_COLOUR_AMBIENT] = glGetUniformLocation(m_programID, "matColorAmbient");
+        m_paramLocations[UNI_COLOUR_SPECULAR] = glGetUniformLocation(m_programID, "matColorSpecular");
+    }
 }
 
 void ShaderProgram::ApplyShader()
@@ -50,6 +54,11 @@ void ShaderProgram::ApplyShader()
     }
 }
 
+GLuint ShaderProgram::GetID() const
+{
+    return m_programID;
+}
+
 GLint ShaderProgram::GetParamLocation(eShaderParam param) const
 {
     if (param < NUM_PARAMS)
@@ -67,67 +76,123 @@ void ShaderProgram::Delete()
     glDeleteShader(m_fragmentID);
 }
 
-// from http://lazyfoo.net/tutorials/OpenGL/30_loading_text_file_shaders/index.php
-GLuint ShaderProgram::LoadShaderFromFile(std::string path, GLenum shaderType)
+
+bool ShaderProgram::LoadShaderFromFile(string path)
 {
-    // Open file
-    GLuint shaderID = 0;
     std::string shaderString;
     std::ifstream sourceFile(path.c_str());
 
-    // Source file loaded
     if (sourceFile)
     {
-        // Get shader source
-        shaderString.assign((std::istreambuf_iterator< char >(sourceFile)), std::istreambuf_iterator< char >());
-        // Create shader ID
-        shaderID = glCreateShader(shaderType);
+        std::ostringstream vertexShader;
+        std::ostringstream fragmentShader;
 
-        // Set shader source
-        const GLchar* shaderSource = shaderString.c_str();
-        glShaderSource(shaderID, 1, (const GLchar**)&shaderSource, NULL);
-
-        // Compile shader source
-        glCompileShader(shaderID);
-
-        // Check compile log
-        GLint bufflen;
-        glGetShaderiv(shaderID, GL_INFO_LOG_LENGTH, &bufflen);
-        if (bufflen > 1)
+        // Read until start of first shader
+        string nextLine;
+        getline(sourceFile, nextLine);
+        while (!IsShaderTypeDelimiter(nextLine))
         {
-            GLchar* log_string = new char[bufflen + 1];
-            glGetShaderInfoLog(shaderID, bufflen, 0, log_string);
-            printf("Compile Log found for shader %d :\n%s", shaderID, log_string);
-
-            delete log_string;
+            getline(sourceFile, nextLine);
         }
 
-        // Check shader compile status
-        GLint shaderCompiled = GL_FALSE;
-        glGetShaderiv(shaderID, GL_COMPILE_STATUS, &shaderCompiled);
-        if (shaderCompiled != GL_TRUE)
+        // Read vertex shader
+        getline(sourceFile, nextLine);
+        while (!IsShaderTypeDelimiter(nextLine))
         {
-            printf("Unable to compile shader %d!\n", shaderID);
-            glDeleteShader(shaderID);
-            return 0;
+            vertexShader << nextLine << "\n";
+            getline(sourceFile, nextLine);
         }
 
-        printf("* Successfully compiled shader: %s\n", path.c_str());
+        // Read fragment shader
+        getline(sourceFile, nextLine);
+        while (!sourceFile.eof())
+        {
+            fragmentShader << nextLine << "\n";
+            getline(sourceFile, nextLine);
+        }
+        fragmentShader << nextLine;
+
+        m_vertexID = CompileShader(vertexShader.str(), path, GL_VERTEX_SHADER);
+        m_fragmentID = CompileShader(fragmentShader.str(), path, GL_FRAGMENT_SHADER);
     }
     else
     {
-        printf("Unable to open file %s\n", path.c_str());
+        printf("Unable to open shader file %s\n", path.c_str());
+        return false;
     }
+
+    return true;
+}
+
+// from http://lazyfoo.net/tutorials/OpenGL/30_loading_text_file_shaders/index.php
+GLuint ShaderProgram::CompileShader(string source, string path, GLenum type)
+{
+    if (type == GL_VERTEX_SHADER)
+    {
+        printf("Compiling vertex shader: %s\n", path.c_str());
+    }
+    else if (type == GL_FRAGMENT_SHADER)
+    {
+        printf("Compiling fragment shader: %s\n", path.c_str());
+    }
+
+    // Create shader ID
+    GLuint shaderID = glCreateShader(type);
+
+    // Set shader source
+    const GLchar* shaderSource = source.c_str();
+    glShaderSource(shaderID, 1, (const GLchar**)&shaderSource, NULL);
+
+    // Compile shader source
+    glCompileShader(shaderID);
+
+    // Check compile log
+    GLint bufflen;
+    glGetShaderiv(shaderID, GL_INFO_LOG_LENGTH, &bufflen);
+    if (bufflen > 1)
+    {
+        GLchar* log_string = new char[bufflen + 1];
+        glGetShaderInfoLog(shaderID, bufflen, 0, log_string);
+        printf("Compile log found for shader %d :\n%s", shaderID, log_string);
+
+        delete log_string;
+    }
+
+    // Check shader compile status
+    GLint shaderCompiled = GL_FALSE;
+    glGetShaderiv(shaderID, GL_COMPILE_STATUS, &shaderCompiled);
+    if (shaderCompiled != GL_TRUE)
+    {
+        printf("Error compiling shader %d!\n", shaderID);
+        glDeleteShader(shaderID);
+        return 0;
+    }
+
+    printf("Successfully compiled shader.\n");
 
     return shaderID;
 }
 
-GLuint ShaderProgram::LinkProgram(GLuint vertexShader, GLuint fragmentShader)
+void ShaderProgram::LinkProgram()
 {
-    GLuint shaderProgram = glCreateProgram();
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
-    glBindFragDataLocation(shaderProgram, 0, "outColour");
-    glLinkProgram(shaderProgram);
-    return shaderProgram;
+    m_programID = glCreateProgram();
+    glAttachShader(m_programID, m_vertexID);
+    glAttachShader(m_programID, m_fragmentID);
+    glBindFragDataLocation(m_programID, 0, "outColour");
+    glLinkProgram(m_programID);
+
+    // Check whether link was successful, and print errors if applicable
+    GLint success;
+    glGetProgramiv(m_programID, GL_LINK_STATUS, &success);
+    if (success == GL_FALSE)
+    {
+        GLchar errorLog[1024] = { 0 };
+        glGetProgramInfoLog(m_programID, 1024, NULL, errorLog);
+        printf("Error linking shader program: %s\n", errorLog);
+    }
+}
+
+bool ShaderProgram::IsShaderTypeDelimiter(string line)
+{
+    return (line.length() > 3 && line[0] == '/' && line[1] == '/' && line[2] == '-');
 }

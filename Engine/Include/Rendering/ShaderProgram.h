@@ -9,6 +9,8 @@
 
 class ResourceInfo;
 
+using std::string;
+
 class ShaderProgram : public Resource
 {
 public:
@@ -32,22 +34,25 @@ public:
     };
 	
     ShaderProgram() {}
-    ShaderProgram(std::string vertexShaderPath, std::string fragmentShaderPath, ResourceInfo* resourceInfo);
+    ShaderProgram(string path, ResourceInfo* resourceInfo);
 
-    void    Load(std::string vertexShaderPath, std::string fragmentShaderPath);
+    void    Load(string path);
     void    ApplyShader();
 	
-    GLuint	GetID()	const	{ return m_programID; }
+    GLuint	GetID()	const;
     GLint	GetParamLocation(eShaderParam param) const;
     void	Delete();
 
 private:
-    GLuint m_programID;
-    GLuint m_vertexID;
-    GLuint m_fragmentID;
+    GLuint  m_programID;
+    GLuint  m_vertexID;
+    GLuint  m_fragmentID;
 
-    GLint m_paramLocations[NUM_PARAMS];
+    GLint   m_paramLocations[NUM_PARAMS];
 
-    GLuint LoadShaderFromFile(std::string path, GLenum shaderType);
-    GLuint LinkProgram(GLuint vertexShader, GLuint fragmentShader);
+    bool    LoadShaderFromFile(string path);
+    GLuint  CompileShader(string source, string path, GLenum type);
+    void    LinkProgram();
+
+    bool    IsShaderTypeDelimiter(string line);
 };

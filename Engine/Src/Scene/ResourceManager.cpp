@@ -104,38 +104,16 @@ struct ScriptResourceInfo : ResourceInfo
 
 struct ShaderResourceInfo : ResourceInfo
 {
-    string vertexpath;
-    string fragmentpath;
-
     virtual Resource* Load()
     {
-        string absolutePathVert = ResourceManager::Singleton().GetResourceBasePath() + vertexpath;
-        string absolutePathFrag = ResourceManager::Singleton().GetResourceBasePath() + fragmentpath;
-        ShaderProgram* shader = new ShaderProgram(absolutePathVert, absolutePathFrag, this);
+        string absolutePath = ResourceManager::Singleton().GetResourceBasePath() + path;
+        ShaderProgram* shader = new ShaderProgram(absolutePath, this);
         return shader;
     }
 
     virtual string TypeName()
     {
         return "Shader";
-    }
-
-    void AddToMap(XMLElement* element, unordered_map<unsigned int, ResourceInfo*> & map)
-    {
-        vertexpath = element->Attribute("vertex-path");
-        fragmentpath = element->Attribute("fragment-path");
-        path = "";
-        guid = element->UnsignedAttribute("guid");
-        map[guid] = this;
-    }
-
-    void Serialize(XMLDocument& rootDoc, XMLElement* parent)
-    {
-        XMLElement* xml = rootDoc.NewElement(TypeName().c_str());
-        xml->SetAttribute("guid", guid);
-        xml->SetAttribute("vertex-path", vertexpath.c_str());
-        xml->SetAttribute("fragment-path", fragmentpath.c_str());
-        parent->InsertEndChild(xml);
     }
 
     virtual void AddToGameObject(GameObject* gameObject)
@@ -309,8 +287,14 @@ unsigned int ResourceManager::ImportResource(string& filepath, string type)
         // Texture
         resource = new TextureResourceInfo();
     }
+    else if (strcmp(type.c_str(), "glsl") == 0)
+    {
+        // Shader
+        resource = new ShaderResourceInfo();
+    }
     else if (strcmp(type.c_str(), "h") == 0)
     {
+        // Script
         resource = new ScriptResourceInfo();
     }
 
@@ -321,16 +305,6 @@ unsigned int ResourceManager::ImportResource(string& filepath, string type)
 
     resource->path = filepath;
     resource->guid = MakeGuid(filepath);
-
-    return Import(resource);
-}
-
-unsigned int ResourceManager::ImportShader(string vertpath, string fragpath)
-{
-    ShaderResourceInfo* resource = new ShaderResourceInfo();
-    resource->vertexpath = vertpath;
-    resource->fragmentpath = fragpath;
-    resource->guid = MakeGuid(vertpath + fragpath);
 
     return Import(resource);
 }
@@ -368,7 +342,7 @@ void ResourceManager::ImportDefaultResources()
     XMLElement* texturesXML = assetsXML->FirstChildElement("Textures");
     ImportDefaultResourceType(texturesXML, "Textures", "bmp");
     XMLElement* shadersXML = assetsXML->FirstChildElement("Shaders");
-    ImportDefaultShaders(shadersXML);
+    ImportDefaultResourceType(shadersXML, "Shaders", "glsl");
 }
 
 void ResourceManager::ImportDefaultResourceType(tinyxml2::XMLElement* subtree, string folderName, string extension)
@@ -390,33 +364,6 @@ void ResourceManager::ImportDefaultResourceType(tinyxml2::XMLElement* subtree, s
             m_defaultResources[name] = guid;
 
             resourceXML = resourceXML->NextSiblingElement();
-        }
-    }
-}
-
-void ResourceManager::ImportDefaultShaders(tinyxml2::XMLElement* subtree)
-{
-    if (subtree != NULL)
-    {
-        XMLElement* shaderXML = subtree->FirstChildElement();
-        while (shaderXML != NULL)
-        {
-            // Copy the asset to the project's asset folder
-            string vertSrcfile = shaderXML->Attribute("vertex-path");
-            string fragSrcfile = shaderXML->Attribute("fragment-path");
-            string name = shaderXML->Attribute("name");
-            string vertDestfile = m_resourceBasePath + "Shaders/" + name + ".vert.glsl";
-            FileCopy(vertSrcfile, vertDestfile);
-            string fragDestFile = m_resourceBasePath + "Shaders/" + name + ".frag.glsl";
-            FileCopy(fragSrcfile, fragDestFile);
-
-            // Import the asset to the project
-            string relativeVertPath = AbsolutePathToProjectPath(vertDestfile);
-            string relativeFragPath = AbsolutePathToProjectPath(fragDestFile);
-            unsigned int guid = ImportShader(relativeVertPath, relativeFragPath);
-            m_defaultResources[name] = guid;
-
-            shaderXML = shaderXML->NextSiblingElement();
         }
     }
 }

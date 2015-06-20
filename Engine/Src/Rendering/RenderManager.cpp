@@ -146,12 +146,13 @@ void RenderManager::SetUniformMatrix(ShaderProgram* shader, ShaderProgram::eShad
 
 void RenderManager::LoadCommonShaders()
 {
+    // TODO this is pretty awful
     m_commonShaders[SHADER_UNLIT] = new ShaderProgram();
-    (m_commonShaders[SHADER_UNLIT])->Load("..\\Engine\\Assets\\Shaders\\Unlit.vert.glsl", "..\\Engine\\Assets\\Shaders\\Unlit.frag.glsl");
+    (m_commonShaders[SHADER_UNLIT])->Load("..\\Engine\\Assets\\Shaders\\Unlit.glsl");
 
     m_commonShaders[SHADER_UNLIT_UNI_COLOR] = new ShaderProgram();
-    (m_commonShaders[SHADER_UNLIT_UNI_COLOR])->Load("..\\Engine\\Assets\\Shaders\\UnlitUniformColor.vert.glsl", "..\\Engine\\Assets\\Shaders\\UnlitUniformColor.frag.glsl");
+    (m_commonShaders[SHADER_UNLIT_UNI_COLOR])->Load("..\\Engine\\Assets\\Shaders\\UnlitUniformColor.glsl");
 
     m_commonShaders[SHADER_GOURAUD] = new ShaderProgram();
-    (m_commonShaders[SHADER_GOURAUD])->Load("..\\Engine\\Assets\\Shaders\\Gouraud.vert.glsl", "..\\Engine\\Assets\\Shaders\\Gouraud.frag.glsl");
+    (m_commonShaders[SHADER_GOURAUD])->Load("..\\Engine\\Assets\\Shaders\\Gouraud.glsl");
 }

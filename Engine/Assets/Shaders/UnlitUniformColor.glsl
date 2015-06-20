@@ -1,3 +1,5 @@
+//-VERT-SHADER-
+
 #version 150
 
 in vec3 position;
@@ -9,4 +11,17 @@ uniform mat4 proj;
 void main()
 {
     gl_Position = proj*view*model*vec4(position, 1.0);
+}
+
+//-FRAG-SHADER-
+
+#version 150
+
+uniform vec3 matColorDiffuse;
+
+out vec4 outColor;
+
+void main() 
+{
+    outColor =	vec4(matColorDiffuse,1.0);
 }

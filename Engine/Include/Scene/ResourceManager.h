@@ -58,7 +58,6 @@ public:
     void            LoadComponentSchema();
 
     unsigned int    ImportResource(string& filepath, string type);
-    unsigned int    ImportShader(string vertpath, string fragpath);
     void            ImportDefaultResources();
 
     void            LoadSceneResources(tinyxml2::XMLElement* resources);

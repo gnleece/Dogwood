@@ -19,9 +19,9 @@
             <Mesh guid="2282599710" path="Meshes/mesh_torus.obj"/>
         </Meshes>
         <Shaders>
-            <Shader guid="441267611" vertex-path="Shaders/shader_unlit_unicolor.vert.glsl" fragment-path="Shaders/shader_unlit_unicolor.frag.glsl"/>
-            <Shader guid="311191123" vertex-path="Shaders/shader_unlit.vert.glsl" fragment-path="Shaders/shader_unlit.frag.glsl"/>
-            <Shader guid="3746892247" vertex-path="Shaders/shader_gouraud.vert.glsl" fragment-path="Shaders/shader_gouraud.frag.glsl"/>
+            <Shader guid="441267611" path="Shaders/shader_unlit_unicolor.glsl"/>
+            <Shader guid="311191123" path="Shaders/shader_unlit.glsl"/>
+            <Shader guid="3746892247" path="Shaders/shader_gouraud.glsl"/>
         </Shaders>
         <Scripts>
             <Script guid="943277816" path="Scripts/Translator.h"/>
