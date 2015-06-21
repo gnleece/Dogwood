@@ -99,7 +99,6 @@ EDITOR (Thicket)
 
         Hi pri
         - Undo/redo broken with delete/undo create. Need to avoid use of QModelIndex
-        - Fix shader info in asset widget
 
 ---------------------------------------------------------------------------
 

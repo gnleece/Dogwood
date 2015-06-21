@@ -42,10 +42,6 @@ QVariant AssetDatabaseModel::data(const QModelIndex &index, int role) const
     if (role == Qt::DisplayRole)
     {
         string path = info->path;
-        if (info->TypeName() == "Shader")     // TODO fixme
-        {
-            path = "Shader.glsl";
-        }
         if (col == 0)
         {
             QFileInfo fileInfo(path.c_str());
