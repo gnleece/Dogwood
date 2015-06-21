@@ -68,8 +68,7 @@ EDITOR (Thicket)
             * Refresh widget on add/remove
         * Enable/disable components
         * PIPELINE
-            - Allow displaying/editing vectors/colors
-            - Show bool values as check boxes
+            - Show bool values as check boxes, change cell colour for colours
             - Set data using EditorCommands for undo/redo
 
     * Visuals
