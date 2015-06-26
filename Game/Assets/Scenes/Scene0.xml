@@ -151,7 +151,7 @@
         <GameObject name="Cone">
             <Transform>
                 <Position x="0.00000" y="0.00000" z="-1.35300"/>
-                <Rotation x="0.00000" y="0.00000" z="0.00000"/>
+                <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
                 <Scale x="0.30000" y="0.30000" z="0.30000"/>
             </Transform>
             <Mesh guid="489851566">

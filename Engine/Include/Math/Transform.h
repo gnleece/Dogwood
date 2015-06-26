@@ -18,6 +18,10 @@ public:
     Vector3&    GetRotation();
     Vector3&    GetScale();
 
+    Vector3&    GetRight();
+    Vector3&    GetUp();
+    Vector3&    GetForward();
+
     bool        IsDirty();
     bool        HasChanged();
     void        ClearChangedFlag();
@@ -29,10 +33,17 @@ public:
     // TODO implement math convenience functions
 
 private:
+    void        CalculateDirectionVectors();
+
     Matrix4x4   m_matrix;
+
     Vector3     m_position;
     Vector3     m_rotation;
     Vector3     m_scale;
+
+    Vector3     m_right;
+    Vector3     m_up;
+    Vector3     m_forward;
 
     bool        m_dirty;        // specifies whether matrix needs to be recomputed because components have changed
     bool        m_changed;      // specifies whether matrix has changed since last frame

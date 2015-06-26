@@ -1,7 +1,6 @@
 #include "Math\Transformations.h"
 
 // Return a matrix to represent a counterclockwise rotation of "angle" degrees
-// TODO (gnleece) allow rotation about arbitrary axes
 Matrix4x4 Rotation(float angle, eAXIS axis)
 {
     Matrix4x4 r;
@@ -31,6 +30,49 @@ Matrix4x4 Rotation(float angle, eAXIS axis)
           break;  // return identity matrix
   }
   return r;
+}
+
+// Math from http://paulbourke.net/geometry/rotate/
+Matrix4x4 Rotation(float angle, Vector3 axis)
+{
+    Matrix4x4 r;
+
+    axis.Normalize();
+    float a = axis.x();
+    float b = axis.y();
+    float c = axis.z();
+    float d = sqrtf(b*b + c*c);
+
+    Matrix4x4 Rx, Rx_i;
+
+    if (d > 0)
+    {
+        Rx = Matrix4x4(Vector4(1, 0, 0, 0),
+                       Vector4(0, c/d, -b/d, 0),
+                       Vector4(0, b/d, c/d, 0),
+                       Vector4(0, 0, 0, 1));
+
+        Rx_i = Matrix4x4(Vector4(1, 0, 0, 0),
+                         Vector4(0, c/d, b/d, 0),
+                         Vector4(0, -b/d, c/d, 0),
+                         Vector4(0, 0, 0, 1));
+    }
+
+    Matrix4x4 Ry = Matrix4x4(Vector4(d, 0, -a, 0),
+                             Vector4(0, 1, 0, 0),
+                             Vector4(a, 0, d, 0),
+                             Vector4(0, 0, 0, 1));
+
+    Matrix4x4 Ry_i = Matrix4x4(Vector4(d, 0, a, 0),
+                               Vector4(0, 1, 0, 0),
+                               Vector4(-a, 0, d, 0),
+                               Vector4(0, 0, 0, 1));
+
+    Matrix4x4 Rz = Rotation(angle, AXIS_Z);
+
+    r = Rx_i * Ry_i * Rz * Ry * Rx;
+
+    return r;
 }
 
 Matrix4x4 RotationEulerAngles(Vector3& euler)
@@ -91,21 +133,20 @@ void DecomposeMatrix(Matrix4x4& matrix, Vector3& position, Vector3& rotation, Ve
     rotation = Vector3(rotX, rotY, rotZ);
 }
 
-// based on pseudocode from 
-// http://webglfactory.blogspot.com/2011/06/how-to-create-view-matrix.html
+// based on pseudocode from http://www.3dgep.com/understanding-the-view-matrix/
 Matrix4x4 LookAt(const Vector3 & eye, const Vector3 & direction, const Vector3 & up)
 {
     Vector3 v_z = normalize(-1*direction);
     Vector3 v_x = normalize(cross(up, v_z));
     Vector3 v_y = cross(v_z, v_x);
-    Vector3 w = Vector3(dot(v_x, -1*eye), dot(v_y, -1*eye), dot(v_z, -1*eye));
+    Vector3 w = Vector3(-dot(v_x, 1*eye), -dot(v_y, 1*eye), -dot(v_z, 1*eye));
 
-    Matrix4x4 m = Matrix4x4(Vector4(v_x[0], v_y[0], v_z[0], w[0]),
-                            Vector4(v_x[1], v_y[1], v_z[1], w[1]),
-                            Vector4(v_x[2], v_y[2], v_z[2], w[2]),
-                            Vector4(0, 0, 0, 1));
+    Matrix4x4 m = Matrix4x4(Vector4(v_x[0], v_y[0], v_z[0], 0),
+                            Vector4(v_x[1], v_y[1], v_z[1], 0),
+                            Vector4(v_x[2], v_y[2], v_z[2], 0),
+                            Vector4(w[0], w[1], w[2], 1));
 
-    return m;
+    return m.Transpose();
 }
 
 Matrix4x4 LookAt(const Camera & camera)

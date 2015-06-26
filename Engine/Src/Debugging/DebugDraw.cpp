@@ -134,10 +134,10 @@ void Gnomon::Init(float arrowBase, float arrowHeight)
     // x : red, y : blue, z : green
     m_colorBufferData[0] = ColourRGB::Red;
     m_colorBufferData[1] = ColourRGB::Red;
-    m_colorBufferData[2] = ColourRGB::Blue;
-    m_colorBufferData[3] = ColourRGB::Blue;
-    m_colorBufferData[4] = ColourRGB::Green;
-    m_colorBufferData[5] = ColourRGB::Green;
+    m_colorBufferData[2] = ColourRGB::Green;
+    m_colorBufferData[3] = ColourRGB::Green;
+    m_colorBufferData[4] = ColourRGB::Blue;
+    m_colorBufferData[5] = ColourRGB::Blue;
 
     // Bind buffer data
     glGenBuffers(1, &m_positionBufferID);
@@ -197,8 +197,8 @@ void Gnomon::Draw(Matrix4x4& transform)
 
     // Draw arrows!
     m_arrow.Draw(transform*(m_arrowTransforms[0]), ColourRGB::Red);
-    m_arrow.Draw(transform*(m_arrowTransforms[1]), ColourRGB::Blue);
-    m_arrow.Draw(transform*(m_arrowTransforms[2]), ColourRGB::Green);
+    m_arrow.Draw(transform*(m_arrowTransforms[1]), ColourRGB::Green);
+    m_arrow.Draw(transform*(m_arrowTransforms[2]), ColourRGB::Blue);
 
     // Re-enable depth
     glEnable(GL_DEPTH_TEST);

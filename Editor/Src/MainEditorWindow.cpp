@@ -356,7 +356,7 @@ void MainEditorWindow::OpenTestProject()
         return;
     }
     
-    if (m_scene->Load("..\\Game\\Assets\\Scenes\\Scene0.xml"))
+    if (m_scene->Load("..\\Game\\Assets\\Scenes\\RollTest.xml"))
     {
         HierarchyModel* model = new HierarchyModel(m_scene->GetRootObject());
         SetHierarchyModel(model);

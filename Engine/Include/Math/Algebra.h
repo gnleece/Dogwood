@@ -71,6 +71,7 @@ public:
     float Dot(const Vector3& other) const;
     Vector3 Cross(const Vector3& other) const;
     Vector3 Normalized() const;
+    void Normalize();
 
     void DebugPrint();
 

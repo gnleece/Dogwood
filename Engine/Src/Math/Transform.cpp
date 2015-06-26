@@ -21,6 +21,7 @@ void Transform::SetMatrix(Matrix4x4& m)
 {
     m_matrix = m;
     DecomposeMatrix(m_matrix, m_position, m_rotation, m_scale);
+    CalculateDirectionVectors();
     m_dirty = false;
     m_changed = true;
 }
@@ -71,6 +72,33 @@ Vector3& Transform::GetScale()
     return m_scale;
 }
 
+Vector3& Transform::GetRight()
+{
+    if (m_dirty)
+    {
+        ComputeMatrixFromComponents();
+    }
+    return m_right;
+}
+
+Vector3& Transform::GetUp()
+{
+    if (m_dirty)
+    {
+        ComputeMatrixFromComponents();
+    }
+    return m_up;
+}
+
+Vector3& Transform::GetForward()
+{
+    if (m_dirty)
+    {
+        ComputeMatrixFromComponents();
+    }
+    return m_forward;
+}
+
 bool Transform::IsDirty()
 {
     return m_dirty;
@@ -93,7 +121,16 @@ void Transform::ComputeMatrixFromComponents()
     m_matrix = m_matrix*RotationEulerAngles(m_rotation);
     m_matrix = m_matrix*Scaling(m_scale);
 
+    CalculateDirectionVectors();
+
     m_dirty = false;
+}
+
+void Transform::CalculateDirectionVectors()
+{
+    m_right     = (m_matrix*Vector4(Vector3::Right, 0)).xyz().Normalized();
+    m_up        = (m_matrix*Vector4(Vector3::Up, 0)).xyz().Normalized();
+    m_forward   = (m_matrix*Vector4(Vector3::Forward, 0)).xyz().Normalized();
 }
 
 Transform operator *(Transform& a, Transform& b)

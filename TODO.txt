@@ -141,6 +141,11 @@ RUN-TIME GAME OBJECT REQUIREMENTS
 
 DESIGN DECISIONS
 
+    Matrices are row major
+
+    Right handed coordinate system
+        - Most OpenGL tutorial are right handed
+
     Scene files
      - Format: XML
         - Mergeable/diffable
@@ -169,3 +174,9 @@ DESIGN DECISIONS
     - This cause a lot of ugly special case code all over the place
     - Eventually changed it so that a shader is just one file, with annotation separating vert part from frag part
     - Wish I had done the change sooner, had to change project and scene files by hand to fix it
+
+
+References
+
+http://seanmiddleditch.com/matrices-handedness-pre-and-post-multiplication-row-vs-column-major-and-notations/
+http://www.3dgep.com/understanding-the-view-matrix/

@@ -217,6 +217,14 @@ Vector3 Vector3::Normalized() const
     return ret;
 }
 
+void Vector3::Normalize()
+{
+    Vector3 n = Normalized();
+    m_values[0] = n[0];
+    m_values[1] = n[1];
+    m_values[2] = n[2];
+}
+
 void Vector3::DebugPrint()
 {
     printf("%f\t%f\t%f\n", m_values[0], m_values[1], m_values[2]);

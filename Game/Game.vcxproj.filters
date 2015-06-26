@@ -42,6 +42,9 @@
     <ClInclude Include="Assets\Scripts\Translator.h">
       <Filter>Header Files\Scripts</Filter>
     </ClInclude>
+    <ClInclude Include="Assets\Scripts\Roller.h">
+      <Filter>Header Files\Scripts</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -51,6 +54,9 @@
       <Filter>Source Files\Scripts</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Scripts\Translator.cpp">
+      <Filter>Source Files\Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Roller.cpp">
       <Filter>Source Files\Scripts</Filter>
     </ClCompile>
   </ItemGroup>

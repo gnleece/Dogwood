@@ -1,0 +1,320 @@
+<Scene>
+    <Resources>
+        <Resource guid="156145593"/>
+        <Resource guid="3936014360"/>
+        <Resource guid="3746892247"/>
+        <Resource guid="4197557055"/>
+        <Resource guid="33727872"/>
+    </Resources>
+    <Camera>
+        <Position x="0.00000" y="1.00000" z="10.00000"/>
+        <Direction x="0.00000" y="0.00000" z="-1.00000"/>
+        <Up x="0.00000" y="1.00000" z="0.00000"/>
+    </Camera>
+    <Light>
+        <Position x="0.00000" y="2.00000" z="5.00000"/>
+        <Color r="1.00000" g="1.00000" b="1.00000"/>
+        <Power value="15.00000"/>
+    </Light>
+    <GameObject name="ROOT">
+        <Transform>
+            <Position x="0.00000" y="0.00000" z="0.00000"/>
+            <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
+            <Scale x="1.00000" y="1.00000" z="1.00000"/>
+        </Transform>
+        <Components/>
+        <GameObject name="Ground">
+            <Transform>
+                <Position x="0.00000" y="0.00000" z="0.00000"/>
+                <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
+                <Scale x="10.00000" y="10.00000" z="10.00000"/>
+            </Transform>
+            <Mesh guid="156145593">
+                <Material>
+                    <Shader guid="3746892247"/>
+                    <ColorDiffuse r="0.00000" g="0.66667" b="0.00000"/>
+                    <ColorAmbient r="0.00000" g="0.66667" b="0.00000"/>
+                    <ColorSpecular r="0.00000" g="0.00000" b="0.00000"/>
+                </Material>
+            </Mesh>
+            <Components/>
+        </GameObject>
+        <GameObject name="Katamari">
+            <Transform>
+                <Position x="0.00000" y="0.40000" z="0.00000"/>
+                <Rotation x="0.00000" y="0.00000" z="0.00000"/>
+                <Scale x="0.50000" y="0.50000" z="0.50000"/>
+            </Transform>
+            <Mesh guid="3936014360">
+                <Material>
+                    <Shader guid="3746892247"/>
+                    <ColorDiffuse r="0.00000" g="1.00000" b="1.00000"/>
+                    <ColorAmbient r="0.00000" g="0.66667" b="1.00000"/>
+                    <ColorSpecular r="1.00000" g="1.00000" b="1.00000"/>
+                </Material>
+            </Mesh>
+            <Components>
+                <Component guid="3055461197">
+                    <Param name="Speed" type="1" value="250"/>
+                    <Param name="Radius" type="1" value="0.5"/>
+                </Component>
+            </Components>
+            <GameObject name="YDot">
+                <Transform>
+                    <Position x="0.00000" y="3.00000" z="0.00000"/>
+                    <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
+                    <Scale x="0.30000" y="0.30000" z="0.30000"/>
+                </Transform>
+                <Mesh guid="3936014360">
+                    <Material>
+                        <Shader guid="3746892247"/>
+                        <ColorDiffuse r="0.33333" g="1.00000" b="0.00000"/>
+                        <ColorAmbient r="0.00000" g="0.33333" b="1.00000"/>
+                        <ColorSpecular r="1.00000" g="1.00000" b="1.00000"/>
+                    </Material>
+                </Mesh>
+                <Components/>
+            </GameObject>
+            <GameObject name="ZDot">
+                <Transform>
+                    <Position x="0.00000" y="0.00000" z="3.00000"/>
+                    <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
+                    <Scale x="0.30000" y="0.30000" z="0.30000"/>
+                </Transform>
+                <Mesh guid="3936014360">
+                    <Material>
+                        <Shader guid="3746892247"/>
+                        <ColorDiffuse r="0.06275" g="0.48627" b="1.00000"/>
+                        <ColorAmbient r="0.00000" g="0.33333" b="1.00000"/>
+                        <ColorSpecular r="1.00000" g="1.00000" b="1.00000"/>
+                    </Material>
+                </Mesh>
+                <Components/>
+            </GameObject>
+            <GameObject name="Dot">
+                <Transform>
+                    <Position x="0.00000" y="0.00000" z="0.94600"/>
+                    <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
+                    <Scale x="0.30000" y="0.30000" z="0.30000"/>
+                </Transform>
+                <Mesh guid="3936014360">
+                    <Material>
+                        <Shader guid="3746892247"/>
+                        <ColorDiffuse r="0.00000" g="0.33333" b="1.00000"/>
+                        <ColorAmbient r="0.00000" g="0.33333" b="1.00000"/>
+                        <ColorSpecular r="1.00000" g="1.00000" b="1.00000"/>
+                    </Material>
+                </Mesh>
+                <Components/>
+            </GameObject>
+            <GameObject name="Dot">
+                <Transform>
+                    <Position x="0.00000" y="0.00000" z="0.94600"/>
+                    <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
+                    <Scale x="0.30000" y="0.30000" z="0.30000"/>
+                </Transform>
+                <Mesh guid="3936014360">
+                    <Material>
+                        <Shader guid="3746892247"/>
+                        <ColorDiffuse r="0.00000" g="0.33333" b="1.00000"/>
+                        <ColorAmbient r="0.00000" g="0.33333" b="1.00000"/>
+                        <ColorSpecular r="1.00000" g="1.00000" b="1.00000"/>
+                    </Material>
+                </Mesh>
+                <Components/>
+            </GameObject>
+            <GameObject name="Dot">
+                <Transform>
+                    <Position x="0.94600" y="0.00000" z="0.00000"/>
+                    <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
+                    <Scale x="0.30000" y="0.30000" z="0.30000"/>
+                </Transform>
+                <Mesh guid="3936014360">
+                    <Material>
+                        <Shader guid="3746892247"/>
+                        <ColorDiffuse r="0.00000" g="0.33333" b="1.00000"/>
+                        <ColorAmbient r="0.00000" g="0.33333" b="1.00000"/>
+                        <ColorSpecular r="1.00000" g="1.00000" b="1.00000"/>
+                    </Material>
+                </Mesh>
+                <Components/>
+            </GameObject>
+            <GameObject name="Dot">
+                <Transform>
+                    <Position x="0.00000" y="-0.94600" z="0.00000"/>
+                    <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
+                    <Scale x="0.30000" y="0.30000" z="0.30000"/>
+                </Transform>
+                <Mesh guid="3936014360">
+                    <Material>
+                        <Shader guid="3746892247"/>
+                        <ColorDiffuse r="0.00000" g="0.33333" b="1.00000"/>
+                        <ColorAmbient r="0.00000" g="0.33333" b="1.00000"/>
+                        <ColorSpecular r="1.00000" g="1.00000" b="1.00000"/>
+                    </Material>
+                </Mesh>
+                <Components/>
+            </GameObject>
+            <GameObject name="Dot">
+                <Transform>
+                    <Position x="0.00000" y="0.94600" z="0.00000"/>
+                    <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
+                    <Scale x="0.30000" y="0.30000" z="0.30000"/>
+                </Transform>
+                <Mesh guid="3936014360">
+                    <Material>
+                        <Shader guid="3746892247"/>
+                        <ColorDiffuse r="0.00000" g="0.33333" b="1.00000"/>
+                        <ColorAmbient r="0.00000" g="0.33333" b="1.00000"/>
+                        <ColorSpecular r="1.00000" g="1.00000" b="1.00000"/>
+                    </Material>
+                </Mesh>
+                <Components/>
+            </GameObject>
+            <GameObject name="Dot">
+                <Transform>
+                    <Position x="-0.94600" y="0.00000" z="0.00000"/>
+                    <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
+                    <Scale x="0.30000" y="0.30000" z="0.30000"/>
+                </Transform>
+                <Mesh guid="3936014360">
+                    <Material>
+                        <Shader guid="3746892247"/>
+                        <ColorDiffuse r="0.00000" g="0.33333" b="1.00000"/>
+                        <ColorAmbient r="0.00000" g="0.33333" b="1.00000"/>
+                        <ColorSpecular r="1.00000" g="1.00000" b="1.00000"/>
+                    </Material>
+                </Mesh>
+                <Components/>
+            </GameObject>
+            <GameObject name="XDot">
+                <Transform>
+                    <Position x="3.00000" y="0.00000" z="0.00000"/>
+                    <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
+                    <Scale x="0.30000" y="0.30000" z="0.30000"/>
+                </Transform>
+                <Mesh guid="3936014360">
+                    <Material>
+                        <Shader guid="3746892247"/>
+                        <ColorDiffuse r="1.00000" g="0.00000" b="0.00000"/>
+                        <ColorAmbient r="0.00000" g="0.33333" b="1.00000"/>
+                        <ColorSpecular r="1.00000" g="1.00000" b="1.00000"/>
+                    </Material>
+                </Mesh>
+                <Components/>
+            </GameObject>
+            <GameObject name="X">
+                <Transform>
+                    <Position x="1.34200" y="0.00000" z="0.00000"/>
+                    <Rotation x="0.00000" y="-0.00000" z="90.00000"/>
+                    <Scale x="0.05000" y="1.10000" z="0.05000"/>
+                </Transform>
+                <Mesh guid="4197557055">
+                    <Material>
+                        <Shader guid="3746892247"/>
+                        <ColorDiffuse r="1.00000" g="0.00000" b="0.00000"/>
+                        <ColorAmbient r="1.00000" g="0.00000" b="0.00000"/>
+                        <ColorSpecular r="1.00000" g="1.00000" b="1.00000"/>
+                    </Material>
+                </Mesh>
+                <Components/>
+            </GameObject>
+            <GameObject name="Z">
+                <Transform>
+                    <Position x="0.02750" y="0.00000" z="1.57300"/>
+                    <Rotation x="90.00000" y="-0.00000" z="0.00000"/>
+                    <Scale x="0.05000" y="1.10000" z="0.05000"/>
+                </Transform>
+                <Mesh guid="4197557055">
+                    <Material>
+                        <Shader guid="3746892247"/>
+                        <ColorDiffuse r="0.00000" g="0.00000" b="1.00000"/>
+                        <ColorAmbient r="0.00000" g="0.00000" b="1.00000"/>
+                        <ColorSpecular r="1.00000" g="1.00000" b="1.00000"/>
+                    </Material>
+                </Mesh>
+                <Components/>
+            </GameObject>
+            <GameObject name="Y">
+                <Transform>
+                    <Position x="0.03300" y="1.45200" z="0.00000"/>
+                    <Rotation x="-179.99998" y="89.99999" z="-179.99998"/>
+                    <Scale x="0.05000" y="1.10000" z="0.05000"/>
+                </Transform>
+                <Mesh guid="4197557055">
+                    <Material>
+                        <Shader guid="3746892247"/>
+                        <ColorDiffuse r="0.00000" g="1.00000" b="0.00000"/>
+                        <ColorAmbient r="0.00000" g="1.00000" b="0.00000"/>
+                        <ColorSpecular r="1.00000" g="1.00000" b="1.00000"/>
+                    </Material>
+                </Mesh>
+                <Components/>
+            </GameObject>
+        </GameObject>
+        <GameObject name="Pink">
+            <Transform>
+                <Position x="-10.00000" y="0.00000" z="0.00000"/>
+                <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
+                <Scale x="1.00000" y="1.00000" z="1.00000"/>
+            </Transform>
+            <Mesh guid="33727872">
+                <Material>
+                    <Shader guid="3746892247"/>
+                    <ColorDiffuse r="1.00000" g="0.33333" b="1.00000"/>
+                    <ColorAmbient r="1.00000" g="0.33333" b="1.00000"/>
+                    <ColorSpecular r="1.00000" g="1.00000" b="1.00000"/>
+                </Material>
+            </Mesh>
+            <Components/>
+        </GameObject>
+        <GameObject name="Orange">
+            <Transform>
+                <Position x="0.00000" y="0.00000" z="-10.00000"/>
+                <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
+                <Scale x="1.00000" y="1.00000" z="1.00000"/>
+            </Transform>
+            <Mesh guid="33727872">
+                <Material>
+                    <Shader guid="3746892247"/>
+                    <ColorDiffuse r="1.00000" g="0.66667" b="0.00000"/>
+                    <ColorAmbient r="1.00000" g="0.66667" b="0.00000"/>
+                    <ColorSpecular r="1.00000" g="1.00000" b="1.00000"/>
+                </Material>
+            </Mesh>
+            <Components/>
+        </GameObject>
+        <GameObject name="Yellow">
+            <Transform>
+                <Position x="10.00000" y="0.00000" z="0.00000"/>
+                <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
+                <Scale x="1.00000" y="1.00000" z="1.00000"/>
+            </Transform>
+            <Mesh guid="33727872">
+                <Material>
+                    <Shader guid="3746892247"/>
+                    <ColorDiffuse r="1.00000" g="1.00000" b="0.49804"/>
+                    <ColorAmbient r="1.00000" g="1.00000" b="0.49804"/>
+                    <ColorSpecular r="1.00000" g="1.00000" b="1.00000"/>
+                </Material>
+            </Mesh>
+            <Components/>
+        </GameObject>
+        <GameObject name="Blue">
+            <Transform>
+                <Position x="0.00000" y="0.00000" z="10.00000"/>
+                <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
+                <Scale x="1.00000" y="1.00000" z="1.00000"/>
+            </Transform>
+            <Mesh guid="33727872">
+                <Material>
+                    <Shader guid="3746892247"/>
+                    <ColorDiffuse r="0.33333" g="0.66667" b="1.00000"/>
+                    <ColorAmbient r="0.33333" g="0.66667" b="1.00000"/>
+                    <ColorSpecular r="1.00000" g="1.00000" b="1.00000"/>
+                </Material>
+            </Mesh>
+            <Components/>
+        </GameObject>
+    </GameObject>
+</Scene>
