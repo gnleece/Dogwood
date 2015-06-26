@@ -10,6 +10,8 @@
 
 using std::string;
 
+unsigned int        MakeGuid(string str);
+
 Vector3             ReadVector3FromXML(tinyxml2::XMLElement* xmlnode);
 tinyxml2::XMLNode*  WriteVector3ToXML(Vector3 vector, string name, tinyxml2::XMLDocument& doc);
 

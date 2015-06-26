@@ -1,21 +1,19 @@
 #include "GameObject.h"
 
+#include "Util.h"
 #include "Math\Raycast.h"
 #include "Rendering\Mesh.h"
 #include "Rendering\MeshInstance.h"
 #include "GameComponent.h"
 
 vector<GameObject*> GameObject::ActiveGameObjects = vector<GameObject*>();
-int GameObject::NextID = 0;
 
-GameObject::GameObject(string name, GameObject* parent)
+GameObject::GameObject(unsigned int guid, string name, GameObject* parent)
  : m_dirty(true), m_selected(false)
 {
+    m_guid = guid;
     m_name = name;
     SetParent(parent);
-
-    m_id = NextID;
-    NextID++;
 
     // TODO unregister on destroy
     ActiveGameObjects.push_back(this);
@@ -51,7 +49,7 @@ void GameObject::SetLocalTransform(Matrix4x4& m)
 
 int GameObject::GetID()
 {
-    return m_id;
+    return m_guid;
 }
 
 string GameObject::GetName()
@@ -142,9 +140,9 @@ bool GameObject::InsertChildren(int position, int count)
 
     for (int i = 0; i < count; i++)
     {
-        GameObject* child = new GameObject("", NULL);
+        unsigned int guid = MakeGuid("GameObject");
+        GameObject* child = new GameObject(guid, "GameObject", NULL);
         child->SetParent(this, position);
-        child->SetName("GameObject");
     }
 
     return true;
@@ -171,9 +169,9 @@ bool GameObject::RemoveChildren(int position, int count)
 
 GameObject* GameObject::DeepCopy(GameObject* parent)
 {
-    GameObject* newGO = new GameObject(m_name, parent);
+    unsigned int guid = MakeGuid(m_name);
+    GameObject* newGO = new GameObject(guid, m_name, parent);
     newGO->SetLocalTransform(m_localTransform);
-    // TODO set id
 
     if (m_mesh != NULL)
     {
@@ -192,20 +190,20 @@ GameObject* GameObject::DeepCopy(GameObject* parent)
     return newGO;
 }
 
-void GameObject::Start()
+void GameObject::OnStart()
 {
-    // start all components
+    // Start all components
     std::vector<GameComponent*>::iterator compIter;
     for (compIter = m_components.begin(); compIter != m_components.end(); compIter++)
     {
         GameComponent* component = *compIter;
-        component->Start();
+        component->OnStart();
     }
 }
 
 void GameObject::Update(float deltaTime)
 {
-    // update all components
+    // Update all components
     std::vector<GameComponent*>::iterator compIter;
     for (compIter = m_components.begin(); compIter != m_components.end(); compIter++)
     {

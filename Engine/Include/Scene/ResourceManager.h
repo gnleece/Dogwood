@@ -80,7 +80,6 @@ public:
     ParamList*      GetComponentParamList(unsigned int guid);
 
 private:
-    unsigned int    MakeGuid(string str);
     unsigned int    Import(ResourceInfo* resource);
     void            ImportDefaultResourceType(tinyxml2::XMLElement* subtree, string folderName, string extension);
     void            ImportDefaultShaders(tinyxml2::XMLElement* subtree);

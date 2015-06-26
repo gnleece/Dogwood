@@ -16,14 +16,14 @@
         <Color r="1.00000" g="1.00000" b="1.00000"/>
         <Power value="15.00000"/>
     </Light>
-    <GameObject name="ROOT">
+    <GameObject guid="-2029522173" name="ROOT">
         <Transform>
             <Position x="0.00000" y="0.00000" z="0.00000"/>
             <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
             <Scale x="1.00000" y="1.00000" z="1.00000"/>
         </Transform>
         <Components/>
-        <GameObject name="Ground">
+        <GameObject guid="619345819" name="Ground">
             <Transform>
                 <Position x="0.00000" y="0.00000" z="0.00000"/>
                 <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
@@ -39,10 +39,10 @@
             </Mesh>
             <Components/>
         </GameObject>
-        <GameObject name="Katamari">
+        <GameObject guid="-109319190" name="Katamari">
             <Transform>
                 <Position x="0.00000" y="0.40000" z="0.00000"/>
-                <Rotation x="0.00000" y="0.00000" z="0.00000"/>
+                <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
                 <Scale x="0.50000" y="0.50000" z="0.50000"/>
             </Transform>
             <Mesh guid="3936014360">
@@ -59,7 +59,7 @@
                     <Param name="Radius" type="1" value="0.5"/>
                 </Component>
             </Components>
-            <GameObject name="YDot">
+            <GameObject guid="-165998218" name="YDot">
                 <Transform>
                     <Position x="0.00000" y="3.00000" z="0.00000"/>
                     <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
@@ -75,7 +75,7 @@
                 </Mesh>
                 <Components/>
             </GameObject>
-            <GameObject name="ZDot">
+            <GameObject guid="1414449227" name="ZDot">
                 <Transform>
                     <Position x="0.00000" y="0.00000" z="3.00000"/>
                     <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
@@ -91,7 +91,7 @@
                 </Mesh>
                 <Components/>
             </GameObject>
-            <GameObject name="Dot">
+            <GameObject guid="429269401" name="Dot">
                 <Transform>
                     <Position x="0.00000" y="0.00000" z="0.94600"/>
                     <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
@@ -107,7 +107,7 @@
                 </Mesh>
                 <Components/>
             </GameObject>
-            <GameObject name="Dot">
+            <GameObject guid="980302592" name="Dot">
                 <Transform>
                     <Position x="0.00000" y="0.00000" z="0.94600"/>
                     <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
@@ -123,7 +123,7 @@
                 </Mesh>
                 <Components/>
             </GameObject>
-            <GameObject name="Dot">
+            <GameObject guid="-955780039" name="Dot">
                 <Transform>
                     <Position x="0.94600" y="0.00000" z="0.00000"/>
                     <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
@@ -139,7 +139,7 @@
                 </Mesh>
                 <Components/>
             </GameObject>
-            <GameObject name="Dot">
+            <GameObject guid="1652872792" name="Dot">
                 <Transform>
                     <Position x="0.00000" y="-0.94600" z="0.00000"/>
                     <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
@@ -155,7 +155,7 @@
                 </Mesh>
                 <Components/>
             </GameObject>
-            <GameObject name="Dot">
+            <GameObject guid="-1935148032" name="Dot">
                 <Transform>
                     <Position x="0.00000" y="0.94600" z="0.00000"/>
                     <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
@@ -171,7 +171,7 @@
                 </Mesh>
                 <Components/>
             </GameObject>
-            <GameObject name="Dot">
+            <GameObject guid="10897938" name="Dot">
                 <Transform>
                     <Position x="-0.94600" y="0.00000" z="0.00000"/>
                     <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
@@ -187,7 +187,7 @@
                 </Mesh>
                 <Components/>
             </GameObject>
-            <GameObject name="XDot">
+            <GameObject guid="-267399787" name="XDot">
                 <Transform>
                     <Position x="3.00000" y="0.00000" z="0.00000"/>
                     <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
@@ -203,7 +203,7 @@
                 </Mesh>
                 <Components/>
             </GameObject>
-            <GameObject name="X">
+            <GameObject guid="1519038449" name="X">
                 <Transform>
                     <Position x="1.34200" y="0.00000" z="0.00000"/>
                     <Rotation x="0.00000" y="-0.00000" z="90.00000"/>
@@ -219,7 +219,7 @@
                 </Mesh>
                 <Components/>
             </GameObject>
-            <GameObject name="Z">
+            <GameObject guid="1477924791" name="Z">
                 <Transform>
                     <Position x="0.02750" y="0.00000" z="1.57300"/>
                     <Rotation x="90.00000" y="-0.00000" z="0.00000"/>
@@ -235,7 +235,7 @@
                 </Mesh>
                 <Components/>
             </GameObject>
-            <GameObject name="Y">
+            <GameObject guid="1958608865" name="Y">
                 <Transform>
                     <Position x="0.03300" y="1.45200" z="0.00000"/>
                     <Rotation x="-179.99998" y="89.99999" z="-179.99998"/>
@@ -252,7 +252,7 @@
                 <Components/>
             </GameObject>
         </GameObject>
-        <GameObject name="Pink">
+        <GameObject guid="716764393" name="Pink">
             <Transform>
                 <Position x="-10.00000" y="0.00000" z="0.00000"/>
                 <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
@@ -268,7 +268,7 @@
             </Mesh>
             <Components/>
         </GameObject>
-        <GameObject name="Orange">
+        <GameObject guid="-2015559408" name="Orange">
             <Transform>
                 <Position x="0.00000" y="0.00000" z="-10.00000"/>
                 <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
@@ -284,7 +284,7 @@
             </Mesh>
             <Components/>
         </GameObject>
-        <GameObject name="Yellow">
+        <GameObject guid="-469513389" name="Yellow">
             <Transform>
                 <Position x="10.00000" y="0.00000" z="0.00000"/>
                 <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
@@ -300,7 +300,7 @@
             </Mesh>
             <Components/>
         </GameObject>
-        <GameObject name="Blue">
+        <GameObject guid="-972388025" name="Blue">
             <Transform>
                 <Position x="0.00000" y="0.00000" z="10.00000"/>
                 <Rotation x="0.00000" y="-0.00000" z="0.00000"/>

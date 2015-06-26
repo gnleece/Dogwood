@@ -5,8 +5,12 @@
 class GameComponent
 {
 public:
-    virtual void Start() {}
-    virtual void Update(float /*deltaTime*/) {}     // TODO implement delta time
+    virtual void OnCreate() {}
+    virtual void OnDestroy() {}
+
+    virtual void OnStart() {}
+
+    virtual void Update(float) {}
 
     virtual void OnEnable() {}
     virtual void OnDisable() {}

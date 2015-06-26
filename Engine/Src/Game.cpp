@@ -17,6 +17,8 @@ void Game::Init(string projectPath, GameComponentFactory* componentFactory)
 {
     printf("=============== GAME INIT ===============\n");
 
+    srand(time(NULL));
+
     ResourceManager::Singleton().Startup();
 
     // Project setup

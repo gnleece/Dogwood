@@ -1,6 +1,7 @@
 #define GLEW_STATIC
 #include <GL/glew.h>
 
+#include <ctime>
 #include <QApplication>
 #include <QTime>
 
@@ -13,6 +14,8 @@
 
 int main(int argc, char *argv[])
 {
+    srand(time(NULL));
+
     // QT setup.
     QApplication app(argc, argv);
     MainEditorWindow window;

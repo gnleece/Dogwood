@@ -17,7 +17,7 @@ class ToolsideGameComponent;
 class GameObject
 {
 public:
-    GameObject(string name = "", GameObject* parent = NULL);
+    GameObject(unsigned int guid, string name = "", GameObject* parent = NULL);
 
     Transform&      GetLocalTransform();
     Transform       GetWorldTransform();
@@ -44,7 +44,9 @@ public:
 
     GameObject*     DeepCopy(GameObject* parent = NULL);
 
-    void            Start();
+    void            OnCreate();
+    void            OnDestroy();
+    void            OnStart();
     void            Update(float deltaTime);
     void            OnEnable();
     void            OnDisable();
@@ -67,9 +69,7 @@ private:
     void            AddChild(GameObject* child, int index = -1);
     void            RemoveChild(GameObject* child);
 
-    static int      NextID;
-
-    int                     m_id;
+    unsigned int            m_guid;
     string                  m_name;
 
     Transform               m_localTransform;
@@ -77,10 +77,10 @@ private:
     bool                    m_dirty;
     bool                    m_selected;
 
-    MeshInstance*           m_mesh;         // TODO this should be part of regular component list
-
     GameObject*             m_parent;
     vector<GameObject*>     m_children;
+
+    MeshInstance*           m_mesh;
 
     vector<GameComponent*>          m_components;       // TODO this should only exist at (game) runtime
     vector<ToolsideGameComponent*>  m_toolComponents;   // TODO this should only exist in editor

@@ -1,9 +1,28 @@
 #include "Util.h"
 
+#include <climits>
+#include <ctime>
 #include <fstream>
 #include <ostream>
 
 using namespace tinyxml2;
+
+unsigned int MakeGuid(string str)
+{
+    // Get timestamp
+    time_t timer;
+    time(&timer);
+    string timestamp = std::to_string(timer);
+
+    // Generate a random number as well, in case this function was called so recently
+    // that we have the same timestamp as before
+    int random = rand() % INT_MAX;
+
+    // Hash string + timestamp + random number to create unique ID
+    unsigned int guid = std::hash<string>()(str + timestamp + std::to_string(random));
+
+    return guid;
+}
 
 Vector3 ReadVector3FromXML(XMLElement* xmlnode)
 {
@@ -82,7 +101,7 @@ XMLNode* WriteFloatToXML(float value, string nodeName, string attribName, XMLDoc
     XMLElement* xmlnode = doc.NewElement(nodeName.c_str());
 
     // There doesn't seem to be a way to set float precision in tinyxml2,
-    // so write the float to a string with the desried precision instead
+    // so write the float to a string with the desiried precision instead
     char buf[20] = { 0 };
     sprintf_s(buf, "%1.5f", value);
     xmlnode->SetAttribute(attribName.c_str(), buf);

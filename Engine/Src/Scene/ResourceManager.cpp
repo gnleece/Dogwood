@@ -8,7 +8,6 @@
 #include "Rendering\Texture.h"
 #include "ToolsideGameComponent.h"
 
-#include <ctime>
 #include "tinyxml2.h"
 
 using namespace tinyxml2;
@@ -466,19 +465,6 @@ ResourceMap& ResourceManager::GetResourceMap()
 ParamList* ResourceManager::GetComponentParamList(unsigned int guid)
 {
     return m_componentSchema->GetDefaultParameterList(guid);
-}
-
-unsigned int ResourceManager::MakeGuid(string str)
-{
-    // Get timestamp
-    time_t timer;
-    time(&timer);
-    string timestamp = std::to_string(timer);
-
-    // Use filepath + timestamp to create guid for this resource
-    unsigned int guid = std::hash<string>()(str + timestamp);
-
-    return guid;
 }
 
 template<typename T>

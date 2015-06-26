@@ -85,7 +85,6 @@ EDITOR (Thicket)
     BUGS:
         Lo pri
         - Items don't auto expand when reparented
-        - Camera "up" is wrong / LookAt bug
         - Scene view resolution isn't set nicely
         - Transform widget values don't update when object is moved with transform tool
         - Keep constant gnomon size

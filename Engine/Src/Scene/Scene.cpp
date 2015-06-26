@@ -27,7 +27,8 @@ bool Scene::New(string filename)
     }
 
     m_filename = filename;
-    m_rootObject = new GameObject("ROOT");
+    unsigned int guid = MakeGuid("ROOT");
+    m_rootObject = new GameObject(guid, "ROOT");
 
     m_loaded = true;
     return true;
@@ -194,8 +195,14 @@ GameObject* Scene::BuildSubtree(XMLElement* xmlnode)
         return NULL;
 
     // Build & add components on this node
-    GameObject* go = new GameObject();
-    go->SetName(xmlnode->Attribute("name"));
+    string name = xmlnode->Attribute("name");
+    unsigned int guid = xmlnode->UnsignedAttribute("guid");
+    if (guid == 0)
+    {
+        guid = MakeGuid(name);
+    }
+
+    GameObject* go = new GameObject(guid, name);
     AddTransform(go, xmlnode);
     AddMesh(go, xmlnode);
     AddGameComponents(go, xmlnode);
@@ -358,19 +365,22 @@ void Scene::SerializeHierarchy(GameObject* gameObject, XMLNode* parentNode, XMLD
         return;
 
     // Create node
-    XMLNode* goNode = parentNode->InsertEndChild(WriteStringToXML(gameObject->GetName(), "GameObject", "name", rootDoc));
+    XMLElement* goXML = rootDoc.NewElement("GameObject");
+    goXML->SetAttribute("guid", gameObject->GetID());
+    goXML->SetAttribute("name", gameObject->GetName().c_str());
+    parentNode->InsertEndChild(goXML);
 
     // Serialize components
-    SerializeTransform(gameObject, goNode, rootDoc);
-    SerializeMesh(gameObject, goNode, rootDoc, guids);
-    SerializeComponents(gameObject, goNode, rootDoc);
+    SerializeTransform(gameObject, goXML, rootDoc);
+    SerializeMesh(gameObject, goXML, rootDoc, guids);
+    SerializeComponents(gameObject, goXML, rootDoc);
 
     // Serialize children
     std::vector<GameObject*>::iterator childIter;
     for (childIter = gameObject->GetChildren().begin(); childIter != gameObject->GetChildren().end(); childIter++)
     {
         GameObject* child = *childIter;
-        SerializeHierarchy(child, goNode, rootDoc, guids);
+        SerializeHierarchy(child, goXML, rootDoc, guids);
     }
 }
 void Scene::SerializeTransform(GameObject* gameObject, XMLNode* parentNode, XMLDocument& rootDoc)
