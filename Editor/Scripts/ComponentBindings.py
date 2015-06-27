@@ -2,7 +2,7 @@ import ProcessScripts
 
 TEMPLATE_PATH = "Scripts/ComponentBindingsTemplate.h"
 
-paramEnumToValueStr = { 0 : 'i',  1 : 'f', 2 : 'b', 3 : 'str', 4 : 'v', 5 : 'c' }
+paramEnumToValueStr = { 0 : 'i',  1 : 'f', 2 : 'b', 3 : 'str', 4 : 'v', 5 : 'c', 6 : 'g' }
 
 def WriteHeaderSection(outputFile, componentList):
     outputFile.write('// COMPONENT HEADERS\n');

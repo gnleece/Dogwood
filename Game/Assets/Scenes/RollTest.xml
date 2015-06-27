@@ -57,6 +57,7 @@
                 <Component guid="3055461197">
                     <Param name="Speed" type="1" value="250"/>
                     <Param name="Radius" type="1" value="0.5"/>
+                    <Param name="RotationChild" type="6" value="-2138852374"/>
                 </Component>
             </Components>
             <GameObject guid="-165998218" name="YDot">
@@ -249,6 +250,14 @@
                         <ColorSpecular r="1.00000" g="1.00000" b="1.00000"/>
                     </Material>
                 </Mesh>
+                <Components/>
+            </GameObject>
+            <GameObject guid="-2138852374" name="FooBarBaz">
+                <Transform>
+                    <Position x="0.00000" y="0.00000" z="0.00000"/>
+                    <Rotation x="0.00000" y="0.00000" z="0.00000"/>
+                    <Scale x="1.00000" y="1.00000" z="1.00000"/>
+                </Transform>
                 <Components/>
             </GameObject>
         </GameObject>

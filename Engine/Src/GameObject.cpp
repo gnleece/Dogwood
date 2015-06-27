@@ -5,6 +5,7 @@
 #include "Rendering\Mesh.h"
 #include "Rendering\MeshInstance.h"
 #include "GameComponent.h"
+#include "GameObjectReference.h"
 
 vector<GameObject*> GameObject::ActiveGameObjects = vector<GameObject*>();
 
@@ -17,6 +18,7 @@ GameObject::GameObject(unsigned int guid, string name, GameObject* parent)
 
     // TODO unregister on destroy
     ActiveGameObjects.push_back(this);
+    GameObjectReference::AddToMap(guid, this);
 }
 
 Transform& GameObject::GetLocalTransform()

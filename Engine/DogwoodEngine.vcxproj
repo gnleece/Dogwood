@@ -86,6 +86,7 @@
     <ClInclude Include="Include\GameComponent.h" />
     <ClInclude Include="Include\GameComponentFactory.h" />
     <ClInclude Include="Include\GameObject.h" />
+    <ClInclude Include="Include\GameObjectReference.h" />
     <ClInclude Include="Include\GameProject.h" />
     <ClInclude Include="Include\Input\GamePad.h" />
     <ClInclude Include="Include\Input\InputManager.h" />
@@ -120,6 +121,7 @@
     <ClCompile Include="Src\Game.cpp" />
     <ClCompile Include="Src\GameComponent.cpp" />
     <ClCompile Include="Src\GameObject.cpp" />
+    <ClCompile Include="Src\GameObjectReference.cpp" />
     <ClCompile Include="Src\GameProject.cpp" />
     <ClCompile Include="Src\Input\GamePad.cpp" />
     <ClCompile Include="Src\Input\InputManager.cpp" />

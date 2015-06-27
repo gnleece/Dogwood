@@ -36,4 +36,10 @@ void Roller::Update(float deltaTime)
 
     Camera cam(cameraPosition, cameraDirection, Vector3::Up);
     RenderManager::Singleton().SetCamera(cam);
+
+    GameObject* child = RotationChild.GetGameObject();
+    if (child != NULL)
+    {
+        int x = 0;
+    }
 }

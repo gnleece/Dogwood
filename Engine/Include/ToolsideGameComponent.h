@@ -26,7 +26,7 @@ struct ComponentParameter
 public:
     enum ParameterType
     {
-        TYPE_INT, TYPE_FLOAT, TYPE_BOOL, TYPE_STRING, TYPE_VECTOR3, TYPE_COLOR
+        TYPE_INT, TYPE_FLOAT, TYPE_BOOL, TYPE_STRING, TYPE_VECTOR3, TYPE_COLOR, TYPE_GAMEOBJECT
     };
 
     ComponentParameter() {}
@@ -57,12 +57,13 @@ public:
 
     static RuntimeParamList ParseRuntimeParams(tinyxml2::XMLElement* xml);
 
-    int         i;
-    float       f;
-    bool        b;
-    string      str;
-    Vector3     v;
-    ColourRGB   c;
+    int             i;
+    float           f;
+    bool            b;
+    string          str;
+    Vector3         v;
+    ColourRGB       c;
+    unsigned int    g;
 };
 
 class ToolsideGameComponent

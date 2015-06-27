@@ -21,6 +21,7 @@ ComponentValue::ComponentValue()
     str = "";
     v = Vector3::Zero;
     c = ColourRGB::Black;
+    g = 0;
 }
 
 ComponentValue::ComponentValue(ComponentParameter::ParameterType type, tinyxml2::XMLElement* xml)
@@ -59,6 +60,9 @@ void ComponentValue::SetValue(ComponentParameter::ParameterType type, tinyxml2::
                 c = ReadColourFromXML(colorXML);
                 break;
             }
+            case ComponentParameter::TYPE_GAMEOBJECT:
+                g = xml->UnsignedAttribute(valueStr);
+                break;
         }
     }
 }
@@ -84,6 +88,9 @@ void ComponentValue::SetValue(ComponentParameter::ParameterType type, string tex
             break;
         case ComponentParameter::TYPE_COLOR:
             c = StringToVector(text);
+            break;
+        case ComponentParameter::TYPE_GAMEOBJECT:
+            g = std::stoull(text);
             break;
     }
 }
@@ -112,6 +119,9 @@ void ComponentValue::SerializeValue(ComponentParameter::ParameterType type, tiny
             parentNode->SetAttribute("value", "");
             parentNode->InsertEndChild(WriteColourToXML(c, "value", rootDoc));
             break;
+        case ComponentParameter::TYPE_GAMEOBJECT:
+            parentNode->SetAttribute("value", g);
+            break;
     }
 }
 
@@ -119,12 +129,13 @@ string ComponentValue::GetValueString(ComponentParameter::ParameterType type)
 {
     switch (type)
     {
-        case ComponentParameter::TYPE_INT:      return std::to_string(i);
-        case ComponentParameter::TYPE_FLOAT:    return std::to_string(f);
-        case ComponentParameter::TYPE_BOOL:     return b ? "true" : "false";
-        case ComponentParameter::TYPE_STRING:   return str;
-        case ComponentParameter::TYPE_VECTOR3:  return GetVectorValueString(v);
-        case ComponentParameter::TYPE_COLOR:    return GetVectorValueString(c.ToVector());
+        case ComponentParameter::TYPE_INT:          return std::to_string(i);
+        case ComponentParameter::TYPE_FLOAT:        return std::to_string(f);
+        case ComponentParameter::TYPE_BOOL:         return b ? "true" : "false";
+        case ComponentParameter::TYPE_STRING:       return str;
+        case ComponentParameter::TYPE_VECTOR3:      return GetVectorValueString(v);
+        case ComponentParameter::TYPE_COLOR:        return GetVectorValueString(c.ToVector());
+        case ComponentParameter::TYPE_GAMEOBJECT:   return std::to_string(g);
     }
 
     return "";

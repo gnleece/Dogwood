@@ -1,15 +1,16 @@
 #pragma once
 
 #include "GameComponent.h"
-
+#include "GameObjectReference.h"
 
 class Roller : public GameComponent
 {
 public:
 
 #pragma region Serializable
-    float   Speed = 0.5f;
-    float   Radius = 0.1f;
+    float               Speed = 0.5f;
+    float               Radius = 0.1f;
+    GameObjectReference RotationChild;
 #pragma endregion
 
     void Update(float deltaTime);
