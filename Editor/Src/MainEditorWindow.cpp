@@ -78,7 +78,7 @@ void MainEditorWindow::SetupComponentWidgets()
     m_meshWidget->hide();
 
     // Components widget
-    m_componentWidget = new ComponentWidget(componentsWidget);
+    m_componentWidget = new ComponentWidget(componentsWidget, this);
     componentsWidget->AddChildWidget(m_componentWidget);
     m_componentWidget->hide();
 
@@ -537,6 +537,7 @@ void MainEditorWindow::AddGameComponent(unsigned int guid)
     }
 }
 
+// Used to select an object from outside the hierarhcy view itself (e.g. from the scene view)
 void MainEditorWindow::SelectObject(GameObject* gameObject)
 {
     // Clear previous selection

@@ -37,6 +37,7 @@ ENGINE (Dogwood)
         * Input wrappers
             * Configurable gamepad setup
             * #define to compile without XInput?
+        * Re-factor MainEditorWindow.cpp
         
 
 ---------------------------------------------------------------------------

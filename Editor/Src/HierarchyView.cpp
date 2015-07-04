@@ -13,14 +13,3 @@ HierarchyView::HierarchyView(MainEditorWindow* window) :
     setDragDropMode(QAbstractItemView::DragDropMode::DragDrop);
     setSelectionMode(QAbstractItemView::SelectionMode::SingleSelection);
 }
-
-void HierarchyView::mousePressEvent(QMouseEvent *event)
-{
-    // If user clicked on nothing, and something was previously selected, unselect it
-    if (!(selectionModel()->selectedIndexes().isEmpty()))
-    {
-        m_window->SelectObject(NULL);
-    }
-    
-    QTreeView::mousePressEvent(event);
-}

@@ -1,15 +1,15 @@
 #pragma once
 
-#include <qtreeview.h>
+#include <QTableView>
 
 class MainEditorWindow;
 
-class HierarchyView : public QTreeView
+class ComponentView : public QTableView
 {
     Q_OBJECT
 
 public:
-    HierarchyView(MainEditorWindow* window);
+    ComponentView(MainEditorWindow* window);
 
 private:
     MainEditorWindow*   m_window;
