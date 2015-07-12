@@ -1,4 +1,5 @@
 #include "ComponentModel.h"
+#include "DebugLogger.h"
 #include "GameObject.h"
 #include "HierarchyModel.h"
 #include "ToolsideGameComponent.h"
@@ -107,10 +108,40 @@ Qt::ItemFlags ComponentModel::flags(const QModelIndex &index) const
 
     if (index.isValid() && IsEditable(index))
     {
-        return  Qt::ItemIsEditable | defaultFlags;
+        return  Qt::ItemIsEditable | Qt::ItemIsDropEnabled | defaultFlags;
     }
     else
-        return defaultFlags;
+        return Qt::ItemIsDropEnabled | defaultFlags;
+}
+
+Qt::DropActions ComponentModel::supportedDragActions() const
+{
+    return Qt::IgnoreAction;
+}
+
+// TODO use link action only?
+Qt::DropActions ComponentModel::supportedDropActions() const
+{
+    return Qt::CopyAction | Qt::MoveAction | Qt::LinkAction;
+}
+
+QStringList ComponentModel::mimeTypes() const
+{
+    QStringList types;
+    types << "DogwoodEngine/GameObject";
+    return types;
+}
+
+bool ComponentModel::dropMimeData(const QMimeData* data, Qt::DropAction action, int /*row*/, int column, const QModelIndex &parent)
+{
+    if (action == Qt::IgnoreAction)
+        return true;
+
+    // TODO implement me properly :)
+
+    DebugLogger::Singleton().Log("drop model success");
+
+    return true;
 }
 
 int ComponentModel::CalculateComponentIndex(int row) const

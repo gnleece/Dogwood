@@ -22,6 +22,12 @@ public:
     bool            setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
     Qt::ItemFlags   flags(const QModelIndex &index) const;
 
+    Qt::DropActions supportedDragActions() const;
+    Qt::DropActions supportedDropActions() const;
+
+    QStringList     mimeTypes() const;
+    bool            dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent);
+
 private:
     int             CalculateComponentIndex(int row) const;
     int             CalculateParamIndex(int row, int componentIndex) const;
