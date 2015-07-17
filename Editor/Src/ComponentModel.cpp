@@ -1,6 +1,7 @@
 #include "ComponentModel.h"
 #include "DebugLogger.h"
 #include "GameObject.h"
+#include "GameObjectReference.h"
 #include "HierarchyModel.h"
 #include "ToolsideGameComponent.h"
 
@@ -76,7 +77,25 @@ QVariant ComponentModel::data(const QModelIndex &index, int role) const
     if (col != 0)
     {
         // Value column
-        string valueString = pair.second.GetValueString(pair.first.Type);
+        string valueString;
+        if (pair.first.Type == ComponentParameter::TYPE_GAMEOBJECT)
+        {
+            // For game object values, we show the object's name in addition to the guid
+            GameObject* go = GameObjectReference::GetGameObject(pair.second.g);
+            if (go == NULL)
+            {
+                valueString = "<MISSING REF>";
+            }
+            else
+            {
+                valueString = go->GetName() + " (" + std::to_string(pair.second.g) + ")";
+            }
+        }
+        else
+        {
+            valueString = pair.second.GetValueString(pair.first.Type);
+        }
+
         return QVariant(valueString.c_str());
     }
     // Name column

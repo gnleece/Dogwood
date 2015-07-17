@@ -38,6 +38,7 @@ ENGINE (Dogwood)
             * Configurable gamepad setup
             * #define to compile without XInput?
         * Re-factor MainEditorWindow.cpp
+        * Clean up ComponentModel param index stuff
         
 
 ---------------------------------------------------------------------------
