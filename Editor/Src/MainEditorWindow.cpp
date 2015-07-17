@@ -154,7 +154,7 @@ void MainEditorWindow::SetHierarchyModel(HierarchyModel* model)
     m_model = model;
     m_view->setModel(m_model);
     DebugLogger::Singleton().Log("Hierarchy model set!");
-    connect(m_view->selectionModel(), SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)), this, SLOT(OnSelectionChanged(const QItemSelection &, const QItemSelection &)));
+    connect(m_view, SIGNAL(SelectedObjectChanged(QModelIndex&)), this, SLOT(OnHierarchySelectionChanged(QModelIndex&)));
     m_view->expandAll();
 }
 
@@ -537,7 +537,7 @@ void MainEditorWindow::AddGameComponent(unsigned int guid)
     }
 }
 
-// Used to select an object from outside the hierarhcy view itself (e.g. from the scene view)
+// Used to select an object from outside the hierarchy view itself (e.g. from the scene view)
 void MainEditorWindow::SelectObject(GameObject* gameObject)
 {
     // Clear previous selection
@@ -561,17 +561,13 @@ void MainEditorWindow::SelectObject(GameObject* gameObject)
         // Select new object in hierarchy view
         m_view->selectionModel()->select(Items.first(), QItemSelectionModel::Select);
     }
+    m_view->UpdateSelectedObject();
 }
 
-void MainEditorWindow::OnSelectionChanged(const QItemSelection& selected, const QItemSelection& /*deselected*/)
+void MainEditorWindow::OnHierarchySelectionChanged(QModelIndex& newIndex)
 {
     // Get the selected game object
-    GameObject* selectedObject = NULL;
-    if (!(m_view->selectionModel()->selectedIndexes().isEmpty()))
-    {
-        const QModelIndex index = selected.indexes().first();
-        selectedObject = m_model->getItem(index);
-    }
+    GameObject* selectedObject = m_model->getItem(newIndex);
     SwitchSelectObject(selectedObject);
 }
 

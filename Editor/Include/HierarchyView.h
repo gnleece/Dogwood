@@ -11,6 +11,13 @@ class HierarchyView : public QTreeView
 public:
     HierarchyView(MainEditorWindow* window);
 
+    void mouseReleaseEvent(QMouseEvent* event);
+    void UpdateSelectedObject();
+
+signals:
+    void SelectedObjectChanged(QModelIndex& newIndex);
+
 private:
     MainEditorWindow*   m_window;
+    QModelIndex         m_currentIndex;
 };

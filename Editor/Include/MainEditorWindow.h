@@ -109,7 +109,7 @@ private slots:
     void AddMeshPrimitive(const QString& meshName);
     void AddGameComponent(unsigned int guid);
 
-    void OnSelectionChanged(const QItemSelection & selected, const QItemSelection & deselected);
+    void OnHierarchySelectionChanged(QModelIndex& newIndex);
     void SwitchSelectObject(GameObject* gameobject);
 
     void UpdateMenuState();
