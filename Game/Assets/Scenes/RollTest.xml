@@ -16,7 +16,7 @@
         <Color r="1.00000" g="1.00000" b="1.00000"/>
         <Power value="15.00000"/>
     </Light>
-    <GameObject guid="-2029522173" name="ROOT">
+    <GameObject guid="2265445123" name="ROOT">
         <Transform>
             <Position x="0.00000" y="0.00000" z="0.00000"/>
             <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
@@ -39,7 +39,7 @@
             </Mesh>
             <Components/>
         </GameObject>
-        <GameObject guid="-109319190" name="Katamari">
+        <GameObject guid="4185648106" name="Katamari">
             <Transform>
                 <Position x="0.00000" y="0.40000" z="0.00000"/>
                 <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
@@ -57,10 +57,10 @@
                 <Component guid="3055461197">
                     <Param name="Speed" type="1" value="250"/>
                     <Param name="Radius" type="1" value="0.5"/>
-                    <Param name="RotationChild" type="6" value="-2138852374"/>
+                    <Param name="RotationChild" type="6" value="2156114922"/>
                 </Component>
             </Components>
-            <GameObject guid="-165998218" name="YDot">
+            <GameObject guid="4128969078" name="YDot">
                 <Transform>
                     <Position x="0.00000" y="3.00000" z="0.00000"/>
                     <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
@@ -124,7 +124,7 @@
                 </Mesh>
                 <Components/>
             </GameObject>
-            <GameObject guid="-955780039" name="Dot">
+            <GameObject guid="3339187257" name="Dot">
                 <Transform>
                     <Position x="0.94600" y="0.00000" z="0.00000"/>
                     <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
@@ -156,7 +156,7 @@
                 </Mesh>
                 <Components/>
             </GameObject>
-            <GameObject guid="-1935148032" name="Dot">
+            <GameObject guid="2359819264" name="Dot">
                 <Transform>
                     <Position x="0.00000" y="0.94600" z="0.00000"/>
                     <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
@@ -188,7 +188,7 @@
                 </Mesh>
                 <Components/>
             </GameObject>
-            <GameObject guid="-267399787" name="XDot">
+            <GameObject guid="4027567509" name="XDot">
                 <Transform>
                     <Position x="3.00000" y="0.00000" z="0.00000"/>
                     <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
@@ -252,10 +252,10 @@
                 </Mesh>
                 <Components/>
             </GameObject>
-            <GameObject guid="-2138852374" name="FooBarBaz">
+            <GameObject guid="2156114922" name="FooBarBaz">
                 <Transform>
                     <Position x="0.00000" y="0.00000" z="0.00000"/>
-                    <Rotation x="0.00000" y="0.00000" z="0.00000"/>
+                    <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
                     <Scale x="1.00000" y="1.00000" z="1.00000"/>
                 </Transform>
                 <Components/>
@@ -277,7 +277,7 @@
             </Mesh>
             <Components/>
         </GameObject>
-        <GameObject guid="-2015559408" name="Orange">
+        <GameObject guid="2279407888" name="Orange">
             <Transform>
                 <Position x="0.00000" y="0.00000" z="-10.00000"/>
                 <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
@@ -293,7 +293,7 @@
             </Mesh>
             <Components/>
         </GameObject>
-        <GameObject guid="-469513389" name="Yellow">
+        <GameObject guid="3825453907" name="Yellow">
             <Transform>
                 <Position x="10.00000" y="0.00000" z="0.00000"/>
                 <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
@@ -309,7 +309,7 @@
             </Mesh>
             <Components/>
         </GameObject>
-        <GameObject guid="-972388025" name="Blue">
+        <GameObject guid="3322579271" name="Blue">
             <Transform>
                 <Position x="0.00000" y="0.00000" z="10.00000"/>
                 <Rotation x="0.00000" y="-0.00000" z="0.00000"/>

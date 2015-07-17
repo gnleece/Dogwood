@@ -24,7 +24,7 @@ public:
     void            SetLocalTransform(Transform& t);
     void            SetLocalTransform(Matrix4x4& m);
 
-    int             GetID();
+    unsigned int    GetID();
     string          GetName();
     void            SetName(string name);
     void            SetName(const char* name);

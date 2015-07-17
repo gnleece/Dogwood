@@ -132,15 +132,46 @@ QStringList ComponentModel::mimeTypes() const
     return types;
 }
 
-bool ComponentModel::dropMimeData(const QMimeData* data, Qt::DropAction action, int /*row*/, int column, const QModelIndex &parent)
+bool ComponentModel::dropMimeData(const QMimeData* data, Qt::DropAction action, int /*row*/, int /*column*/, const QModelIndex &parent)
 {
     if (action == Qt::IgnoreAction)
         return true;
 
-    // TODO implement me properly :)
+    DebugLogger::Singleton().Log("drop model...");
 
-    DebugLogger::Singleton().Log("drop model success");
+    if (!parent.isValid())
+    {
+        return false;
+    }
 
+    int row = parent.row();
+    int componentIndex = CalculateComponentIndex(row);
+    int paramIndex = CalculateParamIndex(row, componentIndex);
+
+    if (paramIndex == 0)
+    {
+        // The target row is a component name and not a parameter
+        return false;
+    }
+
+    // The target is a parameter
+    ToolsideGameComponent* component = m_componentList[componentIndex];
+    ParamList params = component->GetParameterList();
+    ParamPair pair = params[paramIndex - 1];
+    ComponentParameter::ParameterType paramType = pair.first.Type;
+    if (paramType != ComponentParameter::TYPE_GAMEOBJECT)
+    {
+        // The target parameter is not a gameobject
+        return false;
+    }
+
+    // The target is a parameter of the correct type, so set its value using the dropped data
+    // TODO set data using Editor Commands
+    GameObjectMimeData* goData = (GameObjectMimeData*)(data);
+    pair.second.SetValue(paramType, std::to_string(goData->getGameObject()->GetID()));
+    component->SetParameter(pair.first, pair.second);
+
+    DebugLogger::Singleton().Log("...success!");
     return true;
 }
 

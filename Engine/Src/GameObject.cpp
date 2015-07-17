@@ -49,7 +49,7 @@ void GameObject::SetLocalTransform(Matrix4x4& m)
     m_dirty = true;
 }
 
-int GameObject::GetID()
+unsigned int GameObject::GetID()
 {
     return m_guid;
 }

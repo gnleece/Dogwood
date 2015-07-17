@@ -10,11 +10,11 @@
         </Textures>
         <Meshes>
             <Mesh guid="3936014360" path="Meshes/mesh_sphere.obj"/>
-            <Mesh guid="4197557055" path="Meshes/mesh_cylinder.obj"/>
             <Mesh guid="1863496264" path="Meshes/cube.obj"/>
-            <Mesh guid="489851566" path="Meshes/mesh_cone.obj"/>
-            <Mesh guid="156145593" path="Meshes/mesh_plane.obj"/>
+            <Mesh guid="4197557055" path="Meshes/mesh_cylinder.obj"/>
             <Mesh guid="396944253" path="Meshes/sphere.obj"/>
+            <Mesh guid="156145593" path="Meshes/mesh_plane.obj"/>
+            <Mesh guid="489851566" path="Meshes/mesh_cone.obj"/>
             <Mesh guid="33727872" path="Meshes/mesh_cube.obj"/>
             <Mesh guid="2282599710" path="Meshes/mesh_torus.obj"/>
         </Meshes>
@@ -27,17 +27,17 @@
             <Script guid="943277816" path="Scripts/Translator.h"/>
             <Script guid="3075022151" path="Scripts/SpinningComponent.h"/>
             <Script guid="1515607268" path="Scripts/FooComponent.h"/>
-            <Script guid="3055461197" path="Scripts/Roller.h"/>
             <Script guid="3988628104" path="Scripts/Bouncer.h"/>
+            <Script guid="3055461197" path="Scripts/Roller.h"/>
         </Scripts>
         <DefaultResources>
-            <Asset name="mesh_cone" guid="489851566"/>
             <Asset name="mesh_torus" guid="2282599710"/>
-            <Asset name="mesh_cube" guid="33727872"/>
+            <Asset name="mesh_cone" guid="489851566"/>
             <Asset name="mesh_sphere" guid="3936014360"/>
+            <Asset name="mesh_cube" guid="33727872"/>
             <Asset name="mesh_cylinder" guid="4197557055"/>
-            <Asset name="mesh_plane" guid="156145593"/>
             <Asset name="shader_unlit_unicolor" guid="441267611"/>
+            <Asset name="mesh_plane" guid="156145593"/>
             <Asset name="shader_unlit" guid="311191123"/>
             <Asset name="shader_gouraud" guid="3746892247"/>
         </DefaultResources>
