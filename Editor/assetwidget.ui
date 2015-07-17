@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>582</width>
-    <height>279</height>
+    <height>286</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,8 +17,8 @@
    <property name="geometry">
     <rect>
      <x>470</x>
-     <y>250</y>
-     <width>110</width>
+     <y>260</y>
+     <width>101</width>
      <height>25</height>
     </rect>
    </property>
@@ -32,7 +32,7 @@
      <x>0</x>
      <y>30</y>
      <width>571</width>
-     <height>211</height>
+     <height>221</height>
     </rect>
    </property>
    <attribute name="horizontalHeaderVisible">
@@ -115,8 +115,8 @@
   <widget class="QPushButton" name="addButton">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>250</y>
+     <x>0</x>
+     <y>260</y>
      <width>91</width>
      <height>25</height>
     </rect>

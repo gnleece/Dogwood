@@ -69,6 +69,12 @@
       <height>16</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
     <property name="text">
      <string>Hierarchy</string>
     </property>
@@ -81,6 +87,12 @@
       <width>81</width>
       <height>16</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
     </property>
     <property name="text">
      <string>Game Object</string>
@@ -95,6 +107,12 @@
       <height>16</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
     <property name="text">
      <string>Scene</string>
     </property>
@@ -108,6 +126,12 @@
       <height>16</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
     <property name="text">
      <string>Assets</string>
     </property>
@@ -120,6 +144,12 @@
       <width>81</width>
       <height>16</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
     </property>
     <property name="text">
      <string>Log</string>
@@ -268,9 +298,9 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>520</y>
+      <y>510</y>
       <width>581</width>
-      <height>281</height>
+      <height>291</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="assetWidgetLayout"/>
