@@ -2,15 +2,16 @@
 
 #include <qevent.h>
 #include <QHeaderView>
+#include <QPainter>
 
 ComponentView::ComponentView(MainEditorWindow* window) :
-    QTableView(), m_window(window)
+  QTreeView(), m_window(window)
 {
     setAcceptDrops(true);
     setDropIndicatorShown(true);
     setDragDropMode(QAbstractItemView::DropOnly);
-    verticalHeader()->setVisible(false);
-    horizontalHeader()->setVisible(false);
+    setHeaderHidden(true);
+    setIndentation(10);
 }
 
 void ComponentView::dragEnterEvent(QDragEnterEvent *event)
@@ -22,4 +23,11 @@ void ComponentView::dragEnterEvent(QDragEnterEvent *event)
 void ComponentView::dragMoveEvent(QDragMoveEvent *event)
 {
     event->accept();
+}
+
+void ComponentView::drawBranches(QPainter* painter, const QRect& rect, const QModelIndex& index) const
+{
+    QColor color(230, 230, 230);
+    painter->fillRect(rect, color);
+    QTreeView::drawBranches(painter, rect, index);
 }

@@ -19,9 +19,9 @@ ComponentWidget::ComponentWidget(QWidget* parent, MainEditorWindow* window) :
     m_view = new ComponentView(window);
     m_ui->verticalLayout->addWidget(m_view);
 
-    QHeaderView *verticalHeader = m_view->verticalHeader();
-    verticalHeader->sectionResizeMode(QHeaderView::Fixed);
-    verticalHeader->setDefaultSectionSize(24);
+    //QHeaderView *verticalHeader = m_view->verticalHeader();
+    //verticalHeader->sectionResizeMode(QHeaderView::Fixed);
+    //verticalHeader->setDefaultSectionSize(24);
 }
 
 void ComponentWidget::Init(GameObject* go)
@@ -29,6 +29,7 @@ void ComponentWidget::Init(GameObject* go)
     // Clear old model
     if (m_sourceModel != NULL)
     {
+        m_sourceModel->ClearModel();
         delete m_sourceModel;
     }
 
@@ -45,4 +46,5 @@ void ComponentWidget::Init(GameObject* go)
     m_sourceModel = new ComponentModel(this, go);
     m_view->setModel(m_sourceModel);
     m_view->show();
+    m_view->expandAll();
 }

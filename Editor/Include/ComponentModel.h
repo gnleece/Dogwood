@@ -3,38 +3,49 @@
 #include <QAbstractTableModel>
 #include <vector>
 
+class ComponentModelItem;
 class GameObject;
 class ResourceInfo;
 class ToolsideGameComponent;
 
 using std::vector;
 
-class ComponentModel : public QAbstractTableModel
+class ComponentModel : public QAbstractItemModel
 {
     Q_OBJECT
 
 public:
-    ComponentModel(QObject *parent, GameObject* go);
+    ComponentModel(QObject* parent, GameObject* go);
 
-    int             rowCount(const QModelIndex &parent = QModelIndex()) const;
-    int             columnCount(const QModelIndex &parent = QModelIndex()) const;
-    QVariant        data(const QModelIndex &index, int role = Qt::DisplayRole) const;
-    bool            setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
-    Qt::ItemFlags   flags(const QModelIndex &index) const;
+    QModelIndex     index(int row, int column, const QModelIndex& parent = QModelIndex()) const;
+    QModelIndex     parent(const QModelIndex& index) const;
+
+    int             rowCount(const QModelIndex& index = QModelIndex()) const;
+    int             columnCount(const QModelIndex& index = QModelIndex()) const;
+
+    QVariant        data(const QModelIndex& index, int role = Qt::DisplayRole) const;
+    bool            setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole);
+    Qt::ItemFlags   flags(const QModelIndex& index) const;
 
     Qt::DropActions supportedDragActions() const;
     Qt::DropActions supportedDropActions() const;
 
     QStringList     mimeTypes() const;
-    bool            dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent);
+    bool            dropMimeData(const QMimeData* data, Qt::DropAction action, int row, int column, const QModelIndex& parent);
+
+    void            ClearModel();
 
 private:
-    int             CalculateComponentIndex(int row) const;
-    int             CalculateParamIndex(int row, int componentIndex) const;
-    bool            IsEditable(const QModelIndex &index) const;
+    ComponentModelItem* GetItem(const QModelIndex& index) const;
 
-    GameObject* m_gameObject;
-    int         m_rowCount;
+    bool            IsEditable(const QModelIndex& index) const;
+
+    void            AddTransformData();
+    void            AddMeshData();
+    void            AddComponentData();
+
+    ComponentModelItem* m_rootItem;
+
+    GameObject*         m_gameObject;
     vector<ToolsideGameComponent*> m_componentList;
-    vector<int> m_accSizes;
 };

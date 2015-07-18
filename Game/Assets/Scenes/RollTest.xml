@@ -57,7 +57,19 @@
                 <Component guid="3055461197">
                     <Param name="Speed" type="1" value="250"/>
                     <Param name="Radius" type="1" value="0.5"/>
-                    <Param name="RotationChild" type="6" value="2156114922"/>
+                    <Param name="RotationChild" type="6" value="2279407888"/>
+                </Component>
+                <Component guid="3075022151">
+                    <Param name="SpinType" type="0" value="0"/>
+                    <Param name="Speed" type="1" value="7171"/>
+                    <Param name="EnableSpinning" type="2" value="0"/>
+                    <Param name="SpinLabel" type="3" value="abcdef"/>
+                    <Param name="Offset" type="4" value="">
+                        <value x="1.00000" y="2.00000" z="3.00000"/>
+                    </Param>
+                    <Param name="SpinColor" type="5" value="">
+                        <value r="0.50000" g="0.50000" b="0.00000"/>
+                    </Param>
                 </Component>
             </Components>
             <GameObject guid="4128969078" name="YDot">

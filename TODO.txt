@@ -38,7 +38,6 @@ ENGINE (Dogwood)
             * Configurable gamepad setup
             * #define to compile without XInput?
         * Re-factor MainEditorWindow.cpp
-        * Clean up ComponentModel param index stuff
         
 
 ---------------------------------------------------------------------------
@@ -72,6 +71,7 @@ EDITOR (Thicket)
         * PIPELINE
             - Show bool values as check boxes, change cell colour for colours
             - Set data using EditorCommands for undo/redo
+            - Better value validation
 
     * Visuals
         * Change transform tool shape based on mode

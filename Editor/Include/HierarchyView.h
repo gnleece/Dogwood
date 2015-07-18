@@ -1,6 +1,6 @@
 #pragma once
 
-#include <qtreeview.h>
+#include <qtreeview>
 
 class MainEditorWindow;
 

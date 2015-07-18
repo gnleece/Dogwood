@@ -106,15 +106,15 @@ Qt::ItemFlags HierarchyModel::flags(const QModelIndex &index) const
         return Qt::ItemIsDropEnabled | defaultFlags;
 }
 
-int HierarchyModel::columnCount(const QModelIndex & /* parent */) const
+int HierarchyModel::columnCount(const QModelIndex & /* index */) const
 {
     return 1;
 }
 
-int HierarchyModel::rowCount(const QModelIndex &parent) const
+int HierarchyModel::rowCount(const QModelIndex& index) const
 {
-    GameObject *parentItem = getItem(parent);
-    return parentItem->GetChildCount();
+    GameObject *item = getItem(index);
+    return item->GetChildCount();
 }
 
 bool HierarchyModel::insertRows(int position, int rows, const QModelIndex &parent)

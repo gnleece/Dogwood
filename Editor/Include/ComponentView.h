@@ -1,10 +1,10 @@
 #pragma once
 
-#include <QTableView>
+#include <qtreeview>
 
 class MainEditorWindow;
 
-class ComponentView : public QTableView
+class ComponentView : public QTreeView
 {
     Q_OBJECT
 
@@ -13,6 +13,8 @@ public:
 
     void dragEnterEvent(QDragEnterEvent *event);
     void dragMoveEvent(QDragMoveEvent *event);
+
+    void drawBranches(QPainter* painter, const QRect& rect, const QModelIndex& index) const;
 
 private:
     MainEditorWindow*   m_window;

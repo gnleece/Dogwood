@@ -175,6 +175,9 @@
     <ClInclude Include="GeneratedFiles\ui_componentwidget.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
+    <ClInclude Include="Include\ComponentModelItem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\CommandManager.cpp">
@@ -341,6 +344,9 @@
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_ComponentView.cpp">
       <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\ComponentModelItem.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
