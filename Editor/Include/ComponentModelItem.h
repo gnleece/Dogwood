@@ -2,11 +2,14 @@
 
 #include <QVariant>
 #include <vector>
+#include "EditorCommands.h"
 #include "ToolsideGameComponent.h"
+#include "Math\Transform.h"
 
 using std::string;
 using std::vector;
 
+class GameObject;
 class QMimeData;
 
 class ComponentModelItem
@@ -23,6 +26,7 @@ public:
     int                 GetChildCount();
     int                 GetIndexInParent();
 
+    virtual void        Refresh();
     virtual QVariant    GetData(ColumnType columnType, int role);
     virtual bool        SetData(QVariant value);
     virtual bool        IsEditable();
@@ -38,7 +42,17 @@ protected:
 
 class ComponentModelTransformItem : public ComponentModelItem
 {
+public:
+    ComponentModelTransformItem(string name, GameObject* gameObject, TransformVectorType type);
 
+    void        Refresh();
+    QVariant    GetData(ColumnType columnType, int role);
+    bool        SetData(QVariant value);
+
+private:
+    GameObject*             m_gameObject;
+    TransformVectorType     m_vectorType;
+    Vector3                 m_vector;
 };
 
 class ComponentModelMeshItem : public ComponentModelItem
@@ -51,6 +65,7 @@ class ComponentModelScriptItem : public ComponentModelItem
 public:
     ComponentModelScriptItem(ToolsideGameComponent* component, int paramIndex);
 
+    void        Refresh();
     QVariant    GetData(ColumnType columnType, int role);
     bool        SetData(QVariant value);
     bool        IsEditable();
@@ -62,4 +77,5 @@ private:
     ToolsideGameComponent*              m_component;
     ComponentParameter::ParameterType   m_valueType;
     ComponentValue                      m_value;
+    int                                 m_paramIndex;
 };

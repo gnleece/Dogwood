@@ -301,7 +301,7 @@ bool SceneViewWidget::PickObject(Vector3 rayOrigin, Vector3 rayDirection)
     return false;
 }
 
-void SceneViewWidget::ExecuteModifyTransform(Vector3 vector, VectorType type)
+void SceneViewWidget::ExecuteModifyTransform(Vector3 vector, TransformVectorType type)
 {
     GameObject* selectedObject = m_window->GetSelectedObject();
     ModifyTransformCommand* command = new ModifyTransformCommand(selectedObject, vector, type);

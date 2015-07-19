@@ -2,6 +2,8 @@
 
 #include "Algebra.h"
 
+enum TransformVectorType { eVector_Position, eVector_Rotation, eVector_Scale };
+
 class Transform
 {
 public:
@@ -12,11 +14,13 @@ public:
     void        SetPosition(Vector3& position);
     void        SetRotation(Vector3& rotation);
     void        SetScale(Vector3& scale);
+    void        SetVector(Vector3& vector, TransformVectorType type);
 
     Matrix4x4&  GetMatrix();
     Vector3&    GetPosition();
     Vector3&    GetRotation();
     Vector3&    GetScale();
+    Vector3&    GetVector(TransformVectorType type);
 
     Vector3&    GetRight();
     Vector3&    GetUp();

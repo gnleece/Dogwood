@@ -21,7 +21,6 @@ class MeshWidget;
 class QTreeView;
 class Scene;
 class SceneViewWidget;
-class TransformWidget;
 
 using std::string;
 using std::unordered_map;
@@ -62,7 +61,6 @@ private:
     AssetWidget*            m_assetWidget;
     ComponentWidget*        m_componentWidget;
     SceneViewWidget*        m_sceneViewWidget;
-    TransformWidget*        m_transformWidget;
     MeshWidget*             m_meshWidget;
 
     QSignalMapper*          m_addMeshSignalMapper;

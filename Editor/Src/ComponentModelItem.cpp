@@ -1,8 +1,8 @@
 #include "ComponentModelItem.h"
-#include "DebugLogger.h"
 #include "GameObject.h"
 #include "GameObjectMimeData.h"
 #include "GameObjectReference.h"
+#include "Util.h"
 #include <QBrush>
 #include <QColor>
 
@@ -60,6 +60,15 @@ int ComponentModelItem::GetIndexInParent()
     return 0;
 }
 
+void ComponentModelItem::Refresh()
+{
+    vector<ComponentModelItem*>::iterator iter = m_children.begin();
+    for (; iter != m_children.end(); iter++)
+    {
+        (*iter)->Refresh();
+    }
+}
+
 QVariant ComponentModelItem::GetData(ColumnType columnType, int role)
 {
     if (role == Qt::BackgroundRole)
@@ -98,11 +107,68 @@ bool ComponentModelItem::DropData(const QMimeData* data)
 
 //--------------------------------------------------------------------------------
 
-ComponentModelScriptItem::ComponentModelScriptItem(ToolsideGameComponent* component, int paramIndex)
-    : ComponentModelItem(""), m_component(component)
+ComponentModelTransformItem::ComponentModelTransformItem(string name, GameObject* gameObject, TransformVectorType type)
+    : ComponentModelItem(name), m_gameObject(gameObject), m_vectorType(type)
 {
+    Refresh();
+}
+
+void ComponentModelTransformItem::Refresh()
+{
+    ComponentModelItem::Refresh();
+
+    m_isHeader = false;
+    m_vector = m_gameObject->GetLocalTransform().GetVector(m_vectorType);
+}
+
+QVariant ComponentModelTransformItem::GetData(ColumnType columnType, int role)
+{
+    if (role == Qt::BackgroundRole)
+    {
+        // TODO move this color stuff into the view
+        if (m_isHeader)
+        {
+            QColor color(230, 230, 230);
+            return QBrush(color);
+        }
+    }
+    else
+    {
+        switch (columnType)
+        {
+        case NAME_COLUMN:
+            return QVariant(m_name.c_str());
+        case VALUE_COLUMN:
+            string str = WriteVector3ToString(m_vector);
+            return QVariant(str.c_str());
+        }
+    }
+}
+
+bool ComponentModelTransformItem::SetData(QVariant value)
+{
+    m_vector = ReadVector3FromString(value.toString().toStdString());
+
+    EditorCommands::ModifyTransformCommand* command = new EditorCommands::ModifyTransformCommand(m_gameObject, m_vector, m_vectorType);
+    CommandManager::Singleton().ExecuteCommand(command);
+
+    return true;
+}
+
+//--------------------------------------------------------------------------------
+
+ComponentModelScriptItem::ComponentModelScriptItem(ToolsideGameComponent* component, int paramIndex)
+    : ComponentModelItem(""), m_component(component), m_paramIndex(paramIndex)
+{
+    Refresh();
+}
+
+void ComponentModelScriptItem::Refresh()
+{
+    ComponentModelItem::Refresh();
+
     ParamList params = m_component->GetParameterList();
-    ParamPair& pair = params[paramIndex];
+    ParamPair& pair = params[m_paramIndex];
 
     m_name = pair.first.Name;
     m_valueType = pair.first.Type;

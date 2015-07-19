@@ -1,6 +1,7 @@
 #include "Widgets\ComponentWidget.h"
 #include "ComponentModel.h"
 #include "ComponentView.h"
+#include "EditorCommands.h"
 #include "GameObject.h"
 #include "MainEditorWindow.h"
 #include "ToolsideGameComponent.h"
@@ -18,6 +19,10 @@ ComponentWidget::ComponentWidget(QWidget* parent, MainEditorWindow* window) :
 
     m_view = new ComponentView(window);
     m_ui->verticalLayout->addWidget(m_view);
+
+    // Set a reference to this widget in the ModifyTransformCommand class, so that it
+    // can tell us when to refresh when transform data gets modified
+    EditorCommands::ModifyTransformCommand::sComponentWidget = this;
 
     //QHeaderView *verticalHeader = m_view->verticalHeader();
     //verticalHeader->sectionResizeMode(QHeaderView::Fixed);
@@ -47,4 +52,12 @@ void ComponentWidget::Init(GameObject* go)
     m_view->setModel(m_sourceModel);
     m_view->show();
     m_view->expandAll();
+}
+
+void ComponentWidget::Refresh()
+{
+    if (m_sourceModel != NULL)
+    {
+        m_sourceModel->RefreshModel();
+    }
 }

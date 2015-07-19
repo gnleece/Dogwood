@@ -10,10 +10,12 @@
 #include "CommandManager.h"
 #include "Rendering\Colour.h"
 #include "Math\Algebra.h"
+#include "Math\Transform.h"
 #include <qabstractitemmodel.h>
 #include <QTime>
 #include <string>
 
+class ComponentWidget;
 class GameObject;
 class GameObjectMimeData;
 class HierarchyModel;
@@ -23,7 +25,6 @@ class TransformWidget;
 
 using std::string;
 
-enum VectorType { eVector_Position, eVector_Rotation, eVector_Scale };
 enum MaterialColorType { eMaterial_Diffuse, eMaterial_Ambient, eMaterial_Specular };
 
 namespace EditorCommands
@@ -99,14 +100,16 @@ namespace EditorCommands
     class ModifyTransformCommand : public ICommand
     {
     public:
-        ModifyTransformCommand(GameObject* gameObject, Vector3 vector, VectorType type);
+        ModifyTransformCommand(GameObject* gameObject, Vector3 vector, TransformVectorType type);
         void Execute();
         void Undo();
         bool Collapse(ICommand* command);
 
+        static ComponentWidget* sComponentWidget;
+
     private:
         GameObject*         m_gameObject;
-        VectorType          m_type;
+        TransformVectorType m_type;
         Vector3             m_vector;
         Vector3             m_previousVector;
         QTime               m_timestamp;

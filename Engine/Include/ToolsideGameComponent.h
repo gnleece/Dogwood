@@ -53,7 +53,6 @@ public:
     void    SerializeValue(ComponentParameter::ParameterType type, tinyxml2::XMLElement* parentNode, tinyxml2::XMLDocument& rootDoc);
     string  GetValueString(ComponentParameter::ParameterType type);
     string  GetVectorValueString(Vector3 v);
-    Vector3 StringToVector(string text);
 
     static RuntimeParamList ParseRuntimeParams(tinyxml2::XMLElement* xml);
 

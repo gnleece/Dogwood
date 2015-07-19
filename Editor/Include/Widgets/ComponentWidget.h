@@ -20,7 +20,8 @@ class ComponentWidget : public QWidget
 public:
     ComponentWidget(QWidget* parent = 0, MainEditorWindow* window = NULL);
 
-    void Init(GameObject* go);
+    void    Init(GameObject* go);
+    void    Refresh();
 
 private:
     Ui::ComponentWidget*    m_ui;

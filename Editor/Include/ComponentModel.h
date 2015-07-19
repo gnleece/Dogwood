@@ -33,6 +33,7 @@ public:
     QStringList     mimeTypes() const;
     bool            dropMimeData(const QMimeData* data, Qt::DropAction action, int row, int column, const QModelIndex& parent);
 
+    void            RefreshModel();
     void            ClearModel();
 
 private:

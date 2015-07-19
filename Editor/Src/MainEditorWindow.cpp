@@ -16,7 +16,6 @@
 #include "Widgets\MeshWidget.h"
 #include "Widgets\SceneViewWidget.h"
 #include "Widgets\ScrollWidget.h"
-#include "Widgets\TransformWidget.h"
 #include "Widgets\WidgetUtils.h"
 
 #include <QFileDialog>
@@ -64,13 +63,6 @@ void MainEditorWindow::SetupComponentWidgets()
     // Parent widget, which holds all the component widgets
     ScrollWidget* componentsWidget = new ScrollWidget(m_ui->gameObjectScrollArea);
     m_ui->gameObjectScrollArea->setWidget(componentsWidget);
-
-    // Transform widget
-    m_transformWidget = new TransformWidget(componentsWidget, this);
-    componentsWidget->AddChildWidget(m_transformWidget);
-    m_transformWidget->hide();
-
-    componentsWidget->AddChildWidget(AddLineSeparator(componentsWidget));
 
     // Mesh widget
     m_meshWidget = new MeshWidget(componentsWidget);
@@ -582,10 +574,6 @@ void MainEditorWindow::SwitchSelectObject(GameObject* gameobject)
     // TODO clean this up!
     if (gameobject != NULL)
     {
-        // Show the components for the selected game object
-        m_transformWidget->SetGameObject(gameobject);       // TODO add some kind of component widget base class to clean this up
-        m_transformWidget->show();
-        
         if (gameobject->GetMesh())
         {
             m_meshWidget->SetMeshInstance(gameobject->GetMesh());
@@ -606,12 +594,9 @@ void MainEditorWindow::SwitchSelectObject(GameObject* gameobject)
     }
     else
     {
-        // Nothing is selected, so hide widgets
-        m_transformWidget->SetGameObject(NULL);
-        m_transformWidget->hide();
         m_meshWidget->SetMeshInstance(NULL);
         m_meshWidget->hide();
-        m_componentWidget->hide();
+        m_componentWidget->hide();  // TODO reset
     }
 }
 

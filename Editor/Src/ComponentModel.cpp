@@ -126,6 +126,13 @@ bool ComponentModel::dropMimeData(const QMimeData* data, Qt::DropAction action, 
     return item->DropData(data);
 }
 
+void ComponentModel::RefreshModel()
+{
+    // Refreshes all the items in the current model, without rebuilding the entire thing
+    m_rootItem->Refresh();
+    emit layoutChanged();
+}
+
 void ComponentModel::ClearModel()
 {
     delete m_rootItem;      // The item destructor will take care of deleting child items recursively
@@ -157,10 +164,17 @@ bool ComponentModel::IsEditable(const QModelIndex &index) const
 
 void ComponentModel::AddTransformData()
 {
-    //ComponentModelItem* transItem = new ComponentModelItem("Transform");
-    //m_rootItem->AddChild(transItem);
+    // Add Transform header item
+    ComponentModelItem* transformItem = new ComponentModelItem("Transform");
+    m_rootItem->AddChild(transformItem);
 
-    // TODO implement me
+    // Add position, rotation, and scale items
+    ComponentModelTransformItem* positionItem = new ComponentModelTransformItem("Position", m_gameObject, eVector_Position);
+    transformItem->AddChild(positionItem);
+    ComponentModelTransformItem* rotationItem = new ComponentModelTransformItem("Rotation", m_gameObject, eVector_Rotation);
+    transformItem->AddChild(rotationItem);
+    ComponentModelTransformItem* scaleItem = new ComponentModelTransformItem("Scale", m_gameObject, eVector_Scale);
+    transformItem->AddChild(scaleItem);
 }
 
 void ComponentModel::AddMeshData()

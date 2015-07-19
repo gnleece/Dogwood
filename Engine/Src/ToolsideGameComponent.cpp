@@ -84,10 +84,10 @@ void ComponentValue::SetValue(ComponentParameter::ParameterType type, string tex
             str = text;
             break;
         case ComponentParameter::TYPE_VECTOR3:
-            v = StringToVector(text);
+            v = ReadVector3FromString(text);
             break;
         case ComponentParameter::TYPE_COLOR:
-            c = StringToVector(text);
+            c = ReadVector3FromString(text);
             break;
         case ComponentParameter::TYPE_GAMEOBJECT:
             g = std::stoull(text);
@@ -133,42 +133,12 @@ string ComponentValue::GetValueString(ComponentParameter::ParameterType type)
         case ComponentParameter::TYPE_FLOAT:        return std::to_string(f);
         case ComponentParameter::TYPE_BOOL:         return b ? "true" : "false";
         case ComponentParameter::TYPE_STRING:       return str;
-        case ComponentParameter::TYPE_VECTOR3:      return GetVectorValueString(v);
-        case ComponentParameter::TYPE_COLOR:        return GetVectorValueString(c.ToVector());
+        case ComponentParameter::TYPE_VECTOR3:      return WriteVector3ToString(v);
+        case ComponentParameter::TYPE_COLOR:        return WriteVector3ToString(c.ToVector());
         case ComponentParameter::TYPE_GAMEOBJECT:   return std::to_string(g);
     }
 
     return "";
-}
-
-string ComponentValue::GetVectorValueString(Vector3 vec)
-{
-    std::ostringstream stream;
-    stream << vec.x() << "; " << vec.y() << "; " << vec.z();
-    return stream.str();
-}
-
-Vector3 ComponentValue::StringToVector(string text)
-{
-    Vector3 vec;
-    size_t pos = 0;
-    int index = 0;
-    string token;
-    string delimiter = "; ";
-
-    while ((pos = text.find(delimiter)) != std::string::npos && index < 2)
-    {
-        token = text.substr(0, pos);
-        vec[index] = std::stof(token);
-        text.erase(0, pos + delimiter.length());
-        index++;
-    }
-    if (index == 2)
-    {
-        vec[index] = std::stof(text);
-    }
-
-    return vec;
 }
 
 RuntimeParamList ComponentValue::ParseRuntimeParams(tinyxml2::XMLElement* xml)

@@ -47,6 +47,16 @@ void Transform::SetScale(Vector3& scale)
     m_changed = true;
 }
 
+void Transform::SetVector(Vector3& vector, TransformVectorType type)
+{
+    switch (type)
+    {
+    case eVector_Position:  SetPosition(vector);    break;
+    case eVector_Rotation:  SetRotation(vector);    break;
+    case eVector_Scale:     SetScale(vector);       break;
+    }
+}
+
 Matrix4x4& Transform::GetMatrix()
 {
     if (m_dirty)
@@ -70,6 +80,17 @@ Vector3& Transform::GetRotation()
 Vector3& Transform::GetScale()
 {
     return m_scale;
+}
+
+Vector3& Transform::GetVector(TransformVectorType type)
+{
+    switch (type)
+    {
+    case eVector_Position:  return GetPosition();
+    case eVector_Rotation:  return GetRotation();
+    case eVector_Scale:     return GetScale();
+    }
+    return Vector3::Zero;
 }
 
 Vector3& Transform::GetRight()

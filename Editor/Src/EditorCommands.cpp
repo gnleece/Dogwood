@@ -3,6 +3,7 @@
 #include "GameObjectMimeData.h"
 #include "HierarchyModel.h"
 #include "Rendering\Material.h"
+#include "Widgets\ComponentWidget.h"
 
 #include <QtWidgets>
 
@@ -134,7 +135,9 @@ namespace EditorCommands
 
     //-----------------------------------------------------------------------------------------------
 
-    ModifyTransformCommand::ModifyTransformCommand(GameObject* gameObject, Vector3 vector, VectorType type)
+    ComponentWidget* ModifyTransformCommand::sComponentWidget = NULL;
+
+    ModifyTransformCommand::ModifyTransformCommand(GameObject* gameObject, Vector3 vector, TransformVectorType type)
     {
         m_gameObject = gameObject;
         m_vector = vector;
@@ -146,23 +149,9 @@ namespace EditorCommands
     {
         if (m_gameObject != NULL)
         {
-            switch (m_type)
-            {
-            case eVector_Position:
-                m_previousVector = m_gameObject->GetLocalTransform().GetPosition();
-                m_gameObject->GetLocalTransform().SetPosition(m_vector);
-                break;
-            case eVector_Rotation:
-                m_previousVector = m_gameObject->GetLocalTransform().GetRotation();
-                m_gameObject->GetLocalTransform().SetRotation(m_vector);
-                break;
-            case eVector_Scale:
-                m_previousVector = m_gameObject->GetLocalTransform().GetScale();
-                m_gameObject->GetLocalTransform().SetScale(m_vector);
-                break;
-            }
-
-            // TODO need to emit a "transform changed" signal here, or in transform set function
+            m_previousVector = m_gameObject->GetLocalTransform().GetVector(m_type);
+            m_gameObject->GetLocalTransform().SetVector(m_vector, m_type);
+            sComponentWidget->Refresh();
         }
     }
 
@@ -170,20 +159,8 @@ namespace EditorCommands
     {
         if (m_gameObject != NULL)
         {
-            switch (m_type)
-            {
-            case eVector_Position:
-                m_gameObject->GetLocalTransform().SetPosition(m_previousVector);
-                break;
-            case eVector_Rotation:
-                m_gameObject->GetLocalTransform().SetRotation(m_previousVector);
-                break;
-            case eVector_Scale:
-                m_gameObject->GetLocalTransform().SetScale(m_previousVector);
-                break;
-            }
-
-            // TODO need to emit a "transform changed" signal here, or in transform set function
+            m_gameObject->GetLocalTransform().SetVector(m_previousVector, m_type);
+            sComponentWidget->Refresh();
         }
     }
 

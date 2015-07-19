@@ -4,6 +4,7 @@
 #include <ctime>
 #include <fstream>
 #include <ostream>
+#include <sstream>
 
 using namespace tinyxml2;
 
@@ -114,6 +115,36 @@ XMLNode* WriteStringToXML(string str, string nodeName, string attribName, XMLDoc
     XMLElement* xmlnode = doc.NewElement(nodeName.c_str());
     xmlnode->SetAttribute(attribName.c_str(), str.c_str());
     return xmlnode;
+}
+
+Vector3 ReadVector3FromString(string str)
+{
+    Vector3 vec;
+    size_t pos = 0;
+    int index = 0;
+    string token;
+    string delimiter = "; ";
+
+    while ((pos = str.find(delimiter)) != std::string::npos && index < 2)
+    {
+        token = str.substr(0, pos);
+        vec[index] = std::stof(token);
+        str.erase(0, pos + delimiter.length());
+        index++;
+    }
+    if (index == 2)
+    {
+        vec[index] = std::stof(str);
+    }
+
+    return vec;
+}
+
+string WriteVector3ToString(Vector3 v)
+{
+    std::ostringstream stream;
+    stream << v.x() << "; " << v.y() << "; " << v.z();
+    return stream.str();
 }
 
 void FileCopy(string source, string destination)

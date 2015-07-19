@@ -5,7 +5,6 @@
 ENGINE (Dogwood)
     * Game object/component system
         * Proper awake/start/enable/disable/destroy/etc.
-        * Fix custom component bindings
     * Resources
         * Unloading
         * Material type?
@@ -33,11 +32,11 @@ ENGINE (Dogwood)
         * Colour -> Color everywhere for consistency
         * Rewrite matrix inversion. Currently just copied from CS488 provided code
         * Add missing matrix maths (e.g. addition)
-        * Engine provided assets (e.g. default shaders, primitive meshes)
         * Input wrappers
             * Configurable gamepad setup
             * #define to compile without XInput?
         * Re-factor MainEditorWindow.cpp
+        * typedef guid type?
         
 
 ---------------------------------------------------------------------------
@@ -46,7 +45,6 @@ EDITOR (Thicket)
 
     * Project
         * Project settings window
-        * typedef guid type?
         * Prompt for save on exit/unload
         * Remove assets (un-import)
         * Save/load scene list
@@ -61,17 +59,20 @@ EDITOR (Thicket)
 
     * Game components
         * Built-in component widgets
-            * Mesh: hook up browse
-            * Texture: hook up browse
-            * Shader: show on material widget, hook up browse
+            * Transform: expand x/y/z as separate rows
+            * Mesh: move to component model, hook up browse
+            * Texture: move to component model, hook up browse
+            * Shader: move to component model, hook up browse
+                * Allow custom key value pairs, remove hard coded enums
         * Remove components
             * Undo/redo on add/remove
             * Refresh widget on add/remove
         * Enable/disable components
-        * PIPELINE
+        * General
             - Show bool values as check boxes, change cell colour for colours
-            - Set data using EditorCommands for undo/redo
+            - Set data using EditorCommands for undo/redo everywhere
             - Better value validation
+            - Fixup background color code
 
     * Visuals
         * Change transform tool shape based on mode
@@ -94,7 +95,6 @@ EDITOR (Thicket)
         - Rotation tool behaviour is non-intuitive
         - Saving project should write asset list in consistent order
         - Fix GameObject child removal
-        - Component guid in list of scene resources?
         - Refresh widgets on schema rebuild
 
         Hi pri
@@ -176,6 +176,8 @@ DESIGN DECISIONS
     - Eventually changed it so that a shader is just one file, with annotation separating vert part from frag part
     - Wish I had done the change sooner, had to change project and scene files by hand to fix it
 
+    Do cleanup / deletion code right away
+    - Leaving it as a TODO means it probably won't get done
 
 References
 

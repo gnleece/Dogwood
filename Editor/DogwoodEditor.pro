@@ -21,8 +21,6 @@ HEADERS  += maineditorwindow.h \
     meshwidget.h
 
 FORMS    += maineditorwindow.ui \
-    transformwidget.ui \
-    vectorwidget.ui \
     scrollwidget.ui \
     meshwidget.ui \
     colorwidget.ui \

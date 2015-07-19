@@ -23,4 +23,7 @@ tinyxml2::XMLNode*  WriteUnsignedIntToXML(unsigned int value, string nodeName, s
 tinyxml2::XMLNode*  WriteFloatToXML(float value, string nodeName, string attribName, tinyxml2::XMLDocument& doc);
 tinyxml2::XMLNode*  WriteStringToXML(string str, string nodeName, string attribName, tinyxml2::XMLDocument& doc);
 
+Vector3             ReadVector3FromString(string str);
+string              WriteVector3ToString(Vector3 str);
+
 void                FileCopy(string source, string destination);

@@ -73,7 +73,7 @@ private:
     void HandleSelectionClick(const QPointF clickPosition);
     bool PickTool(const QPointF clickPosition, Vector3 rayOrigin, Vector3 rayDirection);
     bool PickObject(Vector3 rayOrigin, Vector3 rayDirection);
-    void ExecuteModifyTransform(Vector3 vector, VectorType type);
+    void ExecuteModifyTransform(Vector3 vector, TransformVectorType type);
 
     static eMouseButton QtMouseButtonConvert(Qt::MouseButton qtButton);
 
