@@ -154,3 +154,14 @@ void FileCopy(string source, string destination)
 
     dst << src.rdbuf();
 }
+
+string GetFriendlyAssetNameFromPath(string path)
+{
+    std::size_t found = path.find_last_of("/\\");
+    string filename = path.substr(found + 1);
+
+    found = filename.find_first_of(".");
+    string friendlyName = filename.substr(0, found);
+
+    return friendlyName;
+}

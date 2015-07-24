@@ -27,3 +27,5 @@ Vector3             ReadVector3FromString(string str);
 string              WriteVector3ToString(Vector3 str);
 
 void                FileCopy(string source, string destination);
+
+string              GetFriendlyAssetNameFromPath(string path);

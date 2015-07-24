@@ -179,10 +179,15 @@ void ComponentModel::AddTransformData()
 
 void ComponentModel::AddMeshData()
 {
-    //ComponentModelItem* meshItem = new ComponentModelItem("Mesh");
-    //m_rootItem->AddChild(meshItem);
+    MeshInstance* meshInstance = m_gameObject->GetMesh();
+    if (meshInstance == NULL)
+        return;
 
-    // TODO implement me
+    ComponentModelItem* meshItem = new ComponentModelItem("Mesh");
+    m_rootItem->AddChild(meshItem);
+
+    ComponentModelMeshItem* meshObjItem = new ComponentModelMeshItem("Mesh", meshInstance);
+    meshItem->AddChild(meshObjItem);
 }
 
 void ComponentModel::AddComponentData()

@@ -10,6 +10,7 @@ using std::string;
 using std::vector;
 
 class GameObject;
+class MeshInstance;
 class QMimeData;
 
 class ComponentModelItem
@@ -25,9 +26,10 @@ public:
     ComponentModelItem* GetParent();
     int                 GetChildCount();
     int                 GetIndexInParent();
+    QVariant            GetData(ColumnType columnType, int role);
 
     virtual void        Refresh();
-    virtual QVariant    GetData(ColumnType columnType, int role);
+    virtual QVariant    GetValueData();
     virtual bool        SetData(QVariant value);
     virtual bool        IsEditable();
     virtual bool        DropData(const QMimeData* data);
@@ -45,9 +47,9 @@ class ComponentModelTransformItem : public ComponentModelItem
 public:
     ComponentModelTransformItem(string name, GameObject* gameObject, TransformVectorType type);
 
-    void        Refresh();
-    QVariant    GetData(ColumnType columnType, int role);
-    bool        SetData(QVariant value);
+    void                Refresh();
+    QVariant            GetValueData();
+    bool                SetData(QVariant value);
 
 private:
     GameObject*             m_gameObject;
@@ -57,7 +59,41 @@ private:
 
 class ComponentModelMeshItem : public ComponentModelItem
 {
+public:
+    ComponentModelMeshItem(string name, MeshInstance* mesh);
 
+    virtual QVariant    GetValueData();
+    virtual bool        IsEditable();
+    virtual bool        DropData(const QMimeData* data);
+
+private:
+    MeshInstance*       m_mesh;
+};
+
+class ComponentModelShaderItem : public ComponentModelItem
+{
+public:
+    ComponentModelShaderItem(string name, Material* material);
+
+    virtual QVariant    GetValueData();
+    virtual bool        IsEditable();
+    virtual bool        DropData(const QMimeData* data);
+
+private:
+    Material*           m_material;
+};
+
+class ComponentModelTextureItem : public ComponentModelItem
+{
+public:
+    ComponentModelTextureItem(string name, Material* material);
+
+    virtual QVariant    GetValueData();
+    virtual bool        IsEditable();
+    virtual bool        DropData(const QMimeData* data);
+
+private:
+    Material*          m_material;
 };
 
 class ComponentModelScriptItem : public ComponentModelItem
@@ -65,15 +101,13 @@ class ComponentModelScriptItem : public ComponentModelItem
 public:
     ComponentModelScriptItem(ToolsideGameComponent* component, int paramIndex);
 
-    void        Refresh();
-    QVariant    GetData(ColumnType columnType, int role);
-    bool        SetData(QVariant value);
-    bool        IsEditable();
-    bool        DropData(const QMimeData* data);
+    void                Refresh();
+    QVariant            GetValueData();
+    bool                SetData(QVariant value);
+    bool                IsEditable();
+    bool                DropData(const QMimeData* data);
 
 private:
-    string      GetValueString();
-
     ToolsideGameComponent*              m_component;
     ComponentParameter::ParameterType   m_valueType;
     ComponentValue                      m_value;

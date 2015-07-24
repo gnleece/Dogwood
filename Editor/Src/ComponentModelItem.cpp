@@ -2,6 +2,11 @@
 #include "GameObject.h"
 #include "GameObjectMimeData.h"
 #include "GameObjectReference.h"
+#include "Rendering/Material.h"
+#include "Rendering/Mesh.h"
+#include "Rendering/MeshInstance.h"
+#include "Rendering/Texture.h"
+#include "Scene/ResourceManager.h"
 #include "Util.h"
 #include <QBrush>
 #include <QColor>
@@ -86,8 +91,15 @@ QVariant ComponentModelItem::GetData(ColumnType columnType, int role)
         {
         case NAME_COLUMN:
             return QVariant(m_name.c_str());
+        case VALUE_COLUMN:
+            return GetValueData();
         }
     }
+}
+
+QVariant ComponentModelItem::GetValueData()
+{
+    return QVariant("");
 }
 
 bool ComponentModelItem::SetData(QVariant value)
@@ -121,28 +133,10 @@ void ComponentModelTransformItem::Refresh()
     m_vector = m_gameObject->GetLocalTransform().GetVector(m_vectorType);
 }
 
-QVariant ComponentModelTransformItem::GetData(ColumnType columnType, int role)
+QVariant ComponentModelTransformItem::GetValueData()
 {
-    if (role == Qt::BackgroundRole)
-    {
-        // TODO move this color stuff into the view
-        if (m_isHeader)
-        {
-            QColor color(230, 230, 230);
-            return QBrush(color);
-        }
-    }
-    else
-    {
-        switch (columnType)
-        {
-        case NAME_COLUMN:
-            return QVariant(m_name.c_str());
-        case VALUE_COLUMN:
-            string str = WriteVector3ToString(m_vector);
-            return QVariant(str.c_str());
-        }
-    }
+    string str = WriteVector3ToString(m_vector);
+    return QVariant(str.c_str());
 }
 
 bool ComponentModelTransformItem::SetData(QVariant value)
@@ -153,6 +147,119 @@ bool ComponentModelTransformItem::SetData(QVariant value)
     CommandManager::Singleton().ExecuteCommand(command);
 
     return true;
+}
+
+//--------------------------------------------------------------------------------
+
+ComponentModelMeshItem::ComponentModelMeshItem(string name, MeshInstance* mesh)
+    : ComponentModelItem(name), m_mesh(mesh)
+{
+    m_isHeader = false;
+
+    ComponentModelShaderItem* shaderItem = new ComponentModelShaderItem("Shader", m_mesh->GetMaterial());
+    AddChild(shaderItem);
+}
+
+QVariant ComponentModelMeshItem::GetValueData()
+{
+    string str;
+    if (m_mesh == NULL)
+    {
+        str = "<MISSING REF>";
+    }
+    else
+    {
+        ResourceInfo* info = m_mesh->GetMesh()->GetResourceInfo();
+        str = GetFriendlyAssetNameFromPath(info->path) + " (" + std::to_string(info->guid) + ")";
+    }
+    return QVariant(str.c_str());
+}
+
+bool ComponentModelMeshItem::IsEditable()
+{
+    return false;
+}
+
+bool ComponentModelMeshItem::DropData(const QMimeData* data)
+{
+    // TODO implement me
+    return false;
+}
+
+//--------------------------------------------------------------------------------
+
+ComponentModelShaderItem::ComponentModelShaderItem(string name, Material* material)
+    : ComponentModelItem(name), m_material(material)
+{
+    m_isHeader = false;
+
+    if (m_material->GetTexture() != NULL && m_material->GetTexture() != Texture::DefaultTexture())       // TODO temp hack until shader params are fixed properly
+    {
+        ComponentModelTextureItem* textureItem = new ComponentModelTextureItem("Texture", m_material);
+        AddChild(textureItem);
+    }
+
+    // TODO add colors
+}
+
+QVariant ComponentModelShaderItem::GetValueData()
+{
+    string str;
+    if (m_material == NULL)
+    {
+        str = "<MISSING REF>";
+    }
+    else
+    {
+        ResourceInfo* info = m_material->GetShader()->GetResourceInfo();
+        str = GetFriendlyAssetNameFromPath(info->path) + " (" + std::to_string(info->guid) + ")";
+    }
+    return QVariant(str.c_str());
+}
+
+bool ComponentModelShaderItem::IsEditable()
+{
+    return false;
+}
+
+bool ComponentModelShaderItem::DropData(const QMimeData* data)
+{
+    // TODO implement me
+    return false;
+}
+
+//--------------------------------------------------------------------------------
+
+ComponentModelTextureItem::ComponentModelTextureItem(string name, Material* material)
+    : ComponentModelItem(name), m_material(material)
+{
+    m_isHeader = false;
+}
+
+QVariant ComponentModelTextureItem::GetValueData()
+{
+    string str;
+    if (m_material == NULL)
+    {
+        str = "<MISSING REF>";
+    }
+    else
+    {
+        ResourceInfo* info = m_material->GetTexture()->GetResourceInfo();
+        str = GetFriendlyAssetNameFromPath(info->path) + " (" + std::to_string(info->guid) + ")";
+    }
+    return QVariant(str.c_str());
+}
+
+bool ComponentModelTextureItem::IsEditable()
+{
+    return false;
+}
+
+bool ComponentModelTextureItem::DropData(const QMimeData* data)
+{
+    // TODO implement me
+    return false;
 }
 
 //--------------------------------------------------------------------------------
@@ -177,34 +284,9 @@ void ComponentModelScriptItem::Refresh()
     m_isHeader = false;
 }
 
-QVariant ComponentModelScriptItem::GetData(ColumnType columnType, int role)
+QVariant ComponentModelScriptItem::GetValueData()
 {
-    if (role == Qt::BackgroundRole)
-    {
-        // TODO move this color stuff into the view
-        if (m_isHeader)
-        {
-            QColor color(230, 230, 230);
-            return QBrush(color);
-        }
-    }
-    else
-    {
-        switch (columnType)
-        {
-        case NAME_COLUMN:
-            return QVariant(m_name.c_str());
-        case VALUE_COLUMN:
-            string str = GetValueString();
-            return QVariant(str.c_str());
-            break;
-        }
-    }
-}
-
-string ComponentModelScriptItem::GetValueString()
-{
-    string valueString;
+    string str;
 
     if (m_valueType == ComponentParameter::TYPE_GAMEOBJECT)
     {
@@ -212,19 +294,19 @@ string ComponentModelScriptItem::GetValueString()
         GameObject* go = GameObjectReference::GetGameObject(m_value.g);
         if (go == NULL)
         {
-            valueString = "<MISSING REF>";
+            str = "<MISSING REF>";
         }
         else
         {
-            valueString = go->GetName() + " (" + std::to_string(m_value.g) + ")";
+            str = go->GetName() + " (" + std::to_string(m_value.g) + ")";
         }
     }
     else
     {
-        valueString = m_value.GetValueString(m_valueType);
+        str = m_value.GetValueString(m_valueType);
     }
 
-    return valueString;
+    return QVariant(str.c_str());
 }
 
 bool ComponentModelScriptItem::SetData(QVariant value)
