@@ -2,7 +2,7 @@
 
 A work-in-progress game engine in OpenGL.
 
-![alt tag](https://lh3.googleusercontent.com/-_ihoqiHZ8AI/VJiSiUaLT0I/AAAAAAAAAds/b6AwwFQEhpc/w1274-h685-no/MeshWidgetColors.jpg)
+![alt tag](https://lh3.googleusercontent.com/pQ_lW_9z3a-8k1aSF0ot7yEhMIX4b8UVhA3A7eHZjUI=w1616-h874-no)
 
 ##Engine
 
