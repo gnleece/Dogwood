@@ -17,7 +17,6 @@ class ComponentModel;
 class GameObject;
 class HierarchyModel;
 class HierarchyView;
-class MeshWidget;
 class QTreeView;
 class Scene;
 class SceneViewWidget;
@@ -61,7 +60,6 @@ private:
     AssetWidget*            m_assetWidget;
     ComponentWidget*        m_componentWidget;
     SceneViewWidget*        m_sceneViewWidget;
-    MeshWidget*             m_meshWidget;
 
     QSignalMapper*          m_addMeshSignalMapper;
 
@@ -77,7 +75,6 @@ public slots:
     void RebuildComponentSchema();
 
 private slots:
-    void SetupComponentWidgets();
     void SetupMenuCommands();
 
     void NewProject();

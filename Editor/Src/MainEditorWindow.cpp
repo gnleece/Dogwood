@@ -13,9 +13,7 @@
 #include "Tools\TransformTool.h"
 #include "Widgets\AssetWidget.h"
 #include "Widgets\ComponentWidget.h"
-#include "Widgets\MeshWidget.h"
 #include "Widgets\SceneViewWidget.h"
-#include "Widgets\ScrollWidget.h"
 #include "Widgets\WidgetUtils.h"
 
 #include <QFileDialog>
@@ -49,31 +47,14 @@ MainEditorWindow::MainEditorWindow(QWidget* parent)
     m_scene = new Scene();
 
     // Game object widget (components list)
-    SetupComponentWidgets();
+    m_componentWidget = new ComponentWidget(this);
+    m_ui->componentViewLayout->addWidget(m_componentWidget);
 
     // Menu setup
     SetupMenuCommands();
 
     // Debug logging
     DebugLogger::Singleton().SetTextEditTarget(m_ui->textEdit_DebugOutput);
-}
-
-void MainEditorWindow::SetupComponentWidgets()
-{
-    // Parent widget, which holds all the component widgets
-    ScrollWidget* componentsWidget = new ScrollWidget(m_ui->gameObjectScrollArea);
-    m_ui->gameObjectScrollArea->setWidget(componentsWidget);
-
-    // Mesh widget
-    m_meshWidget = new MeshWidget(componentsWidget);
-    componentsWidget->AddChildWidget(m_meshWidget);
-    m_meshWidget->hide();
-
-    // Components widget
-    m_componentWidget = new ComponentWidget(componentsWidget, this);
-    componentsWidget->AddChildWidget(m_componentWidget);
-    m_componentWidget->hide();
-
 }
 
 void MainEditorWindow::SetupMenuCommands()
@@ -574,17 +555,7 @@ void MainEditorWindow::SwitchSelectObject(GameObject* gameobject)
     // TODO clean this up!
     if (gameobject != NULL)
     {
-        if (gameobject->GetMesh())
-        {
-            m_meshWidget->SetMeshInstance(gameobject->GetMesh());
-            m_meshWidget->show();
-        }
-        else
-        {
-            m_meshWidget->SetMeshInstance(NULL);
-            m_meshWidget->hide();
-        }
-
+        // Initialize the component widget
         m_componentWidget->Init(gameobject);
         m_componentWidget->show();
 
@@ -594,8 +565,6 @@ void MainEditorWindow::SwitchSelectObject(GameObject* gameobject)
     }
     else
     {
-        m_meshWidget->SetMeshInstance(NULL);
-        m_meshWidget->hide();
         m_componentWidget->hide();  // TODO reset
     }
 }

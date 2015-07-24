@@ -155,35 +155,6 @@
      <string>Log</string>
     </property>
    </widget>
-   <widget class="QScrollArea" name="gameObjectScrollArea">
-    <property name="geometry">
-     <rect>
-      <x>330</x>
-      <y>30</y>
-      <width>261</width>
-      <height>461</height>
-     </rect>
-    </property>
-    <property name="verticalScrollBarPolicy">
-     <enum>Qt::ScrollBarAlwaysOn</enum>
-    </property>
-    <property name="horizontalScrollBarPolicy">
-     <enum>Qt::ScrollBarAlwaysOff</enum>
-    </property>
-    <property name="widgetResizable">
-     <bool>false</bool>
-    </property>
-    <widget class="QWidget" name="scrollAreaWidgetContents">
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>0</y>
-       <width>242</width>
-       <height>459</height>
-      </rect>
-     </property>
-    </widget>
-   </widget>
    <widget class="QToolButton" name="transformButton_Translate">
     <property name="geometry">
      <rect>
@@ -315,6 +286,17 @@
      </rect>
     </property>
     <layout class="QVBoxLayout" name="hierarchyViewLayout"/>
+   </widget>
+   <widget class="QWidget" name="verticalLayoutWidget_4">
+    <property name="geometry">
+     <rect>
+      <x>330</x>
+      <y>30</y>
+      <width>261</width>
+      <height>461</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="componentViewLayout"/>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
