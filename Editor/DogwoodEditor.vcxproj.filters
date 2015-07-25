@@ -77,12 +77,6 @@
     <CustomBuild Include="Include\Widgets\SceneViewWidget.h">
       <Filter>Header Files\Widgets</Filter>
     </CustomBuild>
-    <CustomBuild Include="colorwidget.ui">
-      <Filter>Form Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Include\Widgets\ColorWidget.h">
-      <Filter>Header Files\Widgets</Filter>
-    </CustomBuild>
     <CustomBuild Include="assetwidget.ui">
       <Filter>Form Files</Filter>
     </CustomBuild>
@@ -128,9 +122,6 @@
       <Filter>Header Files\Widgets</Filter>
     </ClInclude>
     <ClInclude Include="GeneratedFiles\ui_maineditorwindow.h">
-      <Filter>Generated Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GeneratedFiles\ui_colorwidget.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
     <ClInclude Include="GeneratedFiles\ui_assetwidget.h">
@@ -183,9 +174,6 @@
     <ClCompile Include="Src\Widgets\WidgetUtils.cpp">
       <Filter>Source Files\Widgets</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Widgets\ColorWidget.cpp">
-      <Filter>Source Files\Widgets</Filter>
-    </ClCompile>
     <ClCompile Include="Src\Widgets\AssetWidget.cpp">
       <Filter>Source Files\Widgets</Filter>
     </ClCompile>
@@ -226,12 +214,6 @@
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_HierarchyModel.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_ColorWidget.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_ColorWidget.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_AssetWidget.cpp">
