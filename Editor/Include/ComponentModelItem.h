@@ -30,6 +30,7 @@ public:
 
     virtual void        Refresh();
     virtual QVariant    GetValueData();
+    virtual QVariant    GetBackgroundData(ColumnType columnType);
     virtual bool        SetData(QVariant value);
     virtual bool        IsEditable();
     virtual bool        DropData(const QMimeData* data);
@@ -103,6 +104,7 @@ public:
 
     void                Refresh();
     QVariant            GetValueData();
+    QVariant            GetBackgroundData(ColumnType columnType);
     bool                SetData(QVariant value);
     bool                IsEditable();
     bool                DropData(const QMimeData* data);

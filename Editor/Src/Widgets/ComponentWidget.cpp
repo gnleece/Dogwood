@@ -23,10 +23,6 @@ ComponentWidget::ComponentWidget(QWidget* parent, MainEditorWindow* window) :
     // Set a reference to this widget in the ModifyTransformCommand class, so that it
     // can tell us when to refresh when transform data gets modified
     EditorCommands::ModifyTransformCommand::sComponentWidget = this;
-
-    //QHeaderView *verticalHeader = m_view->verticalHeader();
-    //verticalHeader->sectionResizeMode(QHeaderView::Fixed);
-    //verticalHeader->setDefaultSectionSize(24);
 }
 
 void ComponentWidget::Init(GameObject* go)

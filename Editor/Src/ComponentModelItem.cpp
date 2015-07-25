@@ -78,12 +78,7 @@ QVariant ComponentModelItem::GetData(ColumnType columnType, int role)
 {
     if (role == Qt::BackgroundRole)
     {
-        // TODO move this color stuff into the view
-        if (m_isHeader)
-        {
-            QColor color(230, 230, 230);
-            return QBrush(color);
-        }
+        return GetBackgroundData(columnType);
     }
     else
     {
@@ -100,6 +95,15 @@ QVariant ComponentModelItem::GetData(ColumnType columnType, int role)
 QVariant ComponentModelItem::GetValueData()
 {
     return QVariant("");
+}
+
+QVariant ComponentModelItem::GetBackgroundData(ColumnType /*columnType*/)
+{
+    if (m_isHeader)
+    {
+        QColor color(230, 230, 230);
+        return QBrush(color);
+    }
 }
 
 bool ComponentModelItem::SetData(QVariant value)
@@ -288,25 +292,54 @@ QVariant ComponentModelScriptItem::GetValueData()
 {
     string str;
 
-    if (m_valueType == ComponentParameter::TYPE_GAMEOBJECT)
+    switch(m_valueType)
+    {
+    case ComponentParameter::TYPE_GAMEOBJECT:
     {
         // For game object values, we show the object's name in addition to the guid
         GameObject* go = GameObjectReference::GetGameObject(m_value.g);
         if (go == NULL)
-        {
             str = "<MISSING REF>";
-        }
         else
-        {
             str = go->GetName() + " (" + std::to_string(m_value.g) + ")";
+        break;
+    }
+    case ComponentParameter::TYPE_COLOR:
+        str = "";
+        break;
+    default:
+        str = m_value.GetValueString(m_valueType);
+        break;
+    }
+
+    return QVariant(str.c_str());
+}
+
+QVariant ComponentModelScriptItem::GetBackgroundData(ColumnType columnType)
+{
+    if (m_valueType == ComponentParameter::TYPE_COLOR)
+    {
+        if (m_isHeader)
+        {
+            return ComponentModelItem::GetBackgroundData(columnType);
+        }
+
+        switch (columnType)
+        {
+        case ComponentModelItem::NAME_COLUMN:
+            return QVariant();
+            break;
+        case ComponentModelItem::VALUE_COLUMN:
+            ColourRGB c = m_value.c;
+            QColor qcolor(c.r*255, c.g*255, c.b*255);
+            return QBrush(qcolor);
+            break;
         }
     }
     else
     {
-        str = m_value.GetValueString(m_valueType);
+        return ComponentModelItem::GetBackgroundData(columnType);
     }
-
-    return QVariant(str.c_str());
 }
 
 bool ComponentModelScriptItem::SetData(QVariant value)
