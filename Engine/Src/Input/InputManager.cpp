@@ -95,4 +95,5 @@ bool InputManager::EnableGamePad(GamePad* pad, unsigned int id, bool enable)
 
         m_gamePads.erase(id);
     }
+    return true;
 }

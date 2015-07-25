@@ -107,7 +107,7 @@ void GameObject::AddComponent(GameComponent* component)
 
 GameObject* GameObject::GetChild(int index)
 {
-    if (index >= m_children.size())
+    if (index < 0 || index >= (int)m_children.size())
         return NULL;
 
     return m_children[index];
@@ -161,7 +161,7 @@ bool GameObject::InsertChild(int position, GameObject* child)
 
 bool GameObject::RemoveChildren(int position, int count)
 {
-    if (position < 0 || position + count > m_children.size())
+    if (position < 0 || position + count > (int)m_children.size())
         return false;
 
     m_children.erase(m_children.begin() + position, m_children.begin() + position + count);
@@ -253,7 +253,7 @@ MeshInstance* GameObject::GetMesh()
 
 void GameObject::AddChild(GameObject* child, int index)
 {
-    if (index >= 0 && index < m_children.size())
+    if (index >= 0 && index < (int)m_children.size())
     {
         m_children.insert(m_children.begin() + index, child);
     }

@@ -502,14 +502,6 @@ void MainEditorWindow::AddMeshPrimitive(const QString& meshName)
     }
 }
 
-void MainEditorWindow::AddGameComponent(unsigned int guid)
-{
-    if (m_selectedGameObject != NULL)
-    {
-        // TODO implement me
-    }
-}
-
 // Used to select an object from outside the hierarchy view itself (e.g. from the scene view)
 void MainEditorWindow::SelectObject(GameObject* gameObject)
 {

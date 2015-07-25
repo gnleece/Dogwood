@@ -53,7 +53,7 @@ int ComponentModel::rowCount(const QModelIndex& index) const
     return item->GetChildCount();
 }
 
-int ComponentModel::columnCount(const QModelIndex& index) const
+int ComponentModel::columnCount(const QModelIndex& /*index*/) const
 {
     // TODO get headers to span across all columns
     return 2;
@@ -205,7 +205,7 @@ void ComponentModel::AddComponentData()
 
         // Add item for each parameter
         ParamList params = component->GetParameterList();
-        for (int i = 0; i < params.size(); i++)
+        for (int i = 0; i < (int)params.size(); i++)
         {
             ComponentModelScriptItem* paramItem = new ComponentModelScriptItem(component, i);
             headerItem->AddChild(paramItem);

@@ -39,7 +39,7 @@ void ComponentModelItem::AddChild(ComponentModelItem* child)
 
 ComponentModelItem* ComponentModelItem::GetChild(int index)
 {
-    if (index < 0 || index >= m_children.size())
+    if (index < 0 || index >= (int)m_children.size())
         return NULL;
 
     return m_children[index];
@@ -92,6 +92,7 @@ QVariant ComponentModelItem::GetData(ColumnType columnType, int role)
             return GetValueData();
         }
     }
+    return QVariant();
 }
 
 QVariant ComponentModelItem::GetValueData()
@@ -106,6 +107,7 @@ QVariant ComponentModelItem::GetBackgroundData(ColumnType /*columnType*/)
         QColor color(230, 230, 230);
         return QBrush(color);
     }
+    return QVariant();
 }
 
 bool ComponentModelItem::SetData(QVariant value)
@@ -118,7 +120,7 @@ bool ComponentModelItem::IsEditable()
     return !m_isHeader;
 }
 
-bool ComponentModelItem::DropData(const QMimeData* data)
+bool ComponentModelItem::DropData(const QMimeData* /*data*/)
 {
     return false;
 }
@@ -189,7 +191,7 @@ bool ComponentModelMeshItem::IsEditable()
     return false;
 }
 
-bool ComponentModelMeshItem::DropData(const QMimeData* data)
+bool ComponentModelMeshItem::DropData(const QMimeData* /*data*/)
 {
     // TODO implement me
     return false;
@@ -231,7 +233,7 @@ bool ComponentModelShaderItem::IsEditable()
     return false;
 }
 
-bool ComponentModelShaderItem::DropData(const QMimeData* data)
+bool ComponentModelShaderItem::DropData(const QMimeData* /*data*/)
 {
     // TODO implement me
     return false;
@@ -265,7 +267,7 @@ bool ComponentModelTextureItem::IsEditable()
     return false;
 }
 
-bool ComponentModelTextureItem::DropData(const QMimeData* data)
+bool ComponentModelTextureItem::DropData(const QMimeData* /*data*/)
 {
     // TODO implement me
     return false;
@@ -341,10 +343,8 @@ QVariant ComponentModelScriptItem::GetBackgroundData(ColumnType columnType)
             break;
         }
     }
-    else
-    {
-        return ComponentModelItem::GetBackgroundData(columnType);
-    }
+
+    return ComponentModelItem::GetBackgroundData(columnType);
 }
 
 bool ComponentModelScriptItem::SetData(QVariant value)

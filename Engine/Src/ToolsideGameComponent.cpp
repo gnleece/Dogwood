@@ -90,7 +90,7 @@ void ComponentValue::SetValue(ComponentParameter::ParameterType type, string tex
             c = ReadVector3FromString(text);
             break;
         case ComponentParameter::TYPE_GAMEOBJECT:
-            g = std::stoull(text);
+            g = std::stoul(text);
             break;
     }
 }

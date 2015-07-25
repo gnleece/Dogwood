@@ -15,7 +15,7 @@
 using std::vector;
 
 ComponentWidget::ComponentWidget(QWidget* parent, MainEditorWindow* window) : 
-  m_ui(new Ui::ComponentWidget), m_sourceModel(NULL)
+  QWidget(parent), m_ui(new Ui::ComponentWidget), m_sourceModel(NULL)
 {
     m_ui->setupUi(this);
 

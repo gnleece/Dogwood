@@ -102,7 +102,6 @@ private slots:
     void TransformScaleButton();
 
     void AddMeshPrimitive(const QString& meshName);
-    void AddGameComponent(unsigned int guid);
 
     void OnHierarchySelectionChanged(QModelIndex& newIndex);
     void SwitchSelectObject(GameObject* gameobject);
