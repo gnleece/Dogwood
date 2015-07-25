@@ -198,6 +198,7 @@
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
     </CustomBuild>
+    <ClInclude Include="Include\EditorUtil.h" />
     <ClInclude Include="Include\Tools\BaseSceneTool.h" />
     <ClInclude Include="Include\Tools\TransformTool.h" />
     <CustomBuild Include="Include\Widgets\ColorWidget.h">
@@ -367,6 +368,7 @@
     <ClCompile Include="Src\ComponentView.cpp" />
     <ClCompile Include="Src\DebugLogger.cpp" />
     <ClCompile Include="Src\EditorCommands.cpp" />
+    <ClCompile Include="Src\EditorUtil.cpp" />
     <ClCompile Include="Src\GameObjectMimeData.cpp" />
     <ClCompile Include="Src\HierarchyModel.cpp" />
     <ClCompile Include="Src\HierarchyView.cpp" />

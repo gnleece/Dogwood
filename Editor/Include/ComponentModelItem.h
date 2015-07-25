@@ -34,6 +34,7 @@ public:
     virtual bool        SetData(QVariant value);
     virtual bool        IsEditable();
     virtual bool        DropData(const QMimeData* data);
+    virtual void        OnDoubleClick();
 
 protected:
     string                      m_name;
@@ -108,6 +109,7 @@ public:
     bool                SetData(QVariant value);
     bool                IsEditable();
     bool                DropData(const QMimeData* data);
+    void                OnDoubleClick();
 
 private:
     ToolsideGameComponent*              m_component;

@@ -36,9 +36,9 @@ public:
     void            RefreshModel();
     void            ClearModel();
 
-private:
     ComponentModelItem* GetItem(const QModelIndex& index) const;
 
+private:
     bool            IsEditable(const QModelIndex& index) const;
 
     void            AddTransformData();

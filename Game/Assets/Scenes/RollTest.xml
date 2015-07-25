@@ -68,7 +68,7 @@
                         <value x="1.00000" y="2.00000" z="3.00000"/>
                     </Param>
                     <Param name="SpinColor" type="5" value="">
-                        <value r="0.50000" g="0.50000" b="0.00000"/>
+                        <value r="0.66667" g="0.00000" b="0.00000"/>
                     </Param>
                 </Component>
             </Components>

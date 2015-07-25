@@ -1,6 +1,8 @@
 #include "Widgets\ComponentWidget.h"
 #include "ComponentModel.h"
+#include "ComponentModelItem.h"
 #include "ComponentView.h"
+#include "DebugLogger.h"
 #include "EditorCommands.h"
 #include "GameObject.h"
 #include "MainEditorWindow.h"
@@ -23,6 +25,8 @@ ComponentWidget::ComponentWidget(QWidget* parent, MainEditorWindow* window) :
     // Set a reference to this widget in the ModifyTransformCommand class, so that it
     // can tell us when to refresh when transform data gets modified
     EditorCommands::ModifyTransformCommand::sComponentWidget = this;
+
+    connect(m_view, SIGNAL(doubleClicked(const QModelIndex&)), this, SLOT(OnDoubleClick(const QModelIndex&)));
 }
 
 void ComponentWidget::Init(GameObject* go)
@@ -55,5 +59,17 @@ void ComponentWidget::Refresh()
     if (m_sourceModel != NULL)
     {
         m_sourceModel->RefreshModel();
+    }
+}
+
+void ComponentWidget::OnDoubleClick(const QModelIndex& index)
+{
+    if (!index.isValid())
+        return;
+
+    ComponentModelItem* item = m_sourceModel->GetItem(index);
+    if (item != NULL)
+    {
+        item->OnDoubleClick();
     }
 }

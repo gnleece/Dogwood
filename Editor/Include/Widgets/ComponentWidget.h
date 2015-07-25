@@ -27,4 +27,7 @@ private:
     Ui::ComponentWidget*    m_ui;
     ComponentModel*         m_sourceModel;
     ComponentView*          m_view;
+
+private slots:
+    void    OnDoubleClick(const QModelIndex& index);
 };

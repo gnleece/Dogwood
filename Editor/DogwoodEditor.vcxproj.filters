@@ -142,6 +142,9 @@
     <ClInclude Include="Include\ComponentModelItem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Include\EditorUtil.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\CommandManager.cpp">
@@ -274,6 +277,9 @@
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
     <ClCompile Include="Src\ComponentModelItem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\EditorUtil.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

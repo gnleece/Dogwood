@@ -1,4 +1,5 @@
 #include "ComponentModelItem.h"
+#include "EditorUtil.h"
 #include "GameObject.h"
 #include "GameObjectMimeData.h"
 #include "GameObjectReference.h"
@@ -10,6 +11,7 @@
 #include "Util.h"
 #include <QBrush>
 #include <QColor>
+#include <QColorDialog>
 
 ComponentModelItem::ComponentModelItem(string name)
     : m_name(name), m_isHeader(true), m_parent(NULL)
@@ -120,6 +122,9 @@ bool ComponentModelItem::DropData(const QMimeData* data)
 {
     return false;
 }
+
+void ComponentModelItem::OnDoubleClick()
+{}
 
 //--------------------------------------------------------------------------------
 
@@ -356,8 +361,9 @@ bool ComponentModelScriptItem::IsEditable()
     if (m_isHeader)
         return false;
 
-    if (m_valueType == ComponentParameter::TYPE_GAMEOBJECT)
-        return false;       // reference types can't be edited directly
+    if (m_valueType == ComponentParameter::TYPE_GAMEOBJECT ||   // reference types can't be edited directly
+        m_valueType == ComponentParameter::TYPE_COLOR)          // colors are edited using the color window
+        return false;
 
     return true;
 }
@@ -376,4 +382,27 @@ bool ComponentModelScriptItem::DropData(const QMimeData* data)
     m_component->SetParameter(ComponentParameter(m_name, m_valueType), m_value);
 
     return true;
+}
+
+void ComponentModelScriptItem::OnDoubleClick()
+{
+    switch (m_valueType)
+    {
+    case ComponentParameter::TYPE_COLOR:
+    {
+        // Open a ColorDialog to let the user pick a color
+        QColor newColor = QColorDialog::getColor(ColourRGBToQColor(m_value.c));
+
+        if (newColor.isValid())                             // color will be invalid if user hits "cancel" on dialog
+        {
+            // TODO set data using Editor Commands
+            m_value.c = QColorToColourRGB(newColor);
+            m_component->SetParameter(ComponentParameter(m_name, m_valueType), m_value);
+        }
+
+        break;
+    }
+    default:
+        break;
+    }
 }
