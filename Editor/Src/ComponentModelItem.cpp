@@ -204,13 +204,23 @@ ComponentModelShaderItem::ComponentModelShaderItem(string name, Material* materi
 {
     m_isHeader = false;
 
+    // Texture
     if (m_material->GetTexture() != NULL && m_material->GetTexture() != Texture::DefaultTexture())       // TODO temp hack until shader params are fixed properly
     {
         ComponentModelTextureItem* textureItem = new ComponentModelTextureItem("Texture", m_material);
         AddChild(textureItem);
     }
 
-    // TODO add colors
+    // Colors
+    unordered_map<GLint, ColourRGB> colorList = m_material->GetColorList();
+    unordered_map<GLint, ColourRGB>::iterator iter = colorList.begin();
+    for (; iter != colorList.end(); iter++)
+    {
+        int colorID = iter->first;
+        string colorName = m_material->GetShader()->GetUniformName(colorID);
+        ComponentModelColorItem* colorItem = new ComponentModelColorItem(colorName, m_material, colorID);
+        AddChild(colorItem);
+    }
 }
 
 QVariant ComponentModelShaderItem::GetValueData()
@@ -271,6 +281,64 @@ bool ComponentModelTextureItem::DropData(const QMimeData* /*data*/)
 {
     // TODO implement me
     return false;
+}
+
+//--------------------------------------------------------------------------------
+
+ComponentModelColorItem::ComponentModelColorItem(string name, Material* material, int paramID)
+    : ComponentModelItem(name), m_material(material), m_paramID(paramID)
+{
+    m_isHeader = false;
+}
+
+QVariant ComponentModelColorItem::GetValueData()
+{
+    return QVariant();
+}
+
+QVariant ComponentModelColorItem::GetBackgroundData(ColumnType columnType)
+{
+    if (m_isHeader)
+    {
+        return ComponentModelItem::GetBackgroundData(columnType);
+    }
+
+    switch (columnType)
+    {
+    case ComponentModelItem::NAME_COLUMN:
+        return QVariant();
+        break;
+    case ComponentModelItem::VALUE_COLUMN:
+        ColourRGB c = m_material->GetColor(m_paramID);
+        QColor qcolor(c.r * 255, c.g * 255, c.b * 255);
+        return QBrush(qcolor);
+        break;
+    }
+
+    return ComponentModelItem::GetBackgroundData(columnType);
+}
+
+bool ComponentModelColorItem::IsEditable()
+{
+    return false;
+}
+
+bool ComponentModelColorItem::DropData(const QMimeData* /*data*/)
+{
+    return false;
+}
+
+void ComponentModelColorItem::OnDoubleClick()
+{
+    // Open a ColorDialog to let the user pick a color
+    ColourRGB oldColor = m_material->GetColor(m_paramID);
+    QColor newColor = QColorDialog::getColor(ColourRGBToQColor(oldColor));
+
+    if (newColor.isValid())                             // color will be invalid if user hits "cancel" on dialog
+    {
+        // TODO set data using Editor Commands
+        m_material->SetColor(m_paramID, QColorToColourRGB(newColor));
+    }
 }
 
 //--------------------------------------------------------------------------------

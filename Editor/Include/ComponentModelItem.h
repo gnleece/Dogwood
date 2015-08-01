@@ -95,7 +95,23 @@ public:
     virtual bool        DropData(const QMimeData* data);
 
 private:
-    Material*          m_material;
+    Material*           m_material;
+};
+
+class ComponentModelColorItem : public ComponentModelItem
+{
+public:
+    ComponentModelColorItem(string name, Material* material, int paramID);
+
+    virtual QVariant    GetValueData();
+    QVariant            GetBackgroundData(ColumnType columnType);
+    virtual bool        IsEditable();
+    virtual bool        DropData(const QMimeData* data);
+    void                OnDoubleClick();
+
+private:
+    Material*           m_material;
+    int                 m_paramID;
 };
 
 class ComponentModelScriptItem : public ComponentModelItem
