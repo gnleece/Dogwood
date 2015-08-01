@@ -7,10 +7,6 @@
 Material::Material()
 {
     m_texture = NULL;
-
-    m_colours[MAT_COLOUR_DIFFUSE] = ColourRGB::White;
-    m_colours[MAT_COLOUR_AMBIENT] = ColourRGB(0.1f, 0.1f, 0.1f);
-    m_colours[MAT_COLOUR_SPECULAR] = ColourRGB::White;
 }
 
 Material* Material::DeepCopy()
@@ -19,9 +15,12 @@ Material* Material::DeepCopy()
 
     newMaterial->m_shader = m_shader;
     newMaterial->m_texture = m_texture;
-    newMaterial->m_colours[MAT_COLOUR_DIFFUSE] = m_colours[MAT_COLOUR_DIFFUSE];
-    newMaterial->m_colours[MAT_COLOUR_AMBIENT] = m_colours[MAT_COLOUR_AMBIENT];
-    newMaterial->m_colours[MAT_COLOUR_SPECULAR] = m_colours[MAT_COLOUR_SPECULAR];
+
+    unordered_map<GLint, ColourRGB>::iterator iter = m_uniformColors.begin();
+    for (; iter != m_uniformColors.end(); iter++)
+    {
+        newMaterial->SetColor(iter->first, iter->second);
+    }
 
     return newMaterial;
 }
@@ -29,6 +28,12 @@ Material* Material::DeepCopy()
 void Material::SetShader(ShaderProgram* shader)
 {
     m_shader = shader;
+    m_uniformColors.clear();
+
+    m_positionParamID   = m_shader->GetAttributeLocation("position");
+    m_normalParamID     = m_shader->GetAttributeLocation("normal");
+    m_uvParamID         = m_shader->GetAttributeLocation("texcoord");
+    m_modelID           = m_shader->GetUniformLocation("model");
 }
 
 void Material::SetTexture(Texture* texture)
@@ -36,12 +41,15 @@ void Material::SetTexture(Texture* texture)
     m_texture = texture;
 }
 
-void Material::SetColour(eMatColourType type, ColourRGB colour)
+void Material::SetColor(GLint paramID, ColourRGB color)
 {
-    if (type < NUM_MAT_COLOURS)
-    {
-        m_colours[type] = colour;
-    }
+    m_uniformColors[paramID] = color;
+}
+
+void Material::SetColor(string paramName, ColourRGB color)
+{
+    GLint paramID = m_shader->GetUniformLocation(paramName);
+    SetColor(paramID, color);
 }
 
 ShaderProgram* Material::GetShader()
@@ -54,13 +62,22 @@ Texture* Material::GetTexture()
     return m_texture;
 }
 
-ColourRGB Material::GetColour(eMatColourType type)
+ColourRGB Material::GetColor(GLint paramID)
 {
-    if (type < NUM_MAT_COLOURS)
-    {
-        return m_colours[type];
-    }
+    if (m_uniformColors.count(paramID) > 0)
+        return m_uniformColors[paramID];
     return ColourRGB::Black;
+}
+
+ColourRGB Material::GetColor(string paramName)
+{
+    GLint paramID = m_shader->GetUniformLocation(paramName);
+    return GetColor(paramID);
+}
+
+unordered_map<GLint, ColourRGB>& Material::GetColorList()
+{
+    return m_uniformColors;
 }
 
 void Material::ApplyMaterial(GLint posVBO, GLint normVBO, GLint uvVBO, Transform& transform)
@@ -75,44 +92,42 @@ void Material::ApplyMaterial(GLint posVBO, GLint normVBO, GLint uvVBO, Transform
     }
     m_texture->BindTexture();
 
-    // Set uniform colour values for shader
-    SetUniformParam(ShaderProgram::UNI_COLOUR_DIFFUSE,  MAT_COLOUR_DIFFUSE);
-    SetUniformParam(ShaderProgram::UNI_COLOUR_AMBIENT,  MAT_COLOUR_AMBIENT);
-    SetUniformParam(ShaderProgram::UNI_COLOUR_SPECULAR, MAT_COLOUR_SPECULAR);
+    // Set uniform color values for shader
+    unordered_map<GLint, ColourRGB>::iterator iter = m_uniformColors.begin();
+    for (; iter != m_uniformColors.end(); iter++)
+    {
+        SetUniformParam(iter->first, iter->second);
+    }
 
     // Set vertex values for shader
-    SetAttribParam(ShaderProgram::ATTRIB_POS,      posVBO,  3);
-    SetAttribParam(ShaderProgram::ATTRIB_NORMAL,   normVBO, 3);
-    SetAttribParam(ShaderProgram::ATTRIB_TEXCOORD, uvVBO,   2);
+    SetAttribParam(m_positionParamID,   posVBO, 3);
+    SetAttribParam(m_normalParamID,     normVBO, 3);
+    SetAttribParam(m_uvParamID,         uvVBO, 2);
 
     // Set model matrix value for shader        // TODO not sure this should be here
-    GLint uniModel = m_shader->GetParamLocation(ShaderProgram::UNI_MODEL);
-    glUniformMatrix4fv(uniModel, 1, GL_FALSE, transform.GetMatrix().Transpose().Start());
+    glUniformMatrix4fv(m_modelID, 1, GL_FALSE, transform.GetMatrix().Transpose().Start());
 }
 
 void Material::UnapplyMaterial()
 {
-    DisableAttribArray(ShaderProgram::ATTRIB_POS);
-    DisableAttribArray(ShaderProgram::ATTRIB_NORMAL);
-    DisableAttribArray(ShaderProgram::ATTRIB_TEXCOORD);
+    DisableAttribArray(m_positionParamID);
+    DisableAttribArray(m_normalParamID);
+    DisableAttribArray(m_uvParamID);
 }
 
-void Material::SetUniformParam(ShaderProgram::eShaderParam param, eMatColourType colour)
+void Material::SetUniformParam(GLint paramID, ColourRGB& color)
 {
-    GLint paramLocation = m_shader->GetParamLocation(param);
-    glUniform3fv(paramLocation, 1, m_colours[colour].Start());
+    glUniform3fv(paramID, 1, color.Start());
 }
 
-void Material::SetAttribParam(ShaderProgram::eShaderParam param, GLint buffer, int size)
+void Material::SetAttribParam(GLint paramID, GLint buffer, int size)
 {
-    GLint paramLocation = m_shader->GetParamLocation(param);
-    glEnableVertexAttribArray(paramLocation);
+    glEnableVertexAttribArray(paramID);
     glBindBuffer(GL_ARRAY_BUFFER, buffer);
-    glVertexAttribPointer(paramLocation, size, GL_FLOAT, GL_FALSE, size * sizeof(float), 0);
+    glVertexAttribPointer(paramID, size, GL_FLOAT, GL_FALSE, size * sizeof(float), 0);
 }
 
-void Material::DisableAttribArray(ShaderProgram::eShaderParam param)
+void Material::DisableAttribArray(GLint paramID)
 {
-    GLint paramLocation = m_shader->GetParamLocation(param);
-    glDisableVertexAttribArray(paramLocation);
+    glDisableVertexAttribArray(paramID);
 }

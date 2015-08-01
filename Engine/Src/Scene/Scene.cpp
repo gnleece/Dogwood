@@ -298,21 +298,21 @@ void Scene::AddMaterial(MeshInstance* meshInstance, XMLElement* xmlnode)
         }
 
         // Apply colours
-        ApplyMaterialColor(materialXML, material, "ColorDiffuse", Material::MAT_COLOUR_DIFFUSE, ColourRGB::White);
-        ApplyMaterialColor(materialXML, material, "ColorAmbient", Material::MAT_COLOUR_AMBIENT, ColourRGB(0.1f, 0.1f, 0.1f));
-        ApplyMaterialColor(materialXML, material, "ColorSpecular", Material::MAT_COLOUR_SPECULAR, ColourRGB::White);
+        ApplyMaterialColors(materialXML, material);
     }
 }
 
-void Scene::ApplyMaterialColor(XMLElement* xmlnode, Material* material, string colorName, Material::eMatColourType type, ColourRGB defaultColor)
+void Scene::ApplyMaterialColors(XMLElement* xmlnode, Material* material)
 {
-    ColourRGB color = defaultColor;
-    XMLElement* colorXML = xmlnode->FirstChildElement(colorName.c_str());
-    if (colorXML)
+    XMLElement* colorXML = xmlnode->FirstChildElement("Color");
+    while (colorXML)
     {
-        color = ReadColourFromXML(colorXML);
+        string name = colorXML->Attribute("name");
+        ColourRGB color = ReadColourFromXML(colorXML);
+        material->SetColor(name, color);
+
+        colorXML = colorXML->NextSiblingElement("Color");
     }
-    material->SetColour(type, color);
 }
 
 void Scene::AddGameComponents(GameObject* go, XMLElement* xmlnode)
@@ -331,7 +331,6 @@ void Scene::AddGameComponents(GameObject* go, XMLElement* xmlnode)
             }
             else
             {
-                // TODO CreateComponent needs to take parameter values as well
                 unsigned int guid = componentXML->UnsignedAttribute("guid");
                 GameComponentFactory* factory = GameProject::Singleton().GetRuntimeComponentFactory();
                 GameComponent* component = factory->CreateComponent(guid);
@@ -438,11 +437,24 @@ void Scene::SerializeMaterial(GameObject* gameObject, XMLNode* parentNode, XMLDo
     }
 
     // Serialize colour info
-    matNode->InsertEndChild(WriteColourToXML(mat->GetColour(Material::MAT_COLOUR_DIFFUSE), "ColorDiffuse", rootDoc));
-    matNode->InsertEndChild(WriteColourToXML(mat->GetColour(Material::MAT_COLOUR_AMBIENT), "ColorAmbient", rootDoc));
-    matNode->InsertEndChild(WriteColourToXML(mat->GetColour(Material::MAT_COLOUR_SPECULAR), "ColorSpecular", rootDoc));
+    SerializeMaterialColors(mat, matNode, rootDoc);
 }
 
+void Scene::SerializeMaterialColors(Material* material, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc)
+{
+    unordered_map<GLint, ColourRGB> colors = material->GetColorList();
+    unordered_map<GLint, ColourRGB>::iterator iter = colors.begin();
+
+    ShaderProgram* shader = material->GetShader();
+
+    for (; iter != colors.end(); iter++)
+    {
+        XMLElement* node = (WriteColourToXML(iter->second, "Color", rootDoc));
+        string paramName = shader->GetUniformName(iter->first);
+        node->SetAttribute("name", paramName.c_str());
+        parentNode->InsertEndChild(node);
+    }
+}
 
 void Scene::SerializeComponents(GameObject* gameObject, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc)
 {

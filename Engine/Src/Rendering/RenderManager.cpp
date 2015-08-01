@@ -105,10 +105,16 @@ void RenderManager::RenderScene()
 
 void RenderManager::ApplyGlobalParams(ShaderProgram* shader)
 {
+    // Light
     m_light.ApplyLight(shader);
 
-    SetUniformMatrix(shader, ShaderProgram::UNI_VIEW, m_viewMatrix.GetMatrix());
-    SetUniformMatrix(shader, ShaderProgram::UNI_PROJ, m_projMatrix.GetMatrix());
+    // View matrix
+    GLint viewLocation = shader->GetUniformLocation("view");
+    glUniformMatrix4fv(viewLocation, 1, GL_FALSE, m_viewMatrix.GetMatrix().Transpose().Start());
+
+    // Projection matrix
+    GLint projLocation = shader->GetUniformLocation("proj");
+    glUniformMatrix4fv(projLocation, 1, GL_FALSE, m_projMatrix.GetMatrix().Transpose().Start());
 
     m_dirty = false;
 }
@@ -136,12 +142,6 @@ Vector2 RenderManager::ToScreenSpace(Vector3 worldPosition)
     screenPos[0] = (x + 1.0f) * m_config.width / 2.0f;
     screenPos[1] = (1.0f - y) * m_config.height / 2.0f;
     return screenPos;
-}
-
-void RenderManager::SetUniformMatrix(ShaderProgram* shader, ShaderProgram::eShaderParam param, Matrix4x4 & matrix)
-{
-    GLint paramLocation = shader->GetParamLocation(param);
-    glUniformMatrix4fv(paramLocation, 1, GL_FALSE, matrix.Transpose().Start());
 }
 
 void RenderManager::LoadCommonShaders()

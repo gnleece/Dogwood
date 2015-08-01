@@ -69,13 +69,12 @@ private:
     RenderManager(RenderManager const&);
     void operator=(RenderManager const&);
 
-    void            SetUniformMatrix(ShaderProgram* shader, ShaderProgram::eShaderParam param, Matrix4x4& matrix);
     void            LoadCommonShaders();
 
     RenderConfig    m_config;
 
     GameObject*     m_rootObject;
-    Light           m_light;        // TODO support mutiple light sources
+    Light           m_light;        // TODO support multiple light sources
     ColourRGB       m_clearColour;
 
     Transform       m_viewMatrix;

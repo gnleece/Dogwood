@@ -37,12 +37,12 @@ Vector3 ReadVector3FromXML(XMLElement* xmlnode)
     return v;
 }
 
-XMLNode* WriteVector3ToXML(Vector3 v, string name, XMLDocument& doc)
+XMLElement* WriteVector3ToXML(Vector3 v, string name, XMLDocument& doc)
 {
     XMLElement* xmlnode = doc.NewElement(name.c_str());
 
     // There doesn't seem to be a way to set float precision in tinyxml2,
-    // so write the float to a string with the desried precision instead
+    // so write the float to a string with the desired precision instead
     char buf[20] = { 0 };
     sprintf_s(buf, "%1.5f", v[0]);
     xmlnode->SetAttribute("x", buf);
@@ -66,12 +66,12 @@ ColourRGB ReadColourFromXML(XMLElement* xmlnode)
     return c;
 }
 
-XMLNode* WriteColourToXML(ColourRGB c, string name, XMLDocument& doc)
+XMLElement* WriteColourToXML(ColourRGB c, string name, XMLDocument& doc)
 {
     XMLElement* xmlnode = doc.NewElement(name.c_str());
 
     // There doesn't seem to be a way to set float precision in tinyxml2,
-    // so write the float to a string with the desried precision instead
+    // so write the float to a string with the desired precision instead
     char buf[20] = { 0 };
     sprintf_s(buf, "%1.5f", c.r);
     xmlnode->SetAttribute("r", buf);
@@ -83,26 +83,26 @@ XMLNode* WriteColourToXML(ColourRGB c, string name, XMLDocument& doc)
     return xmlnode;
 }
 
-XMLNode* WriteIntToXML(int value, string nodeName, string attribName, XMLDocument& doc)
+XMLElement* WriteIntToXML(int value, string nodeName, string attribName, XMLDocument& doc)
 {
     XMLElement* xmlnode = doc.NewElement(nodeName.c_str());
     xmlnode->SetAttribute(attribName.c_str(), value);
     return xmlnode;
 }
 
-XMLNode* WriteUnsignedIntToXML(unsigned int value, string nodeName, string attribName, XMLDocument& doc)
+XMLElement* WriteUnsignedIntToXML(unsigned int value, string nodeName, string attribName, XMLDocument& doc)
 {
     XMLElement* xmlnode = doc.NewElement(nodeName.c_str());
     xmlnode->SetAttribute(attribName.c_str(), value);
     return xmlnode;
 }
 
-XMLNode* WriteFloatToXML(float value, string nodeName, string attribName, XMLDocument& doc)
+XMLElement* WriteFloatToXML(float value, string nodeName, string attribName, XMLDocument& doc)
 {
     XMLElement* xmlnode = doc.NewElement(nodeName.c_str());
 
     // There doesn't seem to be a way to set float precision in tinyxml2,
-    // so write the float to a string with the desiried precision instead
+    // so write the float to a string with the desired precision instead
     char buf[20] = { 0 };
     sprintf_s(buf, "%1.5f", value);
     xmlnode->SetAttribute(attribName.c_str(), buf);
@@ -110,7 +110,7 @@ XMLNode* WriteFloatToXML(float value, string nodeName, string attribName, XMLDoc
     return xmlnode;
 }
 
-XMLNode* WriteStringToXML(string str, string nodeName, string attribName, XMLDocument& doc)
+XMLElement* WriteStringToXML(string str, string nodeName, string attribName, XMLDocument& doc)
 {
     XMLElement* xmlnode = doc.NewElement(nodeName.c_str());
     xmlnode->SetAttribute(attribName.c_str(), str.c_str());

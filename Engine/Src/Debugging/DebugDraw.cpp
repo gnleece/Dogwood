@@ -57,15 +57,15 @@ void DebugDraw::DrawLineBuffer(GLuint vao, GLuint vbo, Vector3* buffer, int coun
     m_shader->ApplyShader();
 
     // Set uniform color value
-    GLint paramLocation = m_shader->GetParamLocation(ShaderProgram::UNI_COLOUR_DIFFUSE);
+    GLint paramLocation = m_shader->GetUniformLocation("color");
     glUniform3fv(paramLocation, 1, color.Start());
 
-    // Set model matrix to identiy (debug lines are given in world coords)
-    GLint uniModel = m_shader->GetParamLocation(ShaderProgram::UNI_MODEL);
+    // Set model matrix to identity (debug lines are given in world coords)
+    GLint uniModel = m_shader->GetUniformLocation("model");
     glUniformMatrix4fv(uniModel, 1, GL_FALSE, Matrix4x4::Identity.Transpose().Start());
 
     // Bind position data
-    paramLocation = m_shader->GetParamLocation(ShaderProgram::ATTRIB_POS);
+    paramLocation = m_shader->GetAttributeLocation("position");
     glEnableVertexAttribArray(paramLocation);
     glVertexAttribPointer(paramLocation, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
 
@@ -81,15 +81,15 @@ void DebugDraw::RenderLines()
 
     // TODO this function is broken now that colours are uniform parameters
 
-    // Set model matrix to identiy. debug lines are given in world coords
-    GLint uniModel = m_shader->GetParamLocation(ShaderProgram::UNI_MODEL);
+    // Set model matrix to identity. debug lines are given in world coords
+    GLint uniModel = m_shader->GetUniformLocation("model");
     glUniformMatrix4fv(uniModel, 1, GL_FALSE, Matrix4x4::Identity.Transpose().Start());
 
     // Load position data
     glBindBuffer(GL_ARRAY_BUFFER, m_vertexBufferID);
     glBufferData(GL_ARRAY_BUFFER, sizeof(m_vertexBufferData), m_vertexBufferData, GL_DYNAMIC_DRAW);
 
-    GLint paramLocation = m_shader->GetParamLocation(ShaderProgram::ATTRIB_POS);
+    GLint paramLocation = m_shader->GetAttributeLocation("position");
     glEnableVertexAttribArray(paramLocation);
     glVertexAttribPointer(paramLocation, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
 
@@ -97,7 +97,7 @@ void DebugDraw::RenderLines()
     glBindBuffer(GL_ARRAY_BUFFER, m_colourBufferID);
     glBufferData(GL_ARRAY_BUFFER, sizeof(m_lineColours), m_lineColours, GL_DYNAMIC_DRAW);
 
-    paramLocation = m_shader->GetParamLocation(ShaderProgram::ATTRIB_COLOUR);
+    paramLocation = m_shader->GetAttributeLocation("color");
     glEnableVertexAttribArray(paramLocation);
     glVertexAttribPointer(paramLocation, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
 
@@ -173,17 +173,17 @@ void Gnomon::Draw(Matrix4x4& transform)
     glBindVertexArray(m_vertexArrayID);
 
     // Set model matrix
-    GLint uniModel = m_shader->GetParamLocation(ShaderProgram::UNI_MODEL);
+    GLint uniModel = m_shader->GetUniformLocation("model");
     glUniformMatrix4fv(uniModel, 1, GL_FALSE, transform.Transpose().Start());
 
     // Bind position data
-    GLint posParamLocation = m_shader->GetParamLocation(ShaderProgram::ATTRIB_POS);
+    GLint posParamLocation = m_shader->GetAttributeLocation("position");
     glEnableVertexAttribArray(posParamLocation);
     glBindBuffer(GL_ARRAY_BUFFER, m_positionBufferID);
     glVertexAttribPointer(posParamLocation, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
 
     // Bind color data
-    GLint colParamLocation = m_shader->GetParamLocation(ShaderProgram::ATTRIB_COLOUR);
+    GLint colParamLocation = m_shader->GetAttributeLocation("color");
     glEnableVertexAttribArray(colParamLocation);
     glBindBuffer(GL_ARRAY_BUFFER, m_colorBufferID);
     glVertexAttribPointer(colParamLocation, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
@@ -244,15 +244,15 @@ void Pyramid::Draw(Matrix4x4& transform, ColourRGB& color)
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
 
     // Set model matrix
-    GLint uniModel = m_shader->GetParamLocation(ShaderProgram::UNI_MODEL);
+    GLint uniModel = m_shader->GetUniformLocation("model");
     glUniformMatrix4fv(uniModel, 1, GL_FALSE, transform.Transpose().Start());
 
     // Set uniform color
-    GLint uniColor = m_shader->GetParamLocation(ShaderProgram::UNI_COLOUR_DIFFUSE);
+    GLint uniColor = m_shader->GetUniformLocation("color");
     glUniform3fv(uniColor, 1, color.Start());
 
     // Bind position data
-    GLint paramLocation = m_shader->GetParamLocation(ShaderProgram::ATTRIB_POS);
+    GLint paramLocation = m_shader->GetAttributeLocation("position");
     glEnableVertexAttribArray(paramLocation);
     glBindBuffer(GL_ARRAY_BUFFER, m_positionBufferID);
     glVertexAttribPointer(paramLocation, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);

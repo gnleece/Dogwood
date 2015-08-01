@@ -18,21 +18,6 @@ void ShaderProgram::Load(string path)
     if (success)
     {
         LinkProgram();
-
-        m_paramLocations[ATTRIB_POS] = glGetAttribLocation(m_programID, "position");
-        m_paramLocations[ATTRIB_NORMAL] = glGetAttribLocation(m_programID, "normal");
-        m_paramLocations[ATTRIB_TEXCOORD] = glGetAttribLocation(m_programID, "texcoord");
-        m_paramLocations[ATTRIB_COLOUR] = glGetAttribLocation(m_programID, "color");
-
-        m_paramLocations[UNI_MODEL] = glGetUniformLocation(m_programID, "model");
-        m_paramLocations[UNI_VIEW] = glGetUniformLocation(m_programID, "view");
-        m_paramLocations[UNI_PROJ] = glGetUniformLocation(m_programID, "proj");
-        m_paramLocations[UNI_LIGHT_POS] = glGetUniformLocation(m_programID, "lightPos");
-        m_paramLocations[UNI_LIGHT_COLOUR] = glGetUniformLocation(m_programID, "lightColor");
-        m_paramLocations[UNI_LIGHT_POWER] = glGetUniformLocation(m_programID, "lightPower");
-        m_paramLocations[UNI_COLOUR_DIFFUSE] = glGetUniformLocation(m_programID, "matColorDiffuse");
-        m_paramLocations[UNI_COLOUR_AMBIENT] = glGetUniformLocation(m_programID, "matColorAmbient");
-        m_paramLocations[UNI_COLOUR_SPECULAR] = glGetUniformLocation(m_programID, "matColorSpecular");
     }
 }
 
@@ -59,13 +44,50 @@ GLuint ShaderProgram::GetID() const
     return m_programID;
 }
 
-GLint ShaderProgram::GetParamLocation(eShaderParam param) const
+GLint ShaderProgram::GetUniformLocation(string param)
 {
-    if (param < NUM_PARAMS)
+    if (m_cachedUniformLocations.count(param) == 0)
     {
-        return m_paramLocations[param];
+        m_cachedUniformLocations[param] = glGetUniformLocation(m_programID, param.c_str());;
     }
-    return 0;
+    return m_cachedUniformLocations[param];
+}
+
+GLint ShaderProgram::GetAttributeLocation(string param)
+{
+    if (m_cachedAttributeLocations.count(param) == 0)
+    {
+        m_cachedAttributeLocations[param] = glGetAttribLocation(m_programID, param.c_str());;
+    }
+    return m_cachedAttributeLocations[param];
+}
+
+string ShaderProgram::GetUniformName(GLint paramID)
+{
+    // This lookup is slow, but should only be needed during scene serialization
+    unordered_map<string, GLint>::iterator iter = m_cachedUniformLocations.begin();
+    for (; iter != m_cachedUniformLocations.end(); iter++)
+    {
+        if (iter->second == paramID)
+        {
+            return iter->first;
+        }
+    }
+    return "";
+}
+
+string ShaderProgram::GetAttributeName(GLint paramID)
+{
+    // This lookup is slow, but should only be needed during scene serialization
+    unordered_map<string, GLint>::iterator iter = m_cachedAttributeLocations.begin();
+    for (; iter != m_cachedAttributeLocations.end(); iter++)
+    {
+        if (iter->second == paramID)
+        {
+            return iter->first;
+        }
+    }
+    return "";
 }
 
 void ShaderProgram::Delete()

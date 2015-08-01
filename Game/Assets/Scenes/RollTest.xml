@@ -32,9 +32,9 @@
             <Mesh guid="156145593">
                 <Material>
                     <Shader guid="3746892247"/>
-                    <ColorDiffuse r="0.00000" g="0.66667" b="0.00000"/>
-                    <ColorAmbient r="0.00000" g="0.66667" b="0.00000"/>
-                    <ColorSpecular r="0.00000" g="0.00000" b="0.00000"/>
+                    <Color r="0.00000" g="0.66667" b="0.00000" name="colorDiffuse"/>
+                    <Color r="0.00000" g="0.66667" b="0.00000" name="colorAmbient"/>
+                    <Color r="0.00000" g="0.00000" b="0.00000" name="colorSpecular"/>
                 </Material>
             </Mesh>
             <Components/>
@@ -48,9 +48,9 @@
             <Mesh guid="3936014360">
                 <Material>
                     <Shader guid="3746892247"/>
-                    <ColorDiffuse r="0.00000" g="1.00000" b="1.00000"/>
-                    <ColorAmbient r="0.00000" g="0.66667" b="1.00000"/>
-                    <ColorSpecular r="1.00000" g="1.00000" b="1.00000"/>
+                    <Color r="0.00000" g="1.00000" b="1.00000" name="colorDiffuse"/>
+                    <Color r="0.00000" g="0.66667" b="1.00000" name="colorAmbient"/>
+                    <Color r="1.00000" g="1.00000" b="1.00000" name="colorSpecular"/>
                 </Material>
             </Mesh>
             <Components>
@@ -58,18 +58,6 @@
                     <Param name="Speed" type="1" value="250"/>
                     <Param name="Radius" type="1" value="0.5"/>
                     <Param name="RotationChild" type="6" value="2279407888"/>
-                </Component>
-                <Component guid="3075022151">
-                    <Param name="SpinType" type="0" value="0"/>
-                    <Param name="Speed" type="1" value="7171"/>
-                    <Param name="EnableSpinning" type="2" value="0"/>
-                    <Param name="SpinLabel" type="3" value="abcdef"/>
-                    <Param name="Offset" type="4" value="">
-                        <value x="1.00000" y="2.00000" z="3.00000"/>
-                    </Param>
-                    <Param name="SpinColor" type="5" value="">
-                        <value r="0.66667" g="0.00000" b="0.00000"/>
-                    </Param>
                 </Component>
             </Components>
             <GameObject guid="4128969078" name="YDot">
@@ -81,9 +69,9 @@
                 <Mesh guid="3936014360">
                     <Material>
                         <Shader guid="3746892247"/>
-                        <ColorDiffuse r="0.33333" g="1.00000" b="0.00000"/>
-                        <ColorAmbient r="0.00000" g="0.33333" b="1.00000"/>
-                        <ColorSpecular r="1.00000" g="1.00000" b="1.00000"/>
+                        <Color r="0.33333" g="1.00000" b="0.00000" name="colorDiffuse"/>
+                        <Color r="0.00000" g="0.33333" b="1.00000" name="colorAmbient"/>
+                        <Color r="1.00000" g="1.00000" b="1.00000" name="colorSpecular"/>
                     </Material>
                 </Mesh>
                 <Components/>
@@ -97,9 +85,9 @@
                 <Mesh guid="3936014360">
                     <Material>
                         <Shader guid="3746892247"/>
-                        <ColorDiffuse r="0.06275" g="0.48627" b="1.00000"/>
-                        <ColorAmbient r="0.00000" g="0.33333" b="1.00000"/>
-                        <ColorSpecular r="1.00000" g="1.00000" b="1.00000"/>
+                        <Color r="0.06275" g="0.48627" b="1.00000" name="colorDiffuse"/>
+                        <Color r="0.00000" g="0.33333" b="1.00000" name="colorAmbient"/>
+                        <Color r="1.00000" g="1.00000" b="1.00000" name="colorSpecular"/>
                     </Material>
                 </Mesh>
                 <Components/>
@@ -113,9 +101,9 @@
                 <Mesh guid="3936014360">
                     <Material>
                         <Shader guid="3746892247"/>
-                        <ColorDiffuse r="0.00000" g="0.33333" b="1.00000"/>
-                        <ColorAmbient r="0.00000" g="0.33333" b="1.00000"/>
-                        <ColorSpecular r="1.00000" g="1.00000" b="1.00000"/>
+                        <Color r="0.00000" g="0.33333" b="1.00000" name="colorDiffuse"/>
+                        <Color r="0.00000" g="0.33333" b="1.00000" name="colorAmbient"/>
+                        <Color r="1.00000" g="1.00000" b="1.00000" name="colorSpecular"/>
                     </Material>
                 </Mesh>
                 <Components/>
@@ -129,9 +117,9 @@
                 <Mesh guid="3936014360">
                     <Material>
                         <Shader guid="3746892247"/>
-                        <ColorDiffuse r="0.00000" g="0.33333" b="1.00000"/>
-                        <ColorAmbient r="0.00000" g="0.33333" b="1.00000"/>
-                        <ColorSpecular r="1.00000" g="1.00000" b="1.00000"/>
+                        <Color r="0.00000" g="0.33333" b="1.00000" name="colorDiffuse"/>
+                        <Color r="0.00000" g="0.33333" b="1.00000" name="colorAmbient"/>
+                        <Color r="1.00000" g="1.00000" b="1.00000" name="colorSpecular"/>
                     </Material>
                 </Mesh>
                 <Components/>
@@ -145,9 +133,9 @@
                 <Mesh guid="3936014360">
                     <Material>
                         <Shader guid="3746892247"/>
-                        <ColorDiffuse r="0.00000" g="0.33333" b="1.00000"/>
-                        <ColorAmbient r="0.00000" g="0.33333" b="1.00000"/>
-                        <ColorSpecular r="1.00000" g="1.00000" b="1.00000"/>
+                        <Color r="0.00000" g="0.33333" b="1.00000" name="colorDiffuse"/>
+                        <Color r="0.00000" g="0.33333" b="1.00000" name="colorAmbient"/>
+                        <Color r="1.00000" g="1.00000" b="1.00000" name="colorSpecular"/>
                     </Material>
                 </Mesh>
                 <Components/>
@@ -161,9 +149,9 @@
                 <Mesh guid="3936014360">
                     <Material>
                         <Shader guid="3746892247"/>
-                        <ColorDiffuse r="0.00000" g="0.33333" b="1.00000"/>
-                        <ColorAmbient r="0.00000" g="0.33333" b="1.00000"/>
-                        <ColorSpecular r="1.00000" g="1.00000" b="1.00000"/>
+                        <Color r="0.00000" g="0.33333" b="1.00000" name="colorDiffuse"/>
+                        <Color r="0.00000" g="0.33333" b="1.00000" name="colorAmbient"/>
+                        <Color r="1.00000" g="1.00000" b="1.00000" name="colorSpecular"/>
                     </Material>
                 </Mesh>
                 <Components/>
@@ -177,9 +165,9 @@
                 <Mesh guid="3936014360">
                     <Material>
                         <Shader guid="3746892247"/>
-                        <ColorDiffuse r="0.00000" g="0.33333" b="1.00000"/>
-                        <ColorAmbient r="0.00000" g="0.33333" b="1.00000"/>
-                        <ColorSpecular r="1.00000" g="1.00000" b="1.00000"/>
+                        <Color r="0.00000" g="0.33333" b="1.00000" name="colorDiffuse"/>
+                        <Color r="0.00000" g="0.33333" b="1.00000" name="colorAmbient"/>
+                        <Color r="1.00000" g="1.00000" b="1.00000" name="colorSpecular"/>
                     </Material>
                 </Mesh>
                 <Components/>
@@ -193,9 +181,9 @@
                 <Mesh guid="3936014360">
                     <Material>
                         <Shader guid="3746892247"/>
-                        <ColorDiffuse r="0.00000" g="0.33333" b="1.00000"/>
-                        <ColorAmbient r="0.00000" g="0.33333" b="1.00000"/>
-                        <ColorSpecular r="1.00000" g="1.00000" b="1.00000"/>
+                        <Color r="0.00000" g="0.33333" b="1.00000" name="colorDiffuse"/>
+                        <Color r="0.00000" g="0.33333" b="1.00000" name="colorAmbient"/>
+                        <Color r="1.00000" g="1.00000" b="1.00000" name="colorSpecular"/>
                     </Material>
                 </Mesh>
                 <Components/>
@@ -209,9 +197,9 @@
                 <Mesh guid="3936014360">
                     <Material>
                         <Shader guid="3746892247"/>
-                        <ColorDiffuse r="1.00000" g="0.00000" b="0.00000"/>
-                        <ColorAmbient r="0.00000" g="0.33333" b="1.00000"/>
-                        <ColorSpecular r="1.00000" g="1.00000" b="1.00000"/>
+                        <Color r="1.00000" g="0.00000" b="0.00000" name="colorDiffuse"/>
+                        <Color r="0.00000" g="0.33333" b="1.00000" name="colorAmbient"/>
+                        <Color r="1.00000" g="1.00000" b="1.00000" name="colorSpecular"/>
                     </Material>
                 </Mesh>
                 <Components/>
@@ -225,9 +213,9 @@
                 <Mesh guid="4197557055">
                     <Material>
                         <Shader guid="3746892247"/>
-                        <ColorDiffuse r="1.00000" g="0.00000" b="0.00000"/>
-                        <ColorAmbient r="1.00000" g="0.00000" b="0.00000"/>
-                        <ColorSpecular r="1.00000" g="1.00000" b="1.00000"/>
+                        <Color r="1.00000" g="0.00000" b="0.00000" name="colorDiffuse"/>
+                        <Color r="1.00000" g="0.00000" b="0.00000" name="colorAmbient"/>
+                        <Color r="1.00000" g="1.00000" b="1.00000" name="colorSpecular"/>
                     </Material>
                 </Mesh>
                 <Components/>
@@ -241,9 +229,9 @@
                 <Mesh guid="4197557055">
                     <Material>
                         <Shader guid="3746892247"/>
-                        <ColorDiffuse r="0.00000" g="0.00000" b="1.00000"/>
-                        <ColorAmbient r="0.00000" g="0.00000" b="1.00000"/>
-                        <ColorSpecular r="1.00000" g="1.00000" b="1.00000"/>
+                        <Color r="0.00000" g="0.00000" b="1.00000" name="colorDiffuse"/>
+                        <Color r="0.00000" g="0.00000" b="1.00000" name="colorAmbient"/>
+                        <Color r="1.00000" g="1.00000" b="1.00000" name="colorSpecular"/>
                     </Material>
                 </Mesh>
                 <Components/>
@@ -257,9 +245,9 @@
                 <Mesh guid="4197557055">
                     <Material>
                         <Shader guid="3746892247"/>
-                        <ColorDiffuse r="0.00000" g="1.00000" b="0.00000"/>
-                        <ColorAmbient r="0.00000" g="1.00000" b="0.00000"/>
-                        <ColorSpecular r="1.00000" g="1.00000" b="1.00000"/>
+                        <Color r="0.00000" g="1.00000" b="0.00000" name="colorDiffuse"/>
+                        <Color r="0.00000" g="1.00000" b="0.00000" name="colorAmbient"/>
+                        <Color r="1.00000" g="1.00000" b="1.00000" name="colorSpecular"/>
                     </Material>
                 </Mesh>
                 <Components/>
@@ -282,9 +270,9 @@
             <Mesh guid="33727872">
                 <Material>
                     <Shader guid="3746892247"/>
-                    <ColorDiffuse r="1.00000" g="0.33333" b="1.00000"/>
-                    <ColorAmbient r="1.00000" g="0.33333" b="1.00000"/>
-                    <ColorSpecular r="1.00000" g="1.00000" b="1.00000"/>
+                    <Color r="1.00000" g="0.33333" b="1.00000" name="colorDiffuse"/>
+                    <Color r="1.00000" g="0.33333" b="1.00000" name="colorAmbient"/>
+                    <Color r="1.00000" g="1.00000" b="1.00000" name="colorSpecular"/>
                 </Material>
             </Mesh>
             <Components/>
@@ -298,9 +286,9 @@
             <Mesh guid="33727872">
                 <Material>
                     <Shader guid="3746892247"/>
-                    <ColorDiffuse r="1.00000" g="0.66667" b="0.00000"/>
-                    <ColorAmbient r="1.00000" g="0.66667" b="0.00000"/>
-                    <ColorSpecular r="1.00000" g="1.00000" b="1.00000"/>
+                    <Color r="1.00000" g="0.66667" b="0.00000" name="colorDiffuse"/>
+                    <Color r="1.00000" g="0.66667" b="0.00000" name="colorAmbient"/>
+                    <Color r="1.00000" g="1.00000" b="1.00000" name="colorSpecular"/>
                 </Material>
             </Mesh>
             <Components/>
@@ -314,9 +302,9 @@
             <Mesh guid="33727872">
                 <Material>
                     <Shader guid="3746892247"/>
-                    <ColorDiffuse r="1.00000" g="1.00000" b="0.49804"/>
-                    <ColorAmbient r="1.00000" g="1.00000" b="0.49804"/>
-                    <ColorSpecular r="1.00000" g="1.00000" b="1.00000"/>
+                    <Color r="1.00000" g="1.00000" b="0.49804" name="colorDiffuse"/>
+                    <Color r="1.00000" g="1.00000" b="0.49804" name="colorAmbient"/>
+                    <Color r="1.00000" g="1.00000" b="1.00000" name="colorSpecular"/>
                 </Material>
             </Mesh>
             <Components/>
@@ -330,9 +318,9 @@
             <Mesh guid="33727872">
                 <Material>
                     <Shader guid="3746892247"/>
-                    <ColorDiffuse r="0.33333" g="0.66667" b="1.00000"/>
-                    <ColorAmbient r="0.33333" g="0.66667" b="1.00000"/>
-                    <ColorSpecular r="1.00000" g="1.00000" b="1.00000"/>
+                    <Color r="0.33333" g="0.66667" b="1.00000" name="colorDiffuse"/>
+                    <Color r="0.33333" g="0.66667" b="1.00000" name="colorAmbient"/>
+                    <Color r="1.00000" g="1.00000" b="1.00000" name="colorSpecular"/>
                 </Material>
             </Mesh>
             <Components/>

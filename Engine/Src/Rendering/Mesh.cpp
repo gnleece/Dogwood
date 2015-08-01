@@ -66,7 +66,7 @@ void Mesh::Render(Transform& transform, Material* material, bool wireframe)
         if (wireframe)
         {
             Material* debugMat = DebugDraw::Singleton().GetDebugMaterial();
-            debugMat->SetColour(Material::eMatColourType::MAT_COLOUR_DIFFUSE, ColourRGB(0.7f,0.7f,0.7f));
+            debugMat->SetColor("color", ColourRGB(0.7f,0.7f,0.7f));
             debugMat->ApplyMaterial(m_vboPosition, m_vboNormal, m_vboUV, transform);
             glDrawElements(GL_LINE_LOOP, m_indexedVertexCount, GL_UNSIGNED_INT, 0);
             debugMat->UnapplyMaterial();
@@ -91,7 +91,7 @@ float Mesh::GetBoundingRadius()
 void Mesh::CalculateBoundingRadius(std::vector<Vector3>& vertices)
 {
     // Find the vertex with the max distance from the center of the object
-    // This will be the radius of the bound spehere
+    // This will be the radius of the bound sphere
     float max = 0;
     std::vector<Vector3>::iterator iter;
     for (iter = vertices.begin(); iter != vertices.end(); iter++)

@@ -193,21 +193,21 @@ namespace EditorCommands
 
     //-----------------------------------------------------------------------------------------------
 
-    ChangeMaterialColorCommand::ChangeMaterialColorCommand(Material* material, MaterialColorType type, ColourRGB color)
+    ChangeMaterialColorCommand::ChangeMaterialColorCommand(Material* material, string name, ColourRGB color)
     {
         m_material = material;
-        m_type = type;
+        m_name = name;
         m_color = color;
     }
 
     void ChangeMaterialColorCommand::Execute()
     {
-        m_previousColor = m_material->GetColour((Material::eMatColourType)m_type);
-        m_material->SetColour((Material::eMatColourType)m_type, m_color);
+        m_previousColor = m_material->GetColor(m_name);
+        m_material->SetColor(m_name, m_color);
     }
 
     void ChangeMaterialColorCommand::Undo()
     {
-        m_material->SetColour((Material::eMatColourType)m_type, m_previousColor);
+        m_material->SetColor(m_name, m_previousColor);
     }
 }

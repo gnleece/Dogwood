@@ -25,8 +25,6 @@ class TransformWidget;
 
 using std::string;
 
-enum MaterialColorType { eMaterial_Diffuse, eMaterial_Ambient, eMaterial_Specular };
-
 namespace EditorCommands
 {
     class CreateGameObjectCommand : public ICommand
@@ -120,13 +118,13 @@ namespace EditorCommands
     class ChangeMaterialColorCommand : public ICommand
     {
     public:
-        ChangeMaterialColorCommand(Material* material, MaterialColorType type, ColourRGB color);
+        ChangeMaterialColorCommand(Material* material, string name, ColourRGB color);
         void Execute();
         void Undo();
 
     private:
         Material*           m_material;
-        MaterialColorType   m_type;
+        string              m_name;
         ColourRGB           m_color;
         ColourRGB           m_previousColor;
     };

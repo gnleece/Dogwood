@@ -10,22 +10,22 @@
 
 using std::string;
 
-unsigned int        MakeGuid(string str);
+unsigned int            MakeGuid(string str);
 
-Vector3             ReadVector3FromXML(tinyxml2::XMLElement* xmlnode);
-tinyxml2::XMLNode*  WriteVector3ToXML(Vector3 vector, string name, tinyxml2::XMLDocument& doc);
+Vector3                 ReadVector3FromXML(tinyxml2::XMLElement* xmlnode);
+tinyxml2::XMLElement*   WriteVector3ToXML(Vector3 vector, string name, tinyxml2::XMLDocument& doc);
 
-ColourRGB           ReadColourFromXML(tinyxml2::XMLElement* xmlnode);
-tinyxml2::XMLNode*  WriteColourToXML(ColourRGB colour, string name, tinyxml2::XMLDocument& doc);
+ColourRGB               ReadColourFromXML(tinyxml2::XMLElement* xmlnode);
+tinyxml2::XMLElement*   WriteColourToXML(ColourRGB colour, string name, tinyxml2::XMLDocument& doc);
 
-tinyxml2::XMLNode*  WriteIntToXML(int value, string nodeName, string attribName, tinyxml2::XMLDocument& doc);
-tinyxml2::XMLNode*  WriteUnsignedIntToXML(unsigned int value, string nodeName, string attribName, tinyxml2::XMLDocument& doc);
-tinyxml2::XMLNode*  WriteFloatToXML(float value, string nodeName, string attribName, tinyxml2::XMLDocument& doc);
-tinyxml2::XMLNode*  WriteStringToXML(string str, string nodeName, string attribName, tinyxml2::XMLDocument& doc);
+tinyxml2::XMLElement*   WriteIntToXML(int value, string nodeName, string attribName, tinyxml2::XMLDocument& doc);
+tinyxml2::XMLElement*   WriteUnsignedIntToXML(unsigned int value, string nodeName, string attribName, tinyxml2::XMLDocument& doc);
+tinyxml2::XMLElement*   WriteFloatToXML(float value, string nodeName, string attribName, tinyxml2::XMLDocument& doc);
+tinyxml2::XMLElement*   WriteStringToXML(string str, string nodeName, string attribName, tinyxml2::XMLDocument& doc);
 
-Vector3             ReadVector3FromString(string str);
-string              WriteVector3ToString(Vector3 str);
+Vector3                 ReadVector3FromString(string str);
+string                  WriteVector3ToString(Vector3 str);
 
-void                FileCopy(string source, string destination);
+void                    FileCopy(string source, string destination);
 
-string              GetFriendlyAssetNameFromPath(string path);
+string                  GetFriendlyAssetNameFromPath(string path);
