@@ -283,26 +283,15 @@ void Scene::AddMaterial(MeshInstance* meshInstance, XMLElement* xmlnode)
             material->SetShader(shader);
         }
 
-        // Attach texture
-        XMLElement* textureXML = materialXML->FirstChildElement("Texture");
-        if (textureXML)
-        {
-            unsigned int guid = textureXML->UnsignedAttribute("guid");
-            Texture* texture = ResourceManager::Singleton().GetTexture(guid);
-            if (texture == NULL)
-            {
-                printf("Warning: texture referenced by game object is not loaded\n");
-                return;
-            }
-            material->SetTexture(texture);
-        }
+        // Add colours
+        AddMaterialColors(materialXML, material);
 
-        // Apply colours
-        ApplyMaterialColors(materialXML, material);
+        // Add textures
+        AddMaterialTextures(materialXML, material);
     }
 }
 
-void Scene::ApplyMaterialColors(XMLElement* xmlnode, Material* material)
+void Scene::AddMaterialColors(XMLElement* xmlnode, Material* material)
 {
     XMLElement* colorXML = xmlnode->FirstChildElement("Color");
     while (colorXML)
@@ -312,6 +301,25 @@ void Scene::ApplyMaterialColors(XMLElement* xmlnode, Material* material)
         material->SetColor(name, color);
 
         colorXML = colorXML->NextSiblingElement("Color");
+    }
+}
+
+void Scene::AddMaterialTextures(XMLElement* xmlnode, Material* material)
+{
+    XMLElement* textureXML = xmlnode->FirstChildElement("Texture");
+    while (textureXML)
+    {
+        unsigned int guid = textureXML->UnsignedAttribute("guid");
+        Texture* texture = ResourceManager::Singleton().GetTexture(guid);
+        if (texture == NULL)
+        {
+            printf("Warning: texture referenced by game object is not loaded\n");
+            return;
+        }
+        string name = textureXML->Attribute("name");
+        material->SetTexture(name, texture);
+
+        textureXML = textureXML->NextSiblingElement("Texture");
     }
 }
 
@@ -416,16 +424,6 @@ void Scene::SerializeMaterial(GameObject* gameObject, XMLNode* parentNode, XMLDo
     XMLElement* matNode = rootDoc.NewElement("Material");
     parentNode->InsertEndChild(matNode);
 
-    // Serialize texture info
-    if (mat->GetTexture() != NULL && mat->GetTexture() != Texture::DefaultTexture())
-    {
-        XMLElement* textureNode = rootDoc.NewElement("Texture");
-        unsigned int guid = mat->GetTexture()->GetResourceInfo()->guid;
-        textureNode->SetAttribute("guid", guid);
-        guids.insert(guid);
-        matNode->InsertEndChild(textureNode);
-    }
-
     // Serialize shader info
     if (mat->GetShader() != NULL)
     {
@@ -438,6 +436,9 @@ void Scene::SerializeMaterial(GameObject* gameObject, XMLNode* parentNode, XMLDo
 
     // Serialize colour info
     SerializeMaterialColors(mat, matNode, rootDoc);
+
+    // Serialize texture info
+    SerializeMaterialTextures(mat, matNode, rootDoc, guids);
 }
 
 void Scene::SerializeMaterialColors(Material* material, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc)
@@ -453,6 +454,31 @@ void Scene::SerializeMaterialColors(Material* material, tinyxml2::XMLNode* paren
         string paramName = shader->GetUniformName(iter->first);
         node->SetAttribute("name", paramName.c_str());
         parentNode->InsertEndChild(node);
+    }
+}
+
+void Scene::SerializeMaterialTextures(Material* material, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc, unordered_set<unsigned int>& guids)
+{
+    unordered_map<GLint, Texture*> textures = material->GetTextureList();
+    unordered_map<GLint, Texture*>::iterator iter = textures.begin();
+
+    ShaderProgram* shader = material->GetShader();
+
+    for (; iter != textures.end(); iter++)
+    {
+        if (iter->second != NULL && iter->second != Texture::DefaultTexture())
+        {
+            XMLElement* textureNode = rootDoc.NewElement("Texture");
+
+            unsigned int guid = iter->second->GetResourceInfo()->guid;
+            textureNode->SetAttribute("guid", guid);
+            guids.insert(guid);
+
+            string paramName = shader->GetUniformName(iter->first);
+            textureNode->SetAttribute("name", paramName.c_str());
+
+            parentNode->InsertEndChild(textureNode);
+        }
     }
 }
 

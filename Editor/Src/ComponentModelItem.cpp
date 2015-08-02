@@ -204,22 +204,26 @@ ComponentModelShaderItem::ComponentModelShaderItem(string name, Material* materi
 {
     m_isHeader = false;
 
-    // Texture
-    if (m_material->GetTexture() != NULL && m_material->GetTexture() != Texture::DefaultTexture())       // TODO temp hack until shader params are fixed properly
-    {
-        ComponentModelTextureItem* textureItem = new ComponentModelTextureItem("Texture", m_material);
-        AddChild(textureItem);
-    }
-
     // Colors
     unordered_map<GLint, ColourRGB> colorList = m_material->GetColorList();
-    unordered_map<GLint, ColourRGB>::iterator iter = colorList.begin();
-    for (; iter != colorList.end(); iter++)
+    unordered_map<GLint, ColourRGB>::iterator colorIter = colorList.begin();
+    for (; colorIter != colorList.end(); colorIter++)
     {
-        int colorID = iter->first;
+        int colorID = colorIter->first;
         string colorName = m_material->GetShader()->GetUniformName(colorID);
         ComponentModelColorItem* colorItem = new ComponentModelColorItem(colorName, m_material, colorID);
         AddChild(colorItem);
+    }
+
+    // Textures
+    unordered_map<GLint, Texture*> textureList = m_material->GetTextureList();
+    unordered_map<GLint, Texture*>::iterator texIter = textureList.begin();
+    for (; texIter != textureList.end(); texIter++)
+    {
+        int textureID = texIter->first;
+        string textureName = m_material->GetShader()->GetUniformName(textureID);
+        ComponentModelTextureItem* textureItem = new ComponentModelTextureItem(textureName, m_material, textureID);
+        AddChild(textureItem);
     }
 }
 
@@ -251,8 +255,8 @@ bool ComponentModelShaderItem::DropData(const QMimeData* /*data*/)
 
 //--------------------------------------------------------------------------------
 
-ComponentModelTextureItem::ComponentModelTextureItem(string name, Material* material)
-    : ComponentModelItem(name), m_material(material)
+ComponentModelTextureItem::ComponentModelTextureItem(string name, Material* material, int paramID)
+    : ComponentModelItem(name), m_material(material), m_paramID(paramID)
 {
     m_isHeader = false;
 }
@@ -266,7 +270,7 @@ QVariant ComponentModelTextureItem::GetValueData()
     }
     else
     {
-        ResourceInfo* info = m_material->GetTexture()->GetResourceInfo();
+        ResourceInfo* info = m_material->GetTexture(m_paramID)->GetResourceInfo();
         str = GetFriendlyAssetNameFromPath(info->path) + " (" + std::to_string(info->guid) + ")";
     }
     return QVariant(str.c_str());

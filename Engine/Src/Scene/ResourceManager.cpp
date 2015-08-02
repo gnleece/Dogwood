@@ -29,16 +29,8 @@ struct TextureResourceInfo : ResourceInfo
 
     virtual void AddToGameObject(GameObject* gameObject)
     {
-        MeshInstance* meshInstance = gameObject->GetMesh();
-        if (meshInstance != NULL)
-        {
-            Material* mat = meshInstance->GetMaterial();
-            if (mat != NULL)
-            {
-                Texture* texture = ResourceManager::Singleton().GetTexture(guid);
-                mat->SetTexture(texture);
-            }
-        }
+        // Do nothing here. Textures need to be set as specific material or component param references
+        // (i.e. there is no single unique texture per object so we can't simply "add" one to a game object)
     }
 };
 

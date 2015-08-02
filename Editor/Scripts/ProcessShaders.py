@@ -4,14 +4,9 @@ import xml.etree.cElementTree as ET
 import ComponentBindings
 
 SERIALIZABLE_STRING = "[SERIALIZABLE]"
-SERIALIZABLE_PREFIX = "uniform vec3"        # TODO add support for other params (e.g. float)
+SERIALIZABLE_PREFIX = "uniform"
 
-class Shader:
-    def __init__(self, guid, path, params):
-        self.guid = guid;
-        self.path = path;
-        self.params = params;
-        self.name = path[path.rfind('/')+1:path.rfind('.')]     # Remove path and file extension
+paramTypeStringToEnum = { "vec3" : "0", "float" : "1", "sampler2D" : "2" }
 
 def GetShaderList(projectFilepath):
     root = ET.parse(projectFilepath).getroot()
@@ -61,8 +56,9 @@ def ProcessShaders(projectFilePath):
                 tokens = [x for x in paramLine.split(' ') if x is not '']
                 if (len(tokens) < 3):
                     continue
+                paramType = paramTypeStringToEnum[tokens[1]]
                 paramName = tokens[2].rstrip(";")
-                paramXML = ET.SubElement(scriptXML, "Param", name = paramName)
+                paramXML = ET.SubElement(scriptXML, "Param", name = paramName, type = paramType)
 
     # Write schema XML to file
     tree = ET.ElementTree(rootXML)

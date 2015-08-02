@@ -20,18 +20,19 @@ class Texture;
 class Material
 {
 public:
-    Material();
-
     void            SetShader(ShaderProgram* shader);
-    void            SetTexture(Texture* texture);
     void            SetColor(GLint paramID, ColourRGB color);
     void            SetColor(string paramName, ColourRGB color);
+    void            SetTexture(GLint paramID, Texture* texture);
+    void            SetTexture(string paramName, Texture* texture);
 
     ShaderProgram*  GetShader();
-    Texture*        GetTexture();
     ColourRGB       GetColor(GLint paramID);
     ColourRGB       GetColor(string paramName);
+    Texture*        GetTexture(GLint paramID);
+    Texture*        GetTexture(string paramName);
     unordered_map<GLint, ColourRGB>& GetColorList();
+    unordered_map<GLint, Texture*>&  GetTextureList();
 
     void            ApplyMaterial(GLint posVBO, GLint normVBO, GLint uvVBO, Transform& transform);
     void            UnapplyMaterial();
@@ -44,12 +45,11 @@ private:
     void            DisableAttribArray(GLint paramID);
 
     ShaderProgram*                  m_shader;
-    Texture*                        m_texture;
+    unordered_map<GLint, ColourRGB> m_colors;
+    unordered_map<GLint, Texture*>  m_textures;
 
     GLint                           m_positionParamID;
     GLint                           m_normalParamID;
     GLint                           m_uvParamID;
     GLint                           m_modelID;
-
-    unordered_map<GLint, ColourRGB> m_uniformColors;
 };

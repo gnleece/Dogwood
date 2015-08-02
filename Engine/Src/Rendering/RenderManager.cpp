@@ -153,6 +153,9 @@ void RenderManager::LoadCommonShaders()
     m_commonShaders[SHADER_UNLIT_UNI_COLOR] = new ShaderProgram();
     (m_commonShaders[SHADER_UNLIT_UNI_COLOR])->Load("..\\Engine\\Assets\\Shaders\\UnlitUniformColor.glsl");
 
+    m_commonShaders[SHADER_UNLIT_TEXTURE] = new ShaderProgram();
+    (m_commonShaders[SHADER_UNLIT_TEXTURE])->Load("..\\Engine\\Assets\\Shaders\\UnlitTexture.glsl");
+
     m_commonShaders[SHADER_GOURAUD] = new ShaderProgram();
     (m_commonShaders[SHADER_GOURAUD])->Load("..\\Engine\\Assets\\Shaders\\Gouraud.glsl");
 }

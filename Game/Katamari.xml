@@ -19,6 +19,7 @@
             <Mesh guid="2282599710" path="Meshes/mesh_torus.obj"/>
         </Meshes>
         <Shaders>
+            <Shader guid="3125582585" path="Shaders/shader_unlit_texture.glsl"/>
             <Shader guid="441267611" path="Shaders/shader_unlit_unicolor.glsl"/>
             <Shader guid="311191123" path="Shaders/shader_unlit.glsl"/>
             <Shader guid="3746892247" path="Shaders/shader_gouraud.glsl"/>

@@ -110,7 +110,6 @@
             </Transform>
             <Mesh guid="1863496264">
                 <Material>
-                    <Texture guid="3780387270"/>
                     <Shader guid="3746892247"/>
                     <Color name="colorDiffuse" r="0.00000" g="1.00000" b="0.00000"/>
                     <Color name="colorAmbient" r="0.10000" g="0.10000" b="0.10000"/>

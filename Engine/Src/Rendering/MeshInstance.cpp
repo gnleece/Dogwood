@@ -10,6 +10,26 @@ void MeshInstance::Render(Transform& transform, bool wireframe)
     }
 }
 
+Mesh* MeshInstance::GetMesh()
+{
+    return m_mesh;
+}
+
+Material* MeshInstance::GetMaterial()
+{
+    return m_material;
+}
+
+void MeshInstance::SetMesh(Mesh* mesh)
+{
+    m_mesh = mesh;
+}
+
+void MeshInstance::SetMaterial(Material* material)
+{
+    m_material = material;
+}
+
 MeshInstance* MeshInstance::DeepCopy()
 {
     MeshInstance* newMeshInstance = new MeshInstance();

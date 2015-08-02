@@ -216,23 +216,32 @@ void GameObject::Update(float deltaTime)
 
 void GameObject::Render(Transform& parentWorldTransform, bool dirty, bool wireframe)
 {
+    // Determine worldspace transform
     dirty |= m_dirty | m_localTransform.HasChanged();
     wireframe |= m_selected;
     if (dirty)
     {
-        // hierarchy has changed so recompute world transform (and cache it)
+        // Hierarchy has changed so recompute world transform (and cache it)
         m_worldTransform = parentWorldTransform*m_localTransform;
         m_dirty = false;
         m_localTransform.ClearChangedFlag();
     }
 
-    // render the mesh, if there is one
+    // Render the mesh
     if (m_mesh)
     {
         m_mesh->Render(m_worldTransform, wireframe);
     }
 
-    // render children
+    // Render all components
+    std::vector<GameComponent*>::iterator compIter;
+    for (compIter = m_components.begin(); compIter != m_components.end(); compIter++)
+    {
+        GameComponent* component = *compIter;
+        component->Render(m_worldTransform, wireframe);
+    }
+
+    // Render children
     std::vector<GameObject*>::iterator childIter;
     for (childIter = m_children.begin(); childIter != m_children.end(); childIter++)
     {

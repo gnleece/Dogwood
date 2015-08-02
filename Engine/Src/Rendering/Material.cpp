@@ -4,31 +4,11 @@
 #include "Rendering\ShaderProgram.h"
 #include "Rendering\Texture.h"
 
-Material::Material()
-{
-    m_texture = NULL;
-}
-
-Material* Material::DeepCopy()
-{
-    Material* newMaterial = new Material();
-
-    newMaterial->m_shader = m_shader;
-    newMaterial->m_texture = m_texture;
-
-    unordered_map<GLint, ColourRGB>::iterator iter = m_uniformColors.begin();
-    for (; iter != m_uniformColors.end(); iter++)
-    {
-        newMaterial->SetColor(iter->first, iter->second);
-    }
-
-    return newMaterial;
-}
-
 void Material::SetShader(ShaderProgram* shader)
 {
     m_shader = shader;
-    m_uniformColors.clear();
+    m_colors.clear();
+    m_textures.clear();
 
     m_positionParamID   = m_shader->GetAttributeLocation("position");
     m_normalParamID     = m_shader->GetAttributeLocation("normal");
@@ -36,14 +16,9 @@ void Material::SetShader(ShaderProgram* shader)
     m_modelID           = m_shader->GetUniformLocation("model");
 }
 
-void Material::SetTexture(Texture* texture)
-{
-    m_texture = texture;
-}
-
 void Material::SetColor(GLint paramID, ColourRGB color)
 {
-    m_uniformColors[paramID] = color;
+    m_colors[paramID] = color;
 }
 
 void Material::SetColor(string paramName, ColourRGB color)
@@ -52,20 +27,26 @@ void Material::SetColor(string paramName, ColourRGB color)
     SetColor(paramID, color);
 }
 
+void Material::SetTexture(GLint paramID, Texture* texture)
+{
+    m_textures[paramID] = texture;
+}
+
+void Material::SetTexture(string paramName, Texture* texture)
+{
+    GLint paramID = m_shader->GetUniformLocation(paramName);
+    SetTexture(paramID, texture);
+}
+
 ShaderProgram* Material::GetShader()
 {
     return m_shader;
 }
 
-Texture* Material::GetTexture()
-{
-    return m_texture;
-}
-
 ColourRGB Material::GetColor(GLint paramID)
 {
-    if (m_uniformColors.count(paramID) > 0)
-        return m_uniformColors[paramID];
+    if (m_colors.count(paramID) > 0)
+        return m_colors[paramID];
     return ColourRGB::Black;
 }
 
@@ -75,9 +56,27 @@ ColourRGB Material::GetColor(string paramName)
     return GetColor(paramID);
 }
 
+Texture* Material::GetTexture(GLint paramID)
+{
+    if (m_textures.count(paramID) > 0)
+        return m_textures[paramID];
+    return NULL;
+}
+
+Texture* Material::GetTexture(string paramName)
+{
+    GLint paramID = m_shader->GetUniformLocation(paramName);
+    return GetTexture(paramID);
+}
+
 unordered_map<GLint, ColourRGB>& Material::GetColorList()
 {
-    return m_uniformColors;
+    return m_colors;
+}
+
+unordered_map<GLint, Texture*>& Material::GetTextureList()
+{
+    return m_textures;
 }
 
 void Material::ApplyMaterial(GLint posVBO, GLint normVBO, GLint uvVBO, Transform& transform)
@@ -85,26 +84,26 @@ void Material::ApplyMaterial(GLint posVBO, GLint normVBO, GLint uvVBO, Transform
     // Apply shader
     m_shader->ApplyShader();
 
-    // Bind texture
-    if (m_texture == NULL)
+    // Set color values for shader
+    unordered_map<GLint, ColourRGB>::iterator colorIter = m_colors.begin();
+    for (; colorIter != m_colors.end(); colorIter++)
     {
-        m_texture = Texture::DefaultTexture();
+        SetUniformParam(colorIter->first, colorIter->second);
     }
-    m_texture->BindTexture();
 
-    // Set uniform color values for shader
-    unordered_map<GLint, ColourRGB>::iterator iter = m_uniformColors.begin();
-    for (; iter != m_uniformColors.end(); iter++)
+    // Bind textures for shader
+    unordered_map<GLint, Texture*>::iterator texIter = m_textures.begin();
+    for (; texIter != m_textures.end(); texIter++)
     {
-        SetUniformParam(iter->first, iter->second);
+        texIter->second->BindTexture();
     }
 
     // Set vertex values for shader
-    SetAttribParam(m_positionParamID,   posVBO, 3);
+    SetAttribParam(m_positionParamID,   posVBO, 3);     // TODO should this be done in the shader instead?
     SetAttribParam(m_normalParamID,     normVBO, 3);
     SetAttribParam(m_uvParamID,         uvVBO, 2);
 
-    // Set model matrix value for shader        // TODO not sure this should be here
+    // Set model matrix value for shader                // TODO not sure this should be here
     glUniformMatrix4fv(m_modelID, 1, GL_FALSE, transform.GetMatrix().Transpose().Start());
 }
 
@@ -113,6 +112,29 @@ void Material::UnapplyMaterial()
     DisableAttribArray(m_positionParamID);
     DisableAttribArray(m_normalParamID);
     DisableAttribArray(m_uvParamID);
+}
+
+Material* Material::DeepCopy()
+{
+    Material* newMaterial = new Material();
+
+    newMaterial->m_shader = m_shader;
+
+    // Copy colors
+    unordered_map<GLint, ColourRGB>::iterator colorIter = m_colors.begin();
+    for (; colorIter != m_colors.end(); colorIter++)
+    {
+        newMaterial->SetColor(colorIter->first, colorIter->second);
+    }
+
+    // Copy textures
+    unordered_map<GLint, Texture*>::iterator texIter = m_textures.begin();
+    for (; texIter != m_textures.end(); texIter++)
+    {
+        newMaterial->SetTexture(texIter->first, texIter->second);
+    }
+
+    return newMaterial;
 }
 
 void Material::SetUniformParam(GLint paramID, ColourRGB& color)

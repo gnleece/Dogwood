@@ -9,13 +9,13 @@ class Mesh;
 class MeshInstance : public GameComponent
 {
 public:
-    void Render(Transform& transform, bool wireframe = false);
+    void        Render(Transform& transform, bool wireframe = false);
 
-    void SetMesh(Mesh* mesh)                { m_mesh = mesh; }
-    Mesh* GetMesh()                         { return m_mesh; }
+    Mesh*       GetMesh();
+    Material*   GetMaterial();
 
-    void SetMaterial(Material* material)    { m_material = material; }
-    Material* GetMaterial()                 { return m_material; }
+    void        SetMesh(Mesh* mesh);
+    void        SetMaterial(Material* material);
 
     MeshInstance* DeepCopy();
 

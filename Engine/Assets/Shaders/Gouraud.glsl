@@ -4,7 +4,6 @@
 
 in vec3 position;
 in vec3 normal;
-in vec2 texcoord;
 
 out vec3 Position_worldspace;
 out vec3 LightPosition_worldspace;
@@ -12,8 +11,6 @@ out vec3 LightPosition_worldspace;
 out vec3 Normal_cameraspace;
 out vec3 LightDirection_cameraspace;
 out vec3 EyeDirection_cameraspace;
-
-out vec2 Texcoord;
 
 //TODO do MVP multiplcation on client side?
 uniform mat4 model;
@@ -25,7 +22,6 @@ void main()
 {
     gl_Position = proj*view*model*vec4(position, 1.0);
 
-    Texcoord = texcoord;
     LightPosition_worldspace = lightPos;
 
     // Position of vertex in worldspace
@@ -54,11 +50,8 @@ in vec3 Normal_cameraspace;
 in vec3 LightDirection_cameraspace;
 in vec3 EyeDirection_cameraspace;
 
-in vec2 Texcoord;
-
 out vec4 outColor;
 
-uniform sampler2D tex;
 uniform vec3 lightColor;
 uniform float lightPower;
 
@@ -69,7 +62,7 @@ uniform vec3 colorSpecular;     // [SERIALIZABLE]
 void main() 
 {
     // material colors
-    vec4 MaterialDiffuseColor	= texture(tex, Texcoord)*vec4(colorDiffuse, 1.0);
+    vec4 MaterialDiffuseColor	= vec4(colorDiffuse, 1.0);
     vec4 MaterialAmbientColor	= vec4(colorAmbient, 1.0) * MaterialDiffuseColor;
     vec4 MaterialSpecularColor	= vec4(colorSpecular, 1.0);
 

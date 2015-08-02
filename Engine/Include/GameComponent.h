@@ -5,18 +5,22 @@
 class GameComponent
 {
 public:
-    virtual void OnCreate() {}
-    virtual void OnDestroy() {}
 
-    virtual void OnStart() {}
+    // Public interface
+    virtual void    OnCreate() {}
+    virtual void    OnDestroy() {}
 
-    virtual void Update(float) {}
+    virtual void    OnStart() {}
 
-    virtual void OnEnable() {}
-    virtual void OnDisable() {}
+    virtual void    Update(float) {}
+    virtual void    Render(Transform& /*transform*/, bool /*wireframe*/) {}
 
-    void SetGameObject(GameObject* gameObject);
+    virtual void    OnEnable() {}
+    virtual void    OnDisable() {}
+
+    // Engine use only - TODO enforce this
+    void            SetGameObject(GameObject* gameObject);
 
 protected:
-    GameObject* m_gameObject = NULL;
+    GameObject*     m_gameObject = NULL;
 };

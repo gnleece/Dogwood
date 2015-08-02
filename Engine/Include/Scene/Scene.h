@@ -42,7 +42,8 @@ private:
     void        AddMesh(GameObject* go, tinyxml2::XMLElement* xmlnode);
     void        AddMaterial(MeshInstance* meshInstance, tinyxml2::XMLElement* xmlnode);
     void        AddGameComponents(GameObject* go, tinyxml2::XMLElement* xmlnode);
-    void        ApplyMaterialColors(tinyxml2::XMLElement* xmlnode, Material* material);
+    void        AddMaterialColors(tinyxml2::XMLElement* xmlnode, Material* material);
+    void        AddMaterialTextures(tinyxml2::XMLElement* xmlnode, Material* material);
     
     // Scene saving helper functions
     void        SerializeGlobalSettings(tinyxml2::XMLElement* parentNode, tinyxml2::XMLDocument& rootDoc);
@@ -51,6 +52,7 @@ private:
     void        SerializeMesh(GameObject* gameObject, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc, unordered_set<unsigned int>& guids);
     void        SerializeMaterial(GameObject* gameObject, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc, unordered_set<unsigned int>& guids);
     void        SerializeMaterialColors(Material* material, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc);
+    void        SerializeMaterialTextures(Material* material, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc, unordered_set<unsigned int>& guids);
     void        SerializeComponents(GameObject* gameObject, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc);
     void        SerializeResourceList(unordered_set<unsigned int>& guids, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc);
 
