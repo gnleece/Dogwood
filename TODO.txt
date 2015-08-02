@@ -53,6 +53,7 @@ EDITOR (Thicket)
         * Prompt for save on exit/unload
         * Camera settings
         * Light settings
+        * Picking: raycast against actual meshes instead of bounding boxes
 
     * Assets widget
         * Enable drag & drop onto object
@@ -60,10 +61,7 @@ EDITOR (Thicket)
     * Game components
         * Built-in component widgets
             * Transform: expand x/y/z as separate rows
-            * Mesh: move to component model, hook up browse
-            * Texture: move to component model, hook up browse
-            * Shader: move to component model, hook up browse
-                * Allow custom key value pairs, remove hard coded enums
+            * Mesh/Texture/Shader: add browse
         * Remove components
             * Undo/redo on add/remove
             * Refresh widget on add/remove
@@ -91,7 +89,6 @@ EDITOR (Thicket)
         Lo pri
         - Items don't auto expand when reparented
         - Scene view resolution isn't set nicely
-        - Transform widget values don't update when object is moved with transform tool
         - Keep constant gnomon size
         - Non-uniform scaling breaks object picking
         - Rotation tool behaviour is non-intuitive
