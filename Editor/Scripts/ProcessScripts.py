@@ -124,7 +124,7 @@ def ProcessScripts(projectFilePath):
 
     # Write schema XML to file
     tree = ET.ElementTree(rootXML)
-    tree.write(assetPath + "Schema.xml")
+    tree.write(assetPath + "ScriptSchema.xml")
 
     # Use component list to generate bindings code
     ComponentBindings.GenerateBindings(componentList, assetPath)

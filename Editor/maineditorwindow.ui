@@ -329,6 +329,7 @@
     <addaction name="actionAdd_Component"/>
     <addaction name="separator"/>
     <addaction name="actionRebuild_Script_Info"/>
+    <addaction name="actionRebuild_Shader_Info"/>
    </widget>
    <widget class="QMenu" name="menuGame_Object">
     <property name="title">
@@ -576,6 +577,14 @@
    </property>
    <property name="toolTip">
     <string>Rebuild metadata for game component scripts</string>
+   </property>
+  </action>
+  <action name="actionRebuild_Shader_Info">
+   <property name="text">
+    <string>Rebuild Shader Info</string>
+   </property>
+   <property name="toolTip">
+    <string>Rebuild metadata for shaders</string>
    </property>
   </action>
  </widget>

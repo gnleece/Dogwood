@@ -62,9 +62,9 @@ uniform sampler2D tex;
 uniform vec3 lightColor;
 uniform float lightPower;
 
-uniform vec3 colorDiffuse;
-uniform vec3 colorAmbient;
-uniform vec3 colorSpecular;
+uniform vec3 colorDiffuse;      // [SERIALIZABLE]
+uniform vec3 colorAmbient;      // [SERIALIZABLE]
+uniform vec3 colorSpecular;     // [SERIALIZABLE]
 
 void main() 
 {

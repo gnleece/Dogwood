@@ -269,7 +269,7 @@ void ResourceManager::LoadComponentSchema()
         m_componentSchema = new ToolsideComponentSchema();
     }
 
-    m_componentSchema->Load(m_resourceBasePath + "Schema.xml");
+    m_componentSchema->Load(m_resourceBasePath + "ScriptSchema.xml");
 }
 
 unsigned int ResourceManager::ImportResource(string& filepath, string type)

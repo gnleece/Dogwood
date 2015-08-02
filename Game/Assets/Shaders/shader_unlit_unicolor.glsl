@@ -17,7 +17,7 @@ void main()
 
 #version 150
 
-uniform vec3 color;
+uniform vec3 color;     // [SERIALIZABLE]
 
 out vec4 outColor;
 

@@ -186,3 +186,4 @@ References
 
 http://seanmiddleditch.com/matrices-handedness-pre-and-post-multiplication-row-vs-column-major-and-notations/
 http://www.3dgep.com/understanding-the-view-matrix/
+https://en.wikibooks.org/wiki/GLSL_Programming/Unity/Toon_Shading
