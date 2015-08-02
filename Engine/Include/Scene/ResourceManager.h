@@ -11,13 +11,13 @@
 
 #include "Resource.h"
 #include "ToolsideGameComponent.h"
+#include "ToolsideShaderSchema.h"
 
 class GameObject;
 class GameProject;
 class Mesh;
 class ShaderProgram;
 class Texture;
-class ToolsideComponentSchema;
 
 using std::string;
 using std::unordered_map;
@@ -56,6 +56,7 @@ public:
     void            ClearResourceMap();
     void            SerializeResourceMap(tinyxml2::XMLDocument& rootDoc, tinyxml2::XMLElement* parent);
     void            LoadComponentSchema();
+    void            LoadShaderSchema();
 
     unsigned int    ImportResource(string& filepath, string type);
     void            ImportDefaultResources();
@@ -78,6 +79,7 @@ public:
 
     ResourceMap&    GetResourceMap();
     ParamList*      GetComponentParamList(unsigned int guid);
+    ShaderParamList* GetShaderParamList(unsigned int guid);
 
 private:
     unsigned int    Import(ResourceInfo* resource);
@@ -91,6 +93,7 @@ private:
     unordered_map<unsigned int, Resource*>       m_loadedResources;
     unordered_map<string, unsigned int>          m_defaultResources;
     ToolsideComponentSchema*                     m_componentSchema;
+    ToolsideShaderSchema*                        m_shaderSchema;
 
     bool m_lookupTableLoaded;
 

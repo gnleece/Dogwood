@@ -162,6 +162,9 @@
     <ClInclude Include="Include\GameObjectReference.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Include\ToolsideShaderSchema.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Debugging\DebugCameraControls.cpp">
@@ -255,6 +258,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Src\GameObjectReference.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\ToolsideShaderSchema.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

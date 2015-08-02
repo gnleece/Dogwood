@@ -73,6 +73,7 @@ private:
 public slots:
     void SaveProject();
     void RebuildComponentSchema();
+    void RebuildShaderSchema();
 
 private slots:
     void SetupMenuCommands();

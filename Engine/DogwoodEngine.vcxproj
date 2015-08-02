@@ -111,6 +111,7 @@
     <ClInclude Include="Include\Scene\ResourceManager.h" />
     <ClInclude Include="Include\Scene\Scene.h" />
     <ClInclude Include="Include\ToolsideGameComponent.h" />
+    <ClInclude Include="Include\ToolsideShaderSchema.h" />
     <ClInclude Include="Include\Util.h" />
     <ClInclude Include="Include\Window\GameWindow.h" />
   </ItemGroup>
@@ -144,6 +145,7 @@
     <ClCompile Include="Src\Scene\ResourceManager.cpp" />
     <ClCompile Include="Src\Scene\Scene.cpp" />
     <ClCompile Include="Src\ToolsideGameComponent.cpp" />
+    <ClCompile Include="Src\ToolsideShaderSchema.cpp" />
     <ClCompile Include="Src\Util.cpp" />
     <ClCompile Include="Src\Window\GameWindow.cpp" />
   </ItemGroup>

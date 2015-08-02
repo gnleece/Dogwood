@@ -90,6 +90,7 @@ void MainEditorWindow::SetupMenuCommands()
 
     // Component menu
     connect(m_ui->actionRebuild_Script_Info, SIGNAL(triggered()), this, SLOT(RebuildComponentSchema()));
+    connect(m_ui->actionRebuild_Shader_Info, SIGNAL(triggered()), this, SLOT(RebuildShaderSchema()));
 
     // Mesh component menu
     m_addMeshSignalMapper = new QSignalMapper(this);
@@ -253,6 +254,23 @@ void MainEditorWindow::RebuildComponentSchema()
     process->waitForFinished();
 
     ResourceManager::Singleton().LoadComponentSchema();
+
+    DebugLogger::Singleton().Log("Done rebuilding schema.");
+}
+
+void MainEditorWindow::RebuildShaderSchema()
+{
+    DebugLogger::Singleton().Log("Rebuilding shader schema. Running ProcessShaders.py...");
+
+    // Save project file, to make sure any newly imported shaders are added to the list
+    GameProject::Singleton().Save();
+
+    QProcess *process = new QProcess(this);
+    string cmd = string("python Scripts/ProcessShaders.py ") + GameProject::Singleton().GetFilename();
+    process->start(QString(cmd.c_str()));
+    process->waitForFinished();
+
+    ResourceManager::Singleton().LoadShaderSchema();
 
     DebugLogger::Singleton().Log("Done rebuilding schema.");
 }

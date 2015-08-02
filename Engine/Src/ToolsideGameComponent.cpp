@@ -288,7 +288,7 @@ bool ToolsideComponentSchema::Load(string filename)
     XMLError result = schemaDoc.LoadFile(filename.c_str());
     if (result != tinyxml2::XML_SUCCESS)
     {
-        printf("Error reading schema file %s.\nXMLError %d\n", filename.c_str(), result);
+        printf("Error reading component schema file %s.\nXMLError %d\n", filename.c_str(), result);
         return false;
     }
 

@@ -7,6 +7,7 @@
 #include "Rendering\MeshInstance.h"
 #include "Rendering\Texture.h"
 #include "ToolsideGameComponent.h"
+#include "ToolsideShaderSchema.h"
 
 #include "tinyxml2.h"
 
@@ -65,10 +66,15 @@ struct MeshResourceInfo : ResourceInfo
             gameObject->SetMesh(meshInstance);
         }
         meshInstance->SetMesh(mesh);
+        if (meshInstance->GetMaterial() != NULL)
+        {
+            delete meshInstance->GetMaterial();
+        }
         Material* material = new Material();
         meshInstance->SetMaterial(material);
+
         ShaderProgram* shader = (ShaderProgram*)ResourceManager::Singleton().GetDefaultResource("shader_gouraud");
-        material->SetShader(shader);
+        shader->GetResourceInfo()->AddToGameObject(gameObject);
     }
 };
 
@@ -125,6 +131,13 @@ struct ShaderResourceInfo : ResourceInfo
             {
                 ShaderProgram* shader = ResourceManager::Singleton().GetShader(guid);
                 mat->SetShader(shader);
+
+                ShaderParamList* params = ResourceManager::Singleton().GetShaderParamList(guid);
+                ShaderParamList::iterator iter = params->begin();
+                for (; iter != params->end(); iter++)
+                {
+                    mat->SetColor(*iter, ColourRGB::White);
+                }
             }
         }
     }
@@ -270,6 +283,16 @@ void ResourceManager::LoadComponentSchema()
     }
 
     m_componentSchema->Load(m_resourceBasePath + "ScriptSchema.xml");
+}
+
+void ResourceManager::LoadShaderSchema()
+{
+    if (m_shaderSchema == NULL)
+    {
+        m_shaderSchema = new ToolsideShaderSchema();
+    }
+
+    m_shaderSchema->Load(m_resourceBasePath + "ShaderSchema.xml");
 }
 
 unsigned int ResourceManager::ImportResource(string& filepath, string type)
@@ -465,6 +488,11 @@ ResourceMap& ResourceManager::GetResourceMap()
 ParamList* ResourceManager::GetComponentParamList(unsigned int guid)
 {
     return m_componentSchema->GetDefaultParameterList(guid);
+}
+
+ShaderParamList* ResourceManager::GetShaderParamList(unsigned int guid)
+{
+    return m_shaderSchema->GetParameterList(guid);
 }
 
 template<typename T>
