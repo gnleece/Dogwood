@@ -28,8 +28,11 @@ bool ToolsideShaderSchema::Load(string filename)
         XMLElement* paramXML = scriptXML->FirstChildElement("Param");
         while (paramXML != NULL)
         {
+            ShaderParamType type = (ShaderParamType)(paramXML->IntAttribute("type"));
             string name = paramXML->Attribute("name");
-            paramList->push_back(name);
+
+            ShaderParamPair paramPair(type, name);
+            paramList->push_back(paramPair);
             paramXML = paramXML->NextSiblingElement("Param");
         }
 

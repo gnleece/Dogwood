@@ -32,10 +32,5 @@ void HierarchyView::UpdateSelectedObject()
         index = selectionModel()->selectedIndexes().first();
     }
 
-    if (index != m_currentIndex)
-    {
-        emit SelectedObjectChanged(index);
-    }
-
-    m_currentIndex = index;
+    emit SelectedObjectChanged(index);
 }

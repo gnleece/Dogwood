@@ -128,7 +128,19 @@ struct ShaderResourceInfo : ResourceInfo
                 ShaderParamList::iterator iter = params->begin();
                 for (; iter != params->end(); iter++)
                 {
-                    mat->SetColor(*iter, ColourRGB::White);
+                    ShaderParamType paramType = iter->first;
+                    switch(paramType)
+                    {
+                    case SHADERPARAM_COLOR:
+                        mat->SetColor(iter->second, ColourRGB::White);
+                        break;
+                    case SHADERPARAM_FLOAT:
+                        // TODO implement me
+                        break;
+                    case SHADERPARAM_TEXTURE:
+                        mat->SetTexture(iter->second, Texture::DefaultTexture());
+                        break;
+                    }
                 }
             }
         }
@@ -229,6 +241,12 @@ void ResourceManager::SerializeResourceMap(XMLDocument& rootDoc, XMLElement* par
     unordered_map<unsigned int, ResourceInfo*>::iterator iter;
     for (iter = m_resourceMap.begin(); iter != m_resourceMap.end(); iter++)
     {
+        if (iter->first == 0)
+        {
+            // A guid of 0 indicates a "default" resource (e.g. default texture)
+            continue;
+        }
+
         // TODO this is pretty ugly
         XMLElement* resourceParent = NULL;
         if (strcmp(iter->second->TypeName().c_str(), "Texture") == 0)
@@ -420,6 +438,9 @@ Resource* ResourceManager::GetResource(unsigned int guid, bool load)
 
 Texture* ResourceManager::GetTexture(unsigned int guid, bool load)
 {
+    if (guid == 0)
+        return Texture::DefaultTexture();
+
     return (Texture*)GetResource(guid, load);
 }
 

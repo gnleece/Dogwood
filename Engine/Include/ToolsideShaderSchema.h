@@ -4,11 +4,15 @@
 #include <unordered_map>
 #include <vector>
 
+using std::pair;
 using std::string;
 using std::unordered_map;
 using std::vector;
 
-typedef vector <string> ShaderParamList;
+enum ShaderParamType { SHADERPARAM_COLOR, SHADERPARAM_FLOAT, SHADERPARAM_TEXTURE };
+
+typedef pair <ShaderParamType, string> ShaderParamPair;
+typedef vector <ShaderParamPair> ShaderParamList;
 
 class ToolsideShaderSchema
 {

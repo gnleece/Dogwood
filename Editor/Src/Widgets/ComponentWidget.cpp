@@ -50,6 +50,7 @@ void ComponentWidget::Init(GameObject* go)
     // Prepare new model
     m_sourceModel = new ComponentModel(this, go);
     m_view->setModel(m_sourceModel);
+    m_view->setColumnWidth(0, 150);
     m_view->show();
     m_view->expandAll();
 }

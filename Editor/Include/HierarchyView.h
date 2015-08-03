@@ -19,5 +19,4 @@ signals:
 
 private:
     MainEditorWindow*   m_window;
-    QModelIndex         m_currentIndex;
 };

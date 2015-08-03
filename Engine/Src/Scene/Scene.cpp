@@ -466,19 +466,21 @@ void Scene::SerializeMaterialTextures(Material* material, tinyxml2::XMLNode* par
 
     for (; iter != textures.end(); iter++)
     {
+        XMLElement* textureNode = rootDoc.NewElement("Texture");
+
+        unsigned int guid = 0;
         if (iter->second != NULL && iter->second != Texture::DefaultTexture())
         {
-            XMLElement* textureNode = rootDoc.NewElement("Texture");
-
-            unsigned int guid = iter->second->GetResourceInfo()->guid;
-            textureNode->SetAttribute("guid", guid);
-            guids.insert(guid);
-
-            string paramName = shader->GetUniformName(iter->first);
-            textureNode->SetAttribute("name", paramName.c_str());
-
-            parentNode->InsertEndChild(textureNode);
+            guid = iter->second->GetResourceInfo()->guid;
         }
+
+        textureNode->SetAttribute("guid", guid);
+        guids.insert(guid);
+
+        string paramName = shader->GetUniformName(iter->first);
+        textureNode->SetAttribute("name", paramName.c_str());
+
+        parentNode->InsertEndChild(textureNode);
     }
 }
 

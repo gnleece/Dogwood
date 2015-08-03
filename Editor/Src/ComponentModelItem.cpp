@@ -270,8 +270,16 @@ QVariant ComponentModelTextureItem::GetValueData()
     }
     else
     {
-        ResourceInfo* info = m_material->GetTexture(m_paramID)->GetResourceInfo();
-        str = GetFriendlyAssetNameFromPath(info->path) + " (" + std::to_string(info->guid) + ")";
+        Texture* texture = m_material->GetTexture(m_paramID);
+        if (texture != Texture::DefaultTexture())
+        {
+            ResourceInfo* info = m_material->GetTexture(m_paramID)->GetResourceInfo();
+            str = GetFriendlyAssetNameFromPath(info->path) + " (" + std::to_string(info->guid) + ")";
+        }
+        else
+        {
+            str = "<None>";
+        }
     }
     return QVariant(str.c_str());
 }

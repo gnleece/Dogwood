@@ -37,6 +37,7 @@ ENGINE (Dogwood)
             * #define to compile without XInput?
         * Re-factor MainEditorWindow.cpp
         * typedef guid type?
+        * Remove un-used guids on scene serialization
         
 
 ---------------------------------------------------------------------------
@@ -98,7 +99,6 @@ EDITOR (Thicket)
 
         Hi pri
         - Undo/redo broken with delete/undo create. Need to avoid use of QModelIndex
-        - Sometimes object switching in hierarchy view gets stuck
 
 ---------------------------------------------------------------------------
 
