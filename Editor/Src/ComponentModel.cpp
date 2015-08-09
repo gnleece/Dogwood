@@ -15,11 +15,41 @@ using namespace EditorCommands;
 ComponentModel::ComponentModel(QObject *parent, GameObject* go)
     : m_gameObject(go), QAbstractItemModel(parent)
 {
+    BuildModel();
+}
+
+void ComponentModel::BuildModel()
+{
     m_rootItem = new ComponentModelItem("ROOT");
 
     AddTransformData();
     AddMeshData();
     AddComponentData();
+
+    emit layoutChanged();
+}
+
+void ComponentModel::RefreshModel()
+{
+    // Refreshes all the items in the current model, without rebuilding the entire thing
+    m_rootItem->Refresh();
+    emit layoutChanged();
+}
+
+void ComponentModel::ClearModel()
+{
+    delete m_rootItem;      // The item destructor will take care of deleting child items recursively
+}
+
+ComponentModelItem* ComponentModel::GetItem(const QModelIndex &index) const
+{
+    if (index.isValid())
+    {
+        ComponentModelItem *item = static_cast<ComponentModelItem*>(index.internalPointer());
+        if (item)
+            return item;
+    }
+    return m_rootItem;
 }
 
 QModelIndex ComponentModel::index(int row, int column, const QModelIndex& parent) const
@@ -110,7 +140,7 @@ Qt::DropActions ComponentModel::supportedDropActions() const
 QStringList ComponentModel::mimeTypes() const
 {
     QStringList types;
-    types << "DogwoodEngine/GameObject";
+    types << "DogwoodEngine/GameObject" << "DogwoodEngine/AssetInfo";
     return types;
 }
 
@@ -123,30 +153,12 @@ bool ComponentModel::dropMimeData(const QMimeData* data, Qt::DropAction action, 
         return false;
 
     ComponentModelItem* item = GetItem(parent);
-    return item->DropData(data);
-}
+    bool success = item->DropData(data);
 
-void ComponentModel::RefreshModel()
-{
-    // Refreshes all the items in the current model, without rebuilding the entire thing
-    m_rootItem->Refresh();
-    emit layoutChanged();
-}
+    ClearModel();
+    BuildModel();
 
-void ComponentModel::ClearModel()
-{
-    delete m_rootItem;      // The item destructor will take care of deleting child items recursively
-}
-
-ComponentModelItem* ComponentModel::GetItem(const QModelIndex &index) const
-{
-    if (index.isValid())
-    {
-        ComponentModelItem *item = static_cast<ComponentModelItem*>(index.internalPointer());
-        if (item)
-            return item;
-    }
-    return m_rootItem;
+    return success;
 }
 
 bool ComponentModel::IsEditable(const QModelIndex &index) const

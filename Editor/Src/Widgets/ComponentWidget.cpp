@@ -53,6 +53,8 @@ void ComponentWidget::Init(GameObject* go)
     m_view->setColumnWidth(0, 150);
     m_view->show();
     m_view->expandAll();
+
+    connect(m_sourceModel, SIGNAL(layoutChanged(const QList<QPersistentModelIndex>&, QAbstractItemModel::LayoutChangeHint)), this, SLOT(OnLayoutChanged()));
 }
 
 void ComponentWidget::Refresh()
@@ -73,4 +75,9 @@ void ComponentWidget::OnDoubleClick(const QModelIndex& index)
     {
         item->OnDoubleClick();
     }
+}
+
+void ComponentWidget::OnLayoutChanged()
+{
+    m_view->expandAll();
 }

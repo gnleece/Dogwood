@@ -4,6 +4,11 @@
 #include "Rendering\ShaderProgram.h"
 #include "Rendering\Texture.h"
 
+void Material::SetMesh(MeshInstance* mesh)
+{
+    m_mesh = mesh;
+}
+
 void Material::SetShader(ShaderProgram* shader)
 {
     m_shader = shader;
@@ -36,6 +41,11 @@ void Material::SetTexture(string paramName, Texture* texture)
 {
     GLint paramID = m_shader->GetUniformLocation(paramName);
     SetTexture(paramID, texture);
+}
+
+MeshInstance* Material::GetMesh()
+{
+    return m_mesh;
 }
 
 ShaderProgram* Material::GetShader()

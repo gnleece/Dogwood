@@ -28,6 +28,10 @@ void MeshInstance::SetMesh(Mesh* mesh)
 void MeshInstance::SetMaterial(Material* material)
 {
     m_material = material;
+    if (material != NULL)
+    {
+        material->SetMesh(this);
+    }
 }
 
 MeshInstance* MeshInstance::DeepCopy()

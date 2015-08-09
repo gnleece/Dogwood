@@ -1,4 +1,5 @@
 #include "ComponentModelItem.h"
+#include "AssetMimeData.h"
 #include "EditorUtil.h"
 #include "GameObject.h"
 #include "GameObjectMimeData.h"
@@ -19,13 +20,7 @@ ComponentModelItem::ComponentModelItem(string name)
 
 ComponentModelItem::~ComponentModelItem()
 {
-    while(m_children.size() > 0)
-    {
-        ComponentModelItem* child = m_children.back();
-        m_children.pop_back();
-        delete child;
-    }
-    m_children.clear();
+    Clear();
 }
 
 void ComponentModelItem::AddChild(ComponentModelItem* child)
@@ -93,6 +88,17 @@ QVariant ComponentModelItem::GetData(ColumnType columnType, int role)
         }
     }
     return QVariant();
+}
+
+void ComponentModelItem::Clear()
+{
+    while (m_children.size() > 0)
+    {
+        ComponentModelItem* child = m_children.back();
+        m_children.pop_back();
+        delete child;
+    }
+    m_children.clear();
 }
 
 QVariant ComponentModelItem::GetValueData()
@@ -191,9 +197,19 @@ bool ComponentModelMeshItem::IsEditable()
     return false;
 }
 
-bool ComponentModelMeshItem::DropData(const QMimeData* /*data*/)
+bool ComponentModelMeshItem::DropData(const QMimeData* data)
 {
-    // TODO implement me
+    AssetMimeData* mimeData = (AssetMimeData*)data;
+    if (mimeData != NULL)
+    {
+        ResourceInfo* info = mimeData->GetResourceInfo();
+        if (strcmp(info->TypeName().c_str(), "Mesh") == 0)       // TODO use type enum to avoid strcmp
+        {
+            Mesh* mesh = ResourceManager::Singleton().GetMesh(info->guid);
+            m_mesh->SetMesh(mesh);
+            return true;
+        }
+    }
     return false;
 }
 
@@ -202,6 +218,13 @@ bool ComponentModelMeshItem::DropData(const QMimeData* /*data*/)
 ComponentModelShaderItem::ComponentModelShaderItem(string name, Material* material)
     : ComponentModelItem(name), m_material(material)
 {
+    Refresh();
+}
+
+void ComponentModelShaderItem::Refresh()
+{
+    Clear();
+
     m_isHeader = false;
 
     // Colors
@@ -247,9 +270,18 @@ bool ComponentModelShaderItem::IsEditable()
     return false;
 }
 
-bool ComponentModelShaderItem::DropData(const QMimeData* /*data*/)
+bool ComponentModelShaderItem::DropData(const QMimeData* data)
 {
-    // TODO implement me
+    AssetMimeData* mimeData = (AssetMimeData*)data;
+    if (mimeData != NULL)
+    {
+        ResourceInfo* info = mimeData->GetResourceInfo();
+        if (strcmp(info->TypeName().c_str(), "Shader") == 0)       // TODO use type enum to avoid strcmp
+        {
+            info->AddToGameObject(m_material->GetMesh()->GetGameObject());
+            return true;
+        }
+    }
     return false;
 }
 
@@ -289,9 +321,19 @@ bool ComponentModelTextureItem::IsEditable()
     return false;
 }
 
-bool ComponentModelTextureItem::DropData(const QMimeData* /*data*/)
+bool ComponentModelTextureItem::DropData(const QMimeData* data)
 {
-    // TODO implement me
+    AssetMimeData* mimeData = (AssetMimeData*)data;
+    if (mimeData != NULL)
+    {
+        ResourceInfo* info = mimeData->GetResourceInfo();
+        if (strcmp(info->TypeName().c_str(), "Texture") == 0)       // TODO use type enum to avoid strcmp
+        {
+            Texture* texture = ResourceManager::Singleton().GetTexture(info->guid);
+            m_material->SetTexture(m_paramID, texture);
+            return true;
+        }
+    }
     return false;
 }
 

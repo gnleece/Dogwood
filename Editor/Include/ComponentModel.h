@@ -17,6 +17,12 @@ class ComponentModel : public QAbstractItemModel
 public:
     ComponentModel(QObject* parent, GameObject* go);
 
+    void            BuildModel();
+    void            RefreshModel();
+    void            ClearModel();
+
+    ComponentModelItem* GetItem(const QModelIndex& index) const;
+
     QModelIndex     index(int row, int column, const QModelIndex& parent = QModelIndex()) const;
     QModelIndex     parent(const QModelIndex& index) const;
 
@@ -32,11 +38,6 @@ public:
 
     QStringList     mimeTypes() const;
     bool            dropMimeData(const QMimeData* data, Qt::DropAction action, int row, int column, const QModelIndex& parent);
-
-    void            RefreshModel();
-    void            ClearModel();
-
-    ComponentModelItem* GetItem(const QModelIndex& index) const;
 
 private:
     bool            IsEditable(const QModelIndex& index) const;

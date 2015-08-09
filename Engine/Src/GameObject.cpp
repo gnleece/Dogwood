@@ -253,6 +253,10 @@ void GameObject::Render(Transform& parentWorldTransform, bool dirty, bool wirefr
 void GameObject::SetMesh(MeshInstance* mesh)
 {
     m_mesh = mesh;
+    if (mesh != NULL)
+    {
+        mesh->SetGameObject(this);
+    }
 }
 
 MeshInstance* GameObject::GetMesh()

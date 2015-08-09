@@ -19,6 +19,7 @@ public:
     virtual void    OnDisable() {}
 
     // Engine use only - TODO enforce this
+    GameObject*     GetGameObject();
     void            SetGameObject(GameObject* gameObject);
 
 protected:

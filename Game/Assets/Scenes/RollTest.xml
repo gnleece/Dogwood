@@ -1,11 +1,11 @@
 <Scene>
     <Resources>
         <Resource guid="156145593"/>
-        <Resource guid="0"/>
         <Resource guid="3936014360"/>
         <Resource guid="3746892247"/>
         <Resource guid="33727872"/>
         <Resource guid="3125582585"/>
+        <Resource guid="3780387270"/>
     </Resources>
     <Camera>
         <Position x="0.00000" y="1.00000" z="10.00000"/>
@@ -167,8 +167,8 @@
             <Mesh guid="33727872">
                 <Material>
                     <Shader guid="3746892247"/>
-                    <Color r="1.00000" g="0.33333" b="1.00000" name="colorDiffuse"/>
-                    <Color r="1.00000" g="0.33333" b="1.00000" name="colorAmbient"/>
+                    <Color r="0.36078" g="1.00000" b="0.32941" name="colorDiffuse"/>
+                    <Color r="0.66667" g="1.00000" b="0.00000" name="colorAmbient"/>
                     <Color r="1.00000" g="1.00000" b="1.00000" name="colorSpecular"/>
                 </Material>
             </Mesh>
@@ -183,8 +183,8 @@
             <Mesh guid="33727872">
                 <Material>
                     <Shader guid="3125582585"/>
-                    <Color r="1.00000" g="0.66667" b="0.49804" name="color"/>
-                    <Texture guid="0" name="tex"/>
+                    <Color r="1.00000" g="0.66667" b="0.00000" name="color"/>
+                    <Texture guid="3780387270" name="tex"/>
                 </Material>
             </Mesh>
             <Components/>

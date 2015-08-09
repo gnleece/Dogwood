@@ -16,6 +16,7 @@ AssetWidget::AssetWidget(MainEditorWindow* window, QWidget* parent)
 {
     m_ui->setupUi(this);
     m_ui->meshTableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+    m_ui->meshTableView->setDragEnabled(true);
 
     // Add-to-object button setup
     connect(m_ui->addButton, SIGNAL(clicked()), this, SLOT(AddButtonClicked()));
@@ -130,7 +131,7 @@ void AssetWidget::AddButtonClicked()
             if (go != NULL)
             {
                 info->AddToGameObject(go);
-                // TODO refresh widgets
+                m_window->Refresh();
             }
         }
     }

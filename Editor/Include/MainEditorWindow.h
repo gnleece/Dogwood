@@ -50,6 +50,8 @@ public:
 
     bool        IsOpen();
 
+    void        Refresh();
+
     virtual void resizeEvent(QResizeEvent* resizeEvent);
     virtual void closeEvent(QCloseEvent *event);
 

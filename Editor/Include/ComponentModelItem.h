@@ -27,6 +27,7 @@ public:
     int                 GetChildCount();
     int                 GetIndexInParent();
     QVariant            GetData(ColumnType columnType, int role);
+    void                Clear();
 
     virtual void        Refresh();
     virtual QVariant    GetValueData();
@@ -77,6 +78,7 @@ class ComponentModelShaderItem : public ComponentModelItem
 public:
     ComponentModelShaderItem(string name, Material* material);
 
+    virtual void        Refresh();
     virtual QVariant    GetValueData();
     virtual bool        IsEditable();
     virtual bool        DropData(const QMimeData* data);

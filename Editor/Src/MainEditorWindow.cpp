@@ -142,6 +142,11 @@ bool MainEditorWindow::IsOpen()
     return m_open;
 }
 
+void MainEditorWindow::Refresh()
+{
+    m_componentWidget->Refresh();
+}
+
 // TODO: Qt textboxes seem to capture ctrl + z and do their own undo. stop that!
 // TODO: just selecting a game object counts as a bunch of update commands. fix that!
 void MainEditorWindow::Undo()

@@ -30,4 +30,5 @@ private:
 
 private slots:
     void    OnDoubleClick(const QModelIndex& index);
+    void    OnLayoutChanged();
 };

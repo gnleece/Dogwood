@@ -1,4 +1,5 @@
 #include "AssetDatabaseModel.h"
+#include "AssetMimeData.h"
 #include "Scene\ResourceManager.h"
 
 #include <unordered_map>
@@ -71,4 +72,42 @@ ResourceInfo* AssetDatabaseModel::getItem(const QModelIndex &index) const
             return item;
     }
     return NULL;
+}
+
+Qt::ItemFlags AssetDatabaseModel::flags(const QModelIndex &index) const
+{
+    Qt::ItemFlags defaultFlags = QAbstractTableModel::flags(index);
+    return Qt::ItemIsDragEnabled | defaultFlags;
+}
+
+Qt::DropActions AssetDatabaseModel::supportedDragActions() const
+{
+    return Qt::LinkAction;
+}
+
+Qt::DropActions AssetDatabaseModel::supportedDropActions() const
+{
+    return Qt::LinkAction;
+}
+
+QStringList AssetDatabaseModel::mimeTypes() const
+{
+    QStringList types;
+    types << "DogwoodEngine/AssetInfo";
+    return types;
+}
+
+QMimeData* AssetDatabaseModel::mimeData(const QModelIndexList &indexes) const
+{
+    AssetMimeData* mimeData;
+    foreach(const QModelIndex &index, indexes)
+    {
+        if (index.isValid())
+        {
+            mimeData = new AssetMimeData(getItem(index));
+            break;
+        }
+    }
+
+    return mimeData;
 }
