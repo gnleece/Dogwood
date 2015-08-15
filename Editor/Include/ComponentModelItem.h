@@ -35,7 +35,8 @@ public:
     virtual bool        SetData(QVariant value);
     virtual bool        IsEditable();
     virtual bool        DropData(const QMimeData* data);
-    virtual void        OnDoubleClick();
+    virtual void        OnClick(ColumnType columnType);
+    virtual void        OnDoubleClick(ColumnType columnType);
 
 protected:
     string                      m_name;
@@ -96,7 +97,7 @@ public:
     QVariant            GetBackgroundData(ColumnType columnType);
     virtual bool        IsEditable();
     virtual bool        DropData(const QMimeData* data);
-    void                OnDoubleClick();
+    void                OnDoubleClick(ColumnType columnType);
 
 private:
     Material*           m_material;
@@ -128,7 +129,7 @@ public:
     bool                SetData(QVariant value);
     bool                IsEditable();
     bool                DropData(const QMimeData* data);
-    void                OnDoubleClick();
+    void                OnDoubleClick(ColumnType columnType);
 
 private:
     ToolsideGameComponent*              m_component;

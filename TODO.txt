@@ -56,9 +56,6 @@ EDITOR (Thicket)
         * Light settings
         * Picking: raycast against actual meshes instead of bounding boxes
 
-    * Assets widget
-        * Enable drag & drop onto object
-
     * Game components
         * Built-in component widgets
             * Transform: expand x/y/z as separate rows
@@ -74,6 +71,7 @@ EDITOR (Thicket)
             - Better value validation
             - Fixup background color code
             - For reference types, show full asset path on hover
+            - Reference type params should be styled differently (font color?)
 
     * Visuals
         * Change transform tool shape based on mode

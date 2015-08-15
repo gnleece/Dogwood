@@ -4,6 +4,7 @@
 #include "GameObject.h"
 #include "GameObjectMimeData.h"
 #include "GameObjectReference.h"
+#include "DebugLogger.h"
 #include "Rendering/Material.h"
 #include "Rendering/Mesh.h"
 #include "Rendering/MeshInstance.h"
@@ -77,6 +78,11 @@ QVariant ComponentModelItem::GetData(ColumnType columnType, int role)
     {
         return GetBackgroundData(columnType);
     }
+    else if (role == Qt::TextAlignmentRole)
+    {
+        if (m_isHeader && columnType == VALUE_COLUMN)
+            return Qt::AlignRight;
+    }
     else
     {
         switch (columnType)
@@ -103,6 +109,10 @@ void ComponentModelItem::Clear()
 
 QVariant ComponentModelItem::GetValueData()
 {
+    if (m_isHeader)
+    {
+        return QVariant("...");
+    }
     return QVariant("");
 }
 
@@ -131,7 +141,15 @@ bool ComponentModelItem::DropData(const QMimeData* /*data*/)
     return false;
 }
 
-void ComponentModelItem::OnDoubleClick()
+void ComponentModelItem::OnClick(ColumnType columnType)
+{
+    if (m_isHeader && columnType == VALUE_COLUMN)
+    {
+        DebugLogger::Singleton().Log("Context menu click!");
+    }
+}
+
+void ComponentModelItem::OnDoubleClick(ColumnType /*columnType*/)
 {}
 
 //--------------------------------------------------------------------------------
@@ -382,7 +400,7 @@ bool ComponentModelColorItem::DropData(const QMimeData* /*data*/)
     return false;
 }
 
-void ComponentModelColorItem::OnDoubleClick()
+void ComponentModelColorItem::OnDoubleClick(ColumnType /*columnType*/)
 {
     // Open a ColorDialog to let the user pick a color
     ColourRGB oldColor = m_material->GetColor(m_paramID);
@@ -506,7 +524,7 @@ bool ComponentModelScriptItem::DropData(const QMimeData* data)
     return true;
 }
 
-void ComponentModelScriptItem::OnDoubleClick()
+void ComponentModelScriptItem::OnDoubleClick(ColumnType /*columnType*/)
 {
     switch (m_valueType)
     {

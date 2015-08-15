@@ -31,8 +31,9 @@ void ComponentModel::BuildModel()
 
 void ComponentModel::RefreshModel()
 {
-    // Refreshes all the items in the current model, without rebuilding the entire thing
-    m_rootItem->Refresh();
+    ClearModel();
+    BuildModel();
+
     emit layoutChanged();
 }
 
@@ -85,7 +86,6 @@ int ComponentModel::rowCount(const QModelIndex& index) const
 
 int ComponentModel::columnCount(const QModelIndex& /*index*/) const
 {
-    // TODO get headers to span across all columns
     return 2;
 }
 
@@ -94,13 +94,12 @@ QVariant ComponentModel::data(const QModelIndex &index, int role) const
     if (!index.isValid())
         return QVariant();
 
-    if (role != Qt::DisplayRole && role != Qt::EditRole && role != Qt::BackgroundRole)
+    if (role != Qt::DisplayRole && role != Qt::EditRole && role != Qt::BackgroundRole && role != Qt::TextAlignmentRole)
         return QVariant();
 
     int col = index.column();
     ComponentModelItem *item = GetItem(index);
-    ComponentModelItem::ColumnType columnType = (col == 0) ? ComponentModelItem::NAME_COLUMN : ComponentModelItem::VALUE_COLUMN;
-    return item->GetData(columnType, role);
+    return item->GetData((ComponentModelItem::ColumnType)col, role);
 }
 
 bool ComponentModel::setData(const QModelIndex& index, const QVariant& value, int role)
