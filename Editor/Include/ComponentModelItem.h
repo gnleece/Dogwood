@@ -46,7 +46,7 @@ public:
     virtual bool        DropData(const QMimeData* data);
     virtual void        OnDoubleClick(ColumnType columnType);
     virtual MenuOptions GetMenuOptions();
-    virtual void        HandleMenuSelection(ContextMenuOption selection);
+    virtual bool        HandleMenuSelection(ContextMenuOption selection);
 
 protected:
     string                      m_name;
@@ -66,7 +66,7 @@ public:
     QVariant            GetValueData();
     bool                SetData(QVariant value);
     MenuOptions         GetMenuOptions();
-    void                HandleMenuSelection(ContextMenuOption selection);
+    bool                HandleMenuSelection(ContextMenuOption selection);
 
 private:
     GameObject*             m_gameObject;
@@ -83,7 +83,7 @@ public:
     bool                IsEditable();
     bool                DropData(const QMimeData* data);
     MenuOptions         GetMenuOptions();
-    void                HandleMenuSelection(ContextMenuOption selection);
+    bool                HandleMenuSelection(ContextMenuOption selection);
 
 private:
     MeshInstance*       m_mesh;
@@ -147,7 +147,7 @@ public:
     bool                DropData(const QMimeData* data);
     void                OnDoubleClick(ColumnType columnType);
     MenuOptions         GetMenuOptions();
-    void                HandleMenuSelection(ContextMenuOption selection);
+    bool                HandleMenuSelection(ContextMenuOption selection);
 
 private:
     ToolsideGameComponent*              m_component;

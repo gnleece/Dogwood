@@ -60,6 +60,7 @@ public:
     GameObject*     BoundingSphereRaycast(Vector3 rayOrigin, Vector3 rayDirection, Transform& parentWorldTransform, float& distance);
 
     void            AddToolsideComponent(ToolsideGameComponent* component);
+    void            RemoveToolsideComponent(ToolsideGameComponent* component);
     vector<ToolsideGameComponent*>& GetToolsideComponentList();
 
     static vector<GameObject*> ActiveGameObjects;

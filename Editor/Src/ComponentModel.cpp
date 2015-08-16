@@ -72,7 +72,7 @@ QModelIndex ComponentModel::parent(const QModelIndex &index) const
     ComponentModelItem* childItem = GetItem(index);
     ComponentModelItem* parentItem = childItem->GetParent();
 
-    if (parentItem == m_rootItem)
+    if (parentItem == m_rootItem || parentItem == NULL)
         return QModelIndex();
 
     return createIndex(parentItem->GetIndexInParent(), 0, parentItem);

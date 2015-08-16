@@ -6,6 +6,9 @@
 #include "Rendering\MeshInstance.h"
 #include "GameComponent.h"
 #include "GameObjectReference.h"
+#include "ToolsideGameComponent.h"
+
+#include <algorithm>
 
 vector<GameObject*> GameObject::ActiveGameObjects = vector<GameObject*>();
 
@@ -252,10 +255,17 @@ void GameObject::Render(Transform& parentWorldTransform, bool dirty, bool wirefr
 
 void GameObject::SetMesh(MeshInstance* mesh)
 {
-    m_mesh = mesh;
-    if (mesh != NULL)
+    // clear previous mesh
+    if (m_mesh != NULL)
     {
-        mesh->SetGameObject(this);
+        delete m_mesh;
+    }
+
+    // set new mesh
+    m_mesh = mesh;
+    if (m_mesh != NULL)
+    {
+        m_mesh->SetGameObject(this);
     }
 }
 
@@ -358,7 +368,15 @@ void GameObject::AddToolsideComponent(ToolsideGameComponent* component)
     if (component)
     {
         m_toolComponents.push_back(component);
+        component->SetGameObject(this);
     }
+}
+
+void GameObject::RemoveToolsideComponent(ToolsideGameComponent* component)
+{
+    m_toolComponents.erase(
+        std::remove(m_toolComponents.begin(), m_toolComponents.end(), component), 
+        m_toolComponents.end());
 }
 
 vector<ToolsideGameComponent*>& GameObject::GetToolsideComponentList()

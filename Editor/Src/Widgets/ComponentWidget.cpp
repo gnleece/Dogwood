@@ -19,7 +19,7 @@ ComponentWidget::ComponentWidget(QWidget* parent, MainEditorWindow* window) :
 {
     m_ui->setupUi(this);
 
-    m_view = new ComponentView(window);
+    m_view = new ComponentView(window, this);
     m_ui->verticalLayout->addWidget(m_view);
 
     // Set a reference to this widget in the ModifyTransformCommand class, so that it
@@ -31,6 +31,11 @@ ComponentWidget::ComponentWidget(QWidget* parent, MainEditorWindow* window) :
 
 void ComponentWidget::Init(GameObject* go)
 {
+    m_gameObject = go;
+
+    if (m_gameObject == NULL)
+        return;
+
     // Clear old model
     if (m_sourceModel != NULL)
     {
@@ -40,7 +45,7 @@ void ComponentWidget::Init(GameObject* go)
 
     // Refresh the game object's component data, in case the
     // schema has been rebuilt since it was loaded
-    vector<ToolsideGameComponent*> components = go->GetToolsideComponentList();
+    vector<ToolsideGameComponent*> components = m_gameObject->GetToolsideComponentList();
     vector<ToolsideGameComponent*>::iterator iter = components.begin();
     for (; iter != components.end(); iter++)
     {
@@ -48,13 +53,18 @@ void ComponentWidget::Init(GameObject* go)
     }
 
     // Prepare new model
-    m_sourceModel = new ComponentModel(this, go);
+    m_sourceModel = new ComponentModel(this, m_gameObject);
     m_view->SetModel(m_sourceModel);
     m_view->setColumnWidth(0, 150);
     m_view->show();
     m_view->expandAll();
 
     connect(m_sourceModel, SIGNAL(layoutChanged(const QList<QPersistentModelIndex>&, QAbstractItemModel::LayoutChangeHint)), this, SLOT(OnLayoutChanged()));
+}
+
+void ComponentWidget::ReInit()
+{
+    Init(m_gameObject);
 }
 
 void ComponentWidget::Refresh()

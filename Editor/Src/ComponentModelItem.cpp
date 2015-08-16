@@ -1,4 +1,6 @@
 #include "ComponentModelItem.h"
+
+#include "ComponentModel.h"
 #include "AssetMimeData.h"
 #include "EditorUtil.h"
 #include "GameObject.h"
@@ -149,8 +151,10 @@ MenuOptions ComponentModelItem::GetMenuOptions()
     return CONTEXTMENU_NONE;
 }
 
-void ComponentModelItem::HandleMenuSelection(ContextMenuOption selection)
-{}
+bool ComponentModelItem::HandleMenuSelection(ContextMenuOption selection)
+{
+    return false;
+}
 
 //--------------------------------------------------------------------------------
 
@@ -215,14 +219,17 @@ MenuOptions ComponentModelTransformItem::GetMenuOptions()
     return CONTEXTMENU_COPY;
 }
 
-void ComponentModelTransformItem::HandleMenuSelection(ContextMenuOption selection)
+bool ComponentModelTransformItem::HandleMenuSelection(ContextMenuOption selection)
 {
     switch (selection)
     {
     case CONTEXTMENU_COPY:
-        DebugLogger::Singleton().Log("copy transform");
+        // TODO implement me
+        DebugLogger::Singleton().Log("copy transform -- not implemented");
         break;
     }
+
+    return false;
 }
 
 //--------------------------------------------------------------------------------
@@ -294,17 +301,22 @@ MenuOptions ComponentModelMeshItem::GetMenuOptions()
     return CONTEXTMENU_COPY | CONTEXTMENU_DELETE;
 }
 
-void ComponentModelMeshItem::HandleMenuSelection(ContextMenuOption selection)
+bool ComponentModelMeshItem::HandleMenuSelection(ContextMenuOption selection)
 {
     switch (selection)
     {
     case CONTEXTMENU_COPY:
-        DebugLogger::Singleton().Log("copy mesh component");
+        // TODO implement me
+        DebugLogger::Singleton().Log("copy mesh component -- not implemented");
         break;
     case CONTEXTMENU_DELETE:
         DebugLogger::Singleton().Log("delete mesh component");
-        break;
+        GameObject* go = m_mesh->GetGameObject();
+        go->SetMesh(NULL);
+        return true;
     }
+
+    return false;
 }
 
 //--------------------------------------------------------------------------------
@@ -656,15 +668,19 @@ MenuOptions ComponentModelScriptItem::GetMenuOptions()
     return CONTEXTMENU_COPY | CONTEXTMENU_DELETE;
 }
 
-void ComponentModelScriptItem::HandleMenuSelection(ContextMenuOption selection)
+bool ComponentModelScriptItem::HandleMenuSelection(ContextMenuOption selection)
 {
     switch (selection)
     {
     case CONTEXTMENU_COPY:
-        DebugLogger::Singleton().Log("copy script component");
+        DebugLogger::Singleton().Log("copy script component -- not implemented");
         break;
     case CONTEXTMENU_DELETE:
         DebugLogger::Singleton().Log("delete script component");
+        GameObject* go = m_component->GetGameObject();
+        go->RemoveToolsideComponent(m_component);
+        return true;
         break;
     }
+    return false;
 }

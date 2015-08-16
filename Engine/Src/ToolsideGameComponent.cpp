@@ -200,6 +200,16 @@ void ToolsideGameComponent::Serialize(tinyxml2::XMLNode* parentNode, tinyxml2::X
     }
 }
 
+GameObject* ToolsideGameComponent::GetGameObject()
+{
+    return m_gameObject;
+}
+
+void ToolsideGameComponent::SetGameObject(GameObject* go)
+{
+    m_gameObject = go;
+}
+
 unsigned int ToolsideGameComponent::GetGuid()
 {
     return m_guid;

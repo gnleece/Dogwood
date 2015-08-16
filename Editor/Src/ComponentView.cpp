@@ -2,13 +2,14 @@
 
 #include "ComponentModel.h"
 #include "ComponentModelItem.h"
+#include "Widgets/ComponentWidget.h"
 #include <qevent.h>
 #include <QHeaderView>
 #include <QMenu>
 #include <QPainter>
 
-ComponentView::ComponentView(MainEditorWindow* window) :
-  QTreeView(), m_window(window)
+ComponentView::ComponentView(MainEditorWindow* window, ComponentWidget* widget) :
+  QTreeView(), m_window(window), m_widget(widget)
 {
     setAcceptDrops(true);
     setDropIndicatorShown(true);
@@ -76,16 +77,23 @@ void ComponentView::ShowContextMenu(ComponentModelItem* item, QPoint globalPos)
         QAction* selectedItem = myMenu.exec(globalPos);
         if (selectedItem)
         {
+            bool refresh = false;
+
             // TODO these string comparisons are pretty awful
             string selectedString = selectedItem->text().toStdString();
 
             if (selectedString.compare("Copy") == 0)
             {
-                item->HandleMenuSelection(ComponentModelItem::CONTEXTMENU_COPY);
+                refresh = item->HandleMenuSelection(ComponentModelItem::CONTEXTMENU_COPY);
             }
             else if (selectedString.compare("Delete") == 0)
             {
-                item->HandleMenuSelection(ComponentModelItem::CONTEXTMENU_DELETE);
+                refresh = item->HandleMenuSelection(ComponentModelItem::CONTEXTMENU_DELETE);
+            }
+
+            if (refresh)
+            {
+                m_widget->ReInit();
             }
         }
     }

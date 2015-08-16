@@ -2,6 +2,20 @@
 #include "Rendering\MeshInstance.h"
 #include "Rendering\Mesh.h"
 
+MeshInstance::MeshInstance()
+{
+    m_material = new Material();
+    m_material->SetMesh(this);
+}
+
+MeshInstance::~MeshInstance()
+{
+    if (m_material != NULL)
+    {
+        delete m_material;
+    }
+}
+
 void MeshInstance::Render(Transform& transform, bool wireframe)
 {
     if (m_mesh)
@@ -27,10 +41,17 @@ void MeshInstance::SetMesh(Mesh* mesh)
 
 void MeshInstance::SetMaterial(Material* material)
 {
-    m_material = material;
-    if (material != NULL)
+    // clear old material
+    if (m_material != NULL)
     {
-        material->SetMesh(this);
+        delete m_material;
+    }
+
+    // set new material
+    m_material = material;
+    if (m_material != NULL)
+    {
+        m_material->SetMesh(this);
     }
 }
 

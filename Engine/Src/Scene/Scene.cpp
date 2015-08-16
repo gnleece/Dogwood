@@ -266,9 +266,8 @@ void Scene::AddMaterial(MeshInstance* meshInstance, XMLElement* xmlnode)
     XMLElement* materialXML = xmlnode->FirstChildElement("Material");
     if (materialXML && meshInstance)
     {
-        // Create material component
-        Material* material = new Material();
-        meshInstance->SetMaterial(material);
+        // Get material component
+        Material* material = meshInstance->GetMaterial();
 
         // Attach shader
         XMLElement* shaderXML = materialXML->FirstChildElement("Shader");

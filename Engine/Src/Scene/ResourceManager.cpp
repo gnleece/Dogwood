@@ -52,18 +52,14 @@ struct MeshResourceInfo : ResourceInfo
     {
         Mesh* mesh = ResourceManager::Singleton().GetMesh(guid);
         MeshInstance* meshInstance = gameObject->GetMesh();
-        if (meshInstance == NULL)
+        if (meshInstance != NULL)
         {
-            meshInstance = new MeshInstance();
-            gameObject->SetMesh(meshInstance);
+            delete meshInstance;
+            meshInstance = NULL;
         }
+        meshInstance = new MeshInstance();
         meshInstance->SetMesh(mesh);
-        if (meshInstance->GetMaterial() != NULL)
-        {
-            delete meshInstance->GetMaterial();
-        }
-        Material* material = new Material();
-        meshInstance->SetMaterial(material);
+        gameObject->SetMesh(meshInstance);
 
         ShaderProgram* shader = (ShaderProgram*)ResourceManager::Singleton().GetDefaultResource("shader_gouraud");
         shader->GetResourceInfo()->AddToGameObject(gameObject);

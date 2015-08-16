@@ -4,6 +4,7 @@
 
 class ComponentModel;
 class ComponentModelItem;
+class ComponentWidget;
 class MainEditorWindow;
 
 class ComponentView : public QTreeView
@@ -12,7 +13,7 @@ class ComponentView : public QTreeView
 
 public:
 
-    ComponentView(MainEditorWindow* window);
+    ComponentView(MainEditorWindow* window, ComponentWidget* widget);
 
     void    SetModel(ComponentModel* model);
 
@@ -27,4 +28,5 @@ private:
 
     MainEditorWindow*   m_window;
     ComponentModel*     m_model;
+    ComponentWidget*    m_widget;
 };

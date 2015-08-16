@@ -9,6 +9,9 @@ class Mesh;
 class MeshInstance : public GameComponent
 {
 public:
+    MeshInstance();
+    ~MeshInstance();
+
     void        Render(Transform& transform, bool wireframe = false);
 
     Mesh*       GetMesh();
