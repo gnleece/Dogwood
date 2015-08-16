@@ -26,7 +26,6 @@ ComponentWidget::ComponentWidget(QWidget* parent, MainEditorWindow* window) :
     // can tell us when to refresh when transform data gets modified
     EditorCommands::ModifyTransformCommand::sComponentWidget = this;
 
-    connect(m_view, SIGNAL(clicked(const QModelIndex&)),        this, SLOT(OnClick(const QModelIndex&)));
     connect(m_view, SIGNAL(doubleClicked(const QModelIndex&)),  this, SLOT(OnDoubleClick(const QModelIndex&)));
 }
 
@@ -50,7 +49,7 @@ void ComponentWidget::Init(GameObject* go)
 
     // Prepare new model
     m_sourceModel = new ComponentModel(this, go);
-    m_view->setModel(m_sourceModel);
+    m_view->SetModel(m_sourceModel);
     m_view->setColumnWidth(0, 150);
     m_view->show();
     m_view->expandAll();
@@ -63,18 +62,6 @@ void ComponentWidget::Refresh()
     if (m_sourceModel != NULL)
     {
         m_sourceModel->RefreshModel();
-    }
-}
-
-void ComponentWidget::OnClick(const QModelIndex& index)
-{
-    if (!index.isValid())
-        return;
-
-    ComponentModelItem* item = m_sourceModel->GetItem(index);
-    if (item != NULL)
-    {
-        item->OnClick((ComponentModelItem::ColumnType)index.column());
     }
 }
 

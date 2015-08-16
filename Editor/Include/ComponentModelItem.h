@@ -13,10 +13,19 @@ class GameObject;
 class MeshInstance;
 class QMimeData;
 
+typedef uint MenuOptions;
+
 class ComponentModelItem
 {
 public:
-    enum ColumnType { NAME_COLUMN, VALUE_COLUMN };
+    enum ColumnType         { NAME_COLUMN, VALUE_COLUMN };
+
+    enum ContextMenuOption
+    {
+        CONTEXTMENU_NONE    = 0x0,
+        CONTEXTMENU_COPY    = 0x1,
+        CONTEXTMENU_DELETE  = 0x2,
+    };
 
     ComponentModelItem(string name);
     ~ComponentModelItem();
@@ -35,8 +44,9 @@ public:
     virtual bool        SetData(QVariant value);
     virtual bool        IsEditable();
     virtual bool        DropData(const QMimeData* data);
-    virtual void        OnClick(ColumnType columnType);
     virtual void        OnDoubleClick(ColumnType columnType);
+    virtual MenuOptions GetMenuOptions();
+    virtual void        HandleMenuSelection(ContextMenuOption selection);
 
 protected:
     string                      m_name;
@@ -49,11 +59,14 @@ protected:
 class ComponentModelTransformItem : public ComponentModelItem
 {
 public:
+    ComponentModelTransformItem(GameObject* gameObject);
     ComponentModelTransformItem(string name, GameObject* gameObject, TransformVectorType type);
 
     void                Refresh();
     QVariant            GetValueData();
     bool                SetData(QVariant value);
+    MenuOptions         GetMenuOptions();
+    void                HandleMenuSelection(ContextMenuOption selection);
 
 private:
     GameObject*             m_gameObject;
@@ -64,11 +77,13 @@ private:
 class ComponentModelMeshItem : public ComponentModelItem
 {
 public:
-    ComponentModelMeshItem(string name, MeshInstance* mesh);
+    ComponentModelMeshItem(MeshInstance* mesh, bool header = true);
 
-    virtual QVariant    GetValueData();
-    virtual bool        IsEditable();
-    virtual bool        DropData(const QMimeData* data);
+    QVariant            GetValueData();
+    bool                IsEditable();
+    bool                DropData(const QMimeData* data);
+    MenuOptions         GetMenuOptions();
+    void                HandleMenuSelection(ContextMenuOption selection);
 
 private:
     MeshInstance*       m_mesh;
@@ -77,12 +92,12 @@ private:
 class ComponentModelShaderItem : public ComponentModelItem
 {
 public:
-    ComponentModelShaderItem(string name, Material* material);
+    ComponentModelShaderItem(Material* material);
 
-    virtual void        Refresh();
-    virtual QVariant    GetValueData();
-    virtual bool        IsEditable();
-    virtual bool        DropData(const QMimeData* data);
+    void                Refresh();
+    QVariant            GetValueData();
+    bool                IsEditable();
+    bool                DropData(const QMimeData* data);
 
 private:
     Material*           m_material;
@@ -93,10 +108,10 @@ class ComponentModelColorItem : public ComponentModelItem
 public:
     ComponentModelColorItem(string name, Material* material, int paramID);
 
-    virtual QVariant    GetValueData();
+    QVariant            GetValueData();
     QVariant            GetBackgroundData(ColumnType columnType);
-    virtual bool        IsEditable();
-    virtual bool        DropData(const QMimeData* data);
+    bool                IsEditable();
+    bool                DropData(const QMimeData* data);
     void                OnDoubleClick(ColumnType columnType);
 
 private:
@@ -109,9 +124,9 @@ class ComponentModelTextureItem : public ComponentModelItem
 public:
     ComponentModelTextureItem(string name, Material* material, int paramID);
 
-    virtual QVariant    GetValueData();
-    virtual bool        IsEditable();
-    virtual bool        DropData(const QMimeData* data);
+    QVariant            GetValueData();
+    bool                IsEditable();
+    bool                DropData(const QMimeData* data);
 
 private:
     Material*           m_material;
@@ -121,6 +136,7 @@ private:
 class ComponentModelScriptItem : public ComponentModelItem
 {
 public:
+    ComponentModelScriptItem(ToolsideGameComponent* component);
     ComponentModelScriptItem(ToolsideGameComponent* component, int paramIndex);
 
     void                Refresh();
@@ -130,6 +146,8 @@ public:
     bool                IsEditable();
     bool                DropData(const QMimeData* data);
     void                OnDoubleClick(ColumnType columnType);
+    MenuOptions         GetMenuOptions();
+    void                HandleMenuSelection(ContextMenuOption selection);
 
 private:
     ToolsideGameComponent*              m_component;

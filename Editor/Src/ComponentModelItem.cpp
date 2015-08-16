@@ -141,22 +141,37 @@ bool ComponentModelItem::DropData(const QMimeData* /*data*/)
     return false;
 }
 
-void ComponentModelItem::OnClick(ColumnType columnType)
+void ComponentModelItem::OnDoubleClick(ColumnType /*columnType*/)
+{}
+
+MenuOptions ComponentModelItem::GetMenuOptions()
 {
-    if (m_isHeader && columnType == VALUE_COLUMN)
-    {
-        DebugLogger::Singleton().Log("Context menu click!");
-    }
+    return CONTEXTMENU_NONE;
 }
 
-void ComponentModelItem::OnDoubleClick(ColumnType /*columnType*/)
+void ComponentModelItem::HandleMenuSelection(ContextMenuOption selection)
 {}
 
 //--------------------------------------------------------------------------------
 
+ComponentModelTransformItem::ComponentModelTransformItem(GameObject* gameObject)
+    : ComponentModelItem("Transform"), m_gameObject(gameObject)
+{
+    m_isHeader = true;
+
+    // Add position, rotation, and scale items
+    ComponentModelTransformItem* positionItem = new ComponentModelTransformItem("Position", m_gameObject, eVector_Position);
+    AddChild(positionItem);
+    ComponentModelTransformItem* rotationItem = new ComponentModelTransformItem("Rotation", m_gameObject, eVector_Rotation);
+    AddChild(rotationItem);
+    ComponentModelTransformItem* scaleItem = new ComponentModelTransformItem("Scale", m_gameObject, eVector_Scale);
+    AddChild(scaleItem);
+}
+
 ComponentModelTransformItem::ComponentModelTransformItem(string name, GameObject* gameObject, TransformVectorType type)
     : ComponentModelItem(name), m_gameObject(gameObject), m_vectorType(type)
 {
+    m_isHeader = false;
     Refresh();
 }
 
@@ -164,18 +179,26 @@ void ComponentModelTransformItem::Refresh()
 {
     ComponentModelItem::Refresh();
 
-    m_isHeader = false;
+    if (m_isHeader)
+        return;
+
     m_vector = m_gameObject->GetLocalTransform().GetVector(m_vectorType);
 }
 
 QVariant ComponentModelTransformItem::GetValueData()
 {
+    if (m_isHeader)
+        return ComponentModelItem::GetValueData();
+
     string str = WriteVector3ToString(m_vector);
     return QVariant(str.c_str());
 }
 
 bool ComponentModelTransformItem::SetData(QVariant value)
 {
+    if (m_isHeader)
+        return ComponentModelItem::SetData(value);
+
     m_vector = ReadVector3FromString(value.toString().toStdString());
 
     EditorCommands::ModifyTransformCommand* command = new EditorCommands::ModifyTransformCommand(m_gameObject, m_vector, m_vectorType);
@@ -184,19 +207,48 @@ bool ComponentModelTransformItem::SetData(QVariant value)
     return true;
 }
 
+MenuOptions ComponentModelTransformItem::GetMenuOptions()
+{
+    if (!m_isHeader)
+        return CONTEXTMENU_NONE;
+
+    return CONTEXTMENU_COPY;
+}
+
+void ComponentModelTransformItem::HandleMenuSelection(ContextMenuOption selection)
+{
+    switch (selection)
+    {
+    case CONTEXTMENU_COPY:
+        DebugLogger::Singleton().Log("copy transform");
+        break;
+    }
+}
+
 //--------------------------------------------------------------------------------
 
-ComponentModelMeshItem::ComponentModelMeshItem(string name, MeshInstance* mesh)
-    : ComponentModelItem(name), m_mesh(mesh)
+ComponentModelMeshItem::ComponentModelMeshItem(MeshInstance* mesh, bool header)
+    : ComponentModelItem("Mesh"), m_mesh(mesh)
 {
-    m_isHeader = false;
+    m_isHeader = header;
 
-    ComponentModelShaderItem* shaderItem = new ComponentModelShaderItem("Shader", m_mesh->GetMaterial());
-    AddChild(shaderItem);
+    if (m_isHeader)
+    {
+        ComponentModelMeshItem* meshObjItem = new ComponentModelMeshItem(m_mesh, false);
+        AddChild(meshObjItem);
+    }
+    else
+    {
+        ComponentModelShaderItem* shaderItem = new ComponentModelShaderItem(m_mesh->GetMaterial());
+        AddChild(shaderItem);
+    }
 }
 
 QVariant ComponentModelMeshItem::GetValueData()
 {
+    if (m_isHeader)
+        return ComponentModelItem::GetValueData();
+
     string str;
     if (m_mesh == NULL)
     {
@@ -217,6 +269,9 @@ bool ComponentModelMeshItem::IsEditable()
 
 bool ComponentModelMeshItem::DropData(const QMimeData* data)
 {
+    if (m_isHeader)
+        return false;
+
     AssetMimeData* mimeData = (AssetMimeData*)data;
     if (mimeData != NULL)
     {
@@ -231,10 +286,31 @@ bool ComponentModelMeshItem::DropData(const QMimeData* data)
     return false;
 }
 
+MenuOptions ComponentModelMeshItem::GetMenuOptions()
+{
+    if (!m_isHeader)
+        return CONTEXTMENU_NONE;
+
+    return CONTEXTMENU_COPY | CONTEXTMENU_DELETE;
+}
+
+void ComponentModelMeshItem::HandleMenuSelection(ContextMenuOption selection)
+{
+    switch (selection)
+    {
+    case CONTEXTMENU_COPY:
+        DebugLogger::Singleton().Log("copy mesh component");
+        break;
+    case CONTEXTMENU_DELETE:
+        DebugLogger::Singleton().Log("delete mesh component");
+        break;
+    }
+}
+
 //--------------------------------------------------------------------------------
 
-ComponentModelShaderItem::ComponentModelShaderItem(string name, Material* material)
-    : ComponentModelItem(name), m_material(material)
+ComponentModelShaderItem::ComponentModelShaderItem(Material* material)
+    : ComponentModelItem("Shader"), m_material(material)
 {
     Refresh();
 }
@@ -415,9 +491,24 @@ void ComponentModelColorItem::OnDoubleClick(ColumnType /*columnType*/)
 
 //--------------------------------------------------------------------------------
 
+ComponentModelScriptItem::ComponentModelScriptItem(ToolsideGameComponent* component)
+    : ComponentModelItem(component->GetDisplayName()), m_component(component)
+{
+    m_isHeader = true;
+
+    // Add item for each parameter
+    ParamList params = component->GetParameterList();
+    for (int i = 0; i < (int)params.size(); i++)
+    {
+        ComponentModelScriptItem* paramItem = new ComponentModelScriptItem(component, i);
+        AddChild(paramItem);
+    }
+}
+
 ComponentModelScriptItem::ComponentModelScriptItem(ToolsideGameComponent* component, int paramIndex)
     : ComponentModelItem(""), m_component(component), m_paramIndex(paramIndex)
 {
+    m_isHeader = false;
     Refresh();
 }
 
@@ -425,18 +516,22 @@ void ComponentModelScriptItem::Refresh()
 {
     ComponentModelItem::Refresh();
 
+    if (m_isHeader)
+        return;
+
     ParamList params = m_component->GetParameterList();
     ParamPair& pair = params[m_paramIndex];
 
     m_name = pair.first.Name;
     m_valueType = pair.first.Type;
     m_value = pair.second;
-
-    m_isHeader = false;
 }
 
 QVariant ComponentModelScriptItem::GetValueData()
 {
+    if (m_isHeader)
+        return ComponentModelItem::GetValueData();
+
     string str;
 
     switch(m_valueType)
@@ -489,6 +584,9 @@ QVariant ComponentModelScriptItem::GetBackgroundData(ColumnType columnType)
 
 bool ComponentModelScriptItem::SetData(QVariant value)
 {
+    if (m_isHeader)
+        return ComponentModelItem::SetData(value);
+
     // TODO set data using Editor Commands
     m_value.SetValue(m_valueType, value.toString().toStdString());
     m_component->SetParameter(ComponentParameter(m_name, m_valueType), m_value);
@@ -526,6 +624,9 @@ bool ComponentModelScriptItem::DropData(const QMimeData* data)
 
 void ComponentModelScriptItem::OnDoubleClick(ColumnType /*columnType*/)
 {
+    if (m_isHeader)
+        return;
+
     switch (m_valueType)
     {
     case ComponentParameter::TYPE_COLOR:
@@ -543,6 +644,27 @@ void ComponentModelScriptItem::OnDoubleClick(ColumnType /*columnType*/)
         break;
     }
     default:
+        break;
+    }
+}
+
+MenuOptions ComponentModelScriptItem::GetMenuOptions()
+{
+    if (!m_isHeader)
+        return CONTEXTMENU_NONE;
+
+    return CONTEXTMENU_COPY | CONTEXTMENU_DELETE;
+}
+
+void ComponentModelScriptItem::HandleMenuSelection(ContextMenuOption selection)
+{
+    switch (selection)
+    {
+    case CONTEXTMENU_COPY:
+        DebugLogger::Singleton().Log("copy script component");
+        break;
+    case CONTEXTMENU_DELETE:
+        DebugLogger::Singleton().Log("delete script component");
         break;
     }
 }

@@ -29,7 +29,6 @@ private:
     ComponentView*          m_view;
 
 private slots:
-    void    OnClick(const QModelIndex& index);
     void    OnDoubleClick(const QModelIndex& index);
     void    OnLayoutChanged();
 };

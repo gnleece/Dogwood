@@ -175,17 +175,8 @@ bool ComponentModel::IsEditable(const QModelIndex &index) const
 
 void ComponentModel::AddTransformData()
 {
-    // Add Transform header item
-    ComponentModelItem* transformItem = new ComponentModelItem("Transform");
+    ComponentModelTransformItem* transformItem = new ComponentModelTransformItem(m_gameObject);
     m_rootItem->AddChild(transformItem);
-
-    // Add position, rotation, and scale items
-    ComponentModelTransformItem* positionItem = new ComponentModelTransformItem("Position", m_gameObject, eVector_Position);
-    transformItem->AddChild(positionItem);
-    ComponentModelTransformItem* rotationItem = new ComponentModelTransformItem("Rotation", m_gameObject, eVector_Rotation);
-    transformItem->AddChild(rotationItem);
-    ComponentModelTransformItem* scaleItem = new ComponentModelTransformItem("Scale", m_gameObject, eVector_Scale);
-    transformItem->AddChild(scaleItem);
 }
 
 void ComponentModel::AddMeshData()
@@ -194,11 +185,8 @@ void ComponentModel::AddMeshData()
     if (meshInstance == NULL)
         return;
 
-    ComponentModelItem* meshItem = new ComponentModelItem("Mesh");
+    ComponentModelMeshItem* meshItem = new ComponentModelMeshItem(meshInstance);
     m_rootItem->AddChild(meshItem);
-
-    ComponentModelMeshItem* meshObjItem = new ComponentModelMeshItem("Mesh", meshInstance);
-    meshItem->AddChild(meshObjItem);
 }
 
 void ComponentModel::AddComponentData()
@@ -211,15 +199,7 @@ void ComponentModel::AddComponentData()
     {
         // Add header for this script
         ToolsideGameComponent* component = *iter;
-        ComponentModelItem* headerItem = new ComponentModelItem(component->GetDisplayName());
+        ComponentModelScriptItem* headerItem = new ComponentModelScriptItem(component);
         m_rootItem->AddChild(headerItem);
-
-        // Add item for each parameter
-        ParamList params = component->GetParameterList();
-        for (int i = 0; i < (int)params.size(); i++)
-        {
-            ComponentModelScriptItem* paramItem = new ComponentModelScriptItem(component, i);
-            headerItem->AddChild(paramItem);
-        }
     }
 }
