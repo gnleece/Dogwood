@@ -28,7 +28,8 @@ struct ComponentParameter
 public:
     enum ParameterType
     {
-        TYPE_INT, TYPE_FLOAT, TYPE_BOOL, TYPE_STRING, TYPE_VECTOR3, TYPE_COLOR, TYPE_GAMEOBJECT
+        TYPE_INT, TYPE_FLOAT, TYPE_BOOL, TYPE_STRING, TYPE_VECTOR3, TYPE_COLOR, TYPE_GAMEOBJECT,
+        TYPE_MESH, TYPE_SHADER, TYPE_TEXTURE
     };
 
     ComponentParameter() {}
@@ -65,6 +66,9 @@ public:
     Vector3         v;
     ColourRGB       c;
     unsigned int    g;
+    unsigned int    mesh;
+    unsigned int    shdr;
+    unsigned int    tex;
 };
 
 class ToolsideGameComponent

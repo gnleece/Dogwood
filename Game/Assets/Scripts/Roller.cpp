@@ -3,6 +3,7 @@
 #include "Math/Transformations.h"
 #include "Input/InputManager.h"
 #include "Input/GamePad.h"
+#include "Rendering/Texture.h"
 #include "Rendering/RenderManager.h"
 
 void Roller::Update(float deltaTime)

@@ -6,11 +6,12 @@
 
 #include "GameComponentFactory.h"
 #include "ToolsideGameComponent.h"
+#include "Scene\ResourceManager.h"
 
 // COMPONENT HEADERS
-#include "Roller.h"
 #include "Translator.h"
 #include "FooComponent.h"
+#include "Roller.h"
 #include "Bouncer.h"
 #include "SpinningComponent.h"
 
@@ -20,9 +21,9 @@ using std::unordered_map;
 class GameComponent;
 
 // PARAMETER SETTER DECLARATIONS
-void SetParameter_GUID_3055461197(Roller* comp, RuntimeParamList* params);
 void SetParameter_GUID_943277816(Translator* comp, RuntimeParamList* params);
 void SetParameter_GUID_1515607268(FooComponent* comp, RuntimeParamList* params);
+void SetParameter_GUID_3055461197(Roller* comp, RuntimeParamList* params);
 void SetParameter_GUID_3988628104(Bouncer* comp, RuntimeParamList* params);
 void SetParameter_GUID_3075022151(SpinningComponent* comp, RuntimeParamList* params);
 
@@ -34,9 +35,9 @@ class MyFactory : public GameComponentFactory
         {
 
 // COMPONENT CREATION SWTICH
-        case 3055461197: return new Roller();
         case 943277816: return new Translator();
         case 1515607268: return new FooComponent();
+        case 3055461197: return new Roller();
         case 3988628104: return new Bouncer();
         case 3075022151: return new SpinningComponent();
 
@@ -51,9 +52,9 @@ class MyFactory : public GameComponentFactory
         {
 
 // PARAMETER SETTER SWTICH
-        case 3055461197: return SetParameter_GUID_3055461197((Roller*)component, params);
         case 943277816: return SetParameter_GUID_943277816((Translator*)component, params);
         case 1515607268: return SetParameter_GUID_1515607268((FooComponent*)component, params);
+        case 3055461197: return SetParameter_GUID_3055461197((Roller*)component, params);
         case 3988628104: return SetParameter_GUID_3988628104((Bouncer*)component, params);
         case 3075022151: return SetParameter_GUID_3075022151((SpinningComponent*)component, params);
 
@@ -63,15 +64,6 @@ class MyFactory : public GameComponentFactory
 };
 
 // PARAMETER SETTER DEFINITIONS
-
-void SetParameter_GUID_3055461197(Roller* comp, RuntimeParamList* params)
-{
-    if (params->size() < 3) return;
-
-    comp->Speed = (*params)[0].f;
-    comp->Radius = (*params)[1].f;
-    comp->RotationChild = (*params)[2].g;
-}
 
 void SetParameter_GUID_943277816(Translator* comp, RuntimeParamList* params)
 {
@@ -86,6 +78,17 @@ void SetParameter_GUID_1515607268(FooComponent* comp, RuntimeParamList* params)
 
     comp->BarParam = (*params)[0].f;
     comp->IntParam = (*params)[1].i;
+}
+
+void SetParameter_GUID_3055461197(Roller* comp, RuntimeParamList* params)
+{
+    if (params->size() < 5) return;
+
+    comp->Speed = (*params)[0].f;
+    comp->Radius = (*params)[1].f;
+    comp->RotationChild = (*params)[2].g;
+    comp->MyTex = (Texture*)(ResourceManager::Singleton().GetResource((*params)[3].tex));
+    comp->MyMesh = (Mesh*)(ResourceManager::Singleton().GetResource((*params)[4].mesh));
 }
 
 void SetParameter_GUID_3988628104(Bouncer* comp, RuntimeParamList* params)

@@ -59,6 +59,8 @@
                     <Param name="Speed" type="1" value="250"/>
                     <Param name="Radius" type="1" value="0.5"/>
                     <Param name="RotationChild" type="6" value="2279407888"/>
+                    <Param name="MyTex" type="9" value="0"/>
+                    <Param name="MyMesh" type="7" value="3936014360"/>
                 </Component>
             </Components>
             <GameObject guid="429269401" name="Dot">

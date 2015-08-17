@@ -426,8 +426,12 @@ Resource* ResourceManager::GetResource(unsigned int guid, bool load)
     Resource* resource = m_loadedResources[guid];
     if (resource == NULL && load)
     {
-        resource = m_resourceMap[guid]->Load();
-        m_loadedResources[guid] = resource;
+        ResourceInfo* info = m_resourceMap[guid];
+        if (info != NULL)
+        {
+            resource = info->Load();
+            m_loadedResources[guid] = resource;
+        }
     }
     return resource;
 }

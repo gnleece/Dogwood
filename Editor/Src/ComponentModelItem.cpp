@@ -558,6 +558,15 @@ QVariant ComponentModelScriptItem::GetValueData()
             str = go->GetName() + " (" + std::to_string(m_value.g) + ")";
         break;
     }
+    case ComponentParameter::TYPE_MESH:
+        str = GetValueDataForResourceParam(m_value.mesh);
+        break;
+    case ComponentParameter::TYPE_SHADER:
+        str = GetValueDataForResourceParam(m_value.shdr);
+        break;
+    case ComponentParameter::TYPE_TEXTURE:
+        str = GetValueDataForResourceParam(m_value.tex);
+        break;
     case ComponentParameter::TYPE_COLOR:
         str = "";
         break;
@@ -611,8 +620,8 @@ bool ComponentModelScriptItem::IsEditable()
     if (m_isHeader)
         return false;
 
-    if (m_valueType == ComponentParameter::TYPE_GAMEOBJECT ||   // reference types can't be edited directly
-        m_valueType == ComponentParameter::TYPE_COLOR)          // colors are edited using the color window
+    if (m_valueType == ComponentParameter::TYPE_COLOR       ||      // colors are edited using the color window
+        IsDropEnabled())                                            // fields with drag/drop enabled can't be edited directly
         return false;
 
     return true;
@@ -623,14 +632,39 @@ bool ComponentModelScriptItem::DropData(const QMimeData* data)
     if (m_isHeader)
         return false;
 
-    if (m_valueType != ComponentParameter::TYPE_GAMEOBJECT)
-        return false;       // only reference types support drag & drop
+    if (!IsDropEnabled())
+        return false;
 
-    // TODO set data using Editor Commands
-    GameObjectMimeData* goData = (GameObjectMimeData*)(data);
-    m_value.SetValue(m_valueType, std::to_string(goData->getGameObject()->GetID()));
-    m_component->SetParameter(ComponentParameter(m_name, m_valueType), m_value);
+    if (m_valueType == ComponentParameter::TYPE_GAMEOBJECT)
+    {
+        GameObjectMimeData* goMimeData = (GameObjectMimeData*)(data);
+        if (goMimeData != NULL)
+        {
+            // TODO set data using Editor Commands
+            m_value.SetValue(m_valueType, std::to_string(goMimeData->getGameObject()->GetID()));
+            m_component->SetParameter(ComponentParameter(m_name, m_valueType), m_value);
+            return true;
+        }
+    }
+    else
+    {
+        AssetMimeData* assetMimeData = (AssetMimeData*)data;
+        if (assetMimeData != NULL)
+        {
+            // TODO set data using Editor Commands
+            ResourceInfo* info = assetMimeData->GetResourceInfo();
 
+            // TODO ugh, clean this up
+            if ((m_valueType == ComponentParameter::TYPE_MESH && (strcmp(info->TypeName().c_str(), "Mesh") == 0)) ||
+                (m_valueType == ComponentParameter::TYPE_SHADER && (strcmp(info->TypeName().c_str(), "Shader") == 0)) ||
+                (m_valueType == ComponentParameter::TYPE_TEXTURE && (strcmp(info->TypeName().c_str(), "Texture") == 0)))
+                {
+                    m_value.SetValue(m_valueType, std::to_string(info->guid));
+                    m_component->SetParameter(ComponentParameter(m_name, m_valueType), m_value);
+                    return true;
+                }
+        }
+    }
     return true;
 }
 
@@ -683,4 +717,29 @@ bool ComponentModelScriptItem::HandleMenuSelection(ContextMenuOption selection)
         break;
     }
     return false;
+}
+
+bool ComponentModelScriptItem::IsDropEnabled()
+{
+    return (m_valueType == ComponentParameter::TYPE_GAMEOBJECT   ||
+            m_valueType == ComponentParameter::TYPE_MESH         ||
+            m_valueType == ComponentParameter::TYPE_SHADER       ||
+            m_valueType == ComponentParameter::TYPE_TEXTURE);
+}
+
+string ComponentModelScriptItem::GetValueDataForResourceParam(unsigned int guid)
+{
+    string str;
+
+    ResourceInfo* info = ResourceManager::Singleton().GetResourceInfo(guid);
+    if (info == NULL)
+    {
+        str = "<MISSING REF>";
+    }
+    else
+    {
+        str = GetFriendlyAssetNameFromPath(info->path) + " (" + std::to_string(guid) + ")";
+    }
+
+    return str;
 }

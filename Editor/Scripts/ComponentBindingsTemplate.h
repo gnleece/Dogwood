@@ -6,6 +6,7 @@
 
 #include "GameComponentFactory.h"
 #include "ToolsideGameComponent.h"
+#include "Scene\ResourceManager.h"
 
 ///COMPONENT_HEADERS
 

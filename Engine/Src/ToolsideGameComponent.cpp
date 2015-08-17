@@ -22,6 +22,9 @@ ComponentValue::ComponentValue()
     v = Vector3::Zero;
     c = ColourRGB::Black;
     g = 0;
+    mesh = 0;
+    shdr = 0;
+    tex = 0;
 }
 
 ComponentValue::ComponentValue(ComponentParameter::ParameterType type, tinyxml2::XMLElement* xml)
@@ -63,6 +66,15 @@ void ComponentValue::SetValue(ComponentParameter::ParameterType type, tinyxml2::
             case ComponentParameter::TYPE_GAMEOBJECT:
                 g = xml->UnsignedAttribute(valueStr);
                 break;
+            case ComponentParameter::TYPE_MESH:
+                mesh = xml->UnsignedAttribute(valueStr);
+                break;
+            case ComponentParameter::TYPE_SHADER:
+                shdr = xml->UnsignedAttribute(valueStr);
+                break;
+            case ComponentParameter::TYPE_TEXTURE:
+                tex = xml->UnsignedAttribute(valueStr);
+                break;
         }
     }
 }
@@ -91,6 +103,15 @@ void ComponentValue::SetValue(ComponentParameter::ParameterType type, string tex
             break;
         case ComponentParameter::TYPE_GAMEOBJECT:
             g = std::stoul(text);
+            break;
+        case ComponentParameter::TYPE_MESH:
+            mesh = std::stoul(text);
+            break;
+        case ComponentParameter::TYPE_SHADER:
+            shdr = std::stoul(text);
+            break;
+        case ComponentParameter::TYPE_TEXTURE:
+            tex = std::stoul(text);
             break;
     }
 }
@@ -122,6 +143,15 @@ void ComponentValue::SerializeValue(ComponentParameter::ParameterType type, tiny
         case ComponentParameter::TYPE_GAMEOBJECT:
             parentNode->SetAttribute("value", g);
             break;
+        case ComponentParameter::TYPE_MESH:
+            parentNode->SetAttribute("value", mesh);
+            break;
+        case ComponentParameter::TYPE_SHADER:
+            parentNode->SetAttribute("value", shdr);
+            break;
+        case ComponentParameter::TYPE_TEXTURE:
+            parentNode->SetAttribute("value", tex);
+            break;
     }
 }
 
@@ -136,6 +166,9 @@ string ComponentValue::GetValueString(ComponentParameter::ParameterType type)
         case ComponentParameter::TYPE_VECTOR3:      return WriteVector3ToString(v);
         case ComponentParameter::TYPE_COLOR:        return WriteVector3ToString(c.ToVector());
         case ComponentParameter::TYPE_GAMEOBJECT:   return std::to_string(g);
+        case ComponentParameter::TYPE_MESH:         return std::to_string(mesh);
+        case ComponentParameter::TYPE_SHADER:       return std::to_string(shdr);
+        case ComponentParameter::TYPE_TEXTURE:      return std::to_string(tex);
     }
 
     return "";

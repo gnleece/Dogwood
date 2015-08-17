@@ -2,7 +2,9 @@ import ProcessScripts
 
 TEMPLATE_PATH = "Scripts/ComponentBindingsTemplate.h"
 
-paramEnumToValueStr = { 0 : 'i',  1 : 'f', 2 : 'b', 3 : 'str', 4 : 'v', 5 : 'c', 6 : 'g' }
+paramEnumToValueStr = { 0 : 'i',  1 : 'f', 2 : 'b', 3 : 'str', 4 : 'v', 5 : 'c', 6 : 'g', 7 : 'mesh', 8 : 'shdr', 9 : 'tex' }
+
+paramEnumToResourceName = { 7 : 'Mesh', 8 : 'ShaderProgram', 9 : 'Texture' }
 
 def WriteHeaderSection(outputFile, componentList):
     outputFile.write('// COMPONENT HEADERS\n');
@@ -39,7 +41,8 @@ def WriteSetterDefinitionSection(outputFile, componentList):
     outputFile.write('// PARAMETER SETTER DEFINITIONS\n\n')
     functemplate = 'void SetParameter_GUID_{0}({1}* comp, RuntimeParamList* params)\n'
     sizetemplate = '{{\n    if (params->size() < {0}) return;\n\n'
-    paramtemplate = '    comp->{0} = (*params)[{1}].{2};\n'
+    simpleparamtemplate = '    comp->{0} = (*params)[{1}].{2};\n'
+    refparamtemplate = '    comp->{0} = ({1}*)(ResourceManager::Singleton().GetResource((*params)[{2}].{3}));\n'
     for component in componentList:
         funcline = functemplate.format(component.guid, component.name)
         outputFile.write(funcline)
@@ -48,7 +51,13 @@ def WriteSetterDefinitionSection(outputFile, componentList):
         for param in component.params:
             typestr = paramEnumToValueStr[int(param[0])]
             paramName = param[1]
-            paramLine = paramtemplate.format(paramName, index, typestr)
+            paramLine = ''
+            # Check whether the parameter is a simple type (set directly) or resource type (set via guid lookup)
+            if int(param[0]) in paramEnumToResourceName:
+                resourceName = paramEnumToResourceName[int(param[0])]
+                paramLine = refparamtemplate.format(paramName, resourceName, index, typestr)
+            else:
+                paramLine = simpleparamtemplate.format(paramName, index, typestr)
             index += 1
             outputFile.write(paramLine)
 

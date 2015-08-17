@@ -65,13 +65,14 @@ EDITOR (Thicket)
             * Refresh widget on add/remove
         * Enable/disable components
         * General
-            - Add other reference types to toolside pipeline (mesh, shader, texture)
+            - Check guids references in component params when building list of guids for a scene
             - Show bool values as check boxes
             - Set data using EditorCommands for undo/redo everywhere
             - Better value validation
             - Fixup background color code
             - For reference types, show full asset path on hover
             - Reference type params should be styled differently (font color?)
+            - Fix occasioanl null refs after model delete & rebuild
 
     * Visuals
         * Change transform tool shape based on mode

@@ -6,7 +6,18 @@ import ComponentBindings
 START_REGION_STRING = "#pragma region Serializable"
 END_REGION_STRING = "#pragma endregion"
 
-paramTypeStringToEnum = { "int" : "0", "float" : "1", "bool" : "2", "string" : "3", "Vector3" : "4", "ColourRGB" : "5", "GameObjectReference" : "6" }
+paramTypeStringToEnum = {
+    "int" : "0",
+    "float" : "1",
+    "bool" : "2",
+    "string" : "3",
+    "Vector3" : "4",
+    "ColourRGB" : "5",
+    "GameObjectReference" : "6",
+    "Mesh*" : "7",
+    "Shader*" : "8",
+    "Texture*" : "9"
+    }
 
 class Component:
     def __init__(self, guid, path, params):

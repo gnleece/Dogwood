@@ -150,6 +150,9 @@ public:
     bool                HandleMenuSelection(ContextMenuOption selection);
 
 private:
+    bool                IsDropEnabled();
+    string              GetValueDataForResourceParam(unsigned int guid);
+
     ToolsideGameComponent*              m_component;
     ComponentParameter::ParameterType   m_valueType;
     ComponentValue                      m_value;
