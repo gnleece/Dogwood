@@ -53,7 +53,7 @@ private:
     void        SerializeMaterial(GameObject* gameObject, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc, unordered_set<unsigned int>& guids);
     void        SerializeMaterialColors(Material* material, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc);
     void        SerializeMaterialTextures(Material* material, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc, unordered_set<unsigned int>& guids);
-    void        SerializeComponents(GameObject* gameObject, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc);
+    void        SerializeComponents(GameObject* gameObject, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc, unordered_set<unsigned int>& guids);
     void        SerializeResourceList(unordered_set<unsigned int>& guids, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc);
 
     bool        m_loaded;

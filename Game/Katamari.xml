@@ -7,6 +7,7 @@
         <Textures>
             <Texture guid="3535584211" path="Textures/test_texture2.bmp"/>
             <Texture guid="3780387270" path="Textures/test_texture.bmp"/>
+            <Texture guid="2588998880" path="Textures/test_cube.bmp"/>
         </Textures>
         <Meshes>
             <Mesh guid="3936014360" path="Meshes/mesh_sphere.obj"/>

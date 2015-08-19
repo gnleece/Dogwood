@@ -3,6 +3,7 @@
 #include <string>
 #include <tinyxml2.h>
 #include <unordered_map>
+#include <unordered_set>
 #include <utility>
 #include <vector>
 
@@ -12,6 +13,7 @@
 using std::pair;
 using std::string;
 using std::unordered_map;
+using std::unordered_set;
 using std::vector;
 
 struct ComponentParameter;
@@ -39,6 +41,7 @@ public:
     }
 
     bool operator==(const ComponentParameter &other) const;
+    static bool IsReferenceType(ParameterType type);
 
     string          Name;
     ParameterType   Type;
@@ -65,10 +68,8 @@ public:
     string          str;
     Vector3         v;
     ColourRGB       c;
-    unsigned int    g;
-    unsigned int    mesh;
-    unsigned int    shdr;
-    unsigned int    tex;
+    unsigned int    go;
+    unsigned int    ref;
 };
 
 class ToolsideGameComponent
@@ -76,7 +77,7 @@ class ToolsideGameComponent
 public:
     void            Create(unsigned int guid);
     void            Load(tinyxml2::XMLElement* componentXML);
-    void            Serialize(tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc);
+    void            Serialize(tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc, unordered_set<unsigned int>& guids);
 
     GameObject*     GetGameObject();
     void            SetGameObject(GameObject* go);

@@ -65,7 +65,6 @@ EDITOR (Thicket)
             * Refresh widget on add/remove
         * Enable/disable components
         * General
-            - Check guids references in component params when building list of guids for a scene
             - Show bool values as check boxes
             - Set data using EditorCommands for undo/redo everywhere
             - Better value validation

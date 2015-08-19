@@ -379,7 +379,7 @@ void Scene::SerializeHierarchy(GameObject* gameObject, XMLNode* parentNode, XMLD
     // Serialize components
     SerializeTransform(gameObject, goXML, rootDoc);
     SerializeMesh(gameObject, goXML, rootDoc, guids);
-    SerializeComponents(gameObject, goXML, rootDoc);
+    SerializeComponents(gameObject, goXML, rootDoc, guids);
 
     // Serialize children
     std::vector<GameObject*>::iterator childIter;
@@ -483,7 +483,7 @@ void Scene::SerializeMaterialTextures(Material* material, tinyxml2::XMLNode* par
     }
 }
 
-void Scene::SerializeComponents(GameObject* gameObject, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc)
+void Scene::SerializeComponents(GameObject* gameObject, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc, unordered_set<unsigned int>& guids)
 {
     if (gameObject == NULL)
         return;
@@ -496,7 +496,7 @@ void Scene::SerializeComponents(GameObject* gameObject, tinyxml2::XMLNode* paren
     for (compIter = compList.begin(); compIter != compList.end(); compIter++)
     {
         ToolsideGameComponent* comp = *compIter;
-        comp->Serialize(componentsNode, rootDoc);
+        comp->Serialize(componentsNode, rootDoc, guids);
     }
 }
 

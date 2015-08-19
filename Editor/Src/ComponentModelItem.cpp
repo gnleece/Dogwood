@@ -551,21 +551,17 @@ QVariant ComponentModelScriptItem::GetValueData()
     case ComponentParameter::TYPE_GAMEOBJECT:
     {
         // For game object values, we show the object's name in addition to the guid
-        GameObject* go = GameObjectReference::GetGameObject(m_value.g);
+        GameObject* go = GameObjectReference::GetGameObject(m_value.go);
         if (go == NULL)
             str = "<MISSING REF>";
         else
-            str = go->GetName() + " (" + std::to_string(m_value.g) + ")";
+            str = go->GetName() + " (" + std::to_string(m_value.go) + ")";
         break;
     }
     case ComponentParameter::TYPE_MESH:
-        str = GetValueDataForResourceParam(m_value.mesh);
-        break;
     case ComponentParameter::TYPE_SHADER:
-        str = GetValueDataForResourceParam(m_value.shdr);
-        break;
     case ComponentParameter::TYPE_TEXTURE:
-        str = GetValueDataForResourceParam(m_value.tex);
+        str = GetValueDataForResourceParam(m_value.ref);
         break;
     case ComponentParameter::TYPE_COLOR:
         str = "";

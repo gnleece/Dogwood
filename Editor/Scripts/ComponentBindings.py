@@ -2,7 +2,7 @@ import ProcessScripts
 
 TEMPLATE_PATH = "Scripts/ComponentBindingsTemplate.h"
 
-paramEnumToValueStr = { 0 : 'i',  1 : 'f', 2 : 'b', 3 : 'str', 4 : 'v', 5 : 'c', 6 : 'g', 7 : 'mesh', 8 : 'shdr', 9 : 'tex' }
+paramEnumToValueStr = { 0 : 'i',  1 : 'f', 2 : 'b', 3 : 'str', 4 : 'v', 5 : 'c', 6 : 'go', 7 : 'ref', 8 : 'ref', 9 : 'ref' }
 
 paramEnumToResourceName = { 7 : 'Mesh', 8 : 'ShaderProgram', 9 : 'Texture' }
 

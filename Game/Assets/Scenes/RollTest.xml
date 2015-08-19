@@ -3,6 +3,7 @@
         <Resource guid="156145593"/>
         <Resource guid="3936014360"/>
         <Resource guid="3746892247"/>
+        <Resource guid="2588998880"/>
         <Resource guid="33727872"/>
         <Resource guid="3125582585"/>
         <Resource guid="3780387270"/>
@@ -59,7 +60,7 @@
                     <Param name="Speed" type="1" value="250"/>
                     <Param name="Radius" type="1" value="0.5"/>
                     <Param name="RotationChild" type="6" value="2279407888"/>
-                    <Param name="MyTex" type="9" value="0"/>
+                    <Param name="MyTex" type="9" value="2588998880"/>
                     <Param name="MyMesh" type="7" value="3936014360"/>
                 </Component>
             </Components>

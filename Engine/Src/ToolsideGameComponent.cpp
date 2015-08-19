@@ -12,6 +12,11 @@ bool ComponentParameter::operator==(const ComponentParameter &other) const
     return ((Name.compare(other.Name) == 0) && Type == other.Type);
 }
 
+bool ComponentParameter::IsReferenceType(ParameterType type)
+{
+    return (type == TYPE_MESH || type == TYPE_SHADER || type == TYPE_TEXTURE);
+}
+
 ComponentValue::ComponentValue()
 {
     // set default values
@@ -21,10 +26,8 @@ ComponentValue::ComponentValue()
     str = "";
     v = Vector3::Zero;
     c = ColourRGB::Black;
-    g = 0;
-    mesh = 0;
-    shdr = 0;
-    tex = 0;
+    go = 0;
+    ref = 0;
 }
 
 ComponentValue::ComponentValue(ComponentParameter::ParameterType type, tinyxml2::XMLElement* xml)
@@ -64,16 +67,12 @@ void ComponentValue::SetValue(ComponentParameter::ParameterType type, tinyxml2::
                 break;
             }
             case ComponentParameter::TYPE_GAMEOBJECT:
-                g = xml->UnsignedAttribute(valueStr);
+                go = xml->UnsignedAttribute(valueStr);
                 break;
             case ComponentParameter::TYPE_MESH:
-                mesh = xml->UnsignedAttribute(valueStr);
-                break;
             case ComponentParameter::TYPE_SHADER:
-                shdr = xml->UnsignedAttribute(valueStr);
-                break;
             case ComponentParameter::TYPE_TEXTURE:
-                tex = xml->UnsignedAttribute(valueStr);
+                ref = xml->UnsignedAttribute(valueStr);
                 break;
         }
     }
@@ -102,16 +101,12 @@ void ComponentValue::SetValue(ComponentParameter::ParameterType type, string tex
             c = ReadVector3FromString(text);
             break;
         case ComponentParameter::TYPE_GAMEOBJECT:
-            g = std::stoul(text);
+            go = std::stoul(text);
             break;
         case ComponentParameter::TYPE_MESH:
-            mesh = std::stoul(text);
-            break;
         case ComponentParameter::TYPE_SHADER:
-            shdr = std::stoul(text);
-            break;
         case ComponentParameter::TYPE_TEXTURE:
-            tex = std::stoul(text);
+            ref = std::stoul(text);
             break;
     }
 }
@@ -141,16 +136,12 @@ void ComponentValue::SerializeValue(ComponentParameter::ParameterType type, tiny
             parentNode->InsertEndChild(WriteColourToXML(c, "value", rootDoc));
             break;
         case ComponentParameter::TYPE_GAMEOBJECT:
-            parentNode->SetAttribute("value", g);
+            parentNode->SetAttribute("value", go);
             break;
         case ComponentParameter::TYPE_MESH:
-            parentNode->SetAttribute("value", mesh);
-            break;
         case ComponentParameter::TYPE_SHADER:
-            parentNode->SetAttribute("value", shdr);
-            break;
         case ComponentParameter::TYPE_TEXTURE:
-            parentNode->SetAttribute("value", tex);
+            parentNode->SetAttribute("value", ref);
             break;
     }
 }
@@ -165,10 +156,10 @@ string ComponentValue::GetValueString(ComponentParameter::ParameterType type)
         case ComponentParameter::TYPE_STRING:       return str;
         case ComponentParameter::TYPE_VECTOR3:      return WriteVector3ToString(v);
         case ComponentParameter::TYPE_COLOR:        return WriteVector3ToString(c.ToVector());
-        case ComponentParameter::TYPE_GAMEOBJECT:   return std::to_string(g);
-        case ComponentParameter::TYPE_MESH:         return std::to_string(mesh);
-        case ComponentParameter::TYPE_SHADER:       return std::to_string(shdr);
-        case ComponentParameter::TYPE_TEXTURE:      return std::to_string(tex);
+        case ComponentParameter::TYPE_GAMEOBJECT:   return std::to_string(go);
+        case ComponentParameter::TYPE_MESH:
+        case ComponentParameter::TYPE_SHADER:
+        case ComponentParameter::TYPE_TEXTURE:      return std::to_string(ref);
     }
 
     return "";
@@ -213,7 +204,7 @@ void ToolsideGameComponent::Load(XMLElement* componentXML)
     ValidateParameters();
 }
 
-void ToolsideGameComponent::Serialize(tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc)
+void ToolsideGameComponent::Serialize(tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc, unordered_set<unsigned int>& guids)
 {
     XMLElement* componentNode = rootDoc.NewElement("Component");
     parentNode->InsertEndChild(componentNode);
@@ -230,6 +221,11 @@ void ToolsideGameComponent::Serialize(tinyxml2::XMLNode* parentNode, tinyxml2::X
         paramNode->SetAttribute("name", pair.first.Name.c_str());
         paramNode->SetAttribute("type", pair.first.Type);
         pair.second.SerializeValue(pair.first.Type, paramNode, rootDoc);
+
+        if (ComponentParameter::IsReferenceType(pair.first.Type))
+        {
+            guids.insert(pair.second.ref);
+        }
     }
 }
 
