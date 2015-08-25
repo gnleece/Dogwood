@@ -21,6 +21,8 @@ To create a compatible model in Blender, select exactly these export options:
 * Triangulate Faces
 * Objects as OBJ Objects
 
+To get UVs for the object, open the Object Data section in the right side menu, and add a new UV Map to the UV Maps section.
+
 To get smooth shading, select "Smooth" before export.
 
 
