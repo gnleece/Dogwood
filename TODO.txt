@@ -38,7 +38,7 @@ ENGINE (Dogwood)
         * Re-factor MainEditorWindow.cpp
         * typedef guid type?
         * Remove un-used guids on scene serialization
-        
+        * Support importing meshes without UVs
 
 ---------------------------------------------------------------------------
 
@@ -49,6 +49,7 @@ EDITOR (Thicket)
         * Prompt for save on exit/unload
         * Remove assets (un-import)
         * Save/load scene list
+        * Automatically rebuild shader info on shader import
 
     * Scene
         * Prompt for save on exit/unload

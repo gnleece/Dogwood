@@ -32,7 +32,7 @@ void Roller::Update(float deltaTime)
 
     Vector3 forward = (m_parentMatrix*Vector4(Vector3::Forward, 0)).xyz().Normalized();
     Vector3 objectPosition = m_gameObject->GetLocalTransform().GetPosition();
-    Vector3 cameraPosition = objectPosition - 2.5 * forward;
+    Vector3 cameraPosition = objectPosition - 3.5 * forward;
     cameraPosition[1] = cameraPosition[1] + 0.7f;
     Vector3 cameraDirection = forward;
 

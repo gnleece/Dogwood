@@ -1,12 +1,16 @@
 <Scene>
     <Resources>
-        <Resource guid="156145593"/>
-        <Resource guid="3936014360"/>
-        <Resource guid="3746892247"/>
-        <Resource guid="2588998880"/>
+        <Resource guid="3378413933"/>
+        <Resource guid="2234616278"/>
         <Resource guid="33727872"/>
+        <Resource guid="3746892247"/>
         <Resource guid="3125582585"/>
         <Resource guid="3780387270"/>
+        <Resource guid="536475533"/>
+        <Resource guid="3205911089"/>
+        <Resource guid="870516493"/>
+        <Resource guid="0"/>
+        <Resource guid="156145593"/>
     </Resources>
     <Camera>
         <Position x="0.00000" y="1.00000" z="10.00000"/>
@@ -14,9 +18,9 @@
         <Up x="0.00000" y="1.00000" z="0.00000"/>
     </Camera>
     <Light>
-        <Position x="0.00000" y="2.00000" z="5.00000"/>
+        <Position x="0.00000" y="70.00000" z="20.00000"/>
         <Color r="1.00000" g="1.00000" b="1.00000"/>
-        <Power value="15.00000"/>
+        <Power value="5000.00000"/>
     </Light>
     <GameObject guid="2265445123" name="ROOT">
         <Transform>
@@ -25,142 +29,6 @@
             <Scale x="1.00000" y="1.00000" z="1.00000"/>
         </Transform>
         <Components/>
-        <GameObject guid="619345819" name="Ground">
-            <Transform>
-                <Position x="0.00000" y="0.00000" z="0.00000"/>
-                <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
-                <Scale x="10.00000" y="10.00000" z="10.00000"/>
-            </Transform>
-            <Mesh guid="156145593">
-                <Material>
-                    <Shader guid="3746892247"/>
-                    <Color r="0.00000" g="0.66667" b="0.00000" name="colorDiffuse"/>
-                    <Color r="0.00000" g="0.66667" b="0.00000" name="colorAmbient"/>
-                    <Color r="0.00000" g="0.00000" b="0.00000" name="colorSpecular"/>
-                </Material>
-            </Mesh>
-            <Components/>
-        </GameObject>
-        <GameObject guid="4185648106" name="Katamari">
-            <Transform>
-                <Position x="0.00000" y="0.18000" z="0.00000"/>
-                <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
-                <Scale x="0.20000" y="0.20000" z="0.20000"/>
-            </Transform>
-            <Mesh guid="3936014360">
-                <Material>
-                    <Shader guid="3746892247"/>
-                    <Color r="0.00000" g="1.00000" b="1.00000" name="colorDiffuse"/>
-                    <Color r="0.00000" g="0.66667" b="1.00000" name="colorAmbient"/>
-                    <Color r="1.00000" g="1.00000" b="1.00000" name="colorSpecular"/>
-                </Material>
-            </Mesh>
-            <Components>
-                <Component guid="3055461197">
-                    <Param name="Speed" type="1" value="250"/>
-                    <Param name="Radius" type="1" value="0.5"/>
-                    <Param name="RotationChild" type="6" value="2279407888"/>
-                    <Param name="MyTex" type="9" value="2588998880"/>
-                    <Param name="MyMesh" type="7" value="3936014360"/>
-                </Component>
-            </Components>
-            <GameObject guid="429269401" name="Dot">
-                <Transform>
-                    <Position x="0.00000" y="0.00000" z="0.94600"/>
-                    <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
-                    <Scale x="0.30000" y="0.30000" z="0.30000"/>
-                </Transform>
-                <Mesh guid="3936014360">
-                    <Material>
-                        <Shader guid="3746892247"/>
-                        <Color r="0.00000" g="0.33333" b="1.00000" name="colorDiffuse"/>
-                        <Color r="0.00000" g="0.33333" b="1.00000" name="colorAmbient"/>
-                        <Color r="1.00000" g="1.00000" b="1.00000" name="colorSpecular"/>
-                    </Material>
-                </Mesh>
-                <Components/>
-            </GameObject>
-            <GameObject guid="980302592" name="Dot">
-                <Transform>
-                    <Position x="0.00000" y="0.00000" z="0.94600"/>
-                    <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
-                    <Scale x="0.30000" y="0.30000" z="0.30000"/>
-                </Transform>
-                <Mesh guid="3936014360">
-                    <Material>
-                        <Shader guid="3746892247"/>
-                        <Color r="0.00000" g="0.33333" b="1.00000" name="colorDiffuse"/>
-                        <Color r="0.00000" g="0.33333" b="1.00000" name="colorAmbient"/>
-                        <Color r="1.00000" g="1.00000" b="1.00000" name="colorSpecular"/>
-                    </Material>
-                </Mesh>
-                <Components/>
-            </GameObject>
-            <GameObject guid="3339187257" name="Dot">
-                <Transform>
-                    <Position x="0.94600" y="0.00000" z="0.00000"/>
-                    <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
-                    <Scale x="0.30000" y="0.30000" z="0.30000"/>
-                </Transform>
-                <Mesh guid="3936014360">
-                    <Material>
-                        <Shader guid="3746892247"/>
-                        <Color r="0.00000" g="0.33333" b="1.00000" name="colorDiffuse"/>
-                        <Color r="0.00000" g="0.33333" b="1.00000" name="colorAmbient"/>
-                        <Color r="1.00000" g="1.00000" b="1.00000" name="colorSpecular"/>
-                    </Material>
-                </Mesh>
-                <Components/>
-            </GameObject>
-            <GameObject guid="1652872792" name="Dot">
-                <Transform>
-                    <Position x="0.00000" y="-0.94600" z="0.00000"/>
-                    <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
-                    <Scale x="0.30000" y="0.30000" z="0.30000"/>
-                </Transform>
-                <Mesh guid="3936014360">
-                    <Material>
-                        <Shader guid="3746892247"/>
-                        <Color r="0.00000" g="0.33333" b="1.00000" name="colorDiffuse"/>
-                        <Color r="0.00000" g="0.33333" b="1.00000" name="colorAmbient"/>
-                        <Color r="1.00000" g="1.00000" b="1.00000" name="colorSpecular"/>
-                    </Material>
-                </Mesh>
-                <Components/>
-            </GameObject>
-            <GameObject guid="2359819264" name="Dot">
-                <Transform>
-                    <Position x="0.00000" y="0.94600" z="0.00000"/>
-                    <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
-                    <Scale x="0.30000" y="0.30000" z="0.30000"/>
-                </Transform>
-                <Mesh guid="3936014360">
-                    <Material>
-                        <Shader guid="3746892247"/>
-                        <Color r="0.00000" g="0.33333" b="1.00000" name="colorDiffuse"/>
-                        <Color r="0.00000" g="0.33333" b="1.00000" name="colorAmbient"/>
-                        <Color r="1.00000" g="1.00000" b="1.00000" name="colorSpecular"/>
-                    </Material>
-                </Mesh>
-                <Components/>
-            </GameObject>
-            <GameObject guid="10897938" name="Dot">
-                <Transform>
-                    <Position x="-0.94600" y="0.00000" z="0.00000"/>
-                    <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
-                    <Scale x="0.30000" y="0.30000" z="0.30000"/>
-                </Transform>
-                <Mesh guid="3936014360">
-                    <Material>
-                        <Shader guid="3746892247"/>
-                        <Color r="0.00000" g="0.33333" b="1.00000" name="colorDiffuse"/>
-                        <Color r="0.00000" g="0.33333" b="1.00000" name="colorAmbient"/>
-                        <Color r="1.00000" g="1.00000" b="1.00000" name="colorSpecular"/>
-                    </Material>
-                </Mesh>
-                <Components/>
-            </GameObject>
-        </GameObject>
         <GameObject guid="716764393" name="Pink">
             <Transform>
                 <Position x="-10.00000" y="0.00000" z="0.00000"/>
@@ -219,6 +87,76 @@
                     <Shader guid="3746892247"/>
                     <Color r="0.00000" g="0.66667" b="1.00000" name="colorDiffuse"/>
                     <Color r="0.33333" g="0.66667" b="1.00000" name="colorAmbient"/>
+                    <Color r="1.00000" g="1.00000" b="1.00000" name="colorSpecular"/>
+                </Material>
+            </Mesh>
+            <Components/>
+        </GameObject>
+        <GameObject guid="674687349" name="Skybox">
+            <Transform>
+                <Position x="0.00000" y="0.00000" z="0.00000"/>
+                <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
+                <Scale x="30.00000" y="30.00000" z="30.00000"/>
+            </Transform>
+            <Mesh guid="3205911089">
+                <Material>
+                    <Shader guid="3125582585"/>
+                    <Color r="1.00000" g="1.00000" b="1.00000" name="color"/>
+                    <Texture guid="536475533" name="tex"/>
+                </Material>
+            </Mesh>
+            <Components/>
+        </GameObject>
+        <GameObject guid="3666634221" name="House">
+            <Transform>
+                <Position x="-6.27000" y="0.00000" z="-4.29000"/>
+                <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
+                <Scale x="1.00000" y="1.00000" z="1.00000"/>
+            </Transform>
+            <Mesh guid="870516493">
+                <Material>
+                    <Shader guid="3746892247"/>
+                    <Color r="0.60000" g="0.60000" b="0.60000" name="colorDiffuse"/>
+                    <Color r="1.00000" g="1.00000" b="1.00000" name="colorAmbient"/>
+                    <Color r="1.00000" g="1.00000" b="1.00000" name="colorSpecular"/>
+                </Material>
+            </Mesh>
+            <Components/>
+        </GameObject>
+        <GameObject guid="2032717194" name="Katamari">
+            <Transform>
+                <Position x="0.00000" y="0.33000" z="0.00000"/>
+                <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
+                <Scale x="0.30000" y="0.30000" z="0.30000"/>
+            </Transform>
+            <Mesh guid="2234616278">
+                <Material>
+                    <Shader guid="3378413933"/>
+                    <Color r="0.99608" g="0.66275" b="0.00000" name="colorDiffuse"/>
+                    <Color r="1.00000" g="0.66667" b="0.00000" name="colorAmbient"/>
+                </Material>
+            </Mesh>
+            <Components>
+                <Component guid="3055461197">
+                    <Param name="Speed" type="1" value="250"/>
+                    <Param name="Radius" type="1" value="0.5"/>
+                    <Param name="RotationChild" type="6" value="0"/>
+                    <Param name="MyTex" type="9" value="0"/>
+                    <Param name="MyMesh" type="7" value="0"/>
+                </Component>
+            </Components>
+        </GameObject>
+        <GameObject guid="2958514528" name="Ground">
+            <Transform>
+                <Position x="0.00000" y="0.00000" z="0.00000"/>
+                <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
+                <Scale x="30.00000" y="30.00000" z="30.00000"/>
+            </Transform>
+            <Mesh guid="156145593">
+                <Material>
+                    <Shader guid="3746892247"/>
+                    <Color r="0.25490" g="0.58431" b="0.13725" name="colorDiffuse"/>
+                    <Color r="1.00000" g="1.00000" b="1.00000" name="colorAmbient"/>
                     <Color r="1.00000" g="1.00000" b="1.00000" name="colorSpecular"/>
                 </Material>
             </Mesh>
