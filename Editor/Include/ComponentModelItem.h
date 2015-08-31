@@ -9,8 +9,8 @@
 using std::string;
 using std::vector;
 
-class GameObject;
 class MeshInstance;
+class ToolsideGameObject;
 class QMimeData;
 
 typedef uint MenuOptions;
@@ -59,8 +59,8 @@ protected:
 class ComponentModelTransformItem : public ComponentModelItem
 {
 public:
-    ComponentModelTransformItem(GameObject* gameObject);
-    ComponentModelTransformItem(string name, GameObject* gameObject, TransformVectorType type);
+    ComponentModelTransformItem(ToolsideGameObject* gameObject);
+    ComponentModelTransformItem(string name, ToolsideGameObject* gameObject, TransformVectorType type);
 
     void                Refresh();
     QVariant            GetValueData();
@@ -69,7 +69,7 @@ public:
     bool                HandleMenuSelection(ContextMenuOption selection);
 
 private:
-    GameObject*             m_gameObject;
+    ToolsideGameObject*     m_gameObject;
     TransformVectorType     m_vectorType;
     Vector3                 m_vector;
 };

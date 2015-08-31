@@ -1,5 +1,6 @@
 #include "Translator.h"
 
+#include "GameObject.h"
 #include "Math\Transformations.h"
 
 void Translator::Update(float deltaTime)

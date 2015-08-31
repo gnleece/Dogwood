@@ -1,5 +1,6 @@
 #include "Roller.h"
 
+#include "GameObject.h"
 #include "Math/Transformations.h"
 #include "Input/InputManager.h"
 #include "Input/GamePad.h"

@@ -1,9 +1,9 @@
 #include "ComponentModel.h"
 #include "ComponentModelItem.h"
 #include "DebugLogger.h"
-#include "GameObject.h"
 #include "GameObjectReference.h"
 #include "ToolsideGameComponent.h"
+#include "ToolsideGameObject.h"
 
 #include <QtWidgets>
 #include <string>
@@ -12,7 +12,7 @@
 using std::string;
 using namespace EditorCommands;
 
-ComponentModel::ComponentModel(QObject *parent, GameObject* go)
+ComponentModel::ComponentModel(QObject *parent, ToolsideGameObject* go)
     : m_gameObject(go), QAbstractItemModel(parent)
 {
     BuildModel();
@@ -191,7 +191,7 @@ void ComponentModel::AddMeshData()
 
 void ComponentModel::AddComponentData()
 {
-    m_componentList = m_gameObject->GetToolsideComponentList();
+    m_componentList = m_gameObject->GetComponentList();
 
     // Add data for each script component on the game object
     vector<ToolsideGameComponent*>::iterator iter = m_componentList.begin();

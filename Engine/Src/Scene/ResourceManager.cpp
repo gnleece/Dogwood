@@ -7,6 +7,7 @@
 #include "Rendering\MeshInstance.h"
 #include "Rendering\Texture.h"
 #include "ToolsideGameComponent.h"
+#include "ToolsideGameObject.h"
 #include "ToolsideShaderSchema.h"
 
 #include "tinyxml2.h"
@@ -27,7 +28,7 @@ struct TextureResourceInfo : ResourceInfo
         return "Texture";
     }
 
-    virtual void AddToGameObject(GameObject* gameObject)
+    virtual void AddToGameObject(ToolsideGameObject* gameObject)
     {
         // Do nothing here. Textures need to be set as specific material or component param references
         // (i.e. there is no single unique texture per object so we can't simply "add" one to a game object)
@@ -48,7 +49,7 @@ struct MeshResourceInfo : ResourceInfo
         return "Mesh";
     }
 
-    virtual void AddToGameObject(GameObject* gameObject)
+    virtual void AddToGameObject(ToolsideGameObject* gameObject)
     {
         Mesh* mesh = ResourceManager::Singleton().GetMesh(guid);
         MeshInstance* meshInstance = gameObject->GetMesh();
@@ -79,13 +80,13 @@ struct ScriptResourceInfo : ResourceInfo
         return "Script";
     }
 
-    virtual void AddToGameObject(GameObject* gameObject)
+    virtual void AddToGameObject(ToolsideGameObject* gameObject)
     {
         if (GameProject::Singleton().IsToolside())
         {
             ToolsideGameComponent* component = new ToolsideGameComponent();
             component->Create(guid);
-            gameObject->AddToolsideComponent(component);
+            gameObject->AddComponent(component);
         }
         else
         {
@@ -109,7 +110,7 @@ struct ShaderResourceInfo : ResourceInfo
         return "Shader";
     }
 
-    virtual void AddToGameObject(GameObject* gameObject)
+    virtual void AddToGameObject(ToolsideGameObject* gameObject)
     {
         MeshInstance* meshInstance = gameObject->GetMesh();
         if (meshInstance != NULL)

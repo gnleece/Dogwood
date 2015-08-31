@@ -12,7 +12,7 @@
 #define GLFW_INCLUDE_GLU
 #include <GLFW/glfw3.h>
 
-class GameObject;
+class GameObjectBase;
 
 struct RenderConfig
 {
@@ -47,7 +47,7 @@ public:
     void            Startup(RenderConfig& config);
     void            Shutdown();
 
-    void            SetRootObject(GameObject* rootObject);
+    void            SetRootObject(GameObjectBase* rootObject);
     void            SetLight(Light light);
     void            SetCamera(Camera camera);
     void            SetView(Matrix4x4& view);
@@ -74,7 +74,7 @@ private:
 
     RenderConfig    m_config;
 
-    GameObject*     m_rootObject;
+    GameObjectBase* m_rootObject;
     Light           m_light;        // TODO support multiple light sources
     ColourRGB       m_clearColour;
 

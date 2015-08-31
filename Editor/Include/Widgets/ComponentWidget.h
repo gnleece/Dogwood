@@ -5,8 +5,8 @@
 
 class ComponentModel;
 class ComponentView;
-class GameObject;
 class MainEditorWindow;
+class ToolsideGameObject;
 
 namespace Ui
 {
@@ -20,7 +20,7 @@ class ComponentWidget : public QWidget
 public:
     ComponentWidget(QWidget* parent = 0, MainEditorWindow* window = NULL);
 
-    void    Init(GameObject* go);
+    void    Init(ToolsideGameObject* go);
     void    ReInit();
     void    Refresh();
 
@@ -28,7 +28,7 @@ private:
     Ui::ComponentWidget*    m_ui;
     ComponentModel*         m_sourceModel;
     ComponentView*          m_view;
-    GameObject*             m_gameObject;
+    ToolsideGameObject*     m_gameObject;
 
 private slots:
     void    OnDoubleClick(const QModelIndex& index);

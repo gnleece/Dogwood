@@ -5,6 +5,7 @@
 ENGINE (Dogwood)
     * Game object/component system
         * Proper awake/start/enable/disable/destroy/etc.
+            * ActiveSelf / ActiveInHierarchy
     * Resources
         * Unloading
         * Material type?
@@ -90,7 +91,6 @@ EDITOR (Thicket)
         - Items don't auto expand when reparented
         - Scene view resolution isn't set nicely
         - Keep constant gnomon size
-        - Non-uniform scaling breaks object picking
         - Rotation tool behaviour is non-intuitive
         - Saving project should write asset list in consistent order
         - Fix GameObject child removal
@@ -98,6 +98,7 @@ EDITOR (Thicket)
 
         Hi pri
         - Undo/redo broken with delete/undo create. Need to avoid use of QModelIndex
+        - Non-uniform scaling breaks object picking
 
 ---------------------------------------------------------------------------
 

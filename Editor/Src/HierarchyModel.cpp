@@ -3,13 +3,15 @@
 #include <QtWidgets>
 #include <string>
 #include <EditorCommands.h>
-#include "GameObjectMimeData.h"
+
 #include "DebugLogger.h"
+#include "GameObjectMimeData.h"
+#include "ToolsideGameObject.h"
 
 using std::string;
 using namespace EditorCommands;
 
-HierarchyModel::HierarchyModel(GameObject* root, QObject *parent)
+HierarchyModel::HierarchyModel(ToolsideGameObject* root, QObject *parent)
 : m_rootItem(root),
   QAbstractItemModel(parent)
 {
@@ -31,9 +33,9 @@ QModelIndex HierarchyModel::index(int row, int column, const QModelIndex &parent
     if (parent.isValid() && parent.column() != 0)
         return QModelIndex();
 
-    GameObject* parentItem = getItem(parent);
+    ToolsideGameObject* parentItem = getItem(parent);
 
-    GameObject* childItem = parentItem->GetChild(row);
+    ToolsideGameObject* childItem = parentItem->GetChild(row);
     if (childItem)
         return createIndex(row, column, childItem);
     else
@@ -45,8 +47,8 @@ QModelIndex HierarchyModel::parent(const QModelIndex &index) const
     if (!index.isValid())
         return QModelIndex();
 
-    GameObject *childItem = getItem(index);
-    GameObject *parentItem = childItem->GetParent();
+    ToolsideGameObject* childItem = getItem(index);
+    ToolsideGameObject* parentItem = (ToolsideGameObject*)childItem->GetParent();
 
     if (parentItem == m_rootItem)
         return QModelIndex();
@@ -62,7 +64,7 @@ QVariant HierarchyModel::data(const QModelIndex &index, int role) const
     if (role != Qt::DisplayRole && role != Qt::EditRole && role != MatchRole)
         return QVariant();
 
-    GameObject *item = getItem(index);
+    ToolsideGameObject *item = getItem(index);
 
     if (role == MatchRole)
     {
@@ -91,7 +93,7 @@ bool HierarchyModel::setData(const QModelIndex &index, const QVariant &value, in
 // for renaming game objects.
 void HierarchyModel::setItemName(const QModelIndex &index, string name)
 {
-    GameObject *item = getItem(index);
+    ToolsideGameObject *item = getItem(index);
     item->SetName(name);
     emit dataChanged(index, index);
 }
@@ -113,13 +115,13 @@ int HierarchyModel::columnCount(const QModelIndex & /* index */) const
 
 int HierarchyModel::rowCount(const QModelIndex& index) const
 {
-    GameObject *item = getItem(index);
+    ToolsideGameObject *item = getItem(index);
     return item->GetChildCount();
 }
 
 bool HierarchyModel::insertRows(int position, int rows, const QModelIndex &parent)
 {
-    GameObject *parentItem = getItem(parent);
+    ToolsideGameObject *parentItem = getItem(parent);
 
     beginInsertRows(parent, position, position + rows - 1);
     bool success = parentItem->InsertChildren(position, rows);
@@ -128,7 +130,7 @@ bool HierarchyModel::insertRows(int position, int rows, const QModelIndex &paren
     return success;
 }
 
-bool HierarchyModel::insertChild(QModelIndex parentIndex, GameObject* parent, GameObject* child, int position)
+bool HierarchyModel::insertChild(QModelIndex parentIndex, ToolsideGameObject* parent, ToolsideGameObject* child, int position)
 {
     beginInsertRows(parentIndex, position, position);
     bool success = parent->InsertChild(position, child);
@@ -139,7 +141,7 @@ bool HierarchyModel::insertChild(QModelIndex parentIndex, GameObject* parent, Ga
 
 bool HierarchyModel::removeRows(int position, int rows, const QModelIndex &parent)
 {
-    GameObject *parentItem = getItem(parent);
+    ToolsideGameObject *parentItem = getItem(parent);
     bool success = true;
 
     beginRemoveRows(parent, position, position + rows - 1);
@@ -149,11 +151,11 @@ bool HierarchyModel::removeRows(int position, int rows, const QModelIndex &paren
     return success;
 }
 
-GameObject* HierarchyModel::getItem(const QModelIndex &index) const
+ToolsideGameObject* HierarchyModel::getItem(const QModelIndex &index) const
 {
     if (index.isValid())
     {
-        GameObject *item = static_cast<GameObject*>(index.internalPointer());
+        ToolsideGameObject *item = static_cast<ToolsideGameObject*>(index.internalPointer());
         if (item)
             return item;
     }
@@ -182,7 +184,7 @@ QStringList HierarchyModel::mimeTypes() const
 
 QMimeData* HierarchyModel::mimeData(const QModelIndexList &indexes) const
 {
-    // TODO support list of gameobjects
+    // TODO support list of game objects
     GameObjectMimeData *mimeData;
     foreach(const QModelIndex &index, indexes)
     {

@@ -3,27 +3,27 @@
 #include <QMimeData>
 #include <QModelIndex>
 
-class GameObject;
 class QTreeView;
+class ToolsideGameObject;
 
 class GameObjectMimeData : public QMimeData
 {
     Q_OBJECT
 
 public:
-    GameObjectMimeData(GameObject* gameObject, int originalRow, QModelIndex& originalParentIndex);
+    GameObjectMimeData(ToolsideGameObject* gameObject, int originalRow, QModelIndex& originalParentIndex);
 
-    QStringList     formats() const;
-    QVariant        retrieveData(const QString &format, QVariant::Type preferredType) const;
+    QStringList         formats() const;
+    QVariant            retrieveData(const QString &format, QVariant::Type preferredType) const;
 
-    GameObject*     getGameObject();
-    int             getOriginalRow();
-    QModelIndex&    getOriginalParentIndex();
+    ToolsideGameObject* getGameObject();
+    int                 getOriginalRow();
+    QModelIndex&        getOriginalParentIndex();
 
 private:
-    GameObject*     m_gameObject;           // TODO support list of gameobjects
-    int             m_originalRow;
-    QModelIndex     m_originalParentIndex;
+    ToolsideGameObject* m_gameObject;           // TODO support list of game objects
+    int                 m_originalRow;
+    QModelIndex         m_originalParentIndex;
 
-    QStringList     m_formats;
+    QStringList         m_formats;
 };

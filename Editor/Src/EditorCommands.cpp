@@ -1,7 +1,7 @@
 #include "EditorCommands.h"
-#include "GameObject.h"
 #include "GameObjectMimeData.h"
 #include "HierarchyModel.h"
+#include "ToolsideGameObject.h"
 #include "Rendering\Material.h"
 #include "Widgets\ComponentWidget.h"
 
@@ -113,7 +113,7 @@ namespace EditorCommands
 
     //-----------------------------------------------------------------------------------------------
 
-    PasteGameObjectCommand::PasteGameObjectCommand(HierarchyModel* model, QTreeView* view, QModelIndex index, GameObject* gameObject)
+    PasteGameObjectCommand::PasteGameObjectCommand(HierarchyModel* model, QTreeView* view, QModelIndex index, ToolsideGameObject* gameObject)
     {
         m_model = model;
         m_view = view;
@@ -137,7 +137,7 @@ namespace EditorCommands
 
     ComponentWidget* ModifyTransformCommand::sComponentWidget = NULL;
 
-    ModifyTransformCommand::ModifyTransformCommand(GameObject* gameObject, Vector3 vector, TransformVectorType type)
+    ModifyTransformCommand::ModifyTransformCommand(ToolsideGameObject* gameObject, Vector3 vector, TransformVectorType type)
     {
         m_gameObject = gameObject;
         m_vector = vector;

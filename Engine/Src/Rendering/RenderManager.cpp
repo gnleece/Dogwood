@@ -41,7 +41,7 @@ void RenderManager::Shutdown()
     DebugDraw::Singleton().Shutdown();
 }
 
-void RenderManager::SetRootObject(GameObject* rootObject)
+void RenderManager::SetRootObject(GameObjectBase* rootObject)
 {
     m_rootObject = rootObject;
     m_dirty = true;

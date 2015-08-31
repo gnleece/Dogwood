@@ -18,6 +18,7 @@ class GameProject;
 class Mesh;
 class ShaderProgram;
 class Texture;
+class ToolsideGameObject;
 
 using std::string;
 using std::unordered_map;
@@ -31,7 +32,7 @@ public:
     virtual Resource*   Load() = 0;
     virtual void        Unload();
     virtual string      TypeName() = 0;
-    virtual void        AddToGameObject(GameObject* gameObject) = 0;
+    virtual void        AddToGameObject(ToolsideGameObject* gameObject) = 0;
 
     unsigned int        guid;
     string              path;

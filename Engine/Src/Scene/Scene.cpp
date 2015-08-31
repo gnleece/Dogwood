@@ -3,8 +3,10 @@
 #include "Scene\ResourceManager.h"
 #include "GameComponentFactory.h"
 #include "GameObject.h"
+#include "GameObjectBase.h"
 #include "GameProject.h"
 #include "ToolsideGameComponent.h"
+#include "ToolsideGameObject.h"
 #include "Util.h"
 #include "Rendering\Camera.h"
 #include "Rendering\Mesh.h"
@@ -20,6 +22,12 @@ Scene::Scene()
 
 bool Scene::New(string filename)
 {
+    if (!GameProject::Singleton().IsToolside())
+    {
+        printf("Scene error: can't create new scene in game mode!\n");
+        return false;
+    }
+
     if (m_loaded)
     {
         printf("Scene error: can't init new scene because scene is already loaded.\n");
@@ -28,7 +36,7 @@ bool Scene::New(string filename)
 
     m_filename = filename;
     unsigned int guid = MakeGuid("ROOT");
-    m_rootObject = new GameObject(guid, "ROOT");
+    m_rootObject = new ToolsideGameObject(guid, "ROOT");
 
     m_loaded = true;
     return true;
@@ -86,6 +94,12 @@ bool Scene::Save(string filename)
         return false;
     }
 
+    if (!GameProject::Singleton().IsToolside())
+    {
+        printf("Scene error: can't save scene in game mode!\n");
+        return false;
+    }
+
     // If a non-empty filename is provided, use it (for "Save As")
     if (filename.compare("") != 0)
     {
@@ -102,7 +116,7 @@ bool Scene::Save(string filename)
 
     // Serialize body
     SerializeGlobalSettings(rootElement, sceneDoc);
-    SerializeHierarchy(m_rootObject, rootElement, sceneDoc, resourceGuids);
+    SerializeHierarchy((ToolsideGameObject*)m_rootObject, rootElement, sceneDoc, resourceGuids);
     SerializeResourceList(resourceGuids, rootElement, sceneDoc);
 
     // Save it!
@@ -122,7 +136,7 @@ bool Scene::Unload()
     // Unload resources
     ResourceManager::Singleton().UnloadSceneResources();
 
-    // Tear down the hierachy
+    // Tear down the hierarchy
     // TODO implement me
 
     m_rootObject = NULL;
@@ -131,9 +145,19 @@ bool Scene::Unload()
     return true;
 }
 
-GameObject* Scene::GetRootObject()
+GameObjectBase* Scene::GetRootObject()
 {
     return m_rootObject;
+}
+
+GameObject* Scene::GetRuntimeRootObject()
+{
+    return (GameObject*)m_rootObject;
+}
+
+ToolsideGameObject* Scene::GetToolsideRootObject()
+{
+    return (ToolsideGameObject*)m_rootObject;
 }
 
 bool Scene::IsLoaded()
@@ -189,7 +213,7 @@ void Scene::DoHierarchySetup(XMLElement* sceneXML)
     m_rootObject = BuildSubtree(rootNode);
 }
 
-GameObject* Scene::BuildSubtree(XMLElement* xmlnode)
+GameObjectBase* Scene::BuildSubtree(XMLElement* xmlnode)
 {
     if (xmlnode == NULL)
         return NULL;
@@ -202,7 +226,15 @@ GameObject* Scene::BuildSubtree(XMLElement* xmlnode)
         guid = MakeGuid(name);
     }
 
-    GameObject* go = new GameObject(guid, name);
+    GameObjectBase* go = NULL;
+    if (GameProject::Singleton().IsToolside())
+    {
+        go = new ToolsideGameObject(guid, name);
+    }
+    else
+    {
+        go = new GameObject(guid, name);
+    }
     AddTransform(go, xmlnode);
     AddMesh(go, xmlnode);
     AddGameComponents(go, xmlnode);
@@ -211,7 +243,7 @@ GameObject* Scene::BuildSubtree(XMLElement* xmlnode)
     XMLElement* childXML = xmlnode->FirstChildElement("GameObject");
     while (childXML)
     {
-        GameObject* childgo = BuildSubtree(childXML);
+        GameObjectBase* childgo = BuildSubtree(childXML);
         childgo->SetParent(go);
         childXML = childXML->NextSiblingElement("GameObject");
     }
@@ -219,7 +251,7 @@ GameObject* Scene::BuildSubtree(XMLElement* xmlnode)
     return go;
 }
 
-void Scene::AddTransform(GameObject* go, XMLElement* xmlnode)
+void Scene::AddTransform(GameObjectBase* go, XMLElement* xmlnode)
 {
     XMLElement* transformXML = xmlnode->FirstChildElement("Transform");
     if (transformXML == NULL)
@@ -239,7 +271,7 @@ void Scene::AddTransform(GameObject* go, XMLElement* xmlnode)
     go->SetLocalTransform(matrix);
 }
 
-void Scene::AddMesh(GameObject* go, XMLElement* xmlnode)
+void Scene::AddMesh(GameObjectBase* go, XMLElement* xmlnode)
 {
     XMLElement* meshXML = xmlnode->FirstChildElement("Mesh");
     if (meshXML)
@@ -322,7 +354,7 @@ void Scene::AddMaterialTextures(XMLElement* xmlnode, Material* material)
     }
 }
 
-void Scene::AddGameComponents(GameObject* go, XMLElement* xmlnode)
+void Scene::AddGameComponents(GameObjectBase* go, XMLElement* xmlnode)
 {
     XMLElement* gameComponents = xmlnode->FirstChildElement("Components");
     if (gameComponents)
@@ -334,7 +366,7 @@ void Scene::AddGameComponents(GameObject* go, XMLElement* xmlnode)
             {
                 ToolsideGameComponent* component = new ToolsideGameComponent();
                 component->Load(componentXML);
-                go->AddToolsideComponent(component);
+                ((ToolsideGameObject*)go)->AddComponent(component);
             }
             else
             {
@@ -343,7 +375,7 @@ void Scene::AddGameComponents(GameObject* go, XMLElement* xmlnode)
                 GameComponent* component = factory->CreateComponent(guid);
                 RuntimeParamList params = ComponentValue::ParseRuntimeParams(componentXML);
                 factory->SetParams(guid, component, &params);
-                go->AddComponent(component);
+                ((GameObject*)go)->AddComponent(component);
             }
             componentXML = componentXML->NextSiblingElement("Component");
         }
@@ -365,7 +397,7 @@ void Scene::SerializeGlobalSettings(XMLElement* parentNode, XMLDocument& rootDoc
     lightNode->InsertEndChild(WriteFloatToXML(m_light.power, "Power", "value", rootDoc));
 }
 
-void Scene::SerializeHierarchy(GameObject* gameObject, XMLNode* parentNode, XMLDocument& rootDoc, unordered_set<unsigned int>& guids)
+void Scene::SerializeHierarchy(ToolsideGameObject* gameObject, XMLNode* parentNode, XMLDocument& rootDoc, unordered_set<unsigned int>& guids)
 {
     if (gameObject == NULL)
         return;
@@ -382,14 +414,14 @@ void Scene::SerializeHierarchy(GameObject* gameObject, XMLNode* parentNode, XMLD
     SerializeComponents(gameObject, goXML, rootDoc, guids);
 
     // Serialize children
-    std::vector<GameObject*>::iterator childIter;
+    std::vector<GameObjectBase*>::iterator childIter;
     for (childIter = gameObject->GetChildren().begin(); childIter != gameObject->GetChildren().end(); childIter++)
     {
-        GameObject* child = *childIter;
+        ToolsideGameObject* child = (ToolsideGameObject*)*childIter;
         SerializeHierarchy(child, goXML, rootDoc, guids);
     }
 }
-void Scene::SerializeTransform(GameObject* gameObject, XMLNode* parentNode, XMLDocument& rootDoc)
+void Scene::SerializeTransform(ToolsideGameObject* gameObject, XMLNode* parentNode, XMLDocument& rootDoc)
 {
     if (gameObject == NULL)
         return;
@@ -400,7 +432,7 @@ void Scene::SerializeTransform(GameObject* gameObject, XMLNode* parentNode, XMLD
     transformNode->InsertEndChild(WriteVector3ToXML(gameObject->GetLocalTransform().GetScale(), "Scale", rootDoc));
 }
 
-void Scene::SerializeMesh(GameObject* gameObject, XMLNode* parentNode, XMLDocument& rootDoc, unordered_set<unsigned int>& guids)
+void Scene::SerializeMesh(ToolsideGameObject* gameObject, XMLNode* parentNode, XMLDocument& rootDoc, unordered_set<unsigned int>& guids)
 {
     if (gameObject == NULL || gameObject->GetMesh() == NULL)
         return;
@@ -413,7 +445,7 @@ void Scene::SerializeMesh(GameObject* gameObject, XMLNode* parentNode, XMLDocume
     SerializeMaterial(gameObject, meshNode, rootDoc, guids);
 }
 
-void Scene::SerializeMaterial(GameObject* gameObject, XMLNode* parentNode, XMLDocument& rootDoc, unordered_set<unsigned int>& guids)
+void Scene::SerializeMaterial(ToolsideGameObject* gameObject, XMLNode* parentNode, XMLDocument& rootDoc, unordered_set<unsigned int>& guids)
 {
     if (gameObject == NULL || gameObject->GetMesh() == NULL || gameObject->GetMesh()->GetMaterial() == NULL)
         return;
@@ -483,7 +515,7 @@ void Scene::SerializeMaterialTextures(Material* material, tinyxml2::XMLNode* par
     }
 }
 
-void Scene::SerializeComponents(GameObject* gameObject, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc, unordered_set<unsigned int>& guids)
+void Scene::SerializeComponents(ToolsideGameObject* gameObject, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc, unordered_set<unsigned int>& guids)
 {
     if (gameObject == NULL)
         return;
@@ -491,7 +523,7 @@ void Scene::SerializeComponents(GameObject* gameObject, tinyxml2::XMLNode* paren
     XMLElement* componentsNode = rootDoc.NewElement("Components");
     parentNode->InsertEndChild(componentsNode);
 
-    std::vector<ToolsideGameComponent*> compList = gameObject->GetToolsideComponentList();
+    std::vector<ToolsideGameComponent*> compList = gameObject->GetComponentList();
     std::vector<ToolsideGameComponent*>::iterator compIter;
     for (compIter = compList.begin(); compIter != compList.end(); compIter++)
     {

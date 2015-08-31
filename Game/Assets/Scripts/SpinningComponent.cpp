@@ -1,5 +1,6 @@
 #include "SpinningComponent.h"
 
+#include "GameObject.h"
 #include "Math\Transformations.h"
 
 void SpinningComponent::Update(float deltaTime)

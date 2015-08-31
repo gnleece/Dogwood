@@ -1,18 +1,19 @@
 #include "ComponentModelItem.h"
 
-#include "ComponentModel.h"
 #include "AssetMimeData.h"
+#include "ComponentModel.h"
+#include "DebugLogger.h"
 #include "EditorUtil.h"
-#include "GameObject.h"
 #include "GameObjectMimeData.h"
 #include "GameObjectReference.h"
-#include "DebugLogger.h"
+#include "ToolsideGameObject.h"
 #include "Rendering/Material.h"
 #include "Rendering/Mesh.h"
 #include "Rendering/MeshInstance.h"
 #include "Rendering/Texture.h"
 #include "Scene/ResourceManager.h"
 #include "Util.h"
+
 #include <QBrush>
 #include <QColor>
 #include <QColorDialog>
@@ -158,7 +159,7 @@ bool ComponentModelItem::HandleMenuSelection(ContextMenuOption selection)
 
 //--------------------------------------------------------------------------------
 
-ComponentModelTransformItem::ComponentModelTransformItem(GameObject* gameObject)
+ComponentModelTransformItem::ComponentModelTransformItem(ToolsideGameObject* gameObject)
     : ComponentModelItem("Transform"), m_gameObject(gameObject)
 {
     m_isHeader = true;
@@ -172,7 +173,7 @@ ComponentModelTransformItem::ComponentModelTransformItem(GameObject* gameObject)
     AddChild(scaleItem);
 }
 
-ComponentModelTransformItem::ComponentModelTransformItem(string name, GameObject* gameObject, TransformVectorType type)
+ComponentModelTransformItem::ComponentModelTransformItem(string name, ToolsideGameObject* gameObject, TransformVectorType type)
     : ComponentModelItem(name), m_gameObject(gameObject), m_vectorType(type)
 {
     m_isHeader = false;
@@ -311,7 +312,7 @@ bool ComponentModelMeshItem::HandleMenuSelection(ContextMenuOption selection)
         break;
     case CONTEXTMENU_DELETE:
         DebugLogger::Singleton().Log("delete mesh component");
-        GameObject* go = m_mesh->GetGameObject();
+        GameObjectBase* go = m_mesh->GetGameObject();
         go->SetMesh(NULL);
         return true;
     }
@@ -384,7 +385,7 @@ bool ComponentModelShaderItem::DropData(const QMimeData* data)
         ResourceInfo* info = mimeData->GetResourceInfo();
         if (strcmp(info->TypeName().c_str(), "Shader") == 0)       // TODO use type enum to avoid strcmp
         {
-            info->AddToGameObject(m_material->GetMesh()->GetGameObject());
+            info->AddToGameObject((ToolsideGameObject*)(m_material->GetMesh()->GetGameObject()));
             return true;
         }
     }
@@ -551,7 +552,7 @@ QVariant ComponentModelScriptItem::GetValueData()
     case ComponentParameter::TYPE_GAMEOBJECT:
     {
         // For game object values, we show the object's name in addition to the guid
-        GameObject* go = GameObjectReference::GetGameObject(m_value.go);
+        ToolsideGameObject* go = GameObjectReference::GetToolsideGameObject(m_value.go);
         if (go == NULL)
             str = "<MISSING REF>";
         else
@@ -707,8 +708,8 @@ bool ComponentModelScriptItem::HandleMenuSelection(ContextMenuOption selection)
         break;
     case CONTEXTMENU_DELETE:
         DebugLogger::Singleton().Log("delete script component");
-        GameObject* go = m_component->GetGameObject();
-        go->RemoveToolsideComponent(m_component);
+        ToolsideGameObject* go = m_component->GetGameObject();
+        go->RemoveComponent(m_component);
         return true;
         break;
     }

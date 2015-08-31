@@ -127,7 +127,7 @@ void AssetWidget::AddButtonClicked()
         ResourceInfo* info = m_sourceModel->getItem(index);
         if (info != NULL)
         {
-            GameObject* go = m_window->GetSelectedObject();
+            ToolsideGameObject* go = m_window->GetSelectedObject();
             if (go != NULL)
             {
                 info->AddToGameObject(go);

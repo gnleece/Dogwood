@@ -1,6 +1,6 @@
 #include "GameObjectReference.h"
 
-unordered_map<unsigned int, GameObject*> GameObjectReference::GameObjectMap = unordered_map<unsigned int, GameObject*>();
+unordered_map<unsigned int, GameObjectBase*> GameObjectReference::GameObjectMap = unordered_map<unsigned int, GameObjectBase*>();
 
 GameObjectReference::GameObjectReference()
 {
@@ -26,12 +26,22 @@ GameObject* GameObjectReference::GetGameObject()
     return GetGameObject(m_guid);
 }
 
-GameObject* GameObjectReference::GetGameObject(unsigned int guid)
+GameObjectBase* GameObjectReference::GetGameObjectBase(unsigned int guid)
 {
     return GameObjectMap[guid];
 }
 
-void GameObjectReference::AddToMap(unsigned int guid, GameObject* gameObject)
+GameObject* GameObjectReference::GetGameObject(unsigned int guid)
+{
+    return (GameObject*)GetGameObjectBase(guid);
+}
+
+ToolsideGameObject* GameObjectReference::GetToolsideGameObject(unsigned int guid)
+{
+    return (ToolsideGameObject*)GetGameObjectBase(guid);
+}
+
+void GameObjectReference::AddToMap(unsigned int guid, GameObjectBase* gameObject)
 {
     GameObjectMap[guid] = gameObject;
 }

@@ -4,6 +4,7 @@
 #include <list>
 #include <string>
 
+#include "Scene\Scene.h"
 #include "Window\GameWindow.h"
 
 using std::list;
@@ -25,7 +26,7 @@ public:
     Game() {}
 
     void Init(string projectPath, GameComponentFactory* componentFactory);
-    void Run(GameObject* sceneRoot);
+    void Run(Scene& scene);
     
 private:
     void Shutdown();
@@ -34,7 +35,7 @@ private:
     GameWindow        m_gameWindow;
     GameObject*       m_rootObject;
 
-    double            m_prevFrameEndTime;
-    double            m_deltaTime;
-    double            m_minFrameTime;
+    float             m_prevFrameEndTime;
+    float             m_deltaTime;
+    float             m_minFrameTime;
 };

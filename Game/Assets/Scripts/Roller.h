@@ -2,6 +2,7 @@
 
 #include "GameComponent.h"
 #include "GameObjectReference.h"
+#include "Math\Algebra.h"
 
 class Mesh;
 class Texture;

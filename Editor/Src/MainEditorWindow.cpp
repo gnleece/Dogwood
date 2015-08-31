@@ -2,9 +2,9 @@
 #include "DebugLogger.h"
 #include "HierarchyModel.h"
 #include "HierarchyView.h"
-#include "GameObject.h"
 #include "GameProject.h"
 #include "ToolsideGameComponent.h"
+#include "ToolsideGameObject.h"
 #include "ui_maineditorwindow.h"
 #include "Rendering\MeshInstance.h"
 #include "Rendering\RenderManager.h"
@@ -132,7 +132,7 @@ void MainEditorWindow::SetHierarchyModel(HierarchyModel* model)
     m_view->expandAll();
 }
 
-GameObject* MainEditorWindow::GetSelectedObject()
+ToolsideGameObject* MainEditorWindow::GetSelectedObject()
 {
     return m_selectedGameObject;
 }
@@ -294,7 +294,7 @@ void MainEditorWindow::NewScene()
     m_scene->New(fileName.toStdString() + ".xml");
 
     // Open the new scene
-    HierarchyModel* model = new HierarchyModel(m_scene->GetRootObject());
+    HierarchyModel* model = new HierarchyModel(m_scene->GetToolsideRootObject());
     SetHierarchyModel(model);
     RenderManager::Singleton().SetRootObject(m_scene->GetRootObject());
     m_sceneViewWidget->SetScene(m_scene);
@@ -315,7 +315,7 @@ void MainEditorWindow::OpenScene()
 
     if (m_scene->Load(fileName.toStdString()))
     {
-        HierarchyModel* model = new HierarchyModel(m_scene->GetRootObject());
+        HierarchyModel* model = new HierarchyModel(m_scene->GetToolsideRootObject());
         SetHierarchyModel(model);
         RenderManager::Singleton().SetRootObject(m_scene->GetRootObject());
         m_sceneViewWidget->SetScene(m_scene);
@@ -354,7 +354,7 @@ void MainEditorWindow::OpenTestProject()
     
     if (m_scene->Load("..\\Game\\Assets\\Scenes\\RollTest.xml"))
     {
-        HierarchyModel* model = new HierarchyModel(m_scene->GetRootObject());
+        HierarchyModel* model = new HierarchyModel(m_scene->GetToolsideRootObject());
         SetHierarchyModel(model);
         RenderManager::Singleton().SetRootObject(m_scene->GetRootObject());
         m_sceneViewWidget->SetScene(m_scene);
@@ -526,7 +526,7 @@ void MainEditorWindow::AddMeshPrimitive(const QString& meshName)
 }
 
 // Used to select an object from outside the hierarchy view itself (e.g. from the scene view)
-void MainEditorWindow::SelectObject(GameObject* gameObject)
+void MainEditorWindow::SelectObject(ToolsideGameObject* gameObject)
 {
     // Clear previous selection
     m_view->selectionModel()->clearSelection();
@@ -555,11 +555,11 @@ void MainEditorWindow::SelectObject(GameObject* gameObject)
 void MainEditorWindow::OnHierarchySelectionChanged(QModelIndex& newIndex)
 {
     // Get the selected game object
-    GameObject* selectedObject = m_model->getItem(newIndex);
+    ToolsideGameObject* selectedObject = m_model->getItem(newIndex);
     SwitchSelectObject(selectedObject);
 }
 
-void MainEditorWindow::SwitchSelectObject(GameObject* gameobject)
+void MainEditorWindow::SwitchSelectObject(ToolsideGameObject* gameobject)
 {
     if (m_selectedGameObject != NULL)
     {

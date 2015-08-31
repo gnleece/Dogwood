@@ -86,6 +86,8 @@
     <ClInclude Include="Include\GameComponent.h" />
     <ClInclude Include="Include\GameComponentFactory.h" />
     <ClInclude Include="Include\GameObject.h" />
+    <ClInclude Include="Include\GameObjectBase.h" />
+    <ClInclude Include="Include\GameObjectManager.h" />
     <ClInclude Include="Include\GameObjectReference.h" />
     <ClInclude Include="Include\GameProject.h" />
     <ClInclude Include="Include\Input\GamePad.h" />
@@ -111,6 +113,7 @@
     <ClInclude Include="Include\Scene\ResourceManager.h" />
     <ClInclude Include="Include\Scene\Scene.h" />
     <ClInclude Include="Include\ToolsideGameComponent.h" />
+    <ClInclude Include="Include\ToolsideGameObject.h" />
     <ClInclude Include="Include\ToolsideShaderSchema.h" />
     <ClInclude Include="Include\Util.h" />
     <ClInclude Include="Include\Window\GameWindow.h" />
@@ -122,6 +125,8 @@
     <ClCompile Include="Src\Game.cpp" />
     <ClCompile Include="Src\GameComponent.cpp" />
     <ClCompile Include="Src\GameObject.cpp" />
+    <ClCompile Include="Src\GameObjectBase.cpp" />
+    <ClCompile Include="Src\GameObjectManager.cpp" />
     <ClCompile Include="Src\GameObjectReference.cpp" />
     <ClCompile Include="Src\GameProject.cpp" />
     <ClCompile Include="Src\Input\GamePad.cpp" />
@@ -145,6 +150,7 @@
     <ClCompile Include="Src\Scene\ResourceManager.cpp" />
     <ClCompile Include="Src\Scene\Scene.cpp" />
     <ClCompile Include="Src\ToolsideGameComponent.cpp" />
+    <ClCompile Include="Src\ToolsideGameObject.cpp" />
     <ClCompile Include="Src\ToolsideShaderSchema.cpp" />
     <ClCompile Include="Src\Util.cpp" />
     <ClCompile Include="Src\Window\GameWindow.cpp" />

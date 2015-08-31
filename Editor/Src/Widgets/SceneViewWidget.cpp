@@ -1,9 +1,9 @@
 #include "Widgets\SceneViewWidget.h"
 
 #include "DebugLogger.h"
-#include "Debugging\DebugDraw.h"
-#include "GameObject.h"
 #include "MainEditorWindow.h"
+#include "ToolsideGameObject.h"
+#include "Debugging\DebugDraw.h"
 #include "Rendering\RenderManager.h"
 #include "Scene\Scene.h"
 #include <QtWidgets>
@@ -58,7 +58,7 @@ void SceneViewWidget::update()
 
     DebugDraw::Singleton().DrawLineBuffer(m_gridVAO, m_gridVBO, m_gridLinesVertexBuffer, GRID_BUFFER_SIZE, m_gridColor);
 
-    GameObject* selectedObject = m_window->GetSelectedObject();
+    ToolsideGameObject* selectedObject = m_window->GetSelectedObject();
     if (selectedObject)
     {
         m_transformTool.Draw(selectedObject->GetWorldTransform());
@@ -270,7 +270,7 @@ void SceneViewWidget::HandleSelectionClick(const QPointF clickPosition)
     // First, check whether the click hit any of the tools
     bool hitTool = PickTool(clickPosition, rayOriginWorldSpace, rayDirectionWorldSpace);
 
-    // If not, check whether the click hit any gameobjects
+    // If not, check whether the click hit any game objects
     if (!hitTool)
     {
         PickObject(rayOriginWorldSpace, rayDirectionWorldSpace);
@@ -291,7 +291,7 @@ bool SceneViewWidget::PickObject(Vector3 rayOrigin, Vector3 rayDirection)
 {
     // Do raycast against all objects in hierarchy   TODO this is pretty terrible
     float hitDistance;
-    GameObject* hitObject = m_scene->GetRootObject()->BoundingSphereRaycast(rayOrigin, rayDirection, Transform::Identity, hitDistance);
+    ToolsideGameObject* hitObject = m_scene->GetToolsideRootObject()->BoundingSphereRaycast(rayOrigin, rayDirection, Transform::Identity, hitDistance);
     if (hitObject != NULL)
     {
         m_window->SelectObject(hitObject);
@@ -303,7 +303,7 @@ bool SceneViewWidget::PickObject(Vector3 rayOrigin, Vector3 rayDirection)
 
 void SceneViewWidget::ExecuteModifyTransform(Vector3 vector, TransformVectorType type)
 {
-    GameObject* selectedObject = m_window->GetSelectedObject();
+    ToolsideGameObject* selectedObject = m_window->GetSelectedObject();
     ModifyTransformCommand* command = new ModifyTransformCommand(selectedObject, vector, type);
     CommandManager::Singleton().ExecuteCommand(command);
 }

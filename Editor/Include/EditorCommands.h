@@ -11,16 +11,17 @@
 #include "Rendering\Colour.h"
 #include "Math\Algebra.h"
 #include "Math\Transform.h"
+
 #include <qabstractitemmodel.h>
 #include <QTime>
 #include <string>
 
 class ComponentWidget;
-class GameObject;
 class GameObjectMimeData;
 class HierarchyModel;
 class Material;
 class QTreeView;
+class ToolsideGameObject;
 class TransformWidget;
 
 using std::string;
@@ -47,12 +48,12 @@ namespace EditorCommands
         void Execute();
         void Undo();
     private:
-        HierarchyModel* m_model;
-        QTreeView*      m_view;
-        GameObject*     m_gameObject;
-        int             m_position;
-        QModelIndex     m_index;
-        GameObject*     m_parent;
+        HierarchyModel*     m_model;
+        QTreeView*          m_view;
+        ToolsideGameObject* m_gameObject;
+        int                 m_position;
+        QModelIndex         m_index;
+        ToolsideGameObject* m_parent;
     };
 
     class RenameGameObjectCommand : public ICommand
@@ -84,21 +85,21 @@ namespace EditorCommands
     class PasteGameObjectCommand : public ICommand
     {
     public:
-        PasteGameObjectCommand(HierarchyModel* model, QTreeView* view, QModelIndex index, GameObject* gameObject);
+        PasteGameObjectCommand(HierarchyModel* model, QTreeView* view, QModelIndex index, ToolsideGameObject* gameObject);
         void Execute();
         void Undo();
     private:
-        HierarchyModel* m_model;
-        QTreeView*      m_view;
-        QModelIndex     m_index;
-        GameObject*     m_gameObject;
-        GameObject*     m_parentObject;
+        HierarchyModel*     m_model;
+        QTreeView*          m_view;
+        QModelIndex         m_index;
+        ToolsideGameObject* m_gameObject;
+        ToolsideGameObject* m_parentObject;
     };
 
     class ModifyTransformCommand : public ICommand
     {
     public:
-        ModifyTransformCommand(GameObject* gameObject, Vector3 vector, TransformVectorType type);
+        ModifyTransformCommand(ToolsideGameObject* gameObject, Vector3 vector, TransformVectorType type);
         void Execute();
         void Undo();
         bool Collapse(ICommand* command);
@@ -106,7 +107,7 @@ namespace EditorCommands
         static ComponentWidget* sComponentWidget;
 
     private:
-        GameObject*         m_gameObject;
+        ToolsideGameObject* m_gameObject;
         TransformVectorType m_type;
         Vector3             m_vector;
         Vector3             m_previousVector;

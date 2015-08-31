@@ -1,6 +1,6 @@
 #include "GameObjectMimeData.h"
 
-GameObjectMimeData::GameObjectMimeData(GameObject* gameObject, int originalRow, QModelIndex& originalParentIndex)
+GameObjectMimeData::GameObjectMimeData(ToolsideGameObject* gameObject, int originalRow, QModelIndex& originalParentIndex)
 {
     m_formats << "DogwoodEngine/GameObject";
     m_gameObject = gameObject;
@@ -25,7 +25,7 @@ QVariant GameObjectMimeData::retrieveData(const QString &format, QVariant::Type 
     }
 }
 
-GameObject* GameObjectMimeData::getGameObject()
+ToolsideGameObject* GameObjectMimeData::getGameObject()
 {
     return m_gameObject;
 }

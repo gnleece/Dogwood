@@ -11,6 +11,7 @@
 #include "Scene\ResourceManager.h"
 #include "Scene\Scene.h"
 #include "GameObject.h"
+#include "GameObjectManager.h"
 #include "GameProject.h"
 
 void Game::Init(string projectPath, GameComponentFactory* componentFactory)
@@ -19,6 +20,7 @@ void Game::Init(string projectPath, GameComponentFactory* componentFactory)
 
     srand(time(NULL));
 
+    // Resource setup
     ResourceManager::Singleton().Startup();
 
     // Project setup
@@ -33,7 +35,7 @@ void Game::Init(string projectPath, GameComponentFactory* componentFactory)
     GameProject::Singleton().GetResolution(windowWidth, windowHeight);
     m_gameWindow.Setup(GameProject::Singleton().GetName(), windowWidth, windowHeight);
 
-    // Manager setup
+    // Rendering setup
     RenderConfig renderConfig;
     renderConfig.width = windowWidth;
     renderConfig.height = windowHeight;
@@ -43,13 +45,16 @@ void Game::Init(string projectPath, GameComponentFactory* componentFactory)
     InputManager::Singleton().Startup(&m_gameWindow);
     XInputGamepad* xbox360controller = new XInputGamepad(0);            // TODO make this configurable
     InputManager::Singleton().EnableGamePad(xbox360controller, 0);
+
+    // Game Object setup
+    GameObjectManager::Singleton().Startup();
 }
 
-void Game::Run(GameObject* sceneRoot)
+void Game::Run(Scene& scene)
 {
     printf("\n=============== GAME RUN ===============\n");
 
-    m_rootObject = sceneRoot;
+    m_rootObject = scene.GetRuntimeRootObject();
     RenderManager::Singleton().SetRootObject(m_rootObject);
     
     // Frame time setup
@@ -60,16 +65,13 @@ void Game::Run(GameObject* sceneRoot)
     // Game loop!
     while (!m_gameWindow.ShouldClose())
     {
-        // Call Update on all active GameObjects
-        std::vector<GameObject*>::iterator goIter;
-        for (goIter = GameObject::ActiveGameObjects.begin(); goIter != GameObject::ActiveGameObjects.end(); goIter++)
-        {
-            GameObject* GO = *goIter;
-            GO->Update((float)m_deltaTime);
-        }
+        // Game Object update
+        GameObjectManager::Singleton().UpdateActiveGameObjects((float)m_deltaTime);
 
-        // Update systems (physics, animation, rendering, etc)
+        // Rendering update
         RenderManager::Singleton().RenderScene();
+
+        // Input update
         InputManager::Singleton().PollEvents((float)m_deltaTime);
 
         UpdateTime();
@@ -83,6 +85,7 @@ void Game::Run(GameObject* sceneRoot)
 void Game::Shutdown()
 {
     // Manager shutdown
+    GameObjectManager::Singleton().Shutdown();
     GameProject::Singleton().Shutdown();
     ResourceManager::Singleton().Shutdown();
     InputManager::Singleton().Shutdown();
@@ -96,13 +99,13 @@ void Game::Shutdown()
 void Game::UpdateTime()
 {
     // Calculate the current frame time
-    double currentTime = glfwGetTime();
+    float currentTime = glfwGetTime();
     m_deltaTime = currentTime - m_prevFrameEndTime;
 
     // If this frame finished faster than expected, sleep for a while so we don't eat CPU
     if (m_deltaTime < m_minFrameTime)
     {
-        double sleepTime = m_minFrameTime - m_deltaTime;
+        float sleepTime = m_minFrameTime - m_deltaTime;
         std::this_thread::sleep_for(std::chrono::milliseconds((long)(sleepTime * 1000)));
 
         currentTime = glfwGetTime();

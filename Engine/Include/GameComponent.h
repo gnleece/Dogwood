@@ -1,10 +1,11 @@
 #pragma once
 
-#include "GameObject.h"
+class GameObject;
 
 class GameComponent
 {
 public:
+    GameComponent();
 
     // Public interface
     virtual void    OnCreate() {}
@@ -13,7 +14,6 @@ public:
     virtual void    OnStart() {}
 
     virtual void    Update(float) {}
-    virtual void    Render(Transform& /*transform*/, bool /*wireframe*/) {}
 
     virtual void    OnEnable() {}
     virtual void    OnDisable() {}
@@ -23,5 +23,7 @@ public:
     void            SetGameObject(GameObject* gameObject);
 
 protected:
-    GameObject*     m_gameObject = NULL;
+    GameObject*     m_gameObject;
+
+    //bool          m_enabled;              // TODO implement me
 };

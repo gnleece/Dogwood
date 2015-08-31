@@ -4,9 +4,9 @@
 #include "ComponentView.h"
 #include "DebugLogger.h"
 #include "EditorCommands.h"
-#include "GameObject.h"
 #include "MainEditorWindow.h"
 #include "ToolsideGameComponent.h"
+#include "ToolsideGameObject.h"
 
 #include "..\GeneratedFiles\ui_componentwidget.h"
 
@@ -29,7 +29,7 @@ ComponentWidget::ComponentWidget(QWidget* parent, MainEditorWindow* window) :
     connect(m_view, SIGNAL(doubleClicked(const QModelIndex&)),  this, SLOT(OnDoubleClick(const QModelIndex&)));
 }
 
-void ComponentWidget::Init(GameObject* go)
+void ComponentWidget::Init(ToolsideGameObject* go)
 {
     m_gameObject = go;
 
@@ -45,7 +45,7 @@ void ComponentWidget::Init(GameObject* go)
 
     // Refresh the game object's component data, in case the
     // schema has been rebuilt since it was loaded
-    vector<ToolsideGameComponent*> components = m_gameObject->GetToolsideComponentList();
+    vector<ToolsideGameComponent*> components = m_gameObject->GetComponentList();
     vector<ToolsideGameComponent*>::iterator iter = components.begin();
     for (; iter != components.end(); iter++)
     {

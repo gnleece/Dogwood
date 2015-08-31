@@ -55,6 +55,16 @@ void MeshInstance::SetMaterial(Material* material)
     }
 }
 
+GameObjectBase* MeshInstance::GetGameObject()
+{
+    return m_gameObject;
+}
+
+void MeshInstance::SetGameObject(GameObjectBase* gameObject)
+{
+    m_gameObject = gameObject;
+}
+
 MeshInstance* MeshInstance::DeepCopy()
 {
     MeshInstance* newMeshInstance = new MeshInstance();

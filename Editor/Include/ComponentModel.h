@@ -4,9 +4,9 @@
 #include <vector>
 
 class ComponentModelItem;
-class GameObject;
 class ResourceInfo;
 class ToolsideGameComponent;
+class ToolsideGameObject;
 
 using std::vector;
 
@@ -15,7 +15,7 @@ class ComponentModel : public QAbstractItemModel
     Q_OBJECT
 
 public:
-    ComponentModel(QObject* parent, GameObject* go);
+    ComponentModel(QObject* parent, ToolsideGameObject* go);
 
     void            BuildModel();
     void            RefreshModel();
@@ -46,8 +46,8 @@ private:
     void            AddMeshData();
     void            AddComponentData();
 
-    ComponentModelItem* m_rootItem;
+    ComponentModelItem*             m_rootItem;
 
-    GameObject*         m_gameObject;
-    vector<ToolsideGameComponent*> m_componentList;
+    ToolsideGameObject*             m_gameObject;
+    vector<ToolsideGameComponent*>  m_componentList;
 };

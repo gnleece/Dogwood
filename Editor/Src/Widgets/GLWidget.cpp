@@ -5,7 +5,6 @@
 #include <QtWidgets>
 
 #include "DebugLogger.h"
-#include "GameObject.h"
 #include "Rendering\RenderManager.h"
 
 #ifndef GL_MULTISAMPLE

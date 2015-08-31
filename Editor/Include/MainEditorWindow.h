@@ -14,12 +14,12 @@
 class AssetWidget;
 class ComponentWidget;
 class ComponentModel;
-class GameObject;
 class HierarchyModel;
 class HierarchyView;
 class QTreeView;
 class Scene;
 class SceneViewWidget;
+class ToolsideGameObject;
 
 using std::string;
 using std::unordered_map;
@@ -40,20 +40,20 @@ public:
     explicit MainEditorWindow(QWidget* parent = 0);
     ~MainEditorWindow();
 
-    void        PostSetup();
-    void        Update();
+    void                PostSetup();
+    void                Update();
 
-    void        SetHierarchyModel(HierarchyModel* model);
+    void                SetHierarchyModel(HierarchyModel* model);
 
-    void        SelectObject(GameObject* gameObject);
-    GameObject* GetSelectedObject();
+    void                SelectObject(ToolsideGameObject* gameObject);
+    ToolsideGameObject* GetSelectedObject();
 
-    bool        IsOpen();
+    bool                IsOpen();
 
-    void        Refresh();
+    void                Refresh();
 
-    virtual void resizeEvent(QResizeEvent* resizeEvent);
-    virtual void closeEvent(QCloseEvent *event);
+    virtual void        resizeEvent(QResizeEvent* resizeEvent);
+    virtual void        closeEvent(QCloseEvent *event);
 
 private:
     bool                    m_open;
@@ -69,8 +69,8 @@ private:
     HierarchyModel*         m_model;
     Scene*                  m_scene;
 
-    GameObject*             m_copiedGameObject;
-    GameObject*             m_selectedGameObject;
+    ToolsideGameObject*     m_copiedGameObject;
+    ToolsideGameObject*     m_selectedGameObject;
 
 public slots:
     void SaveProject();
@@ -107,7 +107,7 @@ private slots:
     void AddMeshPrimitive(const QString& meshName);
 
     void OnHierarchySelectionChanged(QModelIndex& newIndex);
-    void SwitchSelectObject(GameObject* gameobject);
+    void SwitchSelectObject(ToolsideGameObject* gameobject);
 
     void UpdateMenuState();
     void MapHookup(QSignalMapper* signalMapper, QObject* sender, QString text);

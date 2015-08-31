@@ -19,7 +19,7 @@ using std::vector;
 struct ComponentParameter;
 struct ComponentValue;
 
-class GameObject;
+class ToolsideGameObject;
 
 typedef pair <ComponentParameter, ComponentValue> ParamPair;
 typedef vector <ParamPair> ParamList;
@@ -79,8 +79,8 @@ public:
     void            Load(tinyxml2::XMLElement* componentXML);
     void            Serialize(tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc, unordered_set<unsigned int>& guids);
 
-    GameObject*     GetGameObject();
-    void            SetGameObject(GameObject* go);
+    ToolsideGameObject* GetGameObject();
+    void            SetGameObject(ToolsideGameObject* go);
 
     unsigned int    GetGuid();
     string          GetDisplayName();
@@ -94,7 +94,7 @@ private:
     void            AddParameterToList(tinyxml2::XMLElement* paramXML);
     void            SetDisplayName();
 
-    GameObject*     m_gameObject;
+    ToolsideGameObject* m_gameObject;
     unsigned int    m_guid;
     string          m_displayName;
     ParamList       m_paramList;
