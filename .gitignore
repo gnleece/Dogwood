@@ -24,3 +24,5 @@
 *.vcxproj.user
 
 *__pycache__
+
+*.tmp

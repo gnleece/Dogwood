@@ -9,4 +9,7 @@ public:
     float   BarParam;
     int     IntParam = 12;
 #pragma endregion
+
+    void OnCreate();
+    void OnStart();
 };

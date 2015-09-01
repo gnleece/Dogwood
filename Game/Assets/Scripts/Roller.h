@@ -19,6 +19,8 @@ public:
     Mesh*               MyMesh;
 #pragma endregion
 
+    void OnCreate();
+    void OnStart();
     void Update(float deltaTime);
 
 private:

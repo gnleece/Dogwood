@@ -9,4 +9,7 @@ public:
     float BounceHeight;
     float BounceSpeed = 1.337f;
 #pragma endregion
+
+    void OnCreate();
+    void OnStart();
 };

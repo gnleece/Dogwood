@@ -7,6 +7,16 @@
 #include "Rendering/Texture.h"
 #include "Rendering/RenderManager.h"
 
+void Roller::OnCreate()
+{
+    printf("\t\tRoller OnCreate\n");
+}
+
+void Roller::OnStart()
+{
+    printf("\t\tRoller OnStart\n");
+}
+
 void Roller::Update(float deltaTime)
 {
     if (!m_setupDone)

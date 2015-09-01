@@ -92,6 +92,8 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Assets\Scripts\Bouncer.cpp" />
+    <ClCompile Include="Assets\Scripts\FooComponent.cpp" />
     <ClCompile Include="Assets\Scripts\Roller.cpp" />
     <ClCompile Include="Assets\Scripts\SpinningComponent.cpp" />
     <ClCompile Include="Assets\Scripts\Translator.cpp" />

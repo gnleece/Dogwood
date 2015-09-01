@@ -5,12 +5,12 @@
 #include "GameObjectReference.h"
 
 GameObject::GameObject(unsigned int guid, string name, GameObjectBase* parent)
- : GameObjectBase(guid, name, parent)
+ : GameObjectBase(guid, name, parent), m_active(true)
 {
     SetParent(parent);
 
     // TODO unregister on destroy
-    GameObjectManager::Singleton().RegisterActiveGameObject(this);
+    GameObjectManager::Singleton().Register(this);
 }
 
 void GameObject::AddComponent(GameComponent* component)
@@ -22,9 +22,53 @@ void GameObject::AddComponent(GameComponent* component)
     }
 }
 
+void GameObject::SetActive(bool active)
+{
+    // TODO implement me
+}
+
+bool GameObject::IsActiveSelf()
+{
+    return m_active;
+}
+
+bool GameObject::IsActiveInHierarchy()
+{
+    // TODO implement properly
+    return m_active;
+}
+
+void GameObject::OnCreate()
+{
+    printf("\t%s OnCreate\n", m_name.c_str());
+
+    // Notify all components of Create
+    std::vector<GameComponent*>::iterator compIter;
+    for (compIter = m_components.begin(); compIter != m_components.end(); compIter++)
+    {
+        GameComponent* component = *compIter;
+        component->OnCreate();
+    }
+
+    printf("\n");
+}
+
+void GameObject::OnDestroy()
+{
+    // Notify all components of Destroy
+    std::vector<GameComponent*>::iterator compIter;
+    for (compIter = m_components.begin(); compIter != m_components.end(); compIter++)
+    {
+        GameComponent* component = *compIter;
+        component->OnDestroy();
+    }
+}
+
 void GameObject::OnStart()
 {
-    // Start all components
+    printf("\t%s OnStart\n", m_name.c_str());
+
+    // Notify all components of Start
     std::vector<GameComponent*>::iterator compIter;
     for (compIter = m_components.begin(); compIter != m_components.end(); compIter++)
     {
@@ -44,20 +88,26 @@ void GameObject::Update(float deltaTime)
     }
 }
 
-void GameObject::SetActive(bool active)
+void GameObject::OnActivate()
 {
-    // TODO implement me
+    // Notify all components of Activate (Enable)
+    std::vector<GameComponent*>::iterator compIter;
+    for (compIter = m_components.begin(); compIter != m_components.end(); compIter++)
+    {
+        GameComponent* component = *compIter;
+        component->OnEnable();
+    }
 }
 
-bool GameObject::IsActiveSelf()
+void GameObject::OnDeactivate()
 {
-    return m_active;
-}
-
-bool GameObject::IsActiveInHierarchy()
-{
-    // TODO implement properly
-    return m_active;
+    // Notify all components of Deactivate (disable)
+    std::vector<GameComponent*>::iterator compIter;
+    for (compIter = m_components.begin(); compIter != m_components.end(); compIter++)
+    {
+        GameComponent* component = *compIter;
+        component->OnDisable();
+    }
 }
 
 void GameObject::Render(Transform& parentWorldTransform, bool dirty, bool wireframe)

@@ -26,19 +26,22 @@ public:
 
     void    AddComponent(GameComponent* component);
 
-    void    OnCreate();
-    void    OnDestroy();
-    void    OnStart();
-    void    Update(float deltaTime);
-    void    OnEnable();
-    void    OnDisable();
-
     void    SetActive(bool active);
     bool    IsActiveSelf();
     bool    IsActiveInHierarchy();
 
+    void    OnCreate();
+    void    OnDestroy();
+    void    OnStart();
+    void    Update(float deltaTime);
+    void    OnActivate();
+    void    OnDeactivate();
+
     // TODO this shouldn't be here
     void    Render(Transform& parentWorldTransform, bool dirty, bool wireframe = false);
+
+    static GameObject*  CreateGameObject();                 // TODO implement me
+    static void         DestroyGameObject(GameObject*);     // TODO implement me
 
 private:
     bool                    m_active;

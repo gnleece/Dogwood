@@ -43,7 +43,15 @@
                     <Color r="1.00000" g="1.00000" b="1.00000" name="colorSpecular"/>
                 </Material>
             </Mesh>
-            <Components/>
+            <Components>
+                <Component guid="943277816">
+                    <Param name="Speed" type="1" value="0.5"/>
+                </Component>
+                <Component guid="3988628104">
+                    <Param name="BounceHeight" type="1" value="0"/>
+                    <Param name="BounceSpeed" type="1" value="1.337"/>
+                </Component>
+            </Components>
         </GameObject>
         <GameObject guid="2279407888" name="Orange">
             <Transform>
@@ -144,6 +152,14 @@
                     <Param name="MyTex" type="9" value="0"/>
                     <Param name="MyMesh" type="7" value="0"/>
                 </Component>
+                <Component guid="3988628104">
+                    <Param name="BounceHeight" type="1" value="0"/>
+                    <Param name="BounceSpeed" type="1" value="1.337"/>
+                </Component>
+                <Component guid="1515607268">
+                    <Param name="BarParam" type="1" value="0"/>
+                    <Param name="IntParam" type="0" value="12"/>
+                </Component>
             </Components>
         </GameObject>
         <GameObject guid="2958514528" name="Ground">
@@ -160,7 +176,12 @@
                     <Color r="1.00000" g="1.00000" b="1.00000" name="colorSpecular"/>
                 </Material>
             </Mesh>
-            <Components/>
+            <Components>
+                <Component guid="1515607268">
+                    <Param name="BarParam" type="1" value="0"/>
+                    <Param name="IntParam" type="0" value="12"/>
+                </Component>
+            </Components>
         </GameObject>
     </GameObject>
 </Scene>

@@ -59,6 +59,12 @@
     <ClCompile Include="Assets\Scripts\Roller.cpp">
       <Filter>Source Files\Scripts</Filter>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\FooComponent.cpp">
+      <Filter>Source Files\Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Bouncer.cpp">
+      <Filter>Source Files\Scripts</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\TODO.txt" />

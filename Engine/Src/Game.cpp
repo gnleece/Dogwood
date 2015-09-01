@@ -66,13 +66,13 @@ void Game::Run(Scene& scene)
     while (!m_gameWindow.ShouldClose())
     {
         // Game Object update
-        GameObjectManager::Singleton().UpdateActiveGameObjects((float)m_deltaTime);
+        GameObjectManager::Singleton().Update(m_deltaTime);
 
         // Rendering update
         RenderManager::Singleton().RenderScene();
 
         // Input update
-        InputManager::Singleton().PollEvents((float)m_deltaTime);
+        InputManager::Singleton().PollEvents(m_deltaTime);
 
         UpdateTime();
 

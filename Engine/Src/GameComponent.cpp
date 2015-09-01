@@ -6,6 +6,11 @@ GameComponent::GameComponent()
     : m_gameObject(NULL)
 {}
 
+bool GameComponent::IsEnabled()
+{
+    return m_enabled;
+}
+
 GameObject* GameComponent::GetGameObject()
 {
     return m_gameObject;
@@ -14,4 +19,9 @@ GameObject* GameComponent::GetGameObject()
 void GameComponent::SetGameObject(GameObject* gameObject)
 {
     m_gameObject = gameObject;
+}
+
+void GameComponent::SetEnabled(bool enabled)
+{
+    m_enabled = false;
 }
