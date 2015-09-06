@@ -10,7 +10,7 @@
         <Resource guid="3205911089"/>
         <Resource guid="870516493"/>
         <Resource guid="0"/>
-        <Resource guid="156145593"/>
+        <Resource guid="4024523208"/>
     </Resources>
     <Camera>
         <Position x="0.00000" y="1.00000" z="10.00000"/>
@@ -162,26 +162,20 @@
                 </Component>
             </Components>
         </GameObject>
-        <GameObject guid="2958514528" name="Ground">
+        <GameObject guid="3525049770" name="Terrain">
             <Transform>
-                <Position x="0.00000" y="0.00000" z="0.00000"/>
-                <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
-                <Scale x="30.00000" y="30.00000" z="30.00000"/>
+                <Position x="0.00000" y="-0.44000" z="0.00000"/>
+                <Rotation x="0.00000" y="0.00000" z="0.00000"/>
+                <Scale x="3.90000" y="2.50000" z="3.60000"/>
             </Transform>
-            <Mesh guid="156145593">
+            <Mesh guid="4024523208">
                 <Material>
-                    <Shader guid="3746892247"/>
-                    <Color r="0.25490" g="0.58431" b="0.13725" name="colorDiffuse"/>
-                    <Color r="1.00000" g="1.00000" b="1.00000" name="colorAmbient"/>
-                    <Color r="1.00000" g="1.00000" b="1.00000" name="colorSpecular"/>
+                    <Shader guid="3378413933"/>
+                    <Color r="0.00000" g="0.66667" b="0.00000" name="colorDiffuse"/>
+                    <Color r="0.00000" g="0.41569" b="0.00000" name="colorAmbient"/>
                 </Material>
             </Mesh>
-            <Components>
-                <Component guid="1515607268">
-                    <Param name="BarParam" type="1" value="0"/>
-                    <Param name="IntParam" type="0" value="12"/>
-                </Component>
-            </Components>
+            <Components/>
         </GameObject>
     </GameObject>
 </Scene>

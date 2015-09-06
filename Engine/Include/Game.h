@@ -17,6 +17,7 @@ class Game
 {
 public:
     const static int MAX_FPS = 60;
+    const static int FPS_SNAPSHOT_SIZE = 120;
 
     static Game& Singleton()
     {
@@ -32,10 +33,12 @@ private:
     void Shutdown();
     void UpdateTime();
 
-    GameWindow        m_gameWindow;
-    GameObject*       m_rootObject;
+    GameWindow  m_gameWindow;
+    GameObject* m_rootObject;
 
-    float             m_prevFrameEndTime;
-    float             m_deltaTime;
-    float             m_minFrameTime;
+    float       m_prevFrameEndTime;
+    float       m_deltaTime;
+    float       m_minFrameTime;
+    float       m_timeSinceFPSSnapshot;
+    int         m_framesSinceFPSSnapshot;
 };

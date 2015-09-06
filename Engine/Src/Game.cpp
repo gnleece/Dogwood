@@ -61,6 +61,8 @@ void Game::Run(Scene& scene)
     m_minFrameTime = 1 / (float)MAX_FPS;
     m_prevFrameEndTime = glfwGetTime();
     m_deltaTime = 0;
+    m_timeSinceFPSSnapshot = 0;
+    m_framesSinceFPSSnapshot = 0;
 
     // Game loop!
     while (!m_gameWindow.ShouldClose())
@@ -113,4 +115,15 @@ void Game::UpdateTime()
     }
 
     m_prevFrameEndTime = currentTime;
+
+    // FPS calculations
+    m_timeSinceFPSSnapshot += m_deltaTime;
+    m_framesSinceFPSSnapshot++;
+    if (m_framesSinceFPSSnapshot > FPS_SNAPSHOT_SIZE)
+    {
+        float FPS = (float)m_framesSinceFPSSnapshot / m_timeSinceFPSSnapshot;
+        printf("FPS: %f\n", FPS);
+        m_framesSinceFPSSnapshot = 0;
+        m_timeSinceFPSSnapshot = 0;
+    }
 }
