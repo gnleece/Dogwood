@@ -110,6 +110,9 @@ Vector2 operator -(const Vector2& a, const Vector2& b)
     return Vector2(a[0] - b[0], a[1] - b[1]);
 }
 
+Vector2 Vector2::Zero = Vector2(0.f, 0.f);
+Vector2 Vector2::One = Vector2(1.f, 1.f);
+
 Vector3::Vector3()
 {
     m_values[0] = 0.0f;

@@ -33,6 +33,7 @@ private:
 
     GLsizei     m_vertexCount;
     GLsizei     m_indexedVertexCount;
+    bool        m_hasUVs;
 
     GLenum      m_drawMode;
     float       m_boundingRadius;

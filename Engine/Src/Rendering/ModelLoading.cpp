@@ -46,6 +46,8 @@ bool LoadOBJ(std::string path,
     std::vector<Vector3> tempNormals;
     std::vector<Vector2> tempUVs;
 
+    bool hasUVs = false;
+
     while (true)
     {
         char lineHeader[128];
@@ -72,26 +74,47 @@ bool LoadOBJ(std::string path,
             Vector2 uv;
             fscanf_s(file, "%f %f\n", uv.Start(), uv.Start() + 1);
             tempUVs.push_back(uv);
+            hasUVs = true;
         }
         else if (strcmp(lineHeader, "f") == 0)      // face
         {
-            std::string vertex1, vertex2, vertex3;
-            unsigned int positionIndex[3], uvIndex[3], normalIndex[3];
-            int matches = fscanf_s(file, "%d/%d/%d %d/%d/%d %d/%d/%d\n", &positionIndex[0], &uvIndex[0], &normalIndex[0], &positionIndex[1], &uvIndex[1], &normalIndex[1], &positionIndex[2], &uvIndex[2], &normalIndex[2]);
-            if (matches != 9)
+            if (hasUVs)
             {
-                printf("File can't be read by parser. Check README for format requirements.\n");
-                return false;
+                std::string vertex1, vertex2, vertex3;
+                unsigned int positionIndex[3], uvIndex[3], normalIndex[3];
+                int matches = fscanf_s(file, "%d/%d/%d %d/%d/%d %d/%d/%d\n", &positionIndex[0], &uvIndex[0], &normalIndex[0], &positionIndex[1], &uvIndex[1], &normalIndex[1], &positionIndex[2], &uvIndex[2], &normalIndex[2]);
+                if (matches != 9)
+                {
+                    printf("File can't be read by parser. Check README for format requirements.\n");
+                    return false;
+                }
+                positionsIndices.push_back(positionIndex[0]);
+                positionsIndices.push_back(positionIndex[1]);
+                positionsIndices.push_back(positionIndex[2]);
+                normalIndices.push_back(normalIndex[0]);
+                normalIndices.push_back(normalIndex[1]);
+                normalIndices.push_back(normalIndex[2]);
+                uvIndices.push_back(uvIndex[0]);
+                uvIndices.push_back(uvIndex[1]);
+                uvIndices.push_back(uvIndex[2]);
             }
-            positionsIndices.push_back(positionIndex[0]);
-            positionsIndices.push_back(positionIndex[1]);
-            positionsIndices.push_back(positionIndex[2]);
-            normalIndices.push_back(normalIndex[0]);
-            normalIndices.push_back(normalIndex[1]);
-            normalIndices.push_back(normalIndex[2]);
-            uvIndices.push_back(uvIndex[0]);
-            uvIndices.push_back(uvIndex[1]);
-            uvIndices.push_back(uvIndex[2]);
+            else
+            {
+                std::string vertex1, vertex2, vertex3;
+                unsigned int positionIndex[3], normalIndex[3];
+                int matches = fscanf_s(file, "%d//%d %d//%d %d//%d\n", &positionIndex[0], &normalIndex[0], &positionIndex[1], &normalIndex[1], &positionIndex[2], &normalIndex[2]);
+                if (matches != 6)
+                {
+                    printf("File can't be read by parser. Check README for format requirements.\n");
+                    return false;
+                }
+                positionsIndices.push_back(positionIndex[0]);
+                positionsIndices.push_back(positionIndex[1]);
+                positionsIndices.push_back(positionIndex[2]);
+                normalIndices.push_back(normalIndex[0]);
+                normalIndices.push_back(normalIndex[1]);
+                normalIndices.push_back(normalIndex[2]);
+            }
         }
     }
 
@@ -107,11 +130,14 @@ bool LoadOBJ(std::string path,
         Vector3 normal = tempNormals[normalIndex - 1];
         normals.push_back(normal);
     }
-    for (unsigned int i = 0; i < uvIndices.size(); i++)
+    if (hasUVs)
     {
-        unsigned int uvIndex = uvIndices[i];
-        Vector2 uv = tempUVs[uvIndex - 1];
-        uvs.push_back(uv);
+        for (unsigned int i = 0; i < uvIndices.size(); i++)
+        {
+            unsigned int uvIndex = uvIndices[i];
+            Vector2 uv = tempUVs[uvIndex - 1];
+            uvs.push_back(uv);
+        }
     }
 
     fclose(file);
@@ -131,7 +157,8 @@ bool IndexVBO(std::vector<Vector3> & in_positions,
     for (unsigned int i = 0; i < in_positions.size(); i++)
     {
         GLuint index;
-        Vertex vertex(in_positions[i], in_normals[i], in_uvs[i]);
+        Vector2 uv = i < in_uvs.size() ? in_uvs[i] : Vector2::Zero;
+        Vertex vertex(in_positions[i], in_normals[i], uv);
         bool found = FindIndex(vertex, vertexToIndexMap, index);
         if (found)
         {
@@ -143,7 +170,10 @@ bool IndexVBO(std::vector<Vector3> & in_positions,
             // vertex doesn't already exist, so add it
             out_positions.push_back(in_positions[i]);
             out_normals.push_back(in_normals[i]);
-            out_uvs.push_back(in_uvs[i]);
+            if (i < in_uvs.size())
+            {
+                out_uvs.push_back(in_uvs[i]);
+            }
 
             int newIndex = out_positions.size() - 1;
             out_indices.push_back(newIndex);

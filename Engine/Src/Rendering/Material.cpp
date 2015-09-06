@@ -89,7 +89,7 @@ unordered_map<GLint, Texture*>& Material::GetTextureList()
     return m_textures;
 }
 
-void Material::ApplyMaterial(GLint posVBO, GLint normVBO, GLint uvVBO, Transform& transform)
+void Material::ApplyMaterial(Transform& transform, GLint posVBO, GLint normVBO, GLint uvVBO, bool useUVs)
 {
     // Apply shader
     m_shader->ApplyShader();
@@ -111,7 +111,10 @@ void Material::ApplyMaterial(GLint posVBO, GLint normVBO, GLint uvVBO, Transform
     // Set vertex values for shader
     SetAttribParam(m_positionParamID,   posVBO, 3);     // TODO should this be done in the shader instead?
     SetAttribParam(m_normalParamID,     normVBO, 3);
-    SetAttribParam(m_uvParamID,         uvVBO, 2);
+    if (useUVs)
+    {
+        SetAttribParam(m_uvParamID, uvVBO, 2);
+    }
 
     // Set model matrix value for shader                // TODO not sure this should be here
     glUniformMatrix4fv(m_modelID, 1, GL_FALSE, transform.GetMatrix().Transpose().Start());

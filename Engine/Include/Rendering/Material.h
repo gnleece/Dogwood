@@ -38,7 +38,7 @@ public:
     unordered_map<GLint, ColourRGB>& GetColorList();
     unordered_map<GLint, Texture*>&  GetTextureList();
 
-    void            ApplyMaterial(GLint posVBO, GLint normVBO, GLint uvVBO, Transform& transform);
+    void            ApplyMaterial(Transform& transform, GLint posVBO, GLint normVBO, GLint uvVBO, bool useUVs);
     void            UnapplyMaterial();
 
     Material*       DeepCopy();

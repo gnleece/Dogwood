@@ -116,7 +116,7 @@ void Game::UpdateTime()
 
     m_prevFrameEndTime = currentTime;
 
-    // FPS calculations
+    // FPS calculation
     m_timeSinceFPSSnapshot += m_deltaTime;
     m_framesSinceFPSSnapshot++;
     if (m_framesSinceFPSSnapshot > FPS_SNAPSHOT_SIZE)

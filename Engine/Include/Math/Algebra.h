@@ -41,6 +41,9 @@ public:
 
     void DebugPrint();
 
+    static Vector2 Zero;
+    static Vector2 One;
+
 private:
     float m_values[2];
 };
