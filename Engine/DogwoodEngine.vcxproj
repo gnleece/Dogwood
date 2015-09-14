@@ -76,6 +76,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <Text Include="Include\Physics\Notes.txt" />
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -97,6 +98,11 @@
     <ClInclude Include="Include\Math\Raycast.h" />
     <ClInclude Include="Include\Math\Transform.h" />
     <ClInclude Include="Include\Math\Transformations.h" />
+    <ClInclude Include="Include\Physics\BoundingSphere.h" />
+    <ClInclude Include="Include\Physics\BVHNode.h" />
+    <ClInclude Include="Include\Physics\Collider.h" />
+    <ClInclude Include="Include\Physics\Particle.h" />
+    <ClInclude Include="Include\Physics\CollisionEngine.h" />
     <ClInclude Include="Include\Rendering\Camera.h" />
     <ClInclude Include="Include\Rendering\Colour.h" />
     <ClInclude Include="Include\Rendering\Image.h" />
@@ -136,6 +142,10 @@
     <ClCompile Include="Src\Math\Raycast.cpp" />
     <ClCompile Include="Src\Math\Transform.cpp" />
     <ClCompile Include="Src\Math\Transformations.cpp" />
+    <ClCompile Include="Src\Physics\BoundingSphere.cpp" />
+    <ClCompile Include="Src\Physics\BVHNode.cpp" />
+    <ClCompile Include="Src\Physics\Particle.cpp" />
+    <ClCompile Include="Src\Physics\CollisionEngine.cpp" />
     <ClCompile Include="Src\Rendering\Colour.cpp" />
     <ClCompile Include="Src\Rendering\Image.cpp" />
     <ClCompile Include="Src\Rendering\Light.cpp" />

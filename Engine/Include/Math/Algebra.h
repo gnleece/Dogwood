@@ -58,6 +58,7 @@ public:
     Vector3(const Vector3& other);
     Vector3(float x, float y, float z);
     Vector3& operator =(const Vector3 other);
+    Vector3& operator +=(const Vector3 other);
     bool operator ==(const Vector3 &other) const;
 
     float& operator[](int i);
@@ -91,6 +92,7 @@ private:
 Vector3 operator +(const Vector3& a, const Vector3& b);
 Vector3 operator -(const Vector3& a, const Vector3& b);
 Vector3 operator *(float s, const Vector3& v);
+Vector3 operator *(const Vector3& v, float s);
 Vector3 cross(const Vector3& a, const Vector3& b);
 float dot(const Vector3& a, const Vector3& b);
 Vector3 normalize(Vector3 v);
@@ -163,3 +165,4 @@ float DegreesToRadians(float degrees);
 float RadiansToDegrees(float radians);
 
 float Clamp(float value, float min, float max);
+bool Approximately(float a, float b);

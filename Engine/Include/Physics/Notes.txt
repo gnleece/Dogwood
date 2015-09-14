@@ -1,0 +1,32 @@
+Physics Engine Notes
+--------------------
+
+References:
+    - Game Physics Engine Development (Ian Millington)
+    - Game Engine Architecture (Jason Gregory)
+
+Collision
+---------
+
+- Track all collidable entities in singleton "collision world"
+- Collidable entity needs *shape* and *transform*
+- "Contact" struct should include:
+    - the 2 collidables that intersected
+    - separating vector
+    - velocity?
+- Collision primitives:
+    - Sphere (center and radius)
+    - Capsule (two points and radius)
+    - AABB (min and max points)
+    - OBB (half-width, half-depth, half-height, transform)
+
+
+Rigid Body Dynamics
+-------------------
+
+  - Motion type: fixed (e.g. staic geo), game-driven, or physics-driven
+
+  Design choices: Rigid body, iterative, impulse-based
+    - Object type: Mass aggregate with rotation
+    - Contact resolution: Iterative
+    - Impulses vs. Forces: Impulse based

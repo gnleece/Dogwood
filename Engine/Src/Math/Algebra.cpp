@@ -1,4 +1,6 @@
 #include "Math\Algebra.h"
+#include <algorithm>
+#include <limits>
 
 Point3::Point3()
 {
@@ -142,6 +144,14 @@ Vector3& Vector3::operator =(const Vector3 other)
     return *this;
 }
 
+Vector3& Vector3::operator +=(const Vector3 other)
+{
+    m_values[0] = m_values[0] + other.m_values[0];
+    m_values[1] = m_values[1] + other.m_values[1];
+    m_values[2] = m_values[2] + other.m_values[2];
+    return *this;
+}
+
 bool Vector3::operator ==(const Vector3 &other) const
 {
     return (m_values[0] == other.m_values[0] &&
@@ -247,6 +257,11 @@ Vector3 operator -(const Vector3& a, const Vector3& b)
 Vector3 operator *(float s, const Vector3& v)
 {
   return Vector3(s*v[0], s*v[1], s*v[2]);
+}
+
+Vector3 operator *(const Vector3& v, float s)
+{
+    return Vector3(s*v[0], s*v[1], s*v[2]);
 }
 
 Vector3 cross(const Vector3& a, const Vector3& b)
@@ -610,4 +625,30 @@ float Clamp(float value, float min, float max)
     if (value > max)
         return max;
     return value;
+}
+
+// From http://floating-point-gui.de/errors/comparison/
+bool Approximately(float a, float b)
+{
+    float absA = abs(a);
+    float absB = abs(b);
+    float diff = abs(a - b);
+
+    float epsilon = std::numeric_limits<float>::epsilon();
+
+    if (a == b)
+    {
+        return true;
+    }
+    else if (a == 0 || b == 0 || diff < FLT_MIN)        // TODO is this equivalent to min normal?
+    {
+        // a or b is zero or both are extremely close to it,
+        // so relative error is less meaningful here
+        return diff < (epsilon * FLT_MIN);
+    }
+    else
+    {
+        // Use relative error
+        return (diff / std::min((absA + absB), FLT_MAX)) < epsilon;
+    }
 }

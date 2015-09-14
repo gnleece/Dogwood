@@ -7,12 +7,15 @@
 
 #include "Input\InputManager.h"
 #include "Input\XInputGamePad.h"
+#include "Physics\CollisionEngine.h"
 #include "Rendering\RenderManager.h"
 #include "Scene\ResourceManager.h"
 #include "Scene\Scene.h"
 #include "GameObject.h"
 #include "GameObjectManager.h"
 #include "GameProject.h"
+
+using DgwdPhysics::CollisionEngine;
 
 void Game::Init(string projectPath, GameComponentFactory* componentFactory)
 {
@@ -34,6 +37,9 @@ void Game::Init(string projectPath, GameComponentFactory* componentFactory)
     int windowWidth, windowHeight;
     GameProject::Singleton().GetResolution(windowWidth, windowHeight);
     m_gameWindow.Setup(GameProject::Singleton().GetName(), windowWidth, windowHeight);
+
+    // Physics setup
+    CollisionEngine::Singleton().Startup();
 
     // Rendering setup
     RenderConfig renderConfig;
@@ -67,18 +73,20 @@ void Game::Run(Scene& scene)
     // Game loop!
     while (!m_gameWindow.ShouldClose())
     {
-        // Game Object update
-        GameObjectManager::Singleton().Update(m_deltaTime);
-
-        // Rendering update
-        RenderManager::Singleton().RenderScene();
-
         // Input update
         InputManager::Singleton().PollEvents(m_deltaTime);
 
-        UpdateTime();
+        // Game Object update
+        GameObjectManager::Singleton().Update(m_deltaTime);
 
+        // Physics update
+        CollisionEngine::Singleton().Update(m_deltaTime);                 // TODO fixed physics timestep?
+
+        // Rendering update
+        RenderManager::Singleton().RenderScene();
         m_gameWindow.SwapBuffers();
+
+        UpdateTime();
     }
 
     Shutdown();
@@ -88,6 +96,7 @@ void Game::Shutdown()
 {
     // Manager shutdown
     GameObjectManager::Singleton().Shutdown();
+    CollisionEngine::Singleton().Shutdown();
     GameProject::Singleton().Shutdown();
     ResourceManager::Singleton().Shutdown();
     InputManager::Singleton().Shutdown();
