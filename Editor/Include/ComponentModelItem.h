@@ -41,6 +41,7 @@ public:
     virtual void        Refresh();
     virtual QVariant    GetValueData();
     virtual QVariant    GetBackgroundData(ColumnType columnType);
+    virtual QVariant    GetTooltip(ColumnType ColumnType);
     virtual bool        SetData(QVariant value);
     virtual bool        IsEditable();
     virtual bool        DropData(const QMimeData* data);
@@ -80,6 +81,7 @@ public:
     ComponentModelMeshItem(MeshInstance* mesh, bool header = true);
 
     QVariant            GetValueData();
+    virtual QVariant    GetTooltip(ColumnType ColumnType);
     bool                IsEditable();
     bool                DropData(const QMimeData* data);
     MenuOptions         GetMenuOptions();
@@ -96,6 +98,7 @@ public:
 
     void                Refresh();
     QVariant            GetValueData();
+    virtual QVariant    GetTooltip(ColumnType ColumnType);
     bool                IsEditable();
     bool                DropData(const QMimeData* data);
 
@@ -125,6 +128,7 @@ public:
     ComponentModelTextureItem(string name, Material* material, int paramID);
 
     QVariant            GetValueData();
+    virtual QVariant    GetTooltip(ColumnType ColumnType);
     bool                IsEditable();
     bool                DropData(const QMimeData* data);
 

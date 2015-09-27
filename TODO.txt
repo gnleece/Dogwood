@@ -71,7 +71,7 @@ EDITOR (Thicket)
             - Set data using EditorCommands for undo/redo everywhere
             - Better value validation
             - Fixup background color code
-            - For reference types, show full asset path on hover
+            - For reference types, show full asset path on hover (Scripts)
             - Reference type params should be styled differently (font color?)
             - Fix occasioanl null refs after model delete & rebuild
 

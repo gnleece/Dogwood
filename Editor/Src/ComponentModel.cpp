@@ -94,9 +94,6 @@ QVariant ComponentModel::data(const QModelIndex &index, int role) const
     if (!index.isValid())
         return QVariant();
 
-    if (role != Qt::DisplayRole && role != Qt::EditRole && role != Qt::BackgroundRole && role != Qt::TextAlignmentRole)
-        return QVariant();
-
     int col = index.column();
     ComponentModelItem *item = GetItem(index);
     return item->GetData((ComponentModelItem::ColumnType)col, role);

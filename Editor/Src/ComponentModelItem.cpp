@@ -86,7 +86,11 @@ QVariant ComponentModelItem::GetData(ColumnType columnType, int role)
         if (m_isHeader && columnType == VALUE_COLUMN)
             return Qt::AlignRight;
     }
-    else
+    else if (role == Qt::ToolTipRole)
+    {
+        return GetTooltip(columnType);
+    }
+    else if (role == Qt::DisplayRole || role == Qt::EditRole)
     {
         switch (columnType)
         {
@@ -126,6 +130,11 @@ QVariant ComponentModelItem::GetBackgroundData(ColumnType /*columnType*/)
         QColor color(230, 230, 230);
         return QBrush(color);
     }
+    return QVariant();
+}
+
+QVariant ComponentModelItem::GetTooltip(ColumnType ColumnType)
+{
     return QVariant();
 }
 
@@ -270,6 +279,16 @@ QVariant ComponentModelMeshItem::GetValueData()
     return QVariant(str.c_str());
 }
 
+QVariant ComponentModelMeshItem::GetTooltip(ColumnType ColumnType)
+{
+    if (!m_isHeader)
+    {
+        ResourceInfo* info = m_mesh->GetMesh()->GetResourceInfo();
+        return QVariant(info->path.c_str());
+    }
+    return QVariant();
+}
+
 bool ComponentModelMeshItem::IsEditable()
 {
     return false;
@@ -372,6 +391,16 @@ QVariant ComponentModelShaderItem::GetValueData()
     return QVariant(str.c_str());
 }
 
+QVariant ComponentModelShaderItem::GetTooltip(ColumnType ColumnType)
+{
+    if (!m_isHeader)
+    {
+        ResourceInfo* info = m_material->GetShader()->GetResourceInfo();
+        return QVariant(info->path.c_str());
+    }
+    return QVariant();
+}
+
 bool ComponentModelShaderItem::IsEditable()
 {
     return false;
@@ -421,6 +450,20 @@ QVariant ComponentModelTextureItem::GetValueData()
         }
     }
     return QVariant(str.c_str());
+}
+
+QVariant ComponentModelTextureItem::GetTooltip(ColumnType ColumnType)
+{
+    if (!m_isHeader)
+    {
+        Texture* texture = m_material->GetTexture(m_paramID);
+        if (texture != Texture::DefaultTexture())
+        {
+            ResourceInfo* info = m_material->GetTexture(m_paramID)->GetResourceInfo();
+            return QVariant(info->path.c_str());
+        }
+    }
+    return QVariant();
 }
 
 bool ComponentModelTextureItem::IsEditable()
