@@ -3,6 +3,7 @@
 #include "HierarchyModel.h"
 #include "HierarchyView.h"
 #include "GameProject.h"
+#include "SettingsDialog.h"
 #include "ToolsideGameComponent.h"
 #include "ToolsideGameObject.h"
 #include "ui_maineditorwindow.h"
@@ -55,6 +56,10 @@ MainEditorWindow::MainEditorWindow(QWidget* parent)
 
     // Debug logging
     DebugLogger::Singleton().SetTextEditTarget(m_ui->textEdit_DebugOutput);
+
+    // Dialog setup
+    m_settingsDialog = new SettingsDialog(this);
+    m_settingsDialog->setModal(true);
 }
 
 void MainEditorWindow::SetupMenuCommands()
@@ -72,6 +77,9 @@ void MainEditorWindow::SetupMenuCommands()
     // Edit menu
     connect(m_ui->actionUndo,                   SIGNAL(triggered()), this, SLOT(Undo()));
     connect(m_ui->actionRedo,                   SIGNAL(triggered()), this, SLOT(Redo()));
+
+    // Settings menu
+    connect(m_ui->actionProject_Settings,       SIGNAL(triggered()), this, SLOT(ShowProjectSettingsDialog()));
 
     // Game Object menu
     connect(m_ui->actionCreate_Game_Object,     SIGNAL(triggered()), this, SLOT(CreateGameObject()));
@@ -177,6 +185,13 @@ void MainEditorWindow::Redo()
     {
         DebugLogger::Singleton().Log("Can't redo. Stack is empty.");
     }
+}
+
+void MainEditorWindow::ShowProjectSettingsDialog()
+{
+    DebugLogger::Singleton().Log("Opening project settings dialog...");
+
+    m_settingsDialog->show();
 }
 
 void MainEditorWindow::NewProject()

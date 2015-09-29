@@ -22,4 +22,5 @@ HEADERS  += maineditorwindow.h \
 
 FORMS    += maineditorwindow.ui \
     assetwidget.ui \
-    componentwidget.ui
+    componentwidget.ui \
+    settingsdialog.ui

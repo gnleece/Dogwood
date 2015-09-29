@@ -72,6 +72,8 @@ private:
     ToolsideGameObject*     m_copiedGameObject;
     ToolsideGameObject*     m_selectedGameObject;
 
+    QDialog*                m_settingsDialog;
+
 public slots:
     void SaveProject();
     void RebuildComponentSchema();
@@ -91,6 +93,8 @@ private slots:
 
     void Undo();
     void Redo();
+
+    void ShowProjectSettingsDialog();
 
     void CreateGameObject();
     void DeleteGameObject();
