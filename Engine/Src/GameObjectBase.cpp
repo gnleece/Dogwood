@@ -1,5 +1,6 @@
 #include "GameObjectBase.h"
 #include "GameObjectReference.h"
+#include "Rendering/MeshInstance.h"
 
 #include <algorithm>
 

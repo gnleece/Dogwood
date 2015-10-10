@@ -4,6 +4,8 @@
 #include "GameObjectManager.h"
 #include "GameObjectReference.h"
 
+#include "Rendering/MeshInstance.h"
+
 GameObject::GameObject(unsigned int guid, string name, GameObjectBase* parent)
  : GameObjectBase(guid, name, parent), m_active(true)
 {

@@ -8,10 +8,12 @@
 #include <string>
 #include <vector>
 #include "Math/Transform.h"
-#include "Rendering/MeshInstance.h"
 
 using std::string;
 using std::vector;
+
+class MeshInstance;
+class Collider;
 
 class GameObjectBase
 {
@@ -39,6 +41,11 @@ public:
     void            SetMesh(MeshInstance* mesh);
     MeshInstance*   GetMesh();
 
+    vector<Collider*>& GetColliders();
+    void            ClearColliders();
+    void            AddCollider(Collider* collider);
+    void            RemoveCollider(Collider* collider);
+
 protected:
     void            AddChild(GameObjectBase* child, int index = -1);
     void            RemoveChild(GameObjectBase* child);
@@ -53,5 +60,6 @@ protected:
     Transform               m_worldTransform;
     bool                    m_dirty;
 
-    MeshInstance*           m_mesh;         // TODO this shouldn't be here
+    MeshInstance*           m_mesh;
+    vector<Collider*>       m_colliders;
 };
