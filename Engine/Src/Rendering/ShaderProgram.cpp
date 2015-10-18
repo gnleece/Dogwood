@@ -200,7 +200,7 @@ void ShaderProgram::LinkProgram()
     m_programID = glCreateProgram();
     glAttachShader(m_programID, m_vertexID);
     glAttachShader(m_programID, m_fragmentID);
-    glBindFragDataLocation(m_programID, 0, "outColour");
+    glBindFragDataLocation(m_programID, 0, "outColor");
     glLinkProgram(m_programID);
 
     // Check whether link was successful, and print errors if applicable

@@ -354,8 +354,8 @@ void ComponentModelShaderItem::Refresh()
     m_isHeader = false;
 
     // Colors
-    unordered_map<GLint, ColourRGB> colorList = m_material->GetColorList();
-    unordered_map<GLint, ColourRGB>::iterator colorIter = colorList.begin();
+    unordered_map<GLint, ColorRGB> colorList = m_material->GetColorList();
+    unordered_map<GLint, ColorRGB>::iterator colorIter = colorList.begin();
     for (; colorIter != colorList.end(); colorIter++)
     {
         int colorID = colorIter->first;
@@ -513,7 +513,7 @@ QVariant ComponentModelColorItem::GetBackgroundData(ColumnType columnType)
         return QVariant();
         break;
     case ComponentModelItem::VALUE_COLUMN:
-        ColourRGB c = m_material->GetColor(m_paramID);
+        ColorRGB c = m_material->GetColor(m_paramID);
         QColor qcolor(c.r * 255, c.g * 255, c.b * 255);
         return QBrush(qcolor);
         break;
@@ -535,13 +535,13 @@ bool ComponentModelColorItem::DropData(const QMimeData* /*data*/)
 void ComponentModelColorItem::OnDoubleClick(ColumnType /*columnType*/)
 {
     // Open a ColorDialog to let the user pick a color
-    ColourRGB oldColor = m_material->GetColor(m_paramID);
-    QColor newColor = QColorDialog::getColor(ColourRGBToQColor(oldColor));
+    ColorRGB oldColor = m_material->GetColor(m_paramID);
+    QColor newColor = QColorDialog::getColor(ColorRGBToQColor(oldColor));
 
     if (newColor.isValid())                             // color will be invalid if user hits "cancel" on dialog
     {
         // TODO set data using Editor Commands
-        m_material->SetColor(m_paramID, QColorToColourRGB(newColor));
+        m_material->SetColor(m_paramID, QColorToColorRGB(newColor));
     }
 }
 
@@ -633,7 +633,7 @@ QVariant ComponentModelScriptItem::GetBackgroundData(ColumnType columnType)
             return QVariant();
             break;
         case ComponentModelItem::VALUE_COLUMN:
-            ColourRGB c = m_value.c;
+            ColorRGB c = m_value.c;
             QColor qcolor(c.r*255, c.g*255, c.b*255);
             return QBrush(qcolor);
             break;
@@ -718,12 +718,12 @@ void ComponentModelScriptItem::OnDoubleClick(ColumnType /*columnType*/)
     case ComponentParameter::TYPE_COLOR:
     {
         // Open a ColorDialog to let the user pick a color
-        QColor newColor = QColorDialog::getColor(ColourRGBToQColor(m_value.c));
+        QColor newColor = QColorDialog::getColor(ColorRGBToQColor(m_value.c));
 
         if (newColor.isValid())                             // color will be invalid if user hits "cancel" on dialog
         {
             // TODO set data using Editor Commands
-            m_value.c = QColorToColourRGB(newColor);
+            m_value.c = QColorToColorRGB(newColor);
             m_component->SetParameter(ComponentParameter(m_name, m_valueType), m_value);
         }
 

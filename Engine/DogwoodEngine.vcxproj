@@ -104,7 +104,7 @@
     <ClInclude Include="Include\Physics\Particle.h" />
     <ClInclude Include="Include\Physics\CollisionEngine.h" />
     <ClInclude Include="Include\Rendering\Camera.h" />
-    <ClInclude Include="Include\Rendering\Colour.h" />
+    <ClInclude Include="Include\Rendering\Color.h" />
     <ClInclude Include="Include\Rendering\Image.h" />
     <ClInclude Include="Include\Rendering\Light.h" />
     <ClInclude Include="Include\Rendering\Material.h" />
@@ -146,7 +146,7 @@
     <ClCompile Include="Src\Physics\BVHNode.cpp" />
     <ClCompile Include="Src\Physics\Particle.cpp" />
     <ClCompile Include="Src\Physics\CollisionEngine.cpp" />
-    <ClCompile Include="Src\Rendering\Colour.cpp" />
+    <ClCompile Include="Src\Rendering\Color.cpp" />
     <ClCompile Include="Src\Rendering\Image.cpp" />
     <ClCompile Include="Src\Rendering\Light.cpp" />
     <ClCompile Include="Src\Rendering\Material.cpp" />

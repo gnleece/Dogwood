@@ -186,7 +186,7 @@ void Scene::DoGlobalSetup(XMLElement* sceneXML)
     if (lightNode)
     {
         Vector3 lightPosition = ReadVector3FromXML(lightNode->FirstChildElement("Position"));
-        ColourRGB lightColor = ReadColourFromXML(lightNode->FirstChildElement("Color"));
+        ColorRGB lightColor = ReadColorFromXML(lightNode->FirstChildElement("Color"));
         GLfloat lightPower = lightNode->FirstChildElement("Power")->FloatAttribute("value");
         Light light(lightPosition, lightColor, lightPower);
         RenderManager::Singleton().SetLight(light);
@@ -314,7 +314,7 @@ void Scene::AddMaterial(MeshInstance* meshInstance, XMLElement* xmlnode)
             material->SetShader(shader);
         }
 
-        // Add colours
+        // Add Colors
         AddMaterialColors(materialXML, material);
 
         // Add textures
@@ -328,7 +328,7 @@ void Scene::AddMaterialColors(XMLElement* xmlnode, Material* material)
     while (colorXML)
     {
         string name = colorXML->Attribute("name");
-        ColourRGB color = ReadColourFromXML(colorXML);
+        ColorRGB color = ReadColorFromXML(colorXML);
         material->SetColor(name, color);
 
         colorXML = colorXML->NextSiblingElement("Color");
@@ -393,7 +393,7 @@ void Scene::SerializeGlobalSettings(XMLElement* parentNode, XMLDocument& rootDoc
     // Light
     XMLNode* lightNode = parentNode->InsertEndChild(rootDoc.NewElement("Light"));
     lightNode->InsertEndChild(WriteVector3ToXML(m_light.position, "Position", rootDoc));
-    lightNode->InsertEndChild(WriteColourToXML(m_light.color, "Color", rootDoc));
+    lightNode->InsertEndChild(WriteColorToXML(m_light.color, "Color", rootDoc));
     lightNode->InsertEndChild(WriteFloatToXML(m_light.power, "Power", "value", rootDoc));
 }
 
@@ -465,7 +465,7 @@ void Scene::SerializeMaterial(ToolsideGameObject* gameObject, XMLNode* parentNod
         matNode->InsertEndChild(shaderNode);
     }
 
-    // Serialize colour info
+    // Serialize Color info
     SerializeMaterialColors(mat, matNode, rootDoc);
 
     // Serialize texture info
@@ -474,14 +474,14 @@ void Scene::SerializeMaterial(ToolsideGameObject* gameObject, XMLNode* parentNod
 
 void Scene::SerializeMaterialColors(Material* material, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc)
 {
-    unordered_map<GLint, ColourRGB> colors = material->GetColorList();
-    unordered_map<GLint, ColourRGB>::iterator iter = colors.begin();
+    unordered_map<GLint, ColorRGB> colors = material->GetColorList();
+    unordered_map<GLint, ColorRGB>::iterator iter = colors.begin();
 
     ShaderProgram* shader = material->GetShader();
 
     for (; iter != colors.end(); iter++)
     {
-        XMLElement* node = (WriteColourToXML(iter->second, "Color", rootDoc));
+        XMLElement* node = (WriteColorToXML(iter->second, "Color", rootDoc));
         string paramName = shader->GetUniformName(iter->first);
         node->SetAttribute("name", paramName.c_str());
         parentNode->InsertEndChild(node);

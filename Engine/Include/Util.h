@@ -6,7 +6,7 @@
 #include <string>
 
 #include "Math\Algebra.h"
-#include "Rendering\Colour.h"
+#include "Rendering\Color.h"
 
 using std::string;
 
@@ -15,8 +15,8 @@ unsigned int            MakeGuid(string str);
 Vector3                 ReadVector3FromXML(tinyxml2::XMLElement* xmlnode);
 tinyxml2::XMLElement*   WriteVector3ToXML(Vector3 vector, string name, tinyxml2::XMLDocument& doc);
 
-ColourRGB               ReadColourFromXML(tinyxml2::XMLElement* xmlnode);
-tinyxml2::XMLElement*   WriteColourToXML(ColourRGB colour, string name, tinyxml2::XMLDocument& doc);
+ColorRGB                ReadColorFromXML(tinyxml2::XMLElement* xmlnode);
+tinyxml2::XMLElement*   WriteColorToXML(ColorRGB Color, string name, tinyxml2::XMLDocument& doc);
 
 tinyxml2::XMLElement*   WriteIntToXML(int value, string nodeName, string attribName, tinyxml2::XMLDocument& doc);
 tinyxml2::XMLElement*   WriteUnsignedIntToXML(unsigned int value, string nodeName, string attribName, tinyxml2::XMLDocument& doc);

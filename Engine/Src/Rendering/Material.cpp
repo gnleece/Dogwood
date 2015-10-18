@@ -21,12 +21,12 @@ void Material::SetShader(ShaderProgram* shader)
     m_modelID           = m_shader->GetUniformLocation("model");
 }
 
-void Material::SetColor(GLint paramID, ColourRGB color)
+void Material::SetColor(GLint paramID, ColorRGB color)
 {
     m_colors[paramID] = color;
 }
 
-void Material::SetColor(string paramName, ColourRGB color)
+void Material::SetColor(string paramName, ColorRGB color)
 {
     GLint paramID = m_shader->GetUniformLocation(paramName);
     SetColor(paramID, color);
@@ -53,14 +53,14 @@ ShaderProgram* Material::GetShader()
     return m_shader;
 }
 
-ColourRGB Material::GetColor(GLint paramID)
+ColorRGB Material::GetColor(GLint paramID)
 {
     if (m_colors.count(paramID) > 0)
         return m_colors[paramID];
-    return ColourRGB::Black;
+    return ColorRGB::Black;
 }
 
-ColourRGB Material::GetColor(string paramName)
+ColorRGB Material::GetColor(string paramName)
 {
     GLint paramID = m_shader->GetUniformLocation(paramName);
     return GetColor(paramID);
@@ -79,7 +79,7 @@ Texture* Material::GetTexture(string paramName)
     return GetTexture(paramID);
 }
 
-unordered_map<GLint, ColourRGB>& Material::GetColorList()
+unordered_map<GLint, ColorRGB>& Material::GetColorList()
 {
     return m_colors;
 }
@@ -95,7 +95,7 @@ void Material::ApplyMaterial(Transform& transform, GLint posVBO, GLint normVBO, 
     m_shader->ApplyShader();
 
     // Set color values for shader
-    unordered_map<GLint, ColourRGB>::iterator colorIter = m_colors.begin();
+    unordered_map<GLint, ColorRGB>::iterator colorIter = m_colors.begin();
     for (; colorIter != m_colors.end(); colorIter++)
     {
         SetUniformParam(colorIter->first, colorIter->second);
@@ -134,7 +134,7 @@ Material* Material::DeepCopy()
     newMaterial->m_shader = m_shader;
 
     // Copy colors
-    unordered_map<GLint, ColourRGB>::iterator colorIter = m_colors.begin();
+    unordered_map<GLint, ColorRGB>::iterator colorIter = m_colors.begin();
     for (; colorIter != m_colors.end(); colorIter++)
     {
         newMaterial->SetColor(colorIter->first, colorIter->second);
@@ -150,7 +150,7 @@ Material* Material::DeepCopy()
     return newMaterial;
 }
 
-void Material::SetUniformParam(GLint paramID, ColourRGB& color)
+void Material::SetUniformParam(GLint paramID, ColorRGB& color)
 {
     glUniform3fv(paramID, 1, color.Start());
 }

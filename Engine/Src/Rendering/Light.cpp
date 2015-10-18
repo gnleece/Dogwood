@@ -5,11 +5,11 @@
 Light::Light()
 {
     position = Vector3(0.0f, 0.0f, 0.0f);
-    color = ColourRGB(1.0f, 1.0f, 1.0f);
+    color = ColorRGB(1.0f, 1.0f, 1.0f);
     power = 15.0f;
 }
 
-Light::Light(Vector3 p, ColourRGB c, GLfloat pow)
+Light::Light(Vector3 p, ColorRGB c, GLfloat pow)
 {
     position = p;
     color = c;

@@ -40,7 +40,7 @@ void SceneViewWidget::PostSetup()
         x++;
     }
 
-    m_gridColor = ColourRGB(0.5f, 0.5f, 0.5f);
+    m_gridColor = ColorRGB(0.5f, 0.5f, 0.5f);
 
     DebugDraw::Singleton().PrepareLineBuffer(m_gridLinesVertexBuffer, GRID_BUFFER_SIZE, m_gridVAO, m_gridVBO);
     m_transformTool.Init(this);

@@ -129,7 +129,7 @@ struct ShaderResourceInfo : ResourceInfo
                     switch(paramType)
                     {
                     case SHADERPARAM_COLOR:
-                        mat->SetColor(iter->second, ColourRGB::White);
+                        mat->SetColor(iter->second, ColorRGB::White);
                         break;
                     case SHADERPARAM_FLOAT:
                         // TODO implement me

@@ -1,15 +1,15 @@
 #include "EditorUtil.h"
 
-ColourRGB QColorToColourRGB(QColor qcolor)
+ColorRGB QColorToColorRGB(QColor qcolor)
 {
-    ColourRGB ret;
+    ColorRGB ret;
     ret.r = qcolor.redF();
     ret.g = qcolor.greenF();
     ret.b = qcolor.blueF();
     return ret;
 }
 
-QColor ColourRGBToQColor(ColourRGB color)
+QColor ColorRGBToQColor(ColorRGB color)
 {
     QColor ret;
     ret.setRedF(color.r);

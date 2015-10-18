@@ -73,7 +73,7 @@ void Mesh::Render(Transform& transform, Material* material, bool wireframe)
         if (wireframe)
         {
             Material* debugMat = DebugDraw::Singleton().GetDebugMaterial();
-            debugMat->SetColor("color", ColourRGB(0.7f,0.7f,0.7f));
+            debugMat->SetColor("color", ColorRGB(0.7f,0.7f,0.7f));
             debugMat->ApplyMaterial(transform, m_vboPosition, m_vboNormal, m_vboUV, m_hasUVs);
             glDrawElements(GL_LINE_LOOP, m_indexedVertexCount, GL_UNSIGNED_INT, 0);
             debugMat->UnapplyMaterial();

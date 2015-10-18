@@ -25,7 +25,7 @@ ComponentValue::ComponentValue()
     b = false;
     str = "";
     v = Vector3::Zero;
-    c = ColourRGB::Black;
+    c = ColorRGB::Black;
     go = 0;
     ref = 0;
 }
@@ -63,7 +63,7 @@ void ComponentValue::SetValue(ComponentParameter::ParameterType type, tinyxml2::
             case ComponentParameter::TYPE_COLOR:
             {
                 XMLElement* colorXML = xml->FirstChildElement(valueStr);
-                c = ReadColourFromXML(colorXML);
+                c = ReadColorFromXML(colorXML);
                 break;
             }
             case ComponentParameter::TYPE_GAMEOBJECT:
@@ -133,7 +133,7 @@ void ComponentValue::SerializeValue(ComponentParameter::ParameterType type, tiny
             break;
         case ComponentParameter::TYPE_COLOR:
             parentNode->SetAttribute("value", "");
-            parentNode->InsertEndChild(WriteColourToXML(c, "value", rootDoc));
+            parentNode->InsertEndChild(WriteColorToXML(c, "value", rootDoc));
             break;
         case ComponentParameter::TYPE_GAMEOBJECT:
             parentNode->SetAttribute("value", go);

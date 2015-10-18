@@ -8,7 +8,7 @@
 #include <vector>
 
 #include "Math\Algebra.h"
-#include "Rendering\Colour.h"
+#include "Rendering\Color.h"
 
 using std::pair;
 using std::string;
@@ -67,7 +67,7 @@ public:
     bool            b;
     string          str;
     Vector3         v;
-    ColourRGB       c;
+    ColorRGB        c;
     unsigned int    go;
     unsigned int    ref;
 };

@@ -27,7 +27,7 @@ void RenderManager::Startup(RenderConfig& config)
         printf("Error in glewInit! Abort.\n");
     }
 
-    m_clearColour = m_config.clearColour;
+    m_clearColor = m_config.clearColor;
 
     // Common asset setup
     LoadCommonShaders();
@@ -65,9 +65,9 @@ void RenderManager::SetView(Matrix4x4& view)
     m_dirty = true;
 }
 
-void RenderManager::SetClearColour(ColourRGB colour)
+void RenderManager::SetClearColor(ColorRGB Color)
 {
-    m_clearColour = colour;
+    m_clearColor = Color;
 }
 
 Transform& RenderManager::GetView()
@@ -88,7 +88,7 @@ RenderConfig& RenderManager::GetConfig()
 void RenderManager::RenderScene()
 {
     // Clear the screen to black
-    glClearColor(m_clearColour.r, m_clearColour.g, m_clearColour.b, 1.0f);
+    glClearColor(m_clearColor.r, m_clearColor.g, m_clearColor.b, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // Render game objects

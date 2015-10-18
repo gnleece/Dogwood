@@ -193,7 +193,7 @@ namespace EditorCommands
 
     //-----------------------------------------------------------------------------------------------
 
-    ChangeMaterialColorCommand::ChangeMaterialColorCommand(Material* material, string name, ColourRGB color)
+    ChangeMaterialColorCommand::ChangeMaterialColorCommand(Material* material, string name, ColorRGB color)
     {
         m_material = material;
         m_name = name;

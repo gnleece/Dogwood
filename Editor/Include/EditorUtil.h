@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Rendering\Colour.h"
+#include "Rendering\Color.h"
 #include <QColor>
 
-ColourRGB    QColorToColourRGB(QColor qcolor);
-QColor       ColourRGBToQColor(ColourRGB color);
+ColorRGB    QColorToColorRGB(QColor qcolor);
+QColor      ColorRGBToQColor(ColorRGB color);

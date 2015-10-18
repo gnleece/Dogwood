@@ -19,20 +19,20 @@ void DebugDraw::Startup()
 void DebugDraw::Shutdown()
 {
     glDeleteBuffers(1, &m_vertexBufferID);
-    glDeleteBuffers(1, &m_colourBufferID);
+    glDeleteBuffers(1, &m_ColorBufferID);
     glDeleteVertexArrays(1, &m_vertexArrayID);
 
     //TODO clean up material/shader
 }
 
-void DebugDraw::DrawLine(Vector3& a, Vector3& b, ColourRGB& colour)
+void DebugDraw::DrawLine(Vector3& a, Vector3& b, ColorRGB& Color)
 {
     if (m_numLines < MAX_LINES_PER_FRAME)
     {
         m_vertexBufferData[m_numLines*2] = a;
         m_vertexBufferData[m_numLines*2 + 1] = b;
-        m_lineColours[m_numLines*2] = colour;
-        m_lineColours[m_numLines*2 + 1] = colour;
+        m_lineColors[m_numLines*2] = Color;
+        m_lineColors[m_numLines*2 + 1] = Color;
         m_numLines++;
     }
 }
@@ -47,7 +47,7 @@ void DebugDraw::PrepareLineBuffer(Vector3* buffer, int count, GLuint& vao, GLuin
     glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*count * 3, buffer, GL_STATIC_DRAW);
 }
 
-void DebugDraw::DrawLineBuffer(GLuint vao, GLuint vbo, Vector3* buffer, int count, ColourRGB color)
+void DebugDraw::DrawLineBuffer(GLuint vao, GLuint vbo, Vector3* buffer, int count, ColorRGB color)
 {
     // Bind arrays/buffers
     glBindVertexArray(vao);
@@ -79,7 +79,7 @@ void DebugDraw::RenderLines()
 {
     m_shader->ApplyShader();
 
-    // TODO this function is broken now that colours are uniform parameters
+    // TODO this function is broken now that Colors are uniform parameters
 
     // Set model matrix to identity. debug lines are given in world coords
     GLint uniModel = m_shader->GetUniformLocation("model");
@@ -93,9 +93,9 @@ void DebugDraw::RenderLines()
     glEnableVertexAttribArray(paramLocation);
     glVertexAttribPointer(paramLocation, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
 
-    // Load colour data
-    glBindBuffer(GL_ARRAY_BUFFER, m_colourBufferID);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(m_lineColours), m_lineColours, GL_DYNAMIC_DRAW);
+    // Load Color data
+    glBindBuffer(GL_ARRAY_BUFFER, m_ColorBufferID);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(m_lineColors), m_lineColors, GL_DYNAMIC_DRAW);
 
     paramLocation = m_shader->GetAttributeLocation("color");
     glEnableVertexAttribArray(paramLocation);
@@ -132,12 +132,12 @@ void Gnomon::Init(float arrowBase, float arrowHeight)
     m_positionBufferData[5] = Vector3(0.0f, 0.0f, 1.0f);
 
     // x : red, y : blue, z : green
-    m_colorBufferData[0] = ColourRGB::Red;
-    m_colorBufferData[1] = ColourRGB::Red;
-    m_colorBufferData[2] = ColourRGB::Green;
-    m_colorBufferData[3] = ColourRGB::Green;
-    m_colorBufferData[4] = ColourRGB::Blue;
-    m_colorBufferData[5] = ColourRGB::Blue;
+    m_colorBufferData[0] = ColorRGB::Red;
+    m_colorBufferData[1] = ColorRGB::Red;
+    m_colorBufferData[2] = ColorRGB::Green;
+    m_colorBufferData[3] = ColorRGB::Green;
+    m_colorBufferData[4] = ColorRGB::Blue;
+    m_colorBufferData[5] = ColorRGB::Blue;
 
     // Bind buffer data
     glGenBuffers(1, &m_positionBufferID);
@@ -196,9 +196,9 @@ void Gnomon::Draw(Matrix4x4& transform)
     glDisableVertexAttribArray(colParamLocation);
 
     // Draw arrows!
-    m_arrow.Draw(transform*(m_arrowTransforms[0]), ColourRGB::Red);
-    m_arrow.Draw(transform*(m_arrowTransforms[1]), ColourRGB::Green);
-    m_arrow.Draw(transform*(m_arrowTransforms[2]), ColourRGB::Blue);
+    m_arrow.Draw(transform*(m_arrowTransforms[0]), ColorRGB::Red);
+    m_arrow.Draw(transform*(m_arrowTransforms[1]), ColorRGB::Green);
+    m_arrow.Draw(transform*(m_arrowTransforms[2]), ColorRGB::Blue);
 
     // Re-enable depth
     glEnable(GL_DEPTH_TEST);
@@ -236,7 +236,7 @@ void Pyramid::Init(float base, float height)
     m_shader = RenderManager::Singleton().GetCommonShader(RenderManager::eCommonShader::SHADER_UNLIT_UNI_COLOR);
 }
 
-void Pyramid::Draw(Matrix4x4& transform, ColourRGB& color)
+void Pyramid::Draw(Matrix4x4& transform, ColorRGB& color)
 {
     m_shader->ApplyShader();
 

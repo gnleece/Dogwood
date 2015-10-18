@@ -8,7 +8,7 @@
 ///////////////////////////////////////////////////////////////////////
 
 #include "CommandManager.h"
-#include "Rendering\Colour.h"
+#include "Rendering\Color.h"
 #include "Math\Algebra.h"
 #include "Math\Transform.h"
 
@@ -119,14 +119,14 @@ namespace EditorCommands
     class ChangeMaterialColorCommand : public ICommand
     {
     public:
-        ChangeMaterialColorCommand(Material* material, string name, ColourRGB color);
+        ChangeMaterialColorCommand(Material* material, string name, ColorRGB color);
         void Execute();
         void Undo();
 
     private:
         Material*           m_material;
         string              m_name;
-        ColourRGB           m_color;
-        ColourRGB           m_previousColor;
+        ColorRGB            m_color;
+        ColorRGB            m_previousColor;
     };
 }

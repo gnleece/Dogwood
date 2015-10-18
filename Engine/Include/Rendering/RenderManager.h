@@ -22,7 +22,7 @@ public:
     float FOV = 45.0f;
     float nearPlane = 0.1f;
     float farPlane = 1000.0f;
-    ColourRGB clearColour = ColourRGB::Black;
+    ColorRGB clearColor = ColorRGB::Black;
 };
 
 class RenderManager
@@ -51,7 +51,7 @@ public:
     void            SetLight(Light light);
     void            SetCamera(Camera camera);
     void            SetView(Matrix4x4& view);
-    void            SetClearColour(ColourRGB colour);
+    void            SetClearColor(ColorRGB Color);
 
     Transform&      GetView();
     Transform&      GetProjection();
@@ -76,7 +76,7 @@ private:
 
     GameObjectBase* m_rootObject;
     Light           m_light;        // TODO support multiple light sources
-    ColourRGB       m_clearColour;
+    ColorRGB        m_clearColor;
 
     Transform       m_viewMatrix;
     Transform       m_projMatrix;

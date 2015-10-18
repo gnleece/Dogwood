@@ -1,7 +1,7 @@
 #pragma once
 
 #include "GameComponent.h"
-#include "Rendering\Colour.h"
+#include "Rendering\Color.h"
 
 #include <string>
 
@@ -17,7 +17,7 @@ public:
     bool    EnableSpinning = false;
     string  SpinLabel = "abcdef";
     Vector3 Offset = Vector3(1.0f, 2.0f, 3.0f);
-    ColourRGB SpinColor = ColourRGB(0.5f, 0.5f, 0.0f);
+    ColorRGB SpinColor = ColorRGB(0.5f, 0.5f, 0.0f);
 #pragma endregion
 
     void Update(float deltaTime);

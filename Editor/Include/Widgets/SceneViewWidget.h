@@ -6,7 +6,7 @@
 #include "EditorCommands.h"
 #include "GLWidget.h"
 #include "Math\Algebra.h"
-#include "Rendering\Colour.h"
+#include "Rendering\Color.h"
 #include "Tools\BaseSceneTool.h"
 #include "Tools\TransformTool.h"
 #include <unordered_map>
@@ -97,7 +97,7 @@ private:
 
     // Unit grid (x-z plane)
     bool                        m_showGrid;
-    ColourRGB                   m_gridColor;
+    ColorRGB                    m_gridColor;
     GLuint                      m_gridVAO;
     GLuint                      m_gridVBO;
     Vector3                     m_gridLinesVertexBuffer[GRID_BUFFER_SIZE];

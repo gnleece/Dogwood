@@ -54,9 +54,9 @@ XMLElement* WriteVector3ToXML(Vector3 v, string name, XMLDocument& doc)
     return xmlnode;
 }
 
-ColourRGB ReadColourFromXML(XMLElement* xmlnode)
+ColorRGB ReadColorFromXML(XMLElement* xmlnode)
 {
-    ColourRGB c;
+    ColorRGB c;
     if (xmlnode)
     {
         c.r = xmlnode->FloatAttribute("r");
@@ -66,7 +66,7 @@ ColourRGB ReadColourFromXML(XMLElement* xmlnode)
     return c;
 }
 
-XMLElement* WriteColourToXML(ColourRGB c, string name, XMLDocument& doc)
+XMLElement* WriteColorToXML(ColorRGB c, string name, XMLDocument& doc)
 {
     XMLElement* xmlnode = doc.NewElement(name.c_str());
 

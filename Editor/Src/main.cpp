@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
     RenderConfig renderConfig;
     renderConfig.width = 990;           // TODO set this properly
     renderConfig.height = 610;
-    renderConfig.clearColour = ColourRGB(0.4f, 0.4f, 0.4f);
+    renderConfig.clearColor = ColorRGB(0.4f, 0.4f, 0.4f);
     RenderManager::Singleton().Startup(renderConfig);
     
     // Other manager setup

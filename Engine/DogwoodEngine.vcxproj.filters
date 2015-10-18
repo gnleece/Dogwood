@@ -94,9 +94,6 @@
     <ClInclude Include="Include\Rendering\Camera.h">
       <Filter>Header Files\Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Rendering\Colour.h">
-      <Filter>Header Files\Rendering</Filter>
-    </ClInclude>
     <ClInclude Include="Include\Rendering\Image.h">
       <Filter>Header Files\Rendering</Filter>
     </ClInclude>
@@ -190,6 +187,9 @@
     <ClInclude Include="Include\Physics\BoundingSphere.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Include\Rendering\Color.h">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Debugging\DebugCameraControls.cpp">
@@ -209,9 +209,6 @@
     </ClCompile>
     <ClCompile Include="Src\Math\Transformations.cpp">
       <Filter>Source Files\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Rendering\Colour.cpp">
-      <Filter>Source Files\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="Src\Rendering\Image.cpp">
       <Filter>Source Files\Rendering</Filter>
@@ -308,6 +305,9 @@
     </ClCompile>
     <ClCompile Include="Src\Physics\BoundingSphere.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rendering\Color.cpp">
+      <Filter>Source Files\Rendering</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
