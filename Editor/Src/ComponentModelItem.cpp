@@ -133,7 +133,7 @@ QVariant ComponentModelItem::GetBackgroundData(ColumnType /*columnType*/)
     return QVariant();
 }
 
-QVariant ComponentModelItem::GetTooltip(ColumnType ColumnType)
+QVariant ComponentModelItem::GetTooltip(ColumnType /*columnType*/)
 {
     return QVariant();
 }
@@ -161,7 +161,7 @@ MenuOptions ComponentModelItem::GetMenuOptions()
     return CONTEXTMENU_NONE;
 }
 
-bool ComponentModelItem::HandleMenuSelection(ContextMenuOption selection)
+bool ComponentModelItem::HandleMenuSelection(ContextMenuOption /*selection*/)
 {
     return false;
 }
@@ -279,7 +279,7 @@ QVariant ComponentModelMeshItem::GetValueData()
     return QVariant(str.c_str());
 }
 
-QVariant ComponentModelMeshItem::GetTooltip(ColumnType ColumnType)
+QVariant ComponentModelMeshItem::GetTooltip(ColumnType /*columnType*/)
 {
     if (!m_isHeader)
     {
@@ -391,7 +391,7 @@ QVariant ComponentModelShaderItem::GetValueData()
     return QVariant(str.c_str());
 }
 
-QVariant ComponentModelShaderItem::GetTooltip(ColumnType ColumnType)
+QVariant ComponentModelShaderItem::GetTooltip(ColumnType /*columnType*/)
 {
     if (!m_isHeader)
     {
@@ -452,7 +452,7 @@ QVariant ComponentModelTextureItem::GetValueData()
     return QVariant(str.c_str());
 }
 
-QVariant ComponentModelTextureItem::GetTooltip(ColumnType ColumnType)
+QVariant ComponentModelTextureItem::GetTooltip(ColumnType /*columnType*/)
 {
     if (!m_isHeader)
     {

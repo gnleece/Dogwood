@@ -21,7 +21,7 @@ void Game::Init(string projectPath, GameComponentFactory* componentFactory)
 {
     printf("=============== GAME INIT ===============\n");
 
-    srand(time(NULL));
+    srand((unsigned int)time(NULL));
 
     // Resource setup
     ResourceManager::Singleton().Startup();
@@ -65,7 +65,7 @@ void Game::Run(Scene& scene)
     
     // Frame time setup
     m_minFrameTime = 1 / (float)MAX_FPS;
-    m_prevFrameEndTime = glfwGetTime();
+    m_prevFrameEndTime = (float)glfwGetTime();
     m_deltaTime = 0;
     m_timeSinceFPSSnapshot = 0;
     m_framesSinceFPSSnapshot = 0;
@@ -110,7 +110,7 @@ void Game::Shutdown()
 void Game::UpdateTime()
 {
     // Calculate the current frame time
-    float currentTime = glfwGetTime();
+    float currentTime = (float)glfwGetTime();
     m_deltaTime = currentTime - m_prevFrameEndTime;
 
     // If this frame finished faster than expected, sleep for a while so we don't eat CPU
@@ -119,7 +119,7 @@ void Game::UpdateTime()
         float sleepTime = m_minFrameTime - m_deltaTime;
         std::this_thread::sleep_for(std::chrono::milliseconds((long)(sleepTime * 1000)));
 
-        currentTime = glfwGetTime();
+        currentTime = (float)glfwGetTime();
         m_deltaTime = currentTime - m_prevFrameEndTime;
     }
 
