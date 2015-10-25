@@ -46,6 +46,7 @@ private:
     void                AddTransform(GameObjectBase* go, tinyxml2::XMLElement* xmlnode);
     void                AddMesh(GameObjectBase* go, tinyxml2::XMLElement* xmlnode);
     void                AddMaterial(MeshInstance* meshInstance, tinyxml2::XMLElement* xmlnode);
+    void                AddColliders(GameObjectBase* go, tinyxml2::XMLElement* xmlnode);
     void                AddGameComponents(GameObjectBase* go, tinyxml2::XMLElement* xmlnode);
     void                AddMaterialColors(tinyxml2::XMLElement* xmlnode, Material* material);
     void                AddMaterialTextures(tinyxml2::XMLElement* xmlnode, Material* material);
@@ -58,6 +59,7 @@ private:
     void                SerializeMaterial(ToolsideGameObject* gameObject, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc, unordered_set<unsigned int>& guids);
     void                SerializeMaterialColors(Material* material, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc);
     void                SerializeMaterialTextures(Material* material, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc, unordered_set<unsigned int>& guids);
+    void                SerializeColliders(ToolsideGameObject* gameObject, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc);
     void                SerializeComponents(ToolsideGameObject* gameObject, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc, unordered_set<unsigned int>& guids);
     void                SerializeResourceList(unordered_set<unsigned int>& guids, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc);
 

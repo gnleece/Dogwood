@@ -30,6 +30,7 @@
             <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
             <Scale x="1.00000" y="1.00000" z="1.00000"/>
         </Transform>
+        <Colliders/>
         <Components/>
         <GameObject guid="716764393" name="PinkCube">
             <Transform>
@@ -45,6 +46,7 @@
                     <Color r="1.00000" g="1.00000" b="1.00000" name="colorSpecular"/>
                 </Material>
             </Mesh>
+            <Colliders/>
             <Components>
                 <Component guid="943277816">
                     <Param name="Speed" type="1" value="0.5"/>
@@ -68,6 +70,7 @@
                     <Texture guid="3780387270" name="tex"/>
                 </Material>
             </Mesh>
+            <Colliders/>
             <Components/>
         </GameObject>
         <GameObject guid="3825453907" name="YellowCube">
@@ -84,6 +87,7 @@
                     <Color r="1.00000" g="1.00000" b="1.00000" name="colorSpecular"/>
                 </Material>
             </Mesh>
+            <Colliders/>
             <Components/>
         </GameObject>
         <GameObject guid="3322579271" name="BlueCube">
@@ -100,6 +104,7 @@
                     <Color r="1.00000" g="1.00000" b="1.00000" name="colorSpecular"/>
                 </Material>
             </Mesh>
+            <Colliders/>
             <Components/>
             <GameObject guid="3401330076" name="BlueCubeChild">
                 <Transform>
@@ -107,6 +112,7 @@
                     <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
                     <Scale x="1.00000" y="1.00000" z="1.00000"/>
                 </Transform>
+                <Colliders/>
                 <Components/>
             </GameObject>
         </GameObject>
@@ -124,6 +130,7 @@
                     <Color r="0.29804" g="0.29804" b="0.29804" name="colorSpecular"/>
                 </Material>
             </Mesh>
+            <Colliders/>
             <Components/>
         </GameObject>
         <GameObject guid="2032717194" name="Katamari">
@@ -139,6 +146,10 @@
                     <Color r="0.93725" g="0.62353" b="0.00000" name="colorAmbient"/>
                 </Material>
             </Mesh>
+            <Colliders>
+                <Collider Type="1"/>
+                <Collider Type="0" Radius="1"/>
+            </Colliders>
             <Components>
                 <Component guid="3055461197">
                     <Param name="Speed" type="1" value="250"/>
@@ -160,7 +171,7 @@
         <GameObject guid="1337922550" name="UVTestCube">
             <Transform>
                 <Position x="-8.36000" y="0.00000" z="-0.33000"/>
-                <Rotation x="180.00000" y="89.99999" z="180.00000"/>
+                <Rotation x="-179.99998" y="89.99999" z="-179.99998"/>
                 <Scale x="1.00000" y="1.00000" z="1.00000"/>
             </Transform>
             <Mesh guid="3303202035">
@@ -170,6 +181,7 @@
                     <Texture guid="2152164934" name="tex"/>
                 </Material>
             </Mesh>
+            <Colliders/>
             <Components/>
         </GameObject>
         <GameObject guid="3882530706" name="Ground">
@@ -186,6 +198,7 @@
                     <Color r="1.00000" g="1.00000" b="1.00000" name="colorSpecular"/>
                 </Material>
             </Mesh>
+            <Colliders/>
             <Components/>
         </GameObject>
         <GameObject guid="674687349" name="Skybox">
@@ -201,6 +214,7 @@
                     <Texture guid="536475533" name="tex"/>
                 </Material>
             </Mesh>
+            <Colliders/>
             <Components/>
         </GameObject>
     </GameObject>

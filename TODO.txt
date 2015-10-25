@@ -31,6 +31,7 @@ ENGINE (Dogwood)
 
     * Fix-up stuff
         * Memory leaks everywhere! Lots of missing "deletes"
+        * Create serialization class that wraps tinyxml
         * Rewrite matrix inversion. Currently just copied from CS488 provided code
         * Add missing matrix maths (e.g. addition)
         * Input wrappers

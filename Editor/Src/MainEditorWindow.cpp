@@ -97,18 +97,24 @@ void MainEditorWindow::SetupMenuCommands()
     connect(m_ui->transformButton_Scale,        SIGNAL(clicked()),   this, SLOT(TransformScaleButton()));
 
     // Component menu
-    connect(m_ui->actionRebuild_Script_Info, SIGNAL(triggered()), this, SLOT(RebuildComponentSchema()));
-    connect(m_ui->actionRebuild_Shader_Info, SIGNAL(triggered()), this, SLOT(RebuildShaderSchema()));
+    connect(m_ui->actionRebuild_Script_Info,    SIGNAL(triggered()), this, SLOT(RebuildComponentSchema()));
+    connect(m_ui->actionRebuild_Shader_Info,    SIGNAL(triggered()), this, SLOT(RebuildShaderSchema()));
 
     // Mesh component menu
     m_addMeshSignalMapper = new QSignalMapper(this);
     connect(m_addMeshSignalMapper, SIGNAL(mapped(const QString &)), this, SLOT(AddMeshPrimitive(const QString &)));
-    MapHookup(m_addMeshSignalMapper, m_ui->actionAdd_Cone_Mesh,     "mesh_cone");
-    MapHookup(m_addMeshSignalMapper, m_ui->actionAdd_Cube_Mesh,     "mesh_cube");
-    MapHookup(m_addMeshSignalMapper, m_ui->actionAdd_Cylinder_Mesh, "mesh_cylinder");
-    MapHookup(m_addMeshSignalMapper, m_ui->actionAdd_Plane_Mesh,    "mesh_plane");
-    MapHookup(m_addMeshSignalMapper, m_ui->actionAdd_Sphere_Mesh,   "mesh_sphere");
-    MapHookup(m_addMeshSignalMapper, m_ui->actionAdd_Torus_Mesh,    "mesh_torus");
+    SignalMapHookup(m_addMeshSignalMapper, m_ui->actionAdd_Cone_Mesh,     "mesh_cone");
+    SignalMapHookup(m_addMeshSignalMapper, m_ui->actionAdd_Cube_Mesh,     "mesh_cube");
+    SignalMapHookup(m_addMeshSignalMapper, m_ui->actionAdd_Cylinder_Mesh, "mesh_cylinder");
+    SignalMapHookup(m_addMeshSignalMapper, m_ui->actionAdd_Plane_Mesh,    "mesh_plane");
+    SignalMapHookup(m_addMeshSignalMapper, m_ui->actionAdd_Sphere_Mesh,   "mesh_sphere");
+    SignalMapHookup(m_addMeshSignalMapper, m_ui->actionAdd_Torus_Mesh,    "mesh_torus");
+
+    // Physics component menu
+    m_addPhysicsSignalMapper = new QSignalMapper(this);
+    connect(m_addPhysicsSignalMapper, SIGNAL(mapped(int)), this, SLOT(AddCollider(int)));
+    SignalMapHookup(m_addPhysicsSignalMapper, m_ui->actionAdd_Sphere_Collider,  (int)Collider::SPHERE_COLLIDER);
+    SignalMapHookup(m_addPhysicsSignalMapper, m_ui->actionAdd_Box_Collider,     (int)Collider::BOX_COLLIDER);
 }
 
 MainEditorWindow::~MainEditorWindow()
@@ -540,6 +546,14 @@ void MainEditorWindow::AddMeshPrimitive(const QString& meshName)
     }
 }
 
+void MainEditorWindow::AddCollider(int type)
+{
+    if (m_selectedGameObject != NULL)
+    {
+        Collider::AddToGameObject(m_selectedGameObject, (Collider::ColliderType)type);
+    }
+}
+
 // Used to select an object from outside the hierarchy view itself (e.g. from the scene view)
 void MainEditorWindow::SelectObject(ToolsideGameObject* gameObject)
 {
@@ -640,8 +654,14 @@ void MainEditorWindow::UpdateMenuState()
     m_ui->actionCut_Game_Object->setEnabled(m_scene && m_selectedGameObject);
 }
 
-void MainEditorWindow::MapHookup(QSignalMapper* signalMapper, QObject* sender, QString text)
+void MainEditorWindow::SignalMapHookup(QSignalMapper* signalMapper, QObject* sender, QString text)
 {
     connect(sender, SIGNAL(triggered()), signalMapper, SLOT(map()));
     signalMapper->setMapping(sender, text);
+}
+
+void MainEditorWindow::SignalMapHookup(QSignalMapper* signalMapper, QObject* sender, int value)
+{
+    connect(sender, SIGNAL(triggered()), signalMapper, SLOT(map()));
+    signalMapper->setMapping(sender, value);
 }

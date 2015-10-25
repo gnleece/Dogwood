@@ -124,6 +124,28 @@ MeshInstance* GameObjectBase::GetMesh()
     return m_mesh;
 }
 
+vector<Collider*>& GameObjectBase::GetColliders()
+{
+    return m_colliders;
+}
+
+void GameObjectBase::ClearColliders()
+{
+    m_colliders.clear();
+}
+
+void GameObjectBase::AddCollider(Collider* collider)
+{
+    m_colliders.push_back(collider);
+}
+
+void GameObjectBase::RemoveCollider(Collider* collider)
+{
+    m_colliders.erase(
+        std::remove(m_colliders.begin(), m_colliders.end(), collider),
+        m_colliders.end());
+}
+
 void GameObjectBase::AddChild(GameObjectBase* child, int index)
 {
     if (index >= 0 && index < (int)m_children.size())

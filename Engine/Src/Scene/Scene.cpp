@@ -8,6 +8,7 @@
 #include "ToolsideGameComponent.h"
 #include "ToolsideGameObject.h"
 #include "Util.h"
+#include "Physics\Collider.h"
 #include "Rendering\Camera.h"
 #include "Rendering\Mesh.h"
 #include "Rendering\MeshInstance.h"
@@ -237,6 +238,7 @@ GameObjectBase* Scene::BuildSubtree(XMLElement* xmlnode)
     }
     AddTransform(go, xmlnode);
     AddMesh(go, xmlnode);
+    AddColliders(go, xmlnode);
     AddGameComponents(go, xmlnode);
 
     // Recursively process child game objects
@@ -354,6 +356,22 @@ void Scene::AddMaterialTextures(XMLElement* xmlnode, Material* material)
     }
 }
 
+void Scene::AddColliders(GameObjectBase* go, tinyxml2::XMLElement* xmlnode)
+{
+    XMLElement* colliders = xmlnode->FirstChildElement("Colliders");
+    if (colliders)
+    {
+        XMLElement* colliderXML = colliders->FirstChildElement("Collider");
+        while (colliderXML)
+        {
+            Collider* collider = Collider::LoadFromXML(colliderXML);
+            go->AddCollider(collider);
+
+            colliderXML = colliderXML->NextSiblingElement("Collider");
+        }
+    }
+}
+
 void Scene::AddGameComponents(GameObjectBase* go, XMLElement* xmlnode)
 {
     XMLElement* gameComponents = xmlnode->FirstChildElement("Components");
@@ -411,6 +429,7 @@ void Scene::SerializeHierarchy(ToolsideGameObject* gameObject, XMLNode* parentNo
     // Serialize components
     SerializeTransform(gameObject, goXML, rootDoc);
     SerializeMesh(gameObject, goXML, rootDoc, guids);
+    SerializeColliders(gameObject, goXML, rootDoc);
     SerializeComponents(gameObject, goXML, rootDoc, guids);
 
     // Serialize children
@@ -512,6 +531,23 @@ void Scene::SerializeMaterialTextures(Material* material, tinyxml2::XMLNode* par
         textureNode->SetAttribute("name", paramName.c_str());
 
         parentNode->InsertEndChild(textureNode);
+    }
+}
+
+void Scene::SerializeColliders(ToolsideGameObject* gameObject, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc)
+{
+    if (gameObject == NULL)
+        return;
+
+    XMLElement* collidersNode = rootDoc.NewElement("Colliders");
+    parentNode->InsertEndChild(collidersNode);
+
+    std::vector<Collider*> colliderList = gameObject->GetColliders();
+    std::vector<Collider*>::iterator iter;
+    for (iter = colliderList.begin(); iter != colliderList.end(); iter++)
+    {
+        Collider* collider = *iter;
+        collider->Serialize(collidersNode, rootDoc);
     }
 }
 

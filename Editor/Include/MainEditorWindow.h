@@ -10,6 +10,7 @@
 #include "CommandManager.h"
 #include "EditorCommands.h"
 #include "Math\Algebra.h"
+#include "Physics\Collider.h"
 
 class AssetWidget;
 class ComponentWidget;
@@ -64,6 +65,7 @@ private:
     SceneViewWidget*        m_sceneViewWidget;
 
     QSignalMapper*          m_addMeshSignalMapper;
+    QSignalMapper*          m_addPhysicsSignalMapper;
 
     HierarchyView*          m_view;
     HierarchyModel*         m_model;
@@ -109,10 +111,13 @@ private slots:
     void TransformScaleButton();
 
     void AddMeshPrimitive(const QString& meshName);
+    void AddCollider(int type);
 
     void OnHierarchySelectionChanged(QModelIndex& newIndex);
     void SwitchSelectObject(ToolsideGameObject* gameobject);
 
     void UpdateMenuState();
-    void MapHookup(QSignalMapper* signalMapper, QObject* sender, QString text);
+
+    void SignalMapHookup(QSignalMapper* signalMapper, QObject* sender, QString text);
+    void SignalMapHookup(QSignalMapper* signalMapper, QObject* sender, int value);
 };

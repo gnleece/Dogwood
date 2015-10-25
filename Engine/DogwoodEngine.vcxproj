@@ -144,6 +144,7 @@
     <ClCompile Include="Src\Math\Transformations.cpp" />
     <ClCompile Include="Src\Physics\BoundingSphere.cpp" />
     <ClCompile Include="Src\Physics\BVHNode.cpp" />
+    <ClCompile Include="Src\Physics\Collider.cpp" />
     <ClCompile Include="Src\Physics\Particle.cpp" />
     <ClCompile Include="Src\Physics\CollisionEngine.cpp" />
     <ClCompile Include="Src\Rendering\Color.cpp" />

@@ -314,7 +314,7 @@
     </property>
     <widget class="QMenu" name="menuAdd_Mesh">
      <property name="title">
-      <string>Add Mesh</string>
+      <string>Add Mesh...</string>
      </property>
      <addaction name="actionAdd_Cube_Mesh"/>
      <addaction name="actionAdd_Sphere_Mesh"/>
@@ -325,7 +325,15 @@
      <addaction name="separator"/>
      <addaction name="actionAsset"/>
     </widget>
+    <widget class="QMenu" name="menuAdd_Physics">
+     <property name="title">
+      <string>Add Physics...</string>
+     </property>
+     <addaction name="actionAdd_Sphere_Collider"/>
+     <addaction name="actionAdd_Box_Collider"/>
+    </widget>
     <addaction name="menuAdd_Mesh"/>
+    <addaction name="menuAdd_Physics"/>
     <addaction name="actionAdd_Component"/>
     <addaction name="separator"/>
     <addaction name="actionRebuild_Script_Info"/>
@@ -603,6 +611,22 @@
   <action name="actionEditor_Settings">
    <property name="text">
     <string>Editor Settings...</string>
+   </property>
+  </action>
+  <action name="actionAdd_Sphere_Collider">
+   <property name="text">
+    <string>Sphere Collider</string>
+   </property>
+   <property name="toolTip">
+    <string>Add Sphere Collider</string>
+   </property>
+  </action>
+  <action name="actionAdd_Box_Collider">
+   <property name="text">
+    <string>Box Collider</string>
+   </property>
+   <property name="toolTip">
+    <string>Add Box Collider</string>
    </property>
   </action>
  </widget>
