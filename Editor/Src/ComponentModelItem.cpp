@@ -7,6 +7,7 @@
 #include "GameObjectMimeData.h"
 #include "GameObjectReference.h"
 #include "ToolsideGameObject.h"
+#include "Physics/Collider.h"
 #include "Rendering/Material.h"
 #include "Rendering/Mesh.h"
 #include "Rendering/MeshInstance.h"
@@ -17,6 +18,17 @@
 #include <QBrush>
 #include <QColor>
 #include <QColorDialog>
+
+GenericParam::GenericParam()
+{}
+
+GenericParam::GenericParam(string name, ComponentParameter::ParameterType type, ComponentValue value, std::function<void(ComponentValue)> callback)
+{
+    Name = name;
+    Type = type;
+    Value = value;
+    Callback = callback;
+}
 
 ComponentModelItem::ComponentModelItem(string name)
     : m_name(name), m_isHeader(true), m_parent(NULL)
@@ -103,6 +115,13 @@ QVariant ComponentModelItem::GetData(ColumnType columnType, int role)
     return QVariant();
 }
 
+void ComponentModelItem::AddGenericParam(string name, ComponentParameter::ParameterType type, ComponentValue value, std::function<void(ComponentValue)> callback)
+{
+    GenericParam param(name, type, value, callback);
+    ComponentModelGenericParamItem* paramItem = new ComponentModelGenericParamItem(param);
+    AddChild(paramItem);
+}
+
 void ComponentModelItem::Clear()
 {
     while (m_children.size() > 0)
@@ -163,6 +182,28 @@ MenuOptions ComponentModelItem::GetMenuOptions()
 
 bool ComponentModelItem::HandleMenuSelection(ContextMenuOption /*selection*/)
 {
+    return false;
+}
+
+//--------------------------------------------------------------------------------
+
+ComponentModelGenericParamItem::ComponentModelGenericParamItem(GenericParam param)
+    : ComponentModelItem(""), m_param(param)
+{
+    m_isHeader = false;
+    m_name = param.Name;
+}
+
+QVariant ComponentModelGenericParamItem::GetValueData()
+{
+    return QVariant(m_param.Value.GetValueString(m_param.Type).c_str());
+}
+
+bool ComponentModelGenericParamItem::SetData(QVariant value)
+{
+    // TODO set data using Editor Commands
+    m_param.Value.SetValue(m_param.Type, value.toString().toStdString());
+    m_param.Callback(m_param.Value);
     return false;
 }
 
@@ -542,6 +583,45 @@ void ComponentModelColorItem::OnDoubleClick(ColumnType /*columnType*/)
     {
         // TODO set data using Editor Commands
         m_material->SetColor(m_paramID, QColorToColorRGB(newColor));
+    }
+}
+
+//--------------------------------------------------------------------------------
+
+ComponentModelColliderItem::ComponentModelColliderItem(Collider* collider, bool header)
+    : ComponentModelItem("Collider"), m_collider(collider)
+{
+
+    m_isHeader = header;
+    Collider::ColliderType type = collider->GetType();
+    switch(type)
+    {
+    case Collider::SPHERE_COLLIDER:
+    {
+        m_name = "Sphere Collider";
+
+        // Radius parameter
+        ComponentValue value = ComponentValue(ComponentParameter::TYPE_FLOAT, ((SphereCollider*)m_collider)->Radius);
+        std::function<void(ComponentValue)> callback = [&](ComponentValue v) { ((SphereCollider*)m_collider)->Radius = v.f; };
+        AddGenericParam("Radius", ComponentParameter::TYPE_FLOAT, value, callback);
+        break;
+    }
+    case Collider::BOX_COLLIDER:
+    {
+        m_name = "Box Collider";
+
+        // MinPoint parameter
+        ComponentValue valueMin = ComponentValue(ComponentParameter::TYPE_VECTOR3, ((BoxCollider*)m_collider)->MinPoint);
+        std::function<void(ComponentValue)> callbackMin = [&](ComponentValue v) { ((BoxCollider*)m_collider)->MinPoint = v.v; };
+        AddGenericParam("MinPoint", ComponentParameter::TYPE_VECTOR3, valueMin, callbackMin);
+
+        // MaxPoint parameter
+        ComponentValue valueMax = ComponentValue(ComponentParameter::TYPE_VECTOR3, ((BoxCollider*)m_collider)->MaxPoint);
+        std::function<void(ComponentValue)> callbackMax = [&](ComponentValue v) { ((BoxCollider*)m_collider)->MaxPoint = v.v; };
+        AddGenericParam("MaxPoint", ComponentParameter::TYPE_VECTOR3, valueMax, callbackMax);
+
+        break;
+    }
     }
 }
 

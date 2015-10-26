@@ -1,6 +1,7 @@
 #include "Physics/Collider.h"
 
 #include "GameObjectBase.h"
+#include "Util.h"
 
 using namespace tinyxml2;
 
@@ -12,14 +13,15 @@ Collider* Collider::LoadFromXML(XMLElement* xml)
     {
     case SPHERE_COLLIDER:
     {
-        float radius = xml->FloatAttribute("Radius");
         SphereCollider* collider = new SphereCollider();
-        collider->Radius = radius;
+        collider->Radius = xml->FloatAttribute("Radius");
         return collider;
     }
     case BOX_COLLIDER:
     {
         BoxCollider* collider = new BoxCollider();
+        collider->MinPoint = ReadVector3FromXML(xml->FirstChildElement("MinPoint"));
+        collider->MaxPoint = ReadVector3FromXML(xml->FirstChildElement("MaxPoint"));
         return collider;
     }
     }
@@ -60,6 +62,11 @@ void SphereCollider::Serialize(tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocum
     node->SetAttribute("Radius", Radius);
 }
 
+Collider::ColliderType SphereCollider::GetType()
+{
+    return Collider::SPHERE_COLLIDER;
+}
+
 //------------------------------------------------------------------------------------
 
 void BoxCollider::Serialize(tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc)
@@ -67,4 +74,11 @@ void BoxCollider::Serialize(tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument
     XMLElement* node = rootDoc.NewElement("Collider");
     parentNode->InsertEndChild(node);
     node->SetAttribute("Type", Collider::BOX_COLLIDER);
+    node->InsertEndChild(WriteVector3ToXML(MinPoint, "MinPoint", rootDoc));
+    node->InsertEndChild(WriteVector3ToXML(MaxPoint, "MaxPoint", rootDoc));
+}
+
+Collider::ColliderType BoxCollider::GetType()
+{
+    return Collider::BOX_COLLIDER;
 }

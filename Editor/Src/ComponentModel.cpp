@@ -24,6 +24,7 @@ void ComponentModel::BuildModel()
 
     AddTransformData();
     AddMeshData();
+    AddColliderData();
     AddComponentData();
 
     emit layoutChanged();
@@ -186,13 +187,28 @@ void ComponentModel::AddMeshData()
     m_rootItem->AddChild(meshItem);
 }
 
+void ComponentModel::AddColliderData()
+{
+    vector<Collider*> colliderList = m_gameObject->GetColliders();
+
+    // Add data for each collider on the game object
+    vector<Collider*>::iterator iter = colliderList.begin();
+    for (; iter != colliderList.end(); iter++)
+    {
+        // Add header for this script
+        Collider* collider = *iter;
+        ComponentModelColliderItem* headerItem = new ComponentModelColliderItem(collider);
+        m_rootItem->AddChild(headerItem);
+    }
+}
+
 void ComponentModel::AddComponentData()
 {
-    m_componentList = m_gameObject->GetComponentList();
+    vector<ToolsideGameComponent*> componentList = m_gameObject->GetComponentList();
 
     // Add data for each script component on the game object
-    vector<ToolsideGameComponent*>::iterator iter = m_componentList.begin();
-    for (; iter != m_componentList.end(); iter++)
+    vector<ToolsideGameComponent*>::iterator iter = componentList.begin();
+    for (; iter != componentList.end(); iter++)
     {
         // Add header for this script
         ToolsideGameComponent* component = *iter;

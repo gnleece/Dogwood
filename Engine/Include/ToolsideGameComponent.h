@@ -52,6 +52,13 @@ struct ComponentValue
 {
 public:
     ComponentValue();
+    ComponentValue(ComponentParameter::ParameterType type, int value);
+    ComponentValue(ComponentParameter::ParameterType type, float value);
+    ComponentValue(ComponentParameter::ParameterType type, bool value);
+    ComponentValue(ComponentParameter::ParameterType type, string value);
+    ComponentValue(ComponentParameter::ParameterType type, Vector3 value);
+    ComponentValue(ComponentParameter::ParameterType type, ColorRGB value);
+    ComponentValue(ComponentParameter::ParameterType type, unsigned int value);
     ComponentValue(ComponentParameter::ParameterType type, tinyxml2::XMLElement* xml);
 
     void    SetValue(ComponentParameter::ParameterType type, tinyxml2::XMLElement* xml);

@@ -44,10 +44,10 @@ private:
 
     void            AddTransformData();
     void            AddMeshData();
+    void            AddColliderData();
     void            AddComponentData();
 
     ComponentModelItem*             m_rootItem;
 
     ToolsideGameObject*             m_gameObject;
-    vector<ToolsideGameComponent*>  m_componentList;
 };

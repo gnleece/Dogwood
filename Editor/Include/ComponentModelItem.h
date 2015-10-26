@@ -1,5 +1,6 @@
 #pragma once
 
+#include <functional>
 #include <QVariant>
 #include <vector>
 #include "EditorCommands.h"
@@ -9,11 +10,23 @@
 using std::string;
 using std::vector;
 
+class Collider;
 class MeshInstance;
 class ToolsideGameObject;
 class QMimeData;
 
 typedef uint MenuOptions;
+
+struct GenericParam
+{
+    GenericParam();
+    GenericParam(string name, ComponentParameter::ParameterType type, ComponentValue value, std::function<void(ComponentValue)> callback);
+
+    string                              Name;
+    ComponentParameter::ParameterType   Type;
+    ComponentValue                      Value;
+    std::function<void(ComponentValue)> Callback;
+};
 
 class ComponentModelItem
 {
@@ -38,6 +51,8 @@ public:
     QVariant            GetData(ColumnType columnType, int role);
     void                Clear();
 
+    void                AddGenericParam(string name, ComponentParameter::ParameterType type, ComponentValue value, std::function<void(ComponentValue)> callback);
+
     virtual void        Refresh();
     virtual QVariant    GetValueData();
     virtual QVariant    GetBackgroundData(ColumnType columnType);
@@ -55,6 +70,18 @@ protected:
 
     ComponentModelItem*         m_parent;
     vector<ComponentModelItem*> m_children;
+};
+
+class ComponentModelGenericParamItem : public ComponentModelItem
+{
+public:
+    ComponentModelGenericParamItem(GenericParam);
+
+    QVariant            GetValueData();
+    bool                SetData(QVariant value);
+
+private:
+    GenericParam        m_param;
 };
 
 class ComponentModelTransformItem : public ComponentModelItem
@@ -135,6 +162,15 @@ public:
 private:
     Material*           m_material;
     int                 m_paramID;
+};
+
+class ComponentModelColliderItem : public ComponentModelItem
+{
+public:
+    ComponentModelColliderItem(Collider* collider, bool header = true);
+
+private:
+    Collider*           m_collider;
 };
 
 class ComponentModelScriptItem : public ComponentModelItem

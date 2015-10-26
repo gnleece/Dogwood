@@ -147,8 +147,11 @@
                 </Material>
             </Mesh>
             <Colliders>
-                <Collider Type="1"/>
-                <Collider Type="0" Radius="1"/>
+                <Collider Type="1">
+                    <MinPoint x="6.00000" y="7.00000" z="8.00000"/>
+                    <MaxPoint x="1.00000" y="2.00000" z="3.00000"/>
+                </Collider>
+                <Collider Type="0" Radius="5678"/>
             </Colliders>
             <Components>
                 <Component guid="3055461197">

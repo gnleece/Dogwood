@@ -30,6 +30,56 @@ ComponentValue::ComponentValue()
     ref = 0;
 }
 
+ComponentValue::ComponentValue(ComponentParameter::ParameterType type, int value)
+{
+    if (type == ComponentParameter::TYPE_INT)
+        i = value;
+    else if (type == ComponentParameter::TYPE_FLOAT)
+        f = (float)value;
+}
+
+ComponentValue::ComponentValue(ComponentParameter::ParameterType type, float value)
+{
+    if (type == ComponentParameter::TYPE_INT)
+        i = (int)value;
+    else if (type == ComponentParameter::TYPE_FLOAT)
+        f = value;
+}
+
+ComponentValue::ComponentValue(ComponentParameter::ParameterType type, bool value)
+{
+    if (type == ComponentParameter::TYPE_BOOL)
+        b = value;
+}
+
+ComponentValue::ComponentValue(ComponentParameter::ParameterType type, string value)
+{
+    if (type == ComponentParameter::TYPE_STRING)
+        str = value;
+}
+
+ComponentValue::ComponentValue(ComponentParameter::ParameterType type, Vector3 value)
+{
+    if (type == ComponentParameter::TYPE_VECTOR3)
+        v = value;
+    else if (type == ComponentParameter::TYPE_COLOR)
+        c = value;
+}
+
+ComponentValue::ComponentValue(ComponentParameter::ParameterType type, ColorRGB value)
+{
+    if (type == ComponentParameter::TYPE_COLOR)
+        c = value;
+}
+
+ComponentValue::ComponentValue(ComponentParameter::ParameterType type, unsigned int value)
+{
+    if (type == ComponentParameter::TYPE_GAMEOBJECT)
+        go = value;
+    else if (ComponentParameter::IsReferenceType(type))
+        ref = value;
+}
+
 ComponentValue::ComponentValue(ComponentParameter::ParameterType type, tinyxml2::XMLElement* xml)
 {
     SetValue(type, xml);
