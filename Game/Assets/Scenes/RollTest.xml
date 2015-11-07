@@ -46,7 +46,9 @@
                     <Color r="1.00000" g="1.00000" b="1.00000" name="colorSpecular"/>
                 </Material>
             </Mesh>
-            <Colliders/>
+            <Colliders>
+                <Collider Type="0" IsStatic="0" Radius="1"/>
+            </Colliders>
             <Components>
                 <Component guid="943277816">
                     <Param name="Speed" type="1" value="0.5"/>
@@ -66,28 +68,13 @@
             <Mesh guid="33727872">
                 <Material>
                     <Shader guid="3125582585"/>
-                    <Color r="1.00000" g="1.00000" b="0.00000" name="color"/>
+                    <Color r="1.00000" g="0.66667" b="0.00000" name="color"/>
                     <Texture guid="3780387270" name="tex"/>
                 </Material>
             </Mesh>
-            <Colliders/>
-            <Components/>
-        </GameObject>
-        <GameObject guid="3825453907" name="YellowCube">
-            <Transform>
-                <Position x="10.00000" y="0.00000" z="0.00000"/>
-                <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
-                <Scale x="1.00000" y="1.00000" z="1.00000"/>
-            </Transform>
-            <Mesh guid="33727872">
-                <Material>
-                    <Shader guid="3746892247"/>
-                    <Color r="1.00000" g="1.00000" b="0.49804" name="colorDiffuse"/>
-                    <Color r="1.00000" g="1.00000" b="0.49804" name="colorAmbient"/>
-                    <Color r="1.00000" g="1.00000" b="1.00000" name="colorSpecular"/>
-                </Material>
-            </Mesh>
-            <Colliders/>
+            <Colliders>
+                <Collider Type="0" IsStatic="0" Radius="1"/>
+            </Colliders>
             <Components/>
         </GameObject>
         <GameObject guid="3322579271" name="BlueCube">
@@ -104,7 +91,9 @@
                     <Color r="1.00000" g="1.00000" b="1.00000" name="colorSpecular"/>
                 </Material>
             </Mesh>
-            <Colliders/>
+            <Colliders>
+                <Collider Type="0" IsStatic="0" Radius="1"/>
+            </Colliders>
             <Components/>
             <GameObject guid="3401330076" name="BlueCubeChild">
                 <Transform>
@@ -147,11 +136,7 @@
                 </Material>
             </Mesh>
             <Colliders>
-                <Collider Type="1">
-                    <MinPoint x="6.00000" y="7.00000" z="8.00000"/>
-                    <MaxPoint x="1.00000" y="2.00000" z="3.00000"/>
-                </Collider>
-                <Collider Type="0" Radius="5678"/>
+                <Collider Type="0" IsStatic="0" Radius="1"/>
             </Colliders>
             <Components>
                 <Component guid="3055461197">
@@ -184,7 +169,9 @@
                     <Texture guid="2152164934" name="tex"/>
                 </Material>
             </Mesh>
-            <Colliders/>
+            <Colliders>
+                <Collider Type="0" IsStatic="0" Radius="1"/>
+            </Colliders>
             <Components/>
         </GameObject>
         <GameObject guid="3882530706" name="Ground">
@@ -218,6 +205,25 @@
                 </Material>
             </Mesh>
             <Colliders/>
+            <Components/>
+        </GameObject>
+        <GameObject guid="3825453907" name="YellowCube">
+            <Transform>
+                <Position x="10.00000" y="0.00000" z="0.00000"/>
+                <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
+                <Scale x="1.00000" y="1.00000" z="1.00000"/>
+            </Transform>
+            <Mesh guid="33727872">
+                <Material>
+                    <Shader guid="3746892247"/>
+                    <Color r="1.00000" g="1.00000" b="0.49804" name="colorDiffuse"/>
+                    <Color r="1.00000" g="1.00000" b="0.49804" name="colorAmbient"/>
+                    <Color r="1.00000" g="1.00000" b="1.00000" name="colorSpecular"/>
+                </Material>
+            </Mesh>
+            <Colliders>
+                <Collider Type="0" IsStatic="0" Radius="1"/>
+            </Colliders>
             <Components/>
         </GameObject>
     </GameObject>

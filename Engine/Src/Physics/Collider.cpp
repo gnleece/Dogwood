@@ -5,6 +5,10 @@
 
 using namespace tinyxml2;
 
+Collider::Collider() : IsStatic(true)
+{
+}
+
 Collider* Collider::LoadFromXML(XMLElement* xml)
 {
     Collider::ColliderType type = (Collider::ColliderType)xml->IntAttribute("Type");
@@ -14,12 +18,14 @@ Collider* Collider::LoadFromXML(XMLElement* xml)
     case SPHERE_COLLIDER:
     {
         SphereCollider* collider = new SphereCollider();
+        collider->IsStatic = xml->BoolAttribute("IsStatic");
         collider->Radius = xml->FloatAttribute("Radius");
         return collider;
     }
     case BOX_COLLIDER:
     {
         BoxCollider* collider = new BoxCollider();
+        collider->IsStatic = xml->BoolAttribute("IsStatic");
         collider->MinPoint = ReadVector3FromXML(xml->FirstChildElement("MinPoint"));
         collider->MaxPoint = ReadVector3FromXML(xml->FirstChildElement("MaxPoint"));
         return collider;
@@ -50,7 +56,7 @@ void Collider::AddToGameObject(GameObjectBase* gameObject, ColliderType type)
 
 //------------------------------------------------------------------------------------
 
-SphereCollider::SphereCollider(float radius) : Radius(radius)
+SphereCollider::SphereCollider(float radius) : Collider(), Radius(radius)
 {
 }
 
@@ -59,6 +65,7 @@ void SphereCollider::Serialize(tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocum
     XMLElement* node = rootDoc.NewElement("Collider");
     parentNode->InsertEndChild(node);
     node->SetAttribute("Type", Collider::SPHERE_COLLIDER);
+    node->SetAttribute("IsStatic", IsStatic);
     node->SetAttribute("Radius", Radius);
 }
 
@@ -69,11 +76,16 @@ Collider::ColliderType SphereCollider::GetType()
 
 //------------------------------------------------------------------------------------
 
+BoxCollider::BoxCollider() : Collider()
+{
+}
+
 void BoxCollider::Serialize(tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc)
 {
     XMLElement* node = rootDoc.NewElement("Collider");
     parentNode->InsertEndChild(node);
     node->SetAttribute("Type", Collider::BOX_COLLIDER);
+    node->SetAttribute("IsStatic", IsStatic);
     node->InsertEndChild(WriteVector3ToXML(MinPoint, "MinPoint", rootDoc));
     node->InsertEndChild(WriteVector3ToXML(MaxPoint, "MaxPoint", rootDoc));
 }

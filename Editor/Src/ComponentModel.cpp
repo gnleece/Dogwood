@@ -102,7 +102,7 @@ QVariant ComponentModel::data(const QModelIndex &index, int role) const
 
 bool ComponentModel::setData(const QModelIndex& index, const QVariant& value, int role)
 {
-    if (role != Qt::EditRole || !IsEditable(index))
+    if ((role != Qt::EditRole && role != Qt::CheckStateRole) || !IsEditable(index))
         return false;
 
     ComponentModelItem* item = GetItem(index);
@@ -115,7 +115,7 @@ Qt::ItemFlags ComponentModel::flags(const QModelIndex &index) const
 
     if (index.isValid() && IsEditable(index))
     {
-        return  Qt::ItemIsEditable | Qt::ItemIsDropEnabled | defaultFlags;
+        return  Qt::ItemIsEditable | Qt::ItemIsDropEnabled | Qt::ItemIsUserCheckable | defaultFlags;
     }
     else
     {

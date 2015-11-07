@@ -57,6 +57,7 @@ public:
     virtual QVariant    GetValueData();
     virtual QVariant    GetBackgroundData(ColumnType columnType);
     virtual QVariant    GetTooltip(ColumnType columnType);
+    virtual QVariant    GetState(ColumnType columnType);
     virtual bool        SetData(QVariant value);
     virtual bool        IsEditable();
     virtual bool        DropData(const QMimeData* data);
@@ -78,6 +79,7 @@ public:
     ComponentModelGenericParamItem(GenericParam);
 
     QVariant            GetValueData();
+    virtual QVariant    GetState(ColumnType columnType);
     bool                SetData(QVariant value);
 
 private:

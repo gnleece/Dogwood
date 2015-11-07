@@ -102,6 +102,10 @@ QVariant ComponentModelItem::GetData(ColumnType columnType, int role)
     {
         return GetTooltip(columnType);
     }
+    else if (role == Qt::CheckStateRole)
+    {
+        return GetState(columnType);
+    }
     else if (role == Qt::DisplayRole || role == Qt::EditRole)
     {
         switch (columnType)
@@ -157,6 +161,11 @@ QVariant ComponentModelItem::GetTooltip(ColumnType /*columnType*/)
     return QVariant();
 }
 
+QVariant ComponentModelItem::GetState(ColumnType /*columnType*/)
+{
+    return QVariant();
+}
+
 bool ComponentModelItem::SetData(QVariant value)
 {
     return false;
@@ -196,13 +205,41 @@ ComponentModelGenericParamItem::ComponentModelGenericParamItem(GenericParam para
 
 QVariant ComponentModelGenericParamItem::GetValueData()
 {
+    if (m_param.Type == ComponentParameter::TYPE_BOOL)
+    {
+        // bools are displayed as checkboxes, so no text is shown here
+        return QVariant();
+    }
+
     return QVariant(m_param.Value.GetValueString(m_param.Type).c_str());
+}
+
+QVariant ComponentModelGenericParamItem::GetState(ColumnType columnType)
+{
+    if (columnType == ComponentModelItem::VALUE_COLUMN)
+    {
+        if (m_param.Type == ComponentParameter::TYPE_BOOL)
+        {
+            return m_param.Value.b ? Qt::Checked : Qt::Unchecked;
+        }
+    }
+
+    return QVariant();
 }
 
 bool ComponentModelGenericParamItem::SetData(QVariant value)
 {
     // TODO set data using Editor Commands
-    m_param.Value.SetValue(m_param.Type, value.toString().toStdString());
+
+    if (m_param.Type == ComponentParameter::TYPE_BOOL)
+    {
+        m_param.Value.b = value.toBool();
+    }
+    else
+    {
+        m_param.Value.SetValue(m_param.Type, value.toString().toStdString());
+    }
+
     m_param.Callback(m_param.Value);
     return false;
 }
@@ -593,6 +630,12 @@ ComponentModelColliderItem::ComponentModelColliderItem(Collider* collider, bool 
 {
 
     m_isHeader = header;
+
+    // Static parameter
+    ComponentValue valueStatic = ComponentValue(ComponentParameter::TYPE_BOOL, m_collider->IsStatic);
+    std::function<void(ComponentValue)> callback = [&](ComponentValue v) { m_collider->IsStatic = v.b; };
+    AddGenericParam("IsStatic", ComponentParameter::TYPE_BOOL, valueStatic, callback);
+
     Collider::ColliderType type = collider->GetType();
     switch(type)
     {
@@ -601,9 +644,9 @@ ComponentModelColliderItem::ComponentModelColliderItem(Collider* collider, bool 
         m_name = "Sphere Collider";
 
         // Radius parameter
-        ComponentValue value = ComponentValue(ComponentParameter::TYPE_FLOAT, ((SphereCollider*)m_collider)->Radius);
+        ComponentValue valueRadius = ComponentValue(ComponentParameter::TYPE_FLOAT, ((SphereCollider*)m_collider)->Radius);
         std::function<void(ComponentValue)> callback = [&](ComponentValue v) { ((SphereCollider*)m_collider)->Radius = v.f; };
-        AddGenericParam("Radius", ComponentParameter::TYPE_FLOAT, value, callback);
+        AddGenericParam("Radius", ComponentParameter::TYPE_FLOAT, valueRadius, callback);
         break;
     }
     case Collider::BOX_COLLIDER:
