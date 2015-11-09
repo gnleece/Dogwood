@@ -149,8 +149,8 @@ namespace EditorCommands
     {
         if (m_gameObject != NULL)
         {
-            m_previousVector = m_gameObject->GetLocalTransform().GetVector(m_type);
-            m_gameObject->GetLocalTransform().SetVector(m_vector, m_type);
+            m_previousVector = m_gameObject->GetTransform().GetLocalVector(m_type);
+            m_gameObject->GetTransform().SetLocalVector(m_vector, m_type);
             sComponentWidget->Refresh();
         }
     }
@@ -159,7 +159,7 @@ namespace EditorCommands
     {
         if (m_gameObject != NULL)
         {
-            m_gameObject->GetLocalTransform().SetVector(m_previousVector, m_type);
+            m_gameObject->GetTransform().SetLocalVector(m_previousVector, m_type);
             sComponentWidget->Refresh();
         }
     }

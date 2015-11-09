@@ -270,7 +270,7 @@ void Scene::AddTransform(GameObjectBase* go, XMLElement* xmlnode)
     matrix = matrix*RotationEulerAngles(rotation);
     matrix = matrix*Scaling(scale);
 
-    go->SetLocalTransform(matrix);
+    go->GetTransform().SetLocalMatrix(matrix);
 }
 
 void Scene::AddMesh(GameObjectBase* go, XMLElement* xmlnode)
@@ -446,9 +446,9 @@ void Scene::SerializeTransform(ToolsideGameObject* gameObject, XMLNode* parentNo
         return;
 
     XMLNode* transformNode = parentNode->InsertEndChild(rootDoc.NewElement("Transform"));
-    transformNode->InsertEndChild(WriteVector3ToXML(gameObject->GetLocalTransform().GetPosition(), "Position", rootDoc));
-    transformNode->InsertEndChild(WriteVector3ToXML(gameObject->GetLocalTransform().GetRotation(), "Rotation", rootDoc));
-    transformNode->InsertEndChild(WriteVector3ToXML(gameObject->GetLocalTransform().GetScale(), "Scale", rootDoc));
+    transformNode->InsertEndChild(WriteVector3ToXML(gameObject->GetTransform().GetLocalPosition(), "Position", rootDoc));
+    transformNode->InsertEndChild(WriteVector3ToXML(gameObject->GetTransform().GetLocalRotation(), "Rotation", rootDoc));
+    transformNode->InsertEndChild(WriteVector3ToXML(gameObject->GetTransform().GetLocalScale(), "Scale", rootDoc));
 }
 
 void Scene::SerializeMesh(ToolsideGameObject* gameObject, XMLNode* parentNode, XMLDocument& rootDoc, unordered_set<unsigned int>& guids)

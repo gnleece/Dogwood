@@ -9,6 +9,7 @@ void TransformTool::Init(SceneViewWidget* parent)
 {
     BaseSceneTool::Init(parent);
     m_mode = TOOL_MODE_TRANSLATE;
+    m_transform = NULL;
     
     // Init gnomon
     m_arrowBase = 0.1f;
@@ -22,16 +23,17 @@ void TransformTool::Init(SceneViewWidget* parent)
     m_arrowTransforms[2] = Transform(Translation(Vector3(0, 0, 1 + offset)));
 }
 
-void TransformTool::Draw(Transform& transform)
+void TransformTool::SetTargetTransform(Transform* transform)
 {
     m_transform = transform;
-    m_transform.SetScale(Vector3::One);
-    m_gnomon.Draw(m_transform.GetMatrix());
 }
 
-void TransformTool::SetLocalTransform(Transform& transform)
+void TransformTool::Draw()
 {
-    m_localTransform = transform;
+    if (m_transform != NULL)
+    {
+        m_gnomon.Draw(m_transform->GetWorldMatrix());
+    }
 }
 
 void TransformTool::SetMode(eMode mode)
@@ -46,6 +48,9 @@ TransformTool::eMode TransformTool::GetMode()
 
 bool TransformTool::OnMouseDown(int screenX, int screenY, Vector3 rayOrigin, Vector3 rayDirection)
 {
+    if (m_transform == NULL)
+        return false;
+
     float arrowRadius = m_arrowHeight/2;
 
     // Raycast against each arrow of the gnomon to determine if one was clicked
@@ -54,7 +59,7 @@ bool TransformTool::OnMouseDown(int screenX, int screenY, Vector3 rayOrigin, Vec
     for (int i = 0; i < 3; i++)
     {
         Raycast::HitInfo hitInfo;
-        Vector3 arrowCenter = (m_transform*m_arrowTransforms[i]).GetPosition();
+        Vector3 arrowCenter = ((*m_transform)*m_arrowTransforms[i]).GetWorldPosition();
         bool hit = Raycast::RaycastBoundingSphere(rayOrigin, rayDirection, arrowRadius, arrowCenter, hitInfo);
         if (hit && hitInfo.distance < minDistance)
         {
@@ -69,8 +74,8 @@ bool TransformTool::OnMouseDown(int screenX, int screenY, Vector3 rayOrigin, Vec
         m_activeAxis = (eAXIS)arrowIndex;
 
         // Calculate the equation of the line for the active axis, in screen space
-        m_activeAxisPoint0 = RenderManager::Singleton().ToScreenSpace(m_transform.GetPosition());
-        m_activeAxisPoint1 = RenderManager::Singleton().ToScreenSpace((m_transform*m_arrowTransforms[m_activeAxis]).GetPosition());
+        m_activeAxisPoint0 = RenderManager::Singleton().ToScreenSpace(m_transform->GetWorldPosition());
+        m_activeAxisPoint1 = RenderManager::Singleton().ToScreenSpace(((*m_transform)*m_arrowTransforms[m_activeAxis]).GetWorldPosition());
         m_vertical = true;
         if (m_activeAxisPoint1.x() - m_activeAxisPoint0.x() != 0)
         {
@@ -91,8 +96,8 @@ bool TransformTool::OnMouseDown(int screenX, int screenY, Vector3 rayOrigin, Vec
 
 void TransformTool::OnMouseMove(int screenX, int screenY)
 {
-    // The line of the active axis is represented as a parametic line equation in screen space.
-    // We find the point on the line that's closest to the current click position, and calculte
+    // The line of the active axis is represented as a parametric line equation in screen space.
+    // We find the point on the line that's closest to the current click position, and calculate
     // its t value. If it's greater than the previous t value, the mouse has been dragged "forward"
     // relative to the axis line, so we move the tool forward (and vice versa if the t value is less)
 
@@ -145,11 +150,11 @@ float TransformTool::CalculateT(float screenX, float screenY)
 
 void TransformTool::ApplyTranslation(float direction, float scale)
 {
-    // Use active axis to determine deterction of motion
-    Vector3 offset = direction*scale*m_arrowTransforms[m_activeAxis].GetPosition();
+    // Use active axis to determine direction of motion
+    Vector3 offset = direction*scale*m_arrowTransforms[m_activeAxis].GetWorldPosition();
 
     // Convert offset into object's local space
-    offset = (m_localTransform.GetMatrix()*Vector4(offset, 0)).xyz();
+    //offset = (m_localTransform.GetMatrix()*Vector4(offset, 0)).xyz();
 
     // Apply the offset
     m_parent->TranslateSelectedObject(offset);

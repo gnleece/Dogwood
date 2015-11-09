@@ -38,7 +38,7 @@ public:
     void    OnDeactivate();
 
     // TODO this shouldn't be here
-    void    Render(Transform& parentWorldTransform, bool dirty, bool wireframe = false);
+    void    Render(bool dirty, bool wireframe = false);
 
     static GameObject*  CreateGameObject();                 // TODO implement me
     static void         DestroyGameObject(GameObject*);     // TODO implement me

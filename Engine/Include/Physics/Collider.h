@@ -19,6 +19,7 @@ public:
     virtual ColliderType    GetType() = 0;
 
     bool                    IsStatic;
+    GameObjectBase*         GameObject;
 };
 
 class SphereCollider : public Collider

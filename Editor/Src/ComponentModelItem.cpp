@@ -274,7 +274,7 @@ void ComponentModelTransformItem::Refresh()
     if (m_isHeader)
         return;
 
-    m_vector = m_gameObject->GetLocalTransform().GetVector(m_vectorType);
+    m_vector = m_gameObject->GetTransform().GetLocalVector(m_vectorType);
 }
 
 QVariant ComponentModelTransformItem::GetValueData()

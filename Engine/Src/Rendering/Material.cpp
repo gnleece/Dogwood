@@ -117,7 +117,7 @@ void Material::ApplyMaterial(Transform& transform, GLint posVBO, GLint normVBO, 
     }
 
     // Set model matrix value for shader                // TODO not sure this should be here
-    glUniformMatrix4fv(m_modelID, 1, GL_FALSE, transform.GetMatrix().Transpose().Start());
+    glUniformMatrix4fv(m_modelID, 1, GL_FALSE, transform.GetWorldMatrix().Transpose().Start());
 }
 
 void Material::UnapplyMaterial()

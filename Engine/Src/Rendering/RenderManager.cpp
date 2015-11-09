@@ -12,7 +12,7 @@ void RenderManager::Startup(RenderConfig& config)
     // Prepare projection matrix
     float aspect = (float)m_config.width / m_config.height;
     Matrix4x4 projMatrix = PerspectiveProjection(m_config.FOV, aspect, m_config.nearPlane, m_config.farPlane);
-    m_projMatrix.SetMatrix(projMatrix);
+    m_projMatrix.SetLocalMatrix(projMatrix);
     glViewport(0, 0, m_config.width, m_config.height);
 
     // OpenGL setup
@@ -55,13 +55,13 @@ void RenderManager::SetLight(Light light)
 
 void RenderManager::SetCamera(Camera camera)
 {
-    m_viewMatrix.SetMatrix(LookAt(camera));
+    m_viewMatrix.SetLocalMatrix(LookAt(camera));
     m_dirty = true;
 }
 
 void RenderManager::SetView(Matrix4x4& view)
 {
-    m_viewMatrix.SetMatrix(view);
+    m_viewMatrix.SetLocalMatrix(view);
     m_dirty = true;
 }
 
@@ -94,7 +94,7 @@ void RenderManager::RenderScene()
     // Render game objects
     if (m_rootObject != NULL)
     {
-        m_rootObject->Render(Transform::Identity, false);
+        m_rootObject->Render(false);
     }
 
     //DebugDraw::Singleton().RenderLines();
@@ -110,11 +110,11 @@ void RenderManager::ApplyGlobalParams(ShaderProgram* shader)
 
     // View matrix
     GLint viewLocation = shader->GetUniformLocation("view");
-    glUniformMatrix4fv(viewLocation, 1, GL_FALSE, m_viewMatrix.GetMatrix().Transpose().Start());
+    glUniformMatrix4fv(viewLocation, 1, GL_FALSE, m_viewMatrix.GetLocalMatrix().Transpose().Start());
 
     // Projection matrix
     GLint projLocation = shader->GetUniformLocation("proj");
-    glUniformMatrix4fv(projLocation, 1, GL_FALSE, m_projMatrix.GetMatrix().Transpose().Start());
+    glUniformMatrix4fv(projLocation, 1, GL_FALSE, m_projMatrix.GetLocalMatrix().Transpose().Start());
 
     m_dirty = false;
 }
@@ -136,7 +136,7 @@ Vector2 RenderManager::ToScreenSpace(Vector3 worldPosition)
     // TODO the math for this doesn't seem quite right, debug it
     Vector2 screenPos;
     Vector4 pos = (Vector4(worldPosition, 1));
-    Vector3 normalizedPosition = ((m_projMatrix*m_viewMatrix)*pos).xyz();
+    Vector3 normalizedPosition = ((m_projMatrix.GetWorldMatrix()*m_viewMatrix.GetWorldMatrix())*pos).xyz();
     float x = Clamp(normalizedPosition[0] / normalizedPosition[2], -1.f, 1.f);
     float y = Clamp(normalizedPosition[1] / normalizedPosition[2], -1.f, 1.f);
     screenPos[0] = (x + 1.0f) * m_config.width / 2.0f;

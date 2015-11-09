@@ -21,7 +21,7 @@ void Roller::Update(float deltaTime)
 {
     if (!m_setupDone)
     {
-        m_parentMatrix = m_gameObject->GetLocalTransform().GetMatrix();
+        m_parentMatrix = m_gameObject->GetTransform().GetLocalMatrix();
         m_setupDone = true;
     }
     
@@ -39,10 +39,10 @@ void Roller::Update(float deltaTime)
     m_parentMatrix = m_parentMatrix * t * rParent;
     m_childMatrix = m_childMatrix * rChild;
 
-    m_gameObject->SetLocalTransform(m_parentMatrix*m_childMatrix);
+    m_gameObject->GetTransform().SetLocalMatrix(m_parentMatrix*m_childMatrix);
 
     Vector3 forward = (m_parentMatrix*Vector4(Vector3::Forward, 0)).xyz().Normalized();
-    Vector3 objectPosition = m_gameObject->GetLocalTransform().GetPosition();
+    Vector3 objectPosition = m_gameObject->GetTransform().GetLocalPosition();
     Vector3 cameraPosition = objectPosition - 3.5 * forward;
     cameraPosition[1] = cameraPosition[1] + 0.7f;
     Vector3 cameraDirection = forward;

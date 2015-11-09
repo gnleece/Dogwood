@@ -11,8 +11,8 @@ public:
     enum eMode { TOOL_MODE_TRANSLATE, TOOL_MODE_ROTATE, TOOL_MODE_SCALE };
 
     virtual void    Init(SceneViewWidget* parent);
-    virtual void    Draw(Transform& transform);
-    void            SetLocalTransform(Transform& transform);
+    virtual void    SetTargetTransform(Transform* transform);
+    virtual void    Draw();
 
     void            SetMode(eMode mode);
     eMode           GetMode();
@@ -27,10 +27,9 @@ private:
     void        ApplyRotation(float direction, float scale);
     void        ApplyScale(float direction, float scale);
 
-    eMode        m_mode;
+    eMode       m_mode;
 
-    Transform   m_transform;
-    Transform   m_localTransform;
+    Transform*  m_transform;
     Gnomon      m_gnomon;
 
     float       m_arrowBase;

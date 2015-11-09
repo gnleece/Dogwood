@@ -9,7 +9,8 @@ class BaseSceneTool
 {
 public:
     virtual void Init(SceneViewWidget* parent);
-    virtual void Draw(Transform& transform) = 0;
+    virtual void SetTargetTransform(Transform* transform);
+    virtual void Draw() = 0;
 
     virtual bool OnMouseDown(int screenX, int screenY, Vector3 rayOrigin, Vector3 rayDirection) = 0;
     virtual void OnMouseMove(int screenX, int screenY) = 0;

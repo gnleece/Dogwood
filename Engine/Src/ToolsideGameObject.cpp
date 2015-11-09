@@ -103,7 +103,7 @@ ToolsideGameObject* ToolsideGameObject::DeepCopy(ToolsideGameObject* parent)
 {
     unsigned int guid = MakeGuid(m_name);
     ToolsideGameObject* newGO = new ToolsideGameObject(guid, m_name, parent);
-    newGO->SetLocalTransform(m_localTransform);
+    newGO->GetTransform().SetLocalMatrix(GetTransform().GetLocalMatrix());
 
     if (m_mesh != NULL)
     {
@@ -122,7 +122,7 @@ ToolsideGameObject* ToolsideGameObject::DeepCopy(ToolsideGameObject* parent)
     return newGO;
 }
 
-ToolsideGameObject* ToolsideGameObject::BoundingSphereRaycast(Vector3 rayOrigin, Vector3 rayDirection, Transform& parentWorldTransform, float& distance)
+ToolsideGameObject* ToolsideGameObject::BoundingSphereRaycast(Vector3 rayOrigin, Vector3 rayDirection, float& distance)
 {
     // TODO this function is less optimized than Render, i.e. we don't both caching the world transform
     // This is because this function shouldn't get called very often currently (e.g. right now it is only
@@ -132,7 +132,6 @@ ToolsideGameObject* ToolsideGameObject::BoundingSphereRaycast(Vector3 rayOrigin,
     // TODO also it's kind of insane to raycast against literally every object in the scene here
     // Really, we should do some kind of space partitioning first
 
-    Transform worldTransform = parentWorldTransform*m_localTransform;
     bool hit = false;
     float bestDistance = FLT_MAX;
     ToolsideGameObject* bestGameObject = NULL;
@@ -142,12 +141,12 @@ ToolsideGameObject* ToolsideGameObject::BoundingSphereRaycast(Vector3 rayOrigin,
     {
         // Calculate the radius for a bounding sphere for the mesh
         float radius = m_mesh->GetMesh()->GetBoundingRadius();
-        Vector3 scale = worldTransform.GetScale();
+        Vector3 scale = m_transform.GetWorldScale();
         float maxScale = std::fmaxf(scale[0], scale[1]);
         maxScale = std::fmaxf(maxScale, scale[2]);
         radius *= maxScale;        // this is pretty hacky and gives a suboptimal radius, but it's good enough
 
-        Vector3 objectCenter = worldTransform.GetPosition();
+        Vector3 objectCenter = m_transform.GetWorldPosition();
 
         // Do the raycast
         Raycast::HitInfo hitInfo;
@@ -165,7 +164,7 @@ ToolsideGameObject* ToolsideGameObject::BoundingSphereRaycast(Vector3 rayOrigin,
     {
         ToolsideGameObject* child = (ToolsideGameObject*)*childIter;    // TODO hacky
         float childDistance;
-        ToolsideGameObject* hitObject = child->BoundingSphereRaycast(rayOrigin, rayDirection, worldTransform, childDistance);
+        ToolsideGameObject* hitObject = child->BoundingSphereRaycast(rayOrigin, rayDirection, childDistance);
         if (hitObject != NULL)
         {
             hit = true;
@@ -189,8 +188,9 @@ ToolsideGameObject* ToolsideGameObject::BoundingSphereRaycast(Vector3 rayOrigin,
 }
 
 // TODO this shouldn't be here
-void ToolsideGameObject::Render(Transform& parentWorldTransform, bool dirty, bool wireframe)
+void ToolsideGameObject::Render(bool dirty, bool wireframe)
 {
+    /*
     // Determine worldspace transform
     dirty |= m_dirty | m_localTransform.HasChanged();
     wireframe |= m_selected;
@@ -201,11 +201,12 @@ void ToolsideGameObject::Render(Transform& parentWorldTransform, bool dirty, boo
         m_dirty = false;
         m_localTransform.ClearChangedFlag();
     }
+    */
 
     // Render the mesh
     if (m_mesh)
     {
-        m_mesh->Render(m_worldTransform, wireframe);
+        m_mesh->Render(m_transform, wireframe);
     }
 
     // Render children
@@ -213,7 +214,7 @@ void ToolsideGameObject::Render(Transform& parentWorldTransform, bool dirty, boo
     for (childIter = m_children.begin(); childIter != m_children.end(); childIter++)
     {
         ToolsideGameObject* child = (ToolsideGameObject*)*childIter;
-        child->Render(m_worldTransform, dirty, wireframe);
+        child->Render(dirty, wireframe);
     }
 }
 

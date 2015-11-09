@@ -112,8 +112,9 @@ void GameObject::OnDeactivate()
     }
 }
 
-void GameObject::Render(Transform& parentWorldTransform, bool dirty, bool wireframe)
+void GameObject::Render(bool dirty, bool wireframe)
 {
+    /*
     // Determine worldspace transform
     dirty |= m_dirty | m_localTransform.HasChanged();
     if (dirty)
@@ -123,11 +124,12 @@ void GameObject::Render(Transform& parentWorldTransform, bool dirty, bool wirefr
         m_dirty = false;
         m_localTransform.ClearChangedFlag();
     }
+    */
 
     // Render the mesh
     if (m_mesh)
     {
-        m_mesh->Render(m_worldTransform, wireframe);
+        m_mesh->Render(m_transform, wireframe);
     }
 
     // Render children
@@ -135,6 +137,6 @@ void GameObject::Render(Transform& parentWorldTransform, bool dirty, bool wirefr
     for (childIter = m_children.begin(); childIter != m_children.end(); childIter++)
     {
         GameObjectBase* child = *childIter;
-        child->Render(m_worldTransform, dirty, wireframe);
+        child->Render(dirty, wireframe);
     }
 }

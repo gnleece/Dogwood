@@ -5,18 +5,24 @@
 #include <algorithm>
 
 GameObjectBase::GameObjectBase(unsigned int guid, string name, GameObjectBase* parent)
- : m_dirty(true)
 {
     m_guid = guid;
     m_name = name;
     m_parent = parent;
+    if (m_parent)
+    {
+        m_transform.SetParent(&(m_parent->m_transform));
+    }
 
     GameObjectReference::AddToMap(guid, this);
 }
 
 GameObjectBase::~GameObjectBase()
 {
-
+    if (m_parent != NULL)
+    {
+        m_parent->RemoveChild(this);
+    }
 }
 
 unsigned int GameObjectBase::GetID()
@@ -61,9 +67,12 @@ void GameObjectBase::SetParent(GameObjectBase* parent, int index)
     if (m_parent)
     {
         m_parent->AddChild(this, index);
+        m_transform.SetParent(&(m_parent->m_transform));
     }
-
-    m_dirty = true;
+    else
+    {
+        m_transform.SetParent(NULL);
+    }
 }
 
 vector<GameObjectBase*>& GameObjectBase::GetChildren()
@@ -71,35 +80,24 @@ vector<GameObjectBase*>& GameObjectBase::GetChildren()
     return m_children;
 }
 
-Transform& GameObjectBase::GetLocalTransform()
+Transform& GameObjectBase::GetTransform()
 {
-    return m_localTransform;
+    return m_transform;
 }
 
-Transform GameObjectBase::GetWorldTransform()
-{
-    // TODO optimize this
-    if (m_parent)
-    {
-        return m_parent->GetWorldTransform()*m_localTransform;
-    }
+//void GameObjectBase::SetTransform(Transform& t)
+//{
+//    m_localTransform = t;
+//    SetDirtyFlag();
+//}
+//
+//void GameObjectBase::SetTransform(Matrix4x4& m)
+//{
+//    m_localTransform.SetLocalMatrix(m);
+//    SetDirtyFlag();
+//}
 
-    return m_localTransform;
-}
-
-void GameObjectBase::SetLocalTransform(Transform& t)
-{
-    m_localTransform = t;
-    m_dirty = true;
-}
-
-void GameObjectBase::SetLocalTransform(Matrix4x4& m)
-{
-    m_localTransform.SetMatrix(m);
-    m_dirty = true;
-}
-
-void GameObjectBase::Render(Transform& parentWorldTransform, bool dirty, bool wireframe)
+void GameObjectBase::Render(bool dirty, bool wireframe)
 {
 }
 

@@ -61,8 +61,12 @@ void SceneViewWidget::update()
     ToolsideGameObject* selectedObject = m_window->GetSelectedObject();
     if (selectedObject)
     {
-        m_transformTool.Draw(selectedObject->GetWorldTransform());
-        m_transformTool.SetLocalTransform(selectedObject->GetLocalTransform());
+        m_transformTool.SetTargetTransform(&(selectedObject->GetTransform()));
+        m_transformTool.Draw();
+    }
+    else
+    {
+        m_transformTool.SetTargetTransform(NULL);
     }
 }
 
@@ -165,21 +169,21 @@ void SceneViewWidget::focusOutEvent(QFocusEvent* /*event*/)
 
 void SceneViewWidget::TranslateSelectedObject(Vector3 offset)
 {
-    Vector3 position = m_window->GetSelectedObject()->GetLocalTransform().GetPosition();
+    Vector3 position = m_window->GetSelectedObject()->GetTransform().GetLocalPosition();
     position = position + offset;
     ExecuteModifyTransform(position, eVector_Position);
 }
 
 void SceneViewWidget::RotateSelectedObject(float offset, eAXIS axis)
 {
-    Vector3 rotation = m_window->GetSelectedObject()->GetLocalTransform().GetRotation();
+    Vector3 rotation = m_window->GetSelectedObject()->GetTransform().GetLocalRotation();
     rotation[axis] = rotation[axis] + offset;
     ExecuteModifyTransform(rotation, eVector_Rotation);
 }
 
 void SceneViewWidget::ScaleSelectedObject(float offset, eAXIS axis)
 {
-    Vector3 scale = m_window->GetSelectedObject()->GetLocalTransform().GetScale();
+    Vector3 scale = m_window->GetSelectedObject()->GetTransform().GetLocalScale();
     scale[axis] = Clamp(scale[axis] + offset, 0, FLT_MAX);
     ExecuteModifyTransform(scale, eVector_Scale);
 }
@@ -254,17 +258,17 @@ void SceneViewWidget::HandleSelectionClick(const QPointF clickPosition)
     Vector4 rayDirectionClipSpace = Vector4(normalizedX, normalizedY, -1.0, 1.0);
 
     // Camera coords
-    Vector4 rayDirectionCameraSpace = RenderManager::Singleton().GetProjection().GetMatrix().Inverse() * rayDirectionClipSpace;
+    Vector4 rayDirectionCameraSpace = RenderManager::Singleton().GetProjection().GetWorldMatrix().Inverse() * rayDirectionClipSpace;
     rayDirectionCameraSpace[2] = -1;     // we only need to unproject x and y, not z and w
     rayDirectionCameraSpace[3] = 0;
 
     // World coords
-    Vector3 rayDirectionWorldSpace = (RenderManager::Singleton().GetView().GetMatrix().Inverse() * rayDirectionCameraSpace).xyz();
+    Vector3 rayDirectionWorldSpace = (RenderManager::Singleton().GetView().GetWorldMatrix().Inverse() * rayDirectionCameraSpace).xyz();
     rayDirectionWorldSpace = rayDirectionWorldSpace.Normalized();
 
     // Ray origin is camera position
-    Vector4 cameraPosition = Vector4(RenderManager::Singleton().GetView().GetPosition(), 0);
-    Vector4 cameraPositionWorldSpace = RenderManager::Singleton().GetView().GetMatrix().Inverse() * cameraPosition;
+    Vector4 cameraPosition = Vector4(RenderManager::Singleton().GetView().GetWorldPosition(), 0);
+    Vector4 cameraPositionWorldSpace = RenderManager::Singleton().GetView().GetWorldMatrix().Inverse() * cameraPosition;
     Vector3 rayOriginWorldSpace = -1 * cameraPositionWorldSpace.xyz(); // TODO multiply by -1 is a hack, need to fix camera/view setup properly
 
     // First, check whether the click hit any of the tools
@@ -291,7 +295,7 @@ bool SceneViewWidget::PickObject(Vector3 rayOrigin, Vector3 rayDirection)
 {
     // Do raycast against all objects in hierarchy   TODO this is pretty terrible
     float hitDistance;
-    ToolsideGameObject* hitObject = m_scene->GetToolsideRootObject()->BoundingSphereRaycast(rayOrigin, rayDirection, Transform::Identity, hitDistance);
+    ToolsideGameObject* hitObject = m_scene->GetToolsideRootObject()->BoundingSphereRaycast(rayOrigin, rayDirection, hitDistance);
     if (hitObject != NULL)
     {
         m_window->SelectObject(hitObject);

@@ -31,13 +31,12 @@ public:
 
     vector<GameObjectBase*>& GetChildren();
 
-    Transform&      GetLocalTransform();
-    Transform       GetWorldTransform();
-    void            SetLocalTransform(Transform& t);
-    void            SetLocalTransform(Matrix4x4& m);
+    Transform&      GetTransform();
+    //void            SetTransform(Transform& t);
+    //void            SetTransform(Matrix4x4& m);
 
     // TODO Rendering/Mesh function should not exist here
-    virtual void    Render(Transform& parentWorldTransform, bool dirty, bool wireframe = false);
+    virtual void    Render(bool dirty, bool wireframe = false);
     void            SetMesh(MeshInstance* mesh);
     MeshInstance*   GetMesh();
 
@@ -53,13 +52,11 @@ protected:
     unsigned int            m_guid;
     string                  m_name;
 
+    Transform               m_transform;
+
     GameObjectBase*         m_parent;
     vector<GameObjectBase*> m_children;
 
-    Transform               m_localTransform;
-    Transform               m_worldTransform;
-    bool                    m_dirty;
-
     MeshInstance*           m_mesh;
-    vector<Collider*>       m_colliders;
+    vector<Collider*>       m_colliders; 
 };

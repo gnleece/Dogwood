@@ -1,5 +1,9 @@
 #pragma once
 
+#include <vector>
+
+using std::vector;
+
 class Collider;
 
 namespace DgwdPhysics
@@ -27,5 +31,7 @@ namespace DgwdPhysics
 
     private:
         void    BroadPhaseCollision();
+
+        vector<Collider*>   m_staticColliders;
     };
 }
