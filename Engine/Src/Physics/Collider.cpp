@@ -5,11 +5,11 @@
 
 using namespace tinyxml2;
 
-Collider::Collider() : IsStatic(true)
+Collider::Collider(GameObjectBase* gameObject) : IsStatic(true), GameObject(gameObject)
 {
 }
 
-Collider* Collider::LoadFromXML(XMLElement* xml)
+Collider* Collider::LoadFromXML(GameObjectBase* gameObject, XMLElement* xml)
 {
     Collider::ColliderType type = (Collider::ColliderType)xml->IntAttribute("Type");
 
@@ -17,14 +17,14 @@ Collider* Collider::LoadFromXML(XMLElement* xml)
     {
     case SPHERE_COLLIDER:
     {
-        SphereCollider* collider = new SphereCollider();
+        SphereCollider* collider = new SphereCollider(gameObject);
         collider->IsStatic = xml->BoolAttribute("IsStatic");
         collider->Radius = xml->FloatAttribute("Radius");
         return collider;
     }
     case BOX_COLLIDER:
     {
-        BoxCollider* collider = new BoxCollider();
+        BoxCollider* collider = new BoxCollider(gameObject);
         collider->IsStatic = xml->BoolAttribute("IsStatic");
         collider->MinPoint = ReadVector3FromXML(xml->FirstChildElement("MinPoint"));
         collider->MaxPoint = ReadVector3FromXML(xml->FirstChildElement("MaxPoint"));
@@ -41,10 +41,10 @@ void Collider::AddToGameObject(GameObjectBase* gameObject, ColliderType type)
     switch (type)
     {
     case SPHERE_COLLIDER:
-        collider = new SphereCollider();
+        collider = new SphereCollider(gameObject);
         break;
     case BOX_COLLIDER:
-        collider = new BoxCollider();
+        collider = new BoxCollider(gameObject);
         break;
     }
 
@@ -56,7 +56,7 @@ void Collider::AddToGameObject(GameObjectBase* gameObject, ColliderType type)
 
 //------------------------------------------------------------------------------------
 
-SphereCollider::SphereCollider(float radius) : Collider(), Radius(radius)
+SphereCollider::SphereCollider(GameObjectBase* gameObject, float radius) : Collider(gameObject), Radius(radius)
 {
 }
 
@@ -76,7 +76,7 @@ Collider::ColliderType SphereCollider::GetType()
 
 //------------------------------------------------------------------------------------
 
-BoxCollider::BoxCollider() : Collider()
+BoxCollider::BoxCollider(GameObjectBase* gameObject) : Collider(gameObject)
 {
 }
 

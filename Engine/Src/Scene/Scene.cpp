@@ -364,7 +364,7 @@ void Scene::AddColliders(GameObjectBase* go, tinyxml2::XMLElement* xmlnode)
         XMLElement* colliderXML = colliders->FirstChildElement("Collider");
         while (colliderXML)
         {
-            Collider* collider = Collider::LoadFromXML(colliderXML);
+            Collider* collider = Collider::LoadFromXML(go, colliderXML);
             go->AddCollider(collider);
 
             colliderXML = colliderXML->NextSiblingElement("Collider");
