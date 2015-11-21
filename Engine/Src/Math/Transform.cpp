@@ -218,6 +218,7 @@ void Transform::RecomputeWorldIfDirty()
         RecomputeLocalIfDirty();
         Matrix4x4 parentTransform = m_parent ? m_parent->GetWorldMatrix() : Matrix4x4::Identity;
         m_worldMatrix = parentTransform * m_localMatrix;
+        DecomposeMatrix(m_worldMatrix, m_worldPosition, m_worldRotation, m_worldScale);
         CalculateDirectionVectors();
         ClearRecomputeWorldFlag();
     }

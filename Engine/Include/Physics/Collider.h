@@ -15,8 +15,11 @@ public:
     static Collider*        LoadFromXML(GameObjectBase* gameObject, tinyxml2::XMLElement* xml);
     static void             AddToGameObject(GameObjectBase* gameObject, ColliderType type);
 
+    Vector3                 GetWorldPosition();
+
     virtual void            Serialize(tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc) = 0;
     virtual ColliderType    GetType() = 0;
+    virtual float           GetBoundingRadius() = 0;
 
     bool                    IsStatic;
     GameObjectBase*         GameObject;
@@ -29,6 +32,7 @@ public:
 
     virtual void            Serialize(tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc);
     virtual ColliderType    GetType();
+    virtual float           GetBoundingRadius();
 
     float                   Radius;
 };
@@ -40,6 +44,7 @@ public:
 
     virtual void            Serialize(tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc);
     virtual ColliderType    GetType();
+    virtual float           GetBoundingRadius();
 
     Vector3                 MinPoint;
     Vector3                 MaxPoint;

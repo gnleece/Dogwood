@@ -15,8 +15,6 @@
 #include "GameObjectManager.h"
 #include "GameProject.h"
 
-using DgwdPhysics::CollisionEngine;
-
 void Game::Init(string projectPath, GameComponentFactory* componentFactory)
 {
     printf("=============== GAME INIT ===============\n");

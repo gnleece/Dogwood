@@ -54,6 +54,11 @@ void Collider::AddToGameObject(GameObjectBase* gameObject, ColliderType type)
     }
 }
 
+Vector3 Collider::GetWorldPosition()
+{
+    return GameObject->GetTransform().GetWorldPosition();
+}
+
 //------------------------------------------------------------------------------------
 
 SphereCollider::SphereCollider(GameObjectBase* gameObject, float radius) : Collider(gameObject), Radius(radius)
@@ -72,6 +77,11 @@ void SphereCollider::Serialize(tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocum
 Collider::ColliderType SphereCollider::GetType()
 {
     return Collider::SPHERE_COLLIDER;
+}
+
+float SphereCollider::GetBoundingRadius()
+{
+    return Radius;
 }
 
 //------------------------------------------------------------------------------------
@@ -93,4 +103,9 @@ void BoxCollider::Serialize(tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument
 Collider::ColliderType BoxCollider::GetType()
 {
     return Collider::BOX_COLLIDER;
+}
+
+float BoxCollider::GetBoundingRadius()
+{
+    return 1;       // TODO implement me!
 }

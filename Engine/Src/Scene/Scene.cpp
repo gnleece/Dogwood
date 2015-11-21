@@ -9,6 +9,7 @@
 #include "ToolsideGameObject.h"
 #include "Util.h"
 #include "Physics\Collider.h"
+#include "Physics\CollisionEngine.h"
 #include "Rendering\Camera.h"
 #include "Rendering\Mesh.h"
 #include "Rendering\MeshInstance.h"
@@ -366,6 +367,11 @@ void Scene::AddColliders(GameObjectBase* go, tinyxml2::XMLElement* xmlnode)
         {
             Collider* collider = Collider::LoadFromXML(go, colliderXML);
             go->AddCollider(collider);
+
+            if (!GameProject::Singleton().IsToolside())
+            {
+                CollisionEngine::Singleton().RegisterCollider(collider);
+            }
 
             colliderXML = colliderXML->NextSiblingElement("Collider");
         }

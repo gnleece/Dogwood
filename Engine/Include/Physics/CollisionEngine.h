@@ -1,37 +1,43 @@
 #pragma once
 
+#include "BoundingSphere.h"
+#include "BVHNode.h"
 #include <vector>
 
 using std::vector;
 
 class Collider;
 
-namespace DgwdPhysics
+
+struct PotentialContact
 {
-    struct PotentialContact
+    Collider* colliders[2];
+};
+
+class CollisionEngine
+{
+public:
+
+    static CollisionEngine& Singleton()
     {
-        Collider* colliders[2];
-    };
+        static CollisionEngine singleton;
+        return singleton;
+    }
+    CollisionEngine() {}
 
-    class CollisionEngine
-    {
-    public:
+    void    Startup();
+    void    Shutdown();
 
-        static CollisionEngine& Singleton()
-        {
-            static CollisionEngine singleton;
-            return singleton;
-        }
-        CollisionEngine() {}
+    void    Update(float deltaTime);
 
-        void    Startup();
-        void    Shutdown();
+    void    RegisterCollider(Collider* collider, bool isStatic = true);
+    void    UnregisterCollider(Collider* collider, bool isStatic = true);
 
-        void    Update(float deltaTime);
+private:
+    void    BroadPhaseCollision();
 
-    private:
-        void    BroadPhaseCollision();
+    void    InsertStaticColliderInHierarchy(Collider* collider);
 
-        vector<Collider*>   m_staticColliders;
-    };
-}
+    BVHNode<BoundingSphere>*    m_staticCollisionHierarchy;
+    vector<Collider*>           m_dynamicColliders;
+};
