@@ -204,6 +204,115 @@ void Gnomon::Draw(Matrix4x4& transform)
     glEnable(GL_DEPTH_TEST);
 }
 
+void DebugSphere::Init(float radius, int divisions)
+{
+    // Calculate vertex positions
+    int numPoints = divisions*divisions + 1;
+    m_positionBufferData = new Vector3[numPoints];
+
+    float angleDelta = MATH_PI / divisions;
+    for (int i = 0; i < divisions; i++)
+    {
+        for (int j = 0; j < divisions; j++)
+        {
+            float theta = angleDelta * i;
+            float phi = angleDelta * j * 2;
+            float x = radius * sin(theta) * cos(phi);
+            float y = radius * sin(theta) * sin(phi);
+            float z = radius * cos(theta);
+            Vector3 point = Vector3(x, y, z);
+            m_positionBufferData[i*divisions + j] = point;
+        }
+    }
+    m_positionBufferData[numPoints - 1] = Vector3(0, 0, -radius);
+
+    // Populate index buffer
+    m_numIndices = divisions * divisions * 2 * 2;     // numPoints * (horizontal + vertical) * 2 points per line
+    m_indices = new GLuint[m_numIndices];
+
+    int index = 0;
+    for (int i = 0; i < divisions; i++)
+    {
+        for (int j = 0; j < divisions; j++)
+        {
+            int firstIndex = i*divisions + j;
+            int secondIndex = firstIndex + 1;
+            if (j == divisions - 1)
+            {
+                secondIndex -= divisions;
+            }
+            m_indices[index++] = firstIndex;
+            m_indices[index++] = secondIndex;
+
+            secondIndex = firstIndex + divisions;
+            if (i == divisions - 1)
+            {
+                secondIndex = numPoints - 1;
+            }
+            m_indices[index++] = firstIndex;
+            m_indices[index++] = secondIndex;
+
+        }
+    }
+
+    // Bind buffer data
+    glGenVertexArrays(1, &m_vertexArrayID);
+    glBindVertexArray(m_vertexArrayID);
+
+    // Upload vertex data
+    glGenBuffers(1, &m_positionBufferID);
+    glBindBuffer(GL_ARRAY_BUFFER, m_positionBufferID);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(Vector3)*numPoints, m_positionBufferData, GL_STATIC_DRAW);
+
+    glGenBuffers(1, &m_ebo);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)*m_numIndices, m_indices, GL_STATIC_DRAW);
+
+    m_shader = RenderManager::Singleton().GetCommonShader(RenderManager::eCommonShader::SHADER_UNLIT_UNI_COLOR);
+}
+
+void DebugSphere::Draw(Matrix4x4& transform, ColorRGB& color, bool useDepth)
+{
+    if (!useDepth)
+    {
+        glDisable(GL_DEPTH_TEST);
+    }
+
+    m_shader->ApplyShader();
+
+    glBindVertexArray(m_vertexArrayID);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
+
+    // Set model matrix
+    GLint uniModel = m_shader->GetUniformLocation("model");
+    glUniformMatrix4fv(uniModel, 1, GL_FALSE, transform.Transpose().Start());
+
+    // Set uniform color
+    GLint uniColor = m_shader->GetUniformLocation("color");
+    glUniform3fv(uniColor, 1, color.Start());
+
+    // Bind position data
+    GLint paramLocation = m_shader->GetAttributeLocation("position");
+    glEnableVertexAttribArray(paramLocation);
+    glBindBuffer(GL_ARRAY_BUFFER, m_positionBufferID);
+    glVertexAttribPointer(paramLocation, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
+
+    glDrawElements(GL_LINES, sizeof(GLuint)*m_numIndices, GL_UNSIGNED_INT, 0);
+
+    glDisableVertexAttribArray(paramLocation);
+
+    if (!useDepth)
+    {
+        glEnable(GL_DEPTH_TEST);
+    }
+}
+
+DebugSphere::~DebugSphere()
+{
+    delete m_positionBufferData;
+    delete m_indices;
+}
+
 void Pyramid::Init(float base, float height)
 {
     // Calculate vertex positions

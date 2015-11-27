@@ -13,6 +13,25 @@ class Material;
 class ShaderProgram;
 
 // TODO put debug draw shapes in their own file
+
+struct DebugSphere
+{
+public:
+    ~DebugSphere();
+    void            Init(float radius, int divisions);
+    void            Draw(Matrix4x4& transform, ColorRGB& color, bool useDepth = true);
+
+private:
+    GLuint          m_positionBufferID;
+    GLuint          m_vertexArrayID;
+    GLuint          m_ebo;
+    Vector3*        m_positionBufferData;
+    GLuint*         m_indices;
+    ShaderProgram*  m_shader;
+
+    int             m_numIndices;
+};
+
 struct Pyramid
 {
 public:

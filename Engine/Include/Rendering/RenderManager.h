@@ -3,9 +3,9 @@
 #define GLEW_STATIC
 #include <GL/glew.h>
 
-#include "..\Math\Algebra.h"
-#include "..\Math\Transform.h"
-#include "..\Math\Transformations.h"
+#include "Math\Algebra.h"
+#include "Math\Transform.h"
+#include "Math\Transformations.h"
 #include "Light.h"
 #include "ShaderProgram.h"
 
