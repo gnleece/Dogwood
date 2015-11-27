@@ -26,6 +26,6 @@ private:
 
     BVHNode<BoundingVolumeType>*            m_parent;
     BVHNode<BoundingVolumeType>*            m_children[2];
-    BoundingVolumeType  m_volume;
-    Collider*           m_collider;         // This will be NULL for all non-leaf nodes
+    BoundingVolumeType                      m_volume;
+    Collider*                               m_collider;         // This will be NULL for all non-leaf nodes
 };

@@ -4,14 +4,21 @@
 #include "BVHNode.h"
 #include <vector>
 
+#define MAX_POTENTIAL_CONTACTS 25
+
 using std::vector;
 
 class Collider;
 
-
 struct PotentialContact
 {
     Collider* colliders[2];
+
+    PotentialContact()
+    {
+        colliders[0] = NULL;
+        colliders[1] = NULL;
+    }
 };
 
 class CollisionEngine
@@ -34,9 +41,11 @@ public:
     void    UnregisterCollider(Collider* collider, bool isStatic = true);
 
 private:
-    void    BroadPhaseCollision();
+    void    AddColliderToHierarchy(Collider* collider);
+    void    RemoveColliderFromHierarchy(Collider* collider);
 
-    void    InsertStaticColliderInHierarchy(Collider* collider);
+    void    BroadPhaseCollision(PotentialContact* potentialContacts);
+    void    NarrowPhaseCollision(PotentialContact* potentialContacts);
 
     BVHNode<BoundingSphere>*    m_staticCollisionHierarchy;
     vector<Collider*>           m_dynamicColliders;
