@@ -14,6 +14,8 @@ void DebugDraw::Startup()
 
     glGenVertexArrays(1, &m_vertexArrayID);
     glBindVertexArray(m_vertexArrayID);
+
+    m_debugSphere.Init(1, 12);
 }
 
 void DebugDraw::Shutdown()
@@ -106,6 +108,11 @@ void DebugDraw::RenderLines()
 
     glDisableVertexAttribArray(0);
     m_numLines = 0;
+}
+
+void DebugDraw::DrawSphere(Matrix4x4 transform, ColorRGB color)
+{
+    m_debugSphere.Draw(transform, color);
 }
 
 Material* DebugDraw::GetDebugMaterial()

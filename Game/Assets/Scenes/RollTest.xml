@@ -48,12 +48,9 @@
                 </Material>
             </Mesh>
             <Colliders>
-                <Collider Type="0" IsStatic="1" Radius="1"/>
+                <Collider Type="0" IsStatic="1" Radius="1.5"/>
             </Colliders>
             <Components>
-                <Component guid="943277816">
-                    <Param name="Speed" type="1" value="0.5"/>
-                </Component>
                 <Component guid="3988628104">
                     <Param name="BounceHeight" type="1" value="0"/>
                     <Param name="BounceSpeed" type="1" value="1.337"/>
@@ -75,7 +72,7 @@
                 </Material>
             </Mesh>
             <Colliders>
-                <Collider Type="0" IsStatic="1" Radius="1"/>
+                <Collider Type="0" IsStatic="1" Radius="1.5"/>
             </Colliders>
             <Components/>
             <GameObject guid="2468968123" name="GameObject">
@@ -127,7 +124,7 @@
                 </Material>
             </Mesh>
             <Colliders>
-                <Collider Type="0" IsStatic="0" Radius="1"/>
+                <Collider Type="0" IsStatic="0" Radius="0.325"/>
             </Colliders>
             <Components>
                 <Component guid="3055461197">
@@ -161,7 +158,7 @@
                 </Material>
             </Mesh>
             <Colliders>
-                <Collider Type="0" IsStatic="1" Radius="1"/>
+                <Collider Type="0" IsStatic="1" Radius="1.5"/>
             </Colliders>
             <Components/>
         </GameObject>
@@ -213,7 +210,7 @@
                 </Material>
             </Mesh>
             <Colliders>
-                <Collider Type="0" IsStatic="1" Radius="1"/>
+                <Collider Type="0" IsStatic="1" Radius="1.5"/>
             </Colliders>
             <Components/>
         </GameObject>
@@ -231,7 +228,7 @@
                 </Material>
             </Mesh>
             <Colliders>
-                <Collider Type="0" IsStatic="1" Radius="1"/>
+                <Collider Type="0" IsStatic="1" Radius="1.5"/>
             </Colliders>
             <Components/>
         </GameObject>

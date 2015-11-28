@@ -54,9 +54,9 @@ void Collider::AddToGameObject(GameObjectBase* gameObject, ColliderType type)
     }
 }
 
-Vector3 Collider::GetWorldPosition()
+Transform& Collider::GetTransform()
 {
-    return GameObject->GetTransform().GetWorldPosition();
+    return GameObject->GetTransform();
 }
 
 //------------------------------------------------------------------------------------

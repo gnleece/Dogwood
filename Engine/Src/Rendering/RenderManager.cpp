@@ -2,6 +2,7 @@
 
 #include "GameObject.h"
 #include "Debugging\DebugDraw.h"
+#include "Physics\CollisionEngine.h"
 
 void RenderManager::Startup(RenderConfig& config)
 {
@@ -97,10 +98,8 @@ void RenderManager::RenderScene()
         m_rootObject->Render(false);
     }
 
-    //DebugDraw::Singleton().RenderLines();
-
-    // Swap buffers
-    //m_gameWindow->SwapBuffers();  // TODO fixme qt-opengl-convert
+    // Render debug info
+    CollisionEngine::Singleton().DrawDebugInfo();
 }
 
 void RenderManager::ApplyGlobalParams(ShaderProgram* shader)

@@ -86,6 +86,8 @@ public:
     void            PrepareLineBuffer(Vector3* buffer, int count, GLuint &vao, GLuint &vbo);
     void            DrawLineBuffer(GLuint vao, GLuint vbo, Vector3* buffer, int size, ColorRGB color);
 
+    void            DrawSphere(Matrix4x4 transform, ColorRGB color);
+
     Material*       GetDebugMaterial();
 
 private:
@@ -100,4 +102,6 @@ private:
 
     Material*       m_material;
     ShaderProgram*  m_shader;
+
+    DebugSphere     m_debugSphere;
 };

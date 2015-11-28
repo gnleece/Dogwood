@@ -1,5 +1,9 @@
 #include "Physics/CollisionEngine.h"
 
+#include "Debugging/DebugDraw.h"
+#include "Math/Transformations.h"
+#include "Physics/Collider.h"
+
 #include <algorithm>
 
 
@@ -17,16 +21,39 @@ void CollisionEngine::Update(float deltaTime)
 {
     // Broad phase: generate potential contacts
     PotentialContact potentialContacts[MAX_POTENTIAL_CONTACTS];
-    BroadPhaseCollision(potentialContacts);
+    //BroadPhaseCollision(potentialContacts);
 
     // Narrow phase: calculate actual contacts
     NarrowPhaseCollision(potentialContacts);
 }
 
-void CollisionEngine::RegisterCollider(Collider* collider, bool isStatic)
+void CollisionEngine::DrawDebugInfo()
 {
-    if (isStatic)
+    DrawBoundingSpheres(m_staticColliders, ColorRGB::White);
+    DrawBoundingSpheres(m_dynamicColliders, ColorRGB::Yellow);
+}
+
+void CollisionEngine::DrawBoundingSpheres(vector<Collider*>& colliders, ColorRGB color)
+{
+    vector<Collider*>::iterator iter = colliders.begin();
+    for (iter = colliders.begin(); iter != colliders.end(); iter++)
     {
+        Vector3 position = (*iter)->GetTransform().GetWorldPosition();
+        float radius = (*iter)->GetBoundingRadius();
+        Matrix4x4 sphereMatrix = Translation(position);
+        sphereMatrix = sphereMatrix * UniformScaling(radius);
+        DebugDraw::Singleton().DrawSphere(sphereMatrix, color);
+    }
+}
+
+void CollisionEngine::RegisterCollider(Collider* collider)
+{
+    if (collider == NULL)
+        return;
+
+    if (collider->IsStatic)
+    {
+        m_staticColliders.push_back(collider);
         AddColliderToHierarchy(collider);
     }
     else
@@ -35,10 +62,17 @@ void CollisionEngine::RegisterCollider(Collider* collider, bool isStatic)
     }
 }
 
-void CollisionEngine::UnregisterCollider(Collider* collider, bool isStatic)
+void CollisionEngine::UnregisterCollider(Collider* collider)
 {
-    if (isStatic)
+    if (collider == NULL)
+        return;
+
+    if (collider->IsStatic)
     {
+        m_staticColliders.erase(
+            std::remove(m_staticColliders.begin(), m_staticColliders.end(), collider),
+            m_staticColliders.end());
+
         RemoveColliderFromHierarchy(collider);
     }
     else

@@ -2,6 +2,7 @@
 
 #include "tinyxml2.h"
 #include "Math/Algebra.h"
+#include "Math/Transform.h"
 
 class GameObjectBase;
 
@@ -15,7 +16,7 @@ public:
     static Collider*        LoadFromXML(GameObjectBase* gameObject, tinyxml2::XMLElement* xml);
     static void             AddToGameObject(GameObjectBase* gameObject, ColliderType type);
 
-    Vector3                 GetWorldPosition();
+    Transform&              GetTransform();
 
     virtual void            Serialize(tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc) = 0;
     virtual ColliderType    GetType() = 0;

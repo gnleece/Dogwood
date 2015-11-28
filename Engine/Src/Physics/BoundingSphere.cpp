@@ -56,7 +56,7 @@ BoundingSphere::BoundingSphere(Collider* collider)
 {
     if (collider != NULL)
     {
-        Center = collider->GetWorldPosition();
+        Center = collider->GetTransform().GetWorldPosition();
         Radius = collider->GetBoundingRadius();
     }
 }
