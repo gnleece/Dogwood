@@ -1,5 +1,6 @@
 #include "Physics/BVHNode.h"
 #include "Physics/BoundingSphere.h"
+#include "Physics/Collider.h"
 #include "Physics/CollisionEngine.h"
 
 template<class BoundingVolumeType>
@@ -71,7 +72,16 @@ unsigned int BVHNode<BoundingVolumeType>::GetPotentialContacts(PotentialContact*
         return 0;
 
     // Otherwise, recurse on children
-    return m_children[0]->GetPotentialContactsWith(contacts, limit, m_children[1]);
+    unsigned int count = m_children[0]->GetPotentialContactsWith(contacts, limit, m_children[1]);
+    if (limit > count)
+    {
+        count += m_children[0]->GetPotentialContacts(contacts + count, limit - count);
+    }
+    if (limit > count)
+    {
+        count += m_children[1]->GetPotentialContacts(contacts + count, limit - count);
+    }
+    return count;
 }
 
 template<class BoundingVolumeType>
@@ -87,9 +97,14 @@ unsigned int BVHNode<BoundingVolumeType>::GetPotentialContactsWith(PotentialCont
     // Base case - If both regions are leaf nodes, we have a potential collision
     if (IsLeaf() && other->IsLeaf())
     {
-        contacts->colliders[0] = m_collider;
-        contacts->colliders[1] = other->m_collider;
-        return 1;
+        // We only consider potential collisions where at least one collider is dynamic
+        if (!m_collider->IsStatic || !other->m_collider->IsStatic)
+        {
+            contacts->colliders[0] = m_collider;
+            contacts->colliders[1] = other->m_collider;
+            return 1;
+        }
+        return 0;
     }
 
     // Determine which node to descend into:

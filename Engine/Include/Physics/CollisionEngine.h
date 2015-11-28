@@ -46,7 +46,7 @@ private:
     void    AddColliderToHierarchy(Collider* collider);
     void    RemoveColliderFromHierarchy(Collider* collider);
 
-    void    BroadPhaseCollision(PotentialContact* potentialContacts);
+    int     BroadPhaseCollision(PotentialContact* potentialContacts);
     void    NarrowPhaseCollision(PotentialContact* potentialContacts);
 
     void    DrawBoundingSpheres(vector<Collider*>& colliders, ColorRGB color);

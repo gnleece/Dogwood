@@ -1,6 +1,7 @@
 #include "Physics/CollisionEngine.h"
 
 #include "Debugging/DebugDraw.h"
+#include "GameObjectBase.h"
 #include "Math/Transformations.h"
 #include "Physics/Collider.h"
 
@@ -21,7 +22,18 @@ void CollisionEngine::Update(float deltaTime)
 {
     // Broad phase: generate potential contacts
     PotentialContact potentialContacts[MAX_POTENTIAL_CONTACTS];
-    BroadPhaseCollision(potentialContacts);
+    int numPotentialContacts = BroadPhaseCollision(potentialContacts);
+
+    if (numPotentialContacts > 0)
+    {
+        printf("POTENTIAL CONTACTS!!!\n");
+        for (int i = 0; i < numPotentialContacts; i++)
+        {
+            printf("\t%s\n", potentialContacts[i].colliders[0]->GameObject->GetName().c_str());
+            printf("\t%s\n", potentialContacts[i].colliders[1]->GameObject->GetName().c_str());
+            printf("\t---\n");
+        }
+    }
 
     // Narrow phase: calculate actual contacts
     NarrowPhaseCollision(potentialContacts);
@@ -105,7 +117,7 @@ void CollisionEngine::RemoveColliderFromHierarchy(Collider* collider)
     }
 }
 
-void CollisionEngine::BroadPhaseCollision(PotentialContact* potentialContacts)
+int CollisionEngine::BroadPhaseCollision(PotentialContact* potentialContacts)
 {
     // Add the dynamic colliders to the collision hierarchy
     vector<Collider*>::iterator iter = m_dynamicColliders.begin();
@@ -115,7 +127,7 @@ void CollisionEngine::BroadPhaseCollision(PotentialContact* potentialContacts)
     }
 
     // Generate the list of potential contacts
-    m_staticCollisionHierarchy->GetPotentialContacts(potentialContacts, MAX_POTENTIAL_CONTACTS);
+    int numPotentialContacts = m_staticCollisionHierarchy->GetPotentialContacts(potentialContacts, MAX_POTENTIAL_CONTACTS);
 
     // Remove the dynamic colliders from the hierarchy (because their positions may be different next frame)
     iter = m_dynamicColliders.begin();
@@ -123,6 +135,8 @@ void CollisionEngine::BroadPhaseCollision(PotentialContact* potentialContacts)
     {
         RemoveColliderFromHierarchy(*iter);
     }
+
+    return numPotentialContacts;
 }
 
 void CollisionEngine::NarrowPhaseCollision(PotentialContact* potentialContacts)

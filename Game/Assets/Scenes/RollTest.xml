@@ -1,10 +1,9 @@
 <Scene>
     <Resources>
-        <Resource guid="2152164934"/>
         <Resource guid="3378413933"/>
+        <Resource guid="2152164934"/>
         <Resource guid="2234616278"/>
         <Resource guid="33727872"/>
-        <Resource guid="3936014360"/>
         <Resource guid="3746892247"/>
         <Resource guid="1537037577"/>
         <Resource guid="870516493"/>
@@ -59,7 +58,7 @@
         </GameObject>
         <GameObject guid="3322579271" name="BlueCube">
             <Transform>
-                <Position x="0.00000" y="0.00000" z="10.00000"/>
+                <Position x="10.00000" y="0.00000" z="10.00000"/>
                 <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
                 <Scale x="1.00000" y="1.00000" z="1.00000"/>
             </Transform>
@@ -75,23 +74,6 @@
                 <Collider Type="0" IsStatic="1" Radius="1.5"/>
             </Colliders>
             <Components/>
-            <GameObject guid="2468968123" name="GameObject">
-                <Transform>
-                    <Position x="0.00000" y="2.00000" z="0.00000"/>
-                    <Rotation x="0.00000" y="0.00000" z="0.00000"/>
-                    <Scale x="1.00000" y="1.00000" z="1.00000"/>
-                </Transform>
-                <Mesh guid="3936014360">
-                    <Material>
-                        <Shader guid="3746892247"/>
-                        <Color r="1.00000" g="1.00000" b="1.00000" name="colorDiffuse"/>
-                        <Color r="1.00000" g="1.00000" b="1.00000" name="colorAmbient"/>
-                        <Color r="1.00000" g="1.00000" b="1.00000" name="colorSpecular"/>
-                    </Material>
-                </Mesh>
-                <Colliders/>
-                <Components/>
-            </GameObject>
         </GameObject>
         <GameObject guid="3666634221" name="House">
             <Transform>
@@ -124,7 +106,7 @@
                 </Material>
             </Mesh>
             <Colliders>
-                <Collider Type="0" IsStatic="0" Radius="0.325"/>
+                <Collider Type="0" IsStatic="0" Radius="0.32499999"/>
             </Colliders>
             <Components>
                 <Component guid="3055461197">
@@ -225,6 +207,25 @@
                     <Shader guid="3125582585"/>
                     <Color r="1.00000" g="0.66667" b="0.00000" name="color"/>
                     <Texture guid="3780387270" name="tex"/>
+                </Material>
+            </Mesh>
+            <Colliders>
+                <Collider Type="0" IsStatic="1" Radius="3.5"/>
+            </Colliders>
+            <Components/>
+        </GameObject>
+        <GameObject guid="914776713" name="RedCube">
+            <Transform>
+                <Position x="8.00000" y="0.00000" z="8.00000"/>
+                <Rotation x="0.00000" y="0.00000" z="0.00000"/>
+                <Scale x="1.00000" y="1.00000" z="1.00000"/>
+            </Transform>
+            <Mesh guid="33727872">
+                <Material>
+                    <Shader guid="3746892247"/>
+                    <Color r="1.00000" g="0.00000" b="0.00000" name="colorDiffuse"/>
+                    <Color r="0.41961" g="0.00000" b="0.00000" name="colorAmbient"/>
+                    <Color r="1.00000" g="1.00000" b="1.00000" name="colorSpecular"/>
                 </Material>
             </Mesh>
             <Colliders>
