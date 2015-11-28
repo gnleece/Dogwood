@@ -21,7 +21,7 @@ void CollisionEngine::Update(float deltaTime)
 {
     // Broad phase: generate potential contacts
     PotentialContact potentialContacts[MAX_POTENTIAL_CONTACTS];
-    //BroadPhaseCollision(potentialContacts);
+    BroadPhaseCollision(potentialContacts);
 
     // Narrow phase: calculate actual contacts
     NarrowPhaseCollision(potentialContacts);

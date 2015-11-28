@@ -30,7 +30,7 @@ BVHNode<BoundingVolumeType>::~BVHNode()
         }
         else
         {
-            sibling = m_parent->m_children[2];
+            sibling = m_parent->m_children[0];
         }
 
         // Move the sibling's data up into the parent
@@ -184,7 +184,15 @@ bool BVHNode<BoundingVolumeType>::Overlaps(BVHNode<BoundingVolumeType>* other)
 template<class BoundingVolumeType>
 void BVHNode<BoundingVolumeType>::RecalculateBoundingVolume()
 {
+    if (IsLeaf())
+        return;
+
     m_volume = BoundingSphere(m_children[0]->m_volume, m_children[1]->m_volume);
+
+    if (m_parent)
+    {
+        m_parent->RecalculateBoundingVolume();
+    }
 }
 
 // Explicitly instantiate necessary type(s) here, so that we don't have to put all 
