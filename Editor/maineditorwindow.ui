@@ -331,6 +331,7 @@
      </property>
      <addaction name="actionAdd_Sphere_Collider"/>
      <addaction name="actionAdd_Box_Collider"/>
+     <addaction name="actionAdd_Capsule_Collider"/>
     </widget>
     <addaction name="menuAdd_Mesh"/>
     <addaction name="menuAdd_Physics"/>
@@ -627,6 +628,14 @@
    </property>
    <property name="toolTip">
     <string>Add Box Collider</string>
+   </property>
+  </action>
+  <action name="actionAdd_Capsule_Collider">
+   <property name="text">
+    <string>Capsule Collider</string>
+   </property>
+   <property name="toolTip">
+    <string>Add Capsule Collider</string>
    </property>
   </action>
  </widget>

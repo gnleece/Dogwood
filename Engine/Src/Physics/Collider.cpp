@@ -30,6 +30,14 @@ Collider* Collider::LoadFromXML(GameObjectBase* gameObject, XMLElement* xml)
         collider->MaxPoint = ReadVector3FromXML(xml->FirstChildElement("MaxPoint"));
         return collider;
     }
+    case CAPSULE_COLLIDER:
+    {
+        CapsuleCollider* collider = new CapsuleCollider(gameObject);
+        collider->IsStatic = xml->BoolAttribute("IsStatic");
+        collider->Radius = xml->FloatAttribute("Radius");
+        collider->Height = xml->FloatAttribute("Height");
+        return collider;
+    }
     }
 
     return NULL;
@@ -45,6 +53,9 @@ void Collider::AddToGameObject(GameObjectBase* gameObject, ColliderType type)
         break;
     case BOX_COLLIDER:
         collider = new BoxCollider(gameObject);
+        break;
+    case CAPSULE_COLLIDER:
+        collider = new CapsuleCollider(gameObject);
         break;
     }
 
@@ -108,4 +119,31 @@ Collider::ColliderType BoxCollider::GetType()
 float BoxCollider::GetBoundingRadius()
 {
     return 1;       // TODO implement me!
+}
+
+//------------------------------------------------------------------------------------
+
+CapsuleCollider::CapsuleCollider(GameObjectBase* gameObject, float radius, float height) 
+    : Collider(gameObject), Radius(radius), Height(height)
+{
+}
+
+void CapsuleCollider::Serialize(tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc)
+{
+    XMLElement* node = rootDoc.NewElement("Collider");
+    parentNode->InsertEndChild(node);
+    node->SetAttribute("Type", Collider::CAPSULE_COLLIDER);
+    node->SetAttribute("IsStatic", IsStatic);
+    node->SetAttribute("Radius", Radius);
+    node->SetAttribute("Height", Height);
+}
+
+Collider::ColliderType CapsuleCollider::GetType()
+{
+    return Collider::CAPSULE_COLLIDER;
+}
+
+float CapsuleCollider::GetBoundingRadius()
+{
+    return Height + 2*Radius;
 }

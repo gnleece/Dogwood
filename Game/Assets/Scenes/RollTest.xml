@@ -13,6 +13,7 @@
         <Resource guid="3205911089"/>
         <Resource guid="536475533"/>
         <Resource guid="3780387270"/>
+        <Resource guid="1863496264"/>
     </Resources>
     <Camera>
         <Position x="0.00000" y="1.00000" z="10.00000"/>
@@ -217,7 +218,7 @@
         <GameObject guid="914776713" name="RedCube">
             <Transform>
                 <Position x="8.00000" y="0.00000" z="8.00000"/>
-                <Rotation x="0.00000" y="0.00000" z="0.00000"/>
+                <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
                 <Scale x="1.00000" y="1.00000" z="1.00000"/>
             </Transform>
             <Mesh guid="33727872">
@@ -230,6 +231,25 @@
             </Mesh>
             <Colliders>
                 <Collider Type="0" IsStatic="1" Radius="1.5"/>
+            </Colliders>
+            <Components/>
+        </GameObject>
+        <GameObject guid="2420281555" name="TallCube">
+            <Transform>
+                <Position x="0.00000" y="0.00000" z="10.00000"/>
+                <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
+                <Scale x="0.60000" y="3.00000" z="0.60000"/>
+            </Transform>
+            <Mesh guid="1863496264">
+                <Material>
+                    <Shader guid="3746892247"/>
+                    <Color r="0.19608" g="0.45882" b="0.03137" name="colorDiffuse"/>
+                    <Color r="0.00000" g="0.41961" b="0.00000" name="colorAmbient"/>
+                    <Color r="1.00000" g="1.00000" b="1.00000" name="colorSpecular"/>
+                </Material>
+            </Mesh>
+            <Colliders>
+                <Collider Type="2" IsStatic="1" Radius="1" Height="2"/>
             </Colliders>
             <Components/>
         </GameObject>

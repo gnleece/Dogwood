@@ -644,9 +644,9 @@ ComponentModelColliderItem::ComponentModelColliderItem(Collider* collider, bool 
         m_name = "Sphere Collider";
 
         // Radius parameter
-        ComponentValue valueRadius = ComponentValue(ComponentParameter::TYPE_FLOAT, ((SphereCollider*)m_collider)->Radius);
-        std::function<void(ComponentValue)> callback = [&](ComponentValue v) { ((SphereCollider*)m_collider)->Radius = v.f; };
-        AddGenericParam("Radius", ComponentParameter::TYPE_FLOAT, valueRadius, callback);
+        ComponentValue radiusValue = ComponentValue(ComponentParameter::TYPE_FLOAT, ((SphereCollider*)m_collider)->Radius);
+        std::function<void(ComponentValue)> radiusCallback = [&](ComponentValue v) { ((SphereCollider*)m_collider)->Radius = v.f; };
+        AddGenericParam("Radius", ComponentParameter::TYPE_FLOAT, radiusValue, radiusCallback);
         break;
     }
     case Collider::BOX_COLLIDER:
@@ -654,15 +654,30 @@ ComponentModelColliderItem::ComponentModelColliderItem(Collider* collider, bool 
         m_name = "Box Collider";
 
         // MinPoint parameter
-        ComponentValue valueMin = ComponentValue(ComponentParameter::TYPE_VECTOR3, ((BoxCollider*)m_collider)->MinPoint);
-        std::function<void(ComponentValue)> callbackMin = [&](ComponentValue v) { ((BoxCollider*)m_collider)->MinPoint = v.v; };
-        AddGenericParam("MinPoint", ComponentParameter::TYPE_VECTOR3, valueMin, callbackMin);
+        ComponentValue minValue = ComponentValue(ComponentParameter::TYPE_VECTOR3, ((BoxCollider*)m_collider)->MinPoint);
+        std::function<void(ComponentValue)> minCallback = [&](ComponentValue v) { ((BoxCollider*)m_collider)->MinPoint = v.v; };
+        AddGenericParam("MinPoint", ComponentParameter::TYPE_VECTOR3, minValue, minCallback);
 
         // MaxPoint parameter
-        ComponentValue valueMax = ComponentValue(ComponentParameter::TYPE_VECTOR3, ((BoxCollider*)m_collider)->MaxPoint);
-        std::function<void(ComponentValue)> callbackMax = [&](ComponentValue v) { ((BoxCollider*)m_collider)->MaxPoint = v.v; };
-        AddGenericParam("MaxPoint", ComponentParameter::TYPE_VECTOR3, valueMax, callbackMax);
+        ComponentValue maxValue = ComponentValue(ComponentParameter::TYPE_VECTOR3, ((BoxCollider*)m_collider)->MaxPoint);
+        std::function<void(ComponentValue)> maxCallback = [&](ComponentValue v) { ((BoxCollider*)m_collider)->MaxPoint = v.v; };
+        AddGenericParam("MaxPoint", ComponentParameter::TYPE_VECTOR3, maxValue, maxCallback);
 
+        break;
+    }
+    case Collider::CAPSULE_COLLIDER:
+    {
+        m_name = "Capsule Collider";
+
+        // Radius parameter
+        ComponentValue radiusValue = ComponentValue(ComponentParameter::TYPE_FLOAT, ((CapsuleCollider*)m_collider)->Radius);
+        std::function<void(ComponentValue)> radiusCallback = [&](ComponentValue v) { ((CapsuleCollider*)m_collider)->Radius = v.f; };
+        AddGenericParam("Radius", ComponentParameter::TYPE_FLOAT, radiusValue, radiusCallback);
+
+        // Height parameter
+        ComponentValue heightValue = ComponentValue(ComponentParameter::TYPE_FLOAT, ((CapsuleCollider*)m_collider)->Height);
+        std::function<void(ComponentValue)> heightCallback = [&](ComponentValue v) { ((CapsuleCollider*)m_collider)->Height = v.f; };
+        AddGenericParam("Height", ComponentParameter::TYPE_FLOAT, heightValue, heightCallback);
         break;
     }
     }

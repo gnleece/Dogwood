@@ -115,6 +115,7 @@ void MainEditorWindow::SetupMenuCommands()
     connect(m_addPhysicsSignalMapper, SIGNAL(mapped(int)), this, SLOT(AddCollider(int)));
     SignalMapHookup(m_addPhysicsSignalMapper, m_ui->actionAdd_Sphere_Collider,  (int)Collider::SPHERE_COLLIDER);
     SignalMapHookup(m_addPhysicsSignalMapper, m_ui->actionAdd_Box_Collider,     (int)Collider::BOX_COLLIDER);
+    SignalMapHookup(m_addPhysicsSignalMapper, m_ui->actionAdd_Capsule_Collider, (int)Collider::CAPSULE_COLLIDER);
 }
 
 MainEditorWindow::~MainEditorWindow()

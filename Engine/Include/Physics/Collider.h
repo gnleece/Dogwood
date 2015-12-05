@@ -9,7 +9,7 @@ class GameObjectBase;
 class Collider
 {
 public:
-    enum ColliderType { SPHERE_COLLIDER, BOX_COLLIDER };
+    enum ColliderType { SPHERE_COLLIDER, BOX_COLLIDER, CAPSULE_COLLIDER };
 
     Collider(GameObjectBase* gameObject);
 
@@ -49,4 +49,17 @@ public:
 
     Vector3                 MinPoint;
     Vector3                 MaxPoint;
+};
+
+class CapsuleCollider : public Collider
+{
+public:
+    CapsuleCollider(GameObjectBase* gameObject, float radius = 1, float height = 2);
+
+    virtual void            Serialize(tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc);
+    virtual ColliderType    GetType();
+    virtual float           GetBoundingRadius();
+
+    float                   Radius;
+    float                   Height;
 };
