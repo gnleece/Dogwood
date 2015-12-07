@@ -32,6 +32,24 @@ private:
     int             m_numIndices;
 };
 
+struct DebugCapsule
+{
+public:
+    ~DebugCapsule();
+    void            Init(float radius, float height, int divisions);
+    void            Draw(Matrix4x4& transform, ColorRGB& color, bool useDepth = true);
+
+private:
+    GLuint          m_positionBufferID;
+    GLuint          m_vertexArrayID;
+    GLuint          m_ebo;
+    Vector3*        m_positionBufferData;
+    GLuint*         m_indices;
+    ShaderProgram*  m_shader;
+
+    int             m_numIndices;
+};
+
 struct Pyramid
 {
 public:
@@ -87,6 +105,7 @@ public:
     void            DrawLineBuffer(GLuint vao, GLuint vbo, Vector3* buffer, int size, ColorRGB color);
 
     void            DrawSphere(Matrix4x4 transform, ColorRGB color);
+    void            DrawCapsule(Matrix4x4 transform, ColorRGB color);
 
     Material*       GetDebugMaterial();
 
@@ -104,4 +123,5 @@ private:
     ShaderProgram*  m_shader;
 
     DebugSphere     m_debugSphere;
+    DebugCapsule    m_debugCapsule;
 };

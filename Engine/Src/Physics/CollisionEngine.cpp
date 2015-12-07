@@ -43,6 +43,9 @@ void CollisionEngine::DrawDebugInfo()
 {
     DrawBoundingSpheres(m_staticColliders, ColorRGB::White);
     DrawBoundingSpheres(m_dynamicColliders, ColorRGB::Yellow);
+
+    // TODO testing, remove me
+    DebugDraw::Singleton().DrawCapsule(Translation(Vector3(0,2,0)), ColorRGB::Blue);
 }
 
 void CollisionEngine::DrawBoundingSpheres(vector<Collider*>& colliders, ColorRGB color)
