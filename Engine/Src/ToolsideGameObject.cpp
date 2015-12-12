@@ -190,18 +190,7 @@ ToolsideGameObject* ToolsideGameObject::BoundingSphereRaycast(Vector3 rayOrigin,
 // TODO this shouldn't be here
 void ToolsideGameObject::Render(bool dirty, bool wireframe)
 {
-    /*
-    // Determine worldspace transform
-    dirty |= m_dirty | m_localTransform.HasChanged();
     wireframe |= m_selected;
-    if (dirty)
-    {
-        // Hierarchy has changed so recompute world transform (and cache it)
-        m_worldTransform = parentWorldTransform*m_localTransform;
-        m_dirty = false;
-        m_localTransform.ClearChangedFlag();
-    }
-    */
 
     // Render the mesh
     if (m_mesh)

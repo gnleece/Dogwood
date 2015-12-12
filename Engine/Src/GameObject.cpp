@@ -114,18 +114,6 @@ void GameObject::OnDeactivate()
 
 void GameObject::Render(bool dirty, bool wireframe)
 {
-    /*
-    // Determine worldspace transform
-    dirty |= m_dirty | m_localTransform.HasChanged();
-    if (dirty)
-    {
-        // Hierarchy has changed so recompute world transform (and cache it)
-        m_worldTransform = parentWorldTransform*m_localTransform;
-        m_dirty = false;
-        m_localTransform.ClearChangedFlag();
-    }
-    */
-
     // Render the mesh
     if (m_mesh)
     {
