@@ -1,5 +1,7 @@
 #include "Physics/Collider.h"
 
+#include "Debugging/DebugDraw.h"
+#include "Math/Transformations.h"
 #include "GameObjectBase.h"
 #include "Util.h"
 
@@ -70,6 +72,10 @@ Transform& Collider::GetTransform()
     return GameObject->GetTransform();
 }
 
+void Collider::DebugDraw(ColorRGB color)
+{
+}
+
 //------------------------------------------------------------------------------------
 
 SphereCollider::SphereCollider(GameObjectBase* gameObject, float radius) : Collider(gameObject), Radius(radius)
@@ -93,6 +99,14 @@ Collider::ColliderType SphereCollider::GetType()
 float SphereCollider::GetBoundingRadius()
 {
     return Radius;
+}
+
+void SphereCollider::DebugDraw(ColorRGB color)
+{
+    Vector3 position = GetTransform().GetWorldPosition();
+    Matrix4x4 m = Translation(position);
+    m = m * UniformScaling(Radius);
+    DebugDraw::Singleton().DrawSphere(m, color);
 }
 
 //------------------------------------------------------------------------------------
@@ -121,11 +135,24 @@ float BoxCollider::GetBoundingRadius()
     return 1;       // TODO implement me!
 }
 
+void BoxCollider::DebugDraw(ColorRGB color)
+{
+    // TODO implement me
+}
+
 //------------------------------------------------------------------------------------
 
 CapsuleCollider::CapsuleCollider(GameObjectBase* gameObject, float radius, float height) 
     : Collider(gameObject), Radius(radius), Height(height)
 {
+}
+
+CapsuleCollider::~CapsuleCollider()
+{
+    if (m_debugCapsule != NULL)
+    {
+        delete m_debugCapsule;
+    }
 }
 
 void CapsuleCollider::Serialize(tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc)
@@ -146,4 +173,17 @@ Collider::ColliderType CapsuleCollider::GetType()
 float CapsuleCollider::GetBoundingRadius()
 {
     return Height + 2*Radius;
+}
+
+void CapsuleCollider::DebugDraw(ColorRGB color)
+{
+    if (m_debugCapsule == NULL)
+    {
+        m_debugCapsule = new DebugCapsule();
+        m_debugCapsule->Init(Radius, Height, 10);
+    }
+
+    Vector3 position = GetTransform().GetWorldPosition();
+    Matrix4x4 m = Translation(position);
+    m_debugCapsule->Draw(m, color);
 }

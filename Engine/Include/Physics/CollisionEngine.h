@@ -49,7 +49,8 @@ private:
     int     BroadPhaseCollision(PotentialContact* potentialContacts);
     void    NarrowPhaseCollision(PotentialContact* potentialContacts);
 
-    void    DrawBoundingSpheres(vector<Collider*>& colliders, ColorRGB color);
+    void    DrawColliders(vector<Collider*>& colliders, ColorRGB color);
+    void    DrawBoundingSpheres(BVHNode<BoundingSphere>* bvhNode, ColorRGB color);
 
     BVHNode<BoundingSphere>*    m_staticCollisionHierarchy;
     vector<Collider*>           m_staticColliders;

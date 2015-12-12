@@ -3,7 +3,9 @@
 #include "tinyxml2.h"
 #include "Math/Algebra.h"
 #include "Math/Transform.h"
+#include "Rendering/Color.h"
 
+class DebugCapsule;
 class GameObjectBase;
 
 class Collider
@@ -22,6 +24,8 @@ public:
     virtual ColliderType    GetType() = 0;
     virtual float           GetBoundingRadius() = 0;
 
+    virtual void            DebugDraw(ColorRGB color);
+
     bool                    IsStatic;
     GameObjectBase*         GameObject;
 };
@@ -35,6 +39,8 @@ public:
     virtual ColliderType    GetType();
     virtual float           GetBoundingRadius();
 
+    virtual void            DebugDraw(ColorRGB color);
+
     float                   Radius;
 };
 
@@ -47,6 +53,8 @@ public:
     virtual ColliderType    GetType();
     virtual float           GetBoundingRadius();
 
+    virtual void            DebugDraw(ColorRGB color);
+
     Vector3                 MinPoint;
     Vector3                 MaxPoint;
 };
@@ -55,11 +63,17 @@ class CapsuleCollider : public Collider
 {
 public:
     CapsuleCollider(GameObjectBase* gameObject, float radius = 1, float height = 2);
+    ~CapsuleCollider();
 
     virtual void            Serialize(tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc);
     virtual ColliderType    GetType();
     virtual float           GetBoundingRadius();
 
+    virtual void            DebugDraw(ColorRGB color);
+
     float                   Radius;
     float                   Height;
+
+private:
+    DebugCapsule*           m_debugCapsule;
 };

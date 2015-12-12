@@ -14,7 +14,7 @@ class ShaderProgram;
 
 // TODO put debug draw shapes in their own file
 
-struct DebugSphere
+class DebugSphere
 {
 public:
     ~DebugSphere();
@@ -32,7 +32,7 @@ private:
     int             m_numIndices;
 };
 
-struct DebugCapsule
+class DebugCapsule
 {
 public:
     ~DebugCapsule();

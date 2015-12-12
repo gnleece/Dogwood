@@ -14,9 +14,12 @@ public:
     BVHNode<BoundingVolumeType>(BVHNode<BoundingVolumeType>* parent, Collider* collider, BoundingVolumeType& volume);
     ~BVHNode();
 
-    unsigned int        GetPotentialContacts(PotentialContact* contacts, unsigned int limit);
-    void                Insert(Collider* collider, BoundingVolumeType& volume);
-    BVHNode<BoundingVolumeType>*            Find(Collider* collider);
+    unsigned int                    GetPotentialContacts(PotentialContact* contacts, unsigned int limit);
+    void                            Insert(Collider* collider, BoundingVolumeType& volume);
+    BVHNode<BoundingVolumeType>*    Find(Collider* collider);
+
+    BoundingVolumeType              GetVolume();
+    BVHNode<BoundingVolumeType>*    GetChild(int index);
 
 private:
     unsigned int        GetPotentialContactsWith(PotentialContact* contacts, unsigned int limit, BVHNode<BoundingVolumeType>* other);

@@ -249,7 +249,7 @@
                 </Material>
             </Mesh>
             <Colliders>
-                <Collider Type="2" IsStatic="1" Radius="1" Height="2"/>
+                <Collider Type="2" IsStatic="1" Radius="1" Height="5"/>
             </Colliders>
             <Components/>
         </GameObject>
