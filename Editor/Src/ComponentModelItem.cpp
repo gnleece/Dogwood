@@ -632,9 +632,14 @@ ComponentModelColliderItem::ComponentModelColliderItem(Collider* collider, bool 
     m_isHeader = header;
 
     // Static parameter
-    ComponentValue valueStatic = ComponentValue(ComponentParameter::TYPE_BOOL, m_collider->IsStatic);
-    std::function<void(ComponentValue)> callback = [&](ComponentValue v) { m_collider->IsStatic = v.b; };
-    AddGenericParam("IsStatic", ComponentParameter::TYPE_BOOL, valueStatic, callback);
+    ComponentValue staticValue = ComponentValue(ComponentParameter::TYPE_BOOL, m_collider->IsStatic);
+    std::function<void(ComponentValue)> staticCallback = [&](ComponentValue v) { m_collider->IsStatic = v.b; };
+    AddGenericParam("IsStatic", ComponentParameter::TYPE_BOOL, staticValue, staticCallback);
+
+    // Center parameter
+    ComponentValue centerValue = ComponentValue(ComponentParameter::TYPE_VECTOR3, m_collider->Center);
+    std::function<void(ComponentValue)> centerCallback = [&](ComponentValue v) { m_collider->Center = v.v; };
+    AddGenericParam("Center", ComponentParameter::TYPE_VECTOR3, centerValue, centerCallback);
 
     Collider::ColliderType type = collider->GetType();
     switch(type)
@@ -653,16 +658,10 @@ ComponentModelColliderItem::ComponentModelColliderItem(Collider* collider, bool 
     {
         m_name = "Box Collider";
 
-        // MinPoint parameter
-        ComponentValue minValue = ComponentValue(ComponentParameter::TYPE_VECTOR3, ((BoxCollider*)m_collider)->MinPoint);
-        std::function<void(ComponentValue)> minCallback = [&](ComponentValue v) { ((BoxCollider*)m_collider)->MinPoint = v.v; };
-        AddGenericParam("MinPoint", ComponentParameter::TYPE_VECTOR3, minValue, minCallback);
-
-        // MaxPoint parameter
-        ComponentValue maxValue = ComponentValue(ComponentParameter::TYPE_VECTOR3, ((BoxCollider*)m_collider)->MaxPoint);
-        std::function<void(ComponentValue)> maxCallback = [&](ComponentValue v) { ((BoxCollider*)m_collider)->MaxPoint = v.v; };
-        AddGenericParam("MaxPoint", ComponentParameter::TYPE_VECTOR3, maxValue, maxCallback);
-
+        // Size parameter
+        ComponentValue sizeValue = ComponentValue(ComponentParameter::TYPE_VECTOR3, ((BoxCollider*)m_collider)->Size);
+        std::function<void(ComponentValue)> sizeCallback = [&](ComponentValue v) { ((BoxCollider*)m_collider)->Size = v.v; };
+        AddGenericParam("Size", ComponentParameter::TYPE_VECTOR3, sizeValue, sizeCallback);
         break;
     }
     case Collider::CAPSULE_COLLIDER:

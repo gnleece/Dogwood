@@ -21,6 +21,7 @@ Collider* Collider::LoadFromXML(GameObjectBase* gameObject, XMLElement* xml)
     {
         SphereCollider* collider = new SphereCollider(gameObject);
         collider->IsStatic = xml->BoolAttribute("IsStatic");
+        collider->Center = ReadVector3FromXML(xml->FirstChildElement("Center"));
         collider->Radius = xml->FloatAttribute("Radius");
         return collider;
     }
@@ -28,14 +29,15 @@ Collider* Collider::LoadFromXML(GameObjectBase* gameObject, XMLElement* xml)
     {
         BoxCollider* collider = new BoxCollider(gameObject);
         collider->IsStatic = xml->BoolAttribute("IsStatic");
-        collider->MinPoint = ReadVector3FromXML(xml->FirstChildElement("MinPoint"));
-        collider->MaxPoint = ReadVector3FromXML(xml->FirstChildElement("MaxPoint"));
+        collider->Center = ReadVector3FromXML(xml->FirstChildElement("Center"));
+        collider->Size = ReadVector3FromXML(xml->FirstChildElement("Size"));
         return collider;
     }
     case CAPSULE_COLLIDER:
     {
         CapsuleCollider* collider = new CapsuleCollider(gameObject);
         collider->IsStatic = xml->BoolAttribute("IsStatic");
+        collider->Center = ReadVector3FromXML(xml->FirstChildElement("Center"));
         collider->Radius = xml->FloatAttribute("Radius");
         collider->Height = xml->FloatAttribute("Height");
         return collider;
@@ -88,6 +90,7 @@ void SphereCollider::Serialize(tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocum
     parentNode->InsertEndChild(node);
     node->SetAttribute("Type", Collider::SPHERE_COLLIDER);
     node->SetAttribute("IsStatic", IsStatic);
+    node->InsertEndChild(WriteVector3ToXML(Center, "Center", rootDoc));
     node->SetAttribute("Radius", Radius);
 }
 
@@ -113,6 +116,7 @@ void SphereCollider::DebugDraw(ColorRGB color)
 
 BoxCollider::BoxCollider(GameObjectBase* gameObject) : Collider(gameObject)
 {
+    Size = Vector3::One;
 }
 
 void BoxCollider::Serialize(tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc)
@@ -121,8 +125,8 @@ void BoxCollider::Serialize(tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument
     parentNode->InsertEndChild(node);
     node->SetAttribute("Type", Collider::BOX_COLLIDER);
     node->SetAttribute("IsStatic", IsStatic);
-    node->InsertEndChild(WriteVector3ToXML(MinPoint, "MinPoint", rootDoc));
-    node->InsertEndChild(WriteVector3ToXML(MaxPoint, "MaxPoint", rootDoc));
+    node->InsertEndChild(WriteVector3ToXML(Center, "Center", rootDoc));
+    node->InsertEndChild(WriteVector3ToXML(Size, "Size", rootDoc));
 }
 
 Collider::ColliderType BoxCollider::GetType()
@@ -161,6 +165,7 @@ void CapsuleCollider::Serialize(tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocu
     parentNode->InsertEndChild(node);
     node->SetAttribute("Type", Collider::CAPSULE_COLLIDER);
     node->SetAttribute("IsStatic", IsStatic);
+    node->InsertEndChild(WriteVector3ToXML(Center, "Center", rootDoc));
     node->SetAttribute("Radius", Radius);
     node->SetAttribute("Height", Height);
 }

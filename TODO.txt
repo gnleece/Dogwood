@@ -75,6 +75,10 @@ EDITOR (Thicket)
             - Reference type params should be styled differently (font color?)
             - Fix occasioanl null refs after model delete & rebuild
 
+    * Physics
+        * Visualize colliders in editor
+        * "Collider editing"
+
     * Visuals
         * Change transform tool shape based on mode
         * Use cones instead of pyramids for gnomon arrows

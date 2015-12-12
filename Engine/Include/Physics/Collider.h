@@ -28,6 +28,7 @@ public:
 
     bool                    IsStatic;
     GameObjectBase*         GameObject;
+    Vector3                 Center;
 };
 
 class SphereCollider : public Collider
@@ -55,8 +56,7 @@ public:
 
     virtual void            DebugDraw(ColorRGB color);
 
-    Vector3                 MinPoint;
-    Vector3                 MaxPoint;
+    Vector3                 Size;
 };
 
 class CapsuleCollider : public Collider

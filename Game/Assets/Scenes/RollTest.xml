@@ -48,7 +48,9 @@
                 </Material>
             </Mesh>
             <Colliders>
-                <Collider Type="0" IsStatic="1" Radius="1.5"/>
+                <Collider Type="0" IsStatic="1" Radius="1.5">
+                    <Center x="0.00000" y="0.00000" z="0.00000"/>
+                </Collider>
             </Colliders>
             <Components>
                 <Component guid="3988628104">
@@ -72,7 +74,9 @@
                 </Material>
             </Mesh>
             <Colliders>
-                <Collider Type="0" IsStatic="1" Radius="1.5"/>
+                <Collider Type="0" IsStatic="1" Radius="1.5">
+                    <Center x="0.00000" y="0.00000" z="0.00000"/>
+                </Collider>
             </Colliders>
             <Components/>
         </GameObject>
@@ -107,7 +111,9 @@
                 </Material>
             </Mesh>
             <Colliders>
-                <Collider Type="0" IsStatic="0" Radius="0.32499999"/>
+                <Collider Type="0" IsStatic="0" Radius="0.32499999">
+                    <Center x="0.00000" y="0.00000" z="0.00000"/>
+                </Collider>
             </Colliders>
             <Components>
                 <Component guid="3055461197">
@@ -141,7 +147,10 @@
                 </Material>
             </Mesh>
             <Colliders>
-                <Collider Type="0" IsStatic="1" Radius="1.5"/>
+                <Collider Type="1" IsStatic="1">
+                    <Center x="0.00000" y="0.00000" z="0.00000"/>
+                    <Size x="1.00000" y="1.00000" z="1.00000"/>
+                </Collider>
             </Colliders>
             <Components/>
         </GameObject>
@@ -193,7 +202,9 @@
                 </Material>
             </Mesh>
             <Colliders>
-                <Collider Type="0" IsStatic="1" Radius="1.5"/>
+                <Collider Type="0" IsStatic="1" Radius="1.5">
+                    <Center x="0.00000" y="0.00000" z="0.00000"/>
+                </Collider>
             </Colliders>
             <Components/>
         </GameObject>
@@ -211,7 +222,9 @@
                 </Material>
             </Mesh>
             <Colliders>
-                <Collider Type="0" IsStatic="1" Radius="3.5"/>
+                <Collider Type="0" IsStatic="1" Radius="3.5">
+                    <Center x="0.00000" y="0.00000" z="0.00000"/>
+                </Collider>
             </Colliders>
             <Components/>
         </GameObject>
@@ -230,7 +243,9 @@
                 </Material>
             </Mesh>
             <Colliders>
-                <Collider Type="0" IsStatic="1" Radius="1.5"/>
+                <Collider Type="0" IsStatic="1" Radius="1.5">
+                    <Center x="0.00000" y="0.00000" z="0.00000"/>
+                </Collider>
             </Colliders>
             <Components/>
         </GameObject>
@@ -249,7 +264,9 @@
                 </Material>
             </Mesh>
             <Colliders>
-                <Collider Type="2" IsStatic="1" Radius="1" Height="5"/>
+                <Collider Type="2" IsStatic="1" Radius="1" Height="5">
+                    <Center x="0.00000" y="0.00000" z="0.00000"/>
+                </Collider>
             </Colliders>
             <Components/>
         </GameObject>
