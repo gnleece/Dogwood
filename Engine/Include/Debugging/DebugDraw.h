@@ -48,7 +48,11 @@ class DebugCapsule : public DebugPrimitive
 {
 public:
     ~DebugCapsule();
-    void            Init(float radius, float height, int divisions);
+    void            Init(float radius, float height, int divisions, eAXIS axis);
+    virtual void    Draw(Matrix4x4& transform, ColorRGB& color, bool useDepth = true);
+
+private:
+    eAXIS           m_axis;
 };
 
 struct Pyramid

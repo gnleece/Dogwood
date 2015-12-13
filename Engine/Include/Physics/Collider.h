@@ -96,6 +96,9 @@ public:
     void                    SetAxis(eAXIS axis);
 
 private:
+    float                   CalculateWorldRadius();
+    float                   CalculateWorldHeight();
+
     void                    RefreshDebugInfo();
 
     float                   m_radius;

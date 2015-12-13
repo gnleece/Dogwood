@@ -234,7 +234,9 @@ Collider::ColliderType CapsuleCollider::GetType()
 
 float CapsuleCollider::GetBoundingRadius()
 {
-    return m_height + 2*m_radius;
+    float worldHeight = CalculateWorldHeight();
+    float worldRadius = CalculateWorldRadius();
+    return worldHeight + 2 * worldRadius;
 }
 
 void CapsuleCollider::DebugDraw(ColorRGB color, bool useDepth)
@@ -244,7 +246,8 @@ void CapsuleCollider::DebugDraw(ColorRGB color, bool useDepth)
         RefreshDebugInfo();
     }
 
-    Matrix4x4 m = Translation(GetWorldPosition());
+    Matrix4x4 r = RotationEulerAngles(m_gameObject->GetTransform().GetWorldRotation());
+    Matrix4x4 m = Translation(GetWorldPosition()) * r;
     m_debugCapsule->Draw(m, color, useDepth);
 }
 
@@ -277,8 +280,28 @@ void CapsuleCollider::SetHeight(float height)
 
 void CapsuleCollider::SetAxis(eAXIS axis)
 {
+    if (axis < AXIS_X || axis > AXIS_Z)
+        axis = AXIS_Y;
+
     m_axis = axis;
     RefreshDebugInfo();
+}
+
+float CapsuleCollider::CalculateWorldRadius()
+{
+    Vector3 objectWorldScale = m_gameObject->GetTransform().GetWorldScale();
+    float a = objectWorldScale[(m_axis + 1) % 3];
+    float b = objectWorldScale[(m_axis + 2) % 3];
+    float maxRadius = sqrt(a*a + b*b);
+    float worldRadius = m_radius * maxRadius;
+    return worldRadius;
+}
+
+float CapsuleCollider::CalculateWorldHeight()
+{
+    Vector3 objectWorldScale = m_gameObject->GetTransform().GetWorldScale();
+    float worldHeight = m_height * objectWorldScale[m_axis];
+    return worldHeight;
 }
 
 void CapsuleCollider::RefreshDebugInfo()
@@ -289,6 +312,9 @@ void CapsuleCollider::RefreshDebugInfo()
         delete m_debugCapsule;
     }
 
+    float worldRadius = CalculateWorldRadius();
+    float worldHeight = CalculateWorldHeight();
+
     m_debugCapsule = new DebugCapsule();
-    m_debugCapsule->Init(m_radius, m_height, 10);
+    m_debugCapsule->Init(worldRadius, worldHeight, 10, m_axis);
 }

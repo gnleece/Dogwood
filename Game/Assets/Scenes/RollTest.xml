@@ -251,9 +251,9 @@
         </GameObject>
         <GameObject guid="2420281555" name="TallCube">
             <Transform>
-                <Position x="0.00000" y="0.00000" z="10.00000"/>
-                <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
-                <Scale x="0.60000" y="3.00000" z="0.60000"/>
+                <Position x="-0.99000" y="0.00000" z="10.00000"/>
+                <Rotation x="-41.50000" y="-0.00000" z="0.00000"/>
+                <Scale x="1.10000" y="4.40000" z="1.10000"/>
             </Transform>
             <Mesh guid="1863496264">
                 <Material>
@@ -264,7 +264,7 @@
                 </Material>
             </Mesh>
             <Colliders>
-                <Collider Type="2" IsStatic="1" Radius="1" Height="5" Axis="1">
+                <Collider Type="2" IsStatic="1" Radius="1" Height="2" Axis="1">
                     <Center x="0.00000" y="0.00000" z="0.00000"/>
                 </Collider>
             </Colliders>

@@ -17,7 +17,7 @@ void DebugDraw::Startup()
 
     m_debugSphere.Init(1, 12);
     m_debugCube.Init();
-    m_debugCapsule.Init(1, 2, 12);
+    m_debugCapsule.Init(1, 2, 12, AXIS_Y);
 }
 
 void DebugDraw::Shutdown()
@@ -387,8 +387,12 @@ DebugCube::~DebugCube()
     delete m_indices;
 }
 
-void DebugCapsule::Init(float radius, float height, int divisions)
+void DebugCapsule::Init(float radius, float height, int divisions, eAXIS axis)
 {
+    // The points always define the capsule along the y-axis, but we'll rotate them
+    // in Draw() if the given axis is different
+    m_axis = axis;
+
     // Calculate vertex positions
     int numPoints = divisions*divisions + 1;
     m_positionBufferData = new Vector3[numPoints];
@@ -454,6 +458,20 @@ void DebugCapsule::Init(float radius, float height, int divisions)
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)*m_numIndices, m_indices, GL_STATIC_DRAW);
 
     m_shader = RenderManager::Singleton().GetCommonShader(RenderManager::eCommonShader::SHADER_UNLIT_UNI_COLOR);
+}
+
+void DebugCapsule::Draw(Matrix4x4& transform, ColorRGB& color, bool useDepth)
+{
+    if (m_axis == AXIS_X)
+    {
+        transform = transform * RotationEulerAngles(90*Vector3::Forward);
+    }
+    else if (m_axis == AXIS_Z)
+    {
+        transform = transform * RotationEulerAngles(90*Vector3::Right);
+    }
+
+    DebugPrimitive::Draw(transform, color, useDepth);
 }
 
 DebugCapsule::~DebugCapsule()
