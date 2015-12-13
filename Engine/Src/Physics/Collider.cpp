@@ -15,53 +15,32 @@ Collider::Collider(GameObjectBase* gameObject)
 Collider* Collider::LoadFromXML(GameObjectBase* gameObject, XMLElement* xml)
 {
     Collider::ColliderType type = (Collider::ColliderType)xml->IntAttribute("Type");
+    Collider* collider = NULL;
 
     switch(type)
     {
-    case SPHERE_COLLIDER:
-    {
-        SphereCollider* collider = new SphereCollider(gameObject);
-        collider->SetStatic(xml->BoolAttribute("IsStatic"));
-        collider->SetCenter(ReadVector3FromXML(xml->FirstChildElement("Center")));
-        collider->SetRadius(xml->FloatAttribute("Radius"));
-        return collider;
-    }
-    case BOX_COLLIDER:
-    {
-        BoxCollider* collider = new BoxCollider(gameObject);
-        collider->SetStatic(xml->BoolAttribute("IsStatic"));
-        collider->SetCenter(ReadVector3FromXML(xml->FirstChildElement("Center")));
-        collider->SetSize(ReadVector3FromXML(xml->FirstChildElement("Size")));
-        return collider;
-    }
-    case CAPSULE_COLLIDER:
-    {
-        CapsuleCollider* collider = new CapsuleCollider(gameObject);
-        collider->SetStatic(xml->BoolAttribute("IsStatic"));
-        collider->SetCenter(ReadVector3FromXML(xml->FirstChildElement("Center")));
-        collider->SetRadius(xml->FloatAttribute("Radius"));
-        collider->SetHeight(xml->FloatAttribute("Height"));
-        return collider;
-    }
+    case SPHERE_COLLIDER:   collider = new SphereCollider(gameObject);  break;
+    case BOX_COLLIDER:      collider = new BoxCollider(gameObject);     break;
+    case CAPSULE_COLLIDER:  collider = new CapsuleCollider(gameObject); break;
     }
 
-    return NULL;
+    if (collider != NULL)
+    {
+        collider->LoadFromXML(xml);
+    }
+
+    return collider;
 }
 
 void Collider::AddToGameObject(GameObjectBase* gameObject, ColliderType type)
 {
     Collider* collider = NULL;
+
     switch (type)
     {
-    case SPHERE_COLLIDER:
-        collider = new SphereCollider(gameObject);
-        break;
-    case BOX_COLLIDER:
-        collider = new BoxCollider(gameObject);
-        break;
-    case CAPSULE_COLLIDER:
-        collider = new CapsuleCollider(gameObject);
-        break;
+    case SPHERE_COLLIDER:   collider = new SphereCollider(gameObject);  break;
+    case BOX_COLLIDER:      collider = new BoxCollider(gameObject);     break;
+    case CAPSULE_COLLIDER:  collider = new CapsuleCollider(gameObject); break;
     }
 
     if (collider != NULL)
@@ -114,6 +93,13 @@ SphereCollider::SphereCollider(GameObjectBase* gameObject, float radius)
 {
 }
 
+void SphereCollider::LoadFromXML(XMLElement* xml)
+{
+    SetStatic(xml->BoolAttribute("IsStatic"));
+    SetCenter(ReadVector3FromXML(xml->FirstChildElement("Center")));
+    SetRadius(xml->FloatAttribute("Radius"));
+}
+
 void SphereCollider::Serialize(tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc)
 {
     XMLElement* node = rootDoc.NewElement("Collider");
@@ -159,6 +145,13 @@ BoxCollider::BoxCollider(GameObjectBase* gameObject)
 {
 }
 
+void BoxCollider::LoadFromXML(XMLElement* xml)
+{
+    SetStatic(xml->BoolAttribute("IsStatic"));
+    SetCenter(ReadVector3FromXML(xml->FirstChildElement("Center")));
+    SetSize(ReadVector3FromXML(xml->FirstChildElement("Size")));
+}
+
 void BoxCollider::Serialize(tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc)
 {
     XMLElement* node = rootDoc.NewElement("Collider");
@@ -200,8 +193,8 @@ void BoxCollider::SetSize(Vector3 size)
 
 //------------------------------------------------------------------------------------
 
-CapsuleCollider::CapsuleCollider(GameObjectBase* gameObject, float radius, float height) 
-    : Collider(gameObject), m_radius(radius), m_height(height)
+CapsuleCollider::CapsuleCollider(GameObjectBase* gameObject, float radius, float height, eAXIS axis)
+    : Collider(gameObject), m_radius(radius), m_height(height), m_axis(axis)
 {
 }
 
@@ -213,6 +206,15 @@ CapsuleCollider::~CapsuleCollider()
     }
 }
 
+void CapsuleCollider::LoadFromXML(XMLElement* xml)
+{
+    SetStatic(xml->BoolAttribute("IsStatic"));
+    SetCenter(ReadVector3FromXML(xml->FirstChildElement("Center")));
+    SetRadius(xml->FloatAttribute("Radius"));
+    SetHeight(xml->FloatAttribute("Height"));
+    SetAxis((eAXIS)xml->IntAttribute("Axis"));
+}
+
 void CapsuleCollider::Serialize(tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc)
 {
     XMLElement* node = rootDoc.NewElement("Collider");
@@ -222,6 +224,7 @@ void CapsuleCollider::Serialize(tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocu
     node->InsertEndChild(WriteVector3ToXML(m_center, "Center", rootDoc));
     node->SetAttribute("Radius", m_radius);
     node->SetAttribute("Height", m_height);
+    node->SetAttribute("Axis", m_axis);
 }
 
 Collider::ColliderType CapsuleCollider::GetType()
@@ -255,6 +258,11 @@ float CapsuleCollider::GetHeight()
     return m_height;
 }
 
+eAXIS CapsuleCollider::GetAxis()
+{
+    return m_axis;
+}
+
 void CapsuleCollider::SetRadius(float radius)
 {
     m_radius = radius;
@@ -264,6 +272,12 @@ void CapsuleCollider::SetRadius(float radius)
 void CapsuleCollider::SetHeight(float height)
 {
     m_height = height;
+    RefreshDebugInfo();
+}
+
+void CapsuleCollider::SetAxis(eAXIS axis)
+{
+    m_axis = axis;
     RefreshDebugInfo();
 }
 

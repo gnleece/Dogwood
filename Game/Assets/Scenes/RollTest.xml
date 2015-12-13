@@ -264,7 +264,7 @@
                 </Material>
             </Mesh>
             <Colliders>
-                <Collider Type="2" IsStatic="1" Radius="1" Height="5">
+                <Collider Type="2" IsStatic="1" Radius="1" Height="5" Axis="1">
                     <Center x="0.00000" y="0.00000" z="0.00000"/>
                 </Collider>
             </Colliders>

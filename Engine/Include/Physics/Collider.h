@@ -18,6 +18,7 @@ public:
     static Collider*        LoadFromXML(GameObjectBase* gameObject, tinyxml2::XMLElement* xml);
     static void             AddToGameObject(GameObjectBase* gameObject, ColliderType type);
 
+    virtual void            LoadFromXML(tinyxml2::XMLElement* xml) = 0;
     virtual void            Serialize(tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc) = 0;
     virtual ColliderType    GetType() = 0;
     virtual float           GetBoundingRadius() = 0;
@@ -43,6 +44,7 @@ class SphereCollider : public Collider
 public:
     SphereCollider(GameObjectBase* gameObject, float radius = 1.0f);
 
+    virtual void            LoadFromXML(tinyxml2::XMLElement* xml);
     virtual void            Serialize(tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc);
     virtual ColliderType    GetType();
     virtual float           GetBoundingRadius();
@@ -60,6 +62,7 @@ class BoxCollider : public Collider
 public:
     BoxCollider(GameObjectBase* gameObject);
 
+    virtual void            LoadFromXML(tinyxml2::XMLElement* xml);
     virtual void            Serialize(tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc);
     virtual ColliderType    GetType();
     virtual float           GetBoundingRadius();
@@ -75,9 +78,10 @@ private:
 class CapsuleCollider : public Collider
 {
 public:
-    CapsuleCollider(GameObjectBase* gameObject, float radius = 1, float height = 2);
+    CapsuleCollider(GameObjectBase* gameObject, float radius = 1, float height = 2, eAXIS axis = AXIS_Y);
     ~CapsuleCollider();
 
+    virtual void            LoadFromXML(tinyxml2::XMLElement* xml);
     virtual void            Serialize(tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc);
     virtual ColliderType    GetType();
     virtual float           GetBoundingRadius();
@@ -85,15 +89,18 @@ public:
 
     float                   GetRadius();
     float                   GetHeight();
+    eAXIS                   GetAxis();
 
     void                    SetRadius(float radius);
     void                    SetHeight(float height);
+    void                    SetAxis(eAXIS axis);
 
 private:
     void                    RefreshDebugInfo();
 
     float                   m_radius;
     float                   m_height;
+    eAXIS                   m_axis;
 
     DebugCapsule*           m_debugCapsule;
 };

@@ -676,6 +676,11 @@ ComponentModelColliderItem::ComponentModelColliderItem(Collider* collider, bool 
         ComponentValue heightValue = ComponentValue(ComponentParameter::TYPE_FLOAT, ((CapsuleCollider*)m_collider)->GetHeight());
         std::function<void(ComponentValue)> heightCallback = [&](ComponentValue v) { ((CapsuleCollider*)m_collider)->SetHeight(v.f); };
         AddGenericParam("Height", ComponentParameter::TYPE_FLOAT, heightValue, heightCallback);
+
+        // Axis parameter
+        ComponentValue axisValue = ComponentValue(ComponentParameter::TYPE_INT, ((CapsuleCollider*)m_collider)->GetAxis());
+        std::function<void(ComponentValue)> axisCallback = [&](ComponentValue v) { ((CapsuleCollider*)m_collider)->SetAxis((eAXIS)v.i); };
+        AddGenericParam("Axis", ComponentParameter::TYPE_INT, axisValue, axisCallback);
         break;
     }
     }
