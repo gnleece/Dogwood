@@ -178,7 +178,10 @@ float BoxCollider::GetBoundingRadius()
 
 void BoxCollider::DebugDraw(ColorRGB color)
 {
-    // TODO implement me
+    Vector3 position = GetTransform().GetWorldPosition();
+    Matrix4x4 m = Translation(position);
+    m = m * Scaling(m_size);
+    DebugDraw::Singleton().DrawCube(m, color);
 }
 
 Vector3 BoxCollider::GetSize()

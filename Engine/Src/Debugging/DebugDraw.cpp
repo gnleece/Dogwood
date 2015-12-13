@@ -16,6 +16,7 @@ void DebugDraw::Startup()
     glBindVertexArray(m_vertexArrayID);
 
     m_debugSphere.Init(1, 12);
+    m_debugCube.Init();
     m_debugCapsule.Init(1, 2, 12);
 }
 
@@ -111,12 +112,17 @@ void DebugDraw::RenderLines()
     m_numLines = 0;
 }
 
-void DebugDraw::DrawSphere(Matrix4x4 transform, ColorRGB color)
+void DebugDraw::DrawSphere(Matrix4x4& transform, ColorRGB color)
 {
     m_debugSphere.Draw(transform, color);
 }
 
-void DebugDraw::DrawCapsule(Matrix4x4 transform, ColorRGB color)
+void DebugDraw::DrawCube(Matrix4x4& transform, ColorRGB color)
+{
+    m_debugCube.Draw(transform, color);
+}
+
+void DebugDraw::DrawCapsule(Matrix4x4& transform, ColorRGB color)
 {
     m_debugCapsule.Draw(transform, color);
 }
@@ -217,6 +223,42 @@ void Gnomon::Draw(Matrix4x4& transform)
     glEnable(GL_DEPTH_TEST);
 }
 
+void DebugPrimitive::Draw(Matrix4x4& transform, ColorRGB& color, bool useDepth)
+{
+    if (!useDepth)
+    {
+        glDisable(GL_DEPTH_TEST);
+    }
+
+    m_shader->ApplyShader();
+
+    glBindVertexArray(m_vertexArrayID);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
+
+    // Set model matrix
+    GLint uniModel = m_shader->GetUniformLocation("model");
+    glUniformMatrix4fv(uniModel, 1, GL_FALSE, transform.Transpose().Start());
+
+    // Set uniform color
+    GLint uniColor = m_shader->GetUniformLocation("color");
+    glUniform3fv(uniColor, 1, color.Start());
+
+    // Bind position data
+    GLint paramLocation = m_shader->GetAttributeLocation("position");
+    glEnableVertexAttribArray(paramLocation);
+    glBindBuffer(GL_ARRAY_BUFFER, m_positionBufferID);
+    glVertexAttribPointer(paramLocation, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
+
+    glDrawElements(GL_LINES, sizeof(GLuint)*m_numIndices, GL_UNSIGNED_INT, 0);
+
+    glDisableVertexAttribArray(paramLocation);
+
+    if (!useDepth)
+    {
+        glEnable(GL_DEPTH_TEST);
+    }
+}
+
 void DebugSphere::Init(float radius, int divisions)
 {
     // Calculate vertex positions
@@ -284,49 +326,66 @@ void DebugSphere::Init(float radius, int divisions)
     m_shader = RenderManager::Singleton().GetCommonShader(RenderManager::eCommonShader::SHADER_UNLIT_UNI_COLOR);
 }
 
-void DebugSphere::Draw(Matrix4x4& transform, ColorRGB& color, bool useDepth)
-{
-    if (!useDepth)
-    {
-        glDisable(GL_DEPTH_TEST);
-    }
-
-    m_shader->ApplyShader();
-
-    glBindVertexArray(m_vertexArrayID);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
-
-    // Set model matrix
-    GLint uniModel = m_shader->GetUniformLocation("model");
-    glUniformMatrix4fv(uniModel, 1, GL_FALSE, transform.Transpose().Start());
-
-    // Set uniform color
-    GLint uniColor = m_shader->GetUniformLocation("color");
-    glUniform3fv(uniColor, 1, color.Start());
-
-    // Bind position data
-    GLint paramLocation = m_shader->GetAttributeLocation("position");
-    glEnableVertexAttribArray(paramLocation);
-    glBindBuffer(GL_ARRAY_BUFFER, m_positionBufferID);
-    glVertexAttribPointer(paramLocation, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
-
-    glDrawElements(GL_LINES, sizeof(GLuint)*m_numIndices, GL_UNSIGNED_INT, 0);
-
-    glDisableVertexAttribArray(paramLocation);
-
-    if (!useDepth)
-    {
-        glEnable(GL_DEPTH_TEST);
-    }
-}
-
 DebugSphere::~DebugSphere()
 {
     delete m_positionBufferData;
     delete m_indices;
 }
 
-// TODO this needs major refactoring
+void DebugCube::Init()
+{
+    // Calculate vertex positions
+    int numPoints = 8;
+    m_positionBufferData = new Vector3[numPoints];
+
+    float size = 0.5f;
+    m_positionBufferData[0] = Vector3(-size, -size, -size);
+    m_positionBufferData[1] = Vector3(-size, -size,  size);
+    m_positionBufferData[2] = Vector3(-size,  size, -size);
+    m_positionBufferData[3] = Vector3(-size,  size,  size);
+    m_positionBufferData[4] = Vector3( size, -size, -size);
+    m_positionBufferData[5] = Vector3( size, -size,  size);
+    m_positionBufferData[6] = Vector3( size,  size, -size);
+    m_positionBufferData[7] = Vector3( size,  size,  size);
+
+    // Populate index buffer
+    m_numIndices = 12 * 2;                  // 12 lines * 2 points per line
+    m_indices = new GLuint[m_numIndices];
+
+    m_indices[0] = 0; m_indices[1] = 1;
+    m_indices[2] = 2; m_indices[3] = 3;
+    m_indices[4] = 4; m_indices[5] = 5;
+    m_indices[6] = 6; m_indices[7] = 7;
+    m_indices[8] = 0; m_indices[9] = 2;
+    m_indices[10] = 1; m_indices[11] = 3;
+    m_indices[12] = 4; m_indices[13] = 6;
+    m_indices[14] = 5; m_indices[15] = 7;
+    m_indices[16] = 0; m_indices[17] = 4;
+    m_indices[18] = 1; m_indices[19] = 5;
+    m_indices[20] = 2; m_indices[21] = 6;
+    m_indices[22] = 3; m_indices[23] = 7;
+
+    // Bind buffer data
+    glGenVertexArrays(1, &m_vertexArrayID);
+    glBindVertexArray(m_vertexArrayID);
+
+    // Upload vertex data
+    glGenBuffers(1, &m_positionBufferID);
+    glBindBuffer(GL_ARRAY_BUFFER, m_positionBufferID);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(Vector3)*numPoints, m_positionBufferData, GL_STATIC_DRAW);
+
+    glGenBuffers(1, &m_ebo);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)*m_numIndices, m_indices, GL_STATIC_DRAW);
+
+    m_shader = RenderManager::Singleton().GetCommonShader(RenderManager::eCommonShader::SHADER_UNLIT_UNI_COLOR);
+}
+
+DebugCube::~DebugCube()
+{
+    delete m_positionBufferData;
+    delete m_indices;
+}
 
 void DebugCapsule::Init(float radius, float height, int divisions)
 {
@@ -395,42 +454,6 @@ void DebugCapsule::Init(float radius, float height, int divisions)
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)*m_numIndices, m_indices, GL_STATIC_DRAW);
 
     m_shader = RenderManager::Singleton().GetCommonShader(RenderManager::eCommonShader::SHADER_UNLIT_UNI_COLOR);
-}
-
-void DebugCapsule::Draw(Matrix4x4& transform, ColorRGB& color, bool useDepth)
-{
-    if (!useDepth)
-    {
-        glDisable(GL_DEPTH_TEST);
-    }
-
-    m_shader->ApplyShader();
-
-    glBindVertexArray(m_vertexArrayID);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
-
-    // Set model matrix
-    GLint uniModel = m_shader->GetUniformLocation("model");
-    glUniformMatrix4fv(uniModel, 1, GL_FALSE, transform.Transpose().Start());
-
-    // Set uniform color
-    GLint uniColor = m_shader->GetUniformLocation("color");
-    glUniform3fv(uniColor, 1, color.Start());
-
-    // Bind position data
-    GLint paramLocation = m_shader->GetAttributeLocation("position");
-    glEnableVertexAttribArray(paramLocation);
-    glBindBuffer(GL_ARRAY_BUFFER, m_positionBufferID);
-    glVertexAttribPointer(paramLocation, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
-
-    glDrawElements(GL_LINES, sizeof(GLuint)*m_numIndices, GL_UNSIGNED_INT, 0);
-
-    glDisableVertexAttribArray(paramLocation);
-
-    if (!useDepth)
-    {
-        glEnable(GL_DEPTH_TEST);
-    }
 }
 
 DebugCapsule::~DebugCapsule()

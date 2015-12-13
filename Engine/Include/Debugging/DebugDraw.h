@@ -14,14 +14,12 @@ class ShaderProgram;
 
 // TODO put debug draw shapes in their own file
 
-class DebugSphere
+class DebugPrimitive
 {
 public:
-    ~DebugSphere();
-    void            Init(float radius, int divisions);
-    void            Draw(Matrix4x4& transform, ColorRGB& color, bool useDepth = true);
+    virtual void    Draw(Matrix4x4& transform, ColorRGB& color, bool useDepth = true);
 
-private:
+protected:
     GLuint          m_positionBufferID;
     GLuint          m_vertexArrayID;
     GLuint          m_ebo;
@@ -32,22 +30,25 @@ private:
     int             m_numIndices;
 };
 
-class DebugCapsule
+class DebugSphere : public DebugPrimitive
+{
+public:
+    ~DebugSphere();
+    void            Init(float radius, int divisions);
+};
+
+class DebugCube : public DebugPrimitive
+{
+public:
+    ~DebugCube();
+    void            Init();
+};
+
+class DebugCapsule : public DebugPrimitive
 {
 public:
     ~DebugCapsule();
     void            Init(float radius, float height, int divisions);
-    void            Draw(Matrix4x4& transform, ColorRGB& color, bool useDepth = true);
-
-private:
-    GLuint          m_positionBufferID;
-    GLuint          m_vertexArrayID;
-    GLuint          m_ebo;
-    Vector3*        m_positionBufferData;
-    GLuint*         m_indices;
-    ShaderProgram*  m_shader;
-
-    int             m_numIndices;
 };
 
 struct Pyramid
@@ -104,8 +105,9 @@ public:
     void            PrepareLineBuffer(Vector3* buffer, int count, GLuint &vao, GLuint &vbo);
     void            DrawLineBuffer(GLuint vao, GLuint vbo, Vector3* buffer, int size, ColorRGB color);
 
-    void            DrawSphere(Matrix4x4 transform, ColorRGB color);
-    void            DrawCapsule(Matrix4x4 transform, ColorRGB color);
+    void            DrawSphere(Matrix4x4& transform, ColorRGB color);
+    void            DrawCube(Matrix4x4& transform, ColorRGB color);
+    void            DrawCapsule(Matrix4x4& transform, ColorRGB color);
 
     Material*       GetDebugMaterial();
 
@@ -123,5 +125,6 @@ private:
     ShaderProgram*  m_shader;
 
     DebugSphere     m_debugSphere;
+    DebugCube       m_debugCube;
     DebugCapsule    m_debugCapsule;
 };
