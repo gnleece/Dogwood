@@ -98,7 +98,7 @@ unsigned int BVHNode<BoundingVolumeType>::GetPotentialContactsWith(PotentialCont
     if (IsLeaf() && other->IsLeaf())
     {
         // We only consider potential collisions where at least one collider is dynamic
-        if (!m_collider->IsStatic || !other->m_collider->IsStatic)
+        if (!m_collider->IsStatic() || !other->m_collider->IsStatic())
         {
             contacts->colliders[0] = m_collider;
             contacts->colliders[1] = other->m_collider;

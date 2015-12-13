@@ -5,6 +5,7 @@
 #include "ToolsideGameComponent.h"
 #include "Util.h"
 #include "Math\Raycast.h"
+#include "Physics\Collider.h"
 #include "Rendering\Mesh.h"
 #include "Rendering\MeshInstance.h"
 
@@ -204,6 +205,16 @@ void ToolsideGameObject::Render(bool dirty, bool wireframe)
     {
         ToolsideGameObject* child = (ToolsideGameObject*)*childIter;
         child->Render(dirty, wireframe);
+    }
+
+    if (m_selected)
+    {
+        // Render colliders
+        vector<Collider*>::iterator iter;
+        for (iter = m_colliders.begin(); iter != m_colliders.end(); iter++)
+        {
+            (*iter)->DebugDraw(ColorRGB(0.f, 1.f, 0.5f));
+        }
     }
 }
 

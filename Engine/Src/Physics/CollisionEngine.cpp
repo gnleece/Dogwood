@@ -29,8 +29,8 @@ void CollisionEngine::Update(float deltaTime)
         printf("POTENTIAL CONTACTS!!!\n");
         for (int i = 0; i < numPotentialContacts; i++)
         {
-            printf("\t%s\n", potentialContacts[i].colliders[0]->GameObject->GetName().c_str());
-            printf("\t%s\n", potentialContacts[i].colliders[1]->GameObject->GetName().c_str());
+            printf("\t%s\n", potentialContacts[i].colliders[0]->GetGameObject()->GetName().c_str());
+            printf("\t%s\n", potentialContacts[i].colliders[1]->GetGameObject()->GetName().c_str());
             printf("\t---\n");
         }
     }
@@ -43,8 +43,8 @@ void CollisionEngine::DrawDebugInfo()
 {
     //DrawBoundingSpheres(m_staticCollisionHierarchy, ColorRGB::White);
 
-    DrawColliders(m_staticColliders, ColorRGB::White);
-    DrawColliders(m_dynamicColliders, ColorRGB::Yellow);
+    //DrawColliders(m_staticColliders, ColorRGB::White);
+    //DrawColliders(m_dynamicColliders, ColorRGB::Yellow);
 }
 
 void CollisionEngine::DrawColliders(vector<Collider*>& colliders, ColorRGB color)
@@ -76,7 +76,7 @@ void CollisionEngine::RegisterCollider(Collider* collider)
     if (collider == NULL)
         return;
 
-    if (collider->IsStatic)
+    if (collider->IsStatic())
     {
         m_staticColliders.push_back(collider);
         AddColliderToHierarchy(collider);
@@ -92,7 +92,7 @@ void CollisionEngine::UnregisterCollider(Collider* collider)
     if (collider == NULL)
         return;
 
-    if (collider->IsStatic)
+    if (collider->IsStatic())
     {
         m_staticColliders.erase(
             std::remove(m_staticColliders.begin(), m_staticColliders.end(), collider),

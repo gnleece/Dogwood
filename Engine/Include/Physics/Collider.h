@@ -18,17 +18,23 @@ public:
     static Collider*        LoadFromXML(GameObjectBase* gameObject, tinyxml2::XMLElement* xml);
     static void             AddToGameObject(GameObjectBase* gameObject, ColliderType type);
 
-    Transform&              GetTransform();
-
     virtual void            Serialize(tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc) = 0;
     virtual ColliderType    GetType() = 0;
     virtual float           GetBoundingRadius() = 0;
-
     virtual void            DebugDraw(ColorRGB color);
 
-    bool                    IsStatic;
-    GameObjectBase*         GameObject;
-    Vector3                 Center;
+    Transform&              GetTransform();
+    bool                    IsStatic();
+    GameObjectBase*         GetGameObject();
+    Vector3                 GetCenter();
+
+    void                    SetStatic(bool isStatic);
+    void                    SetCenter(Vector3 center);
+
+protected:
+    bool                    m_isStatic;
+    GameObjectBase*         m_gameObject;
+    Vector3                 m_center;
 };
 
 class SphereCollider : public Collider
@@ -39,10 +45,13 @@ public:
     virtual void            Serialize(tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc);
     virtual ColliderType    GetType();
     virtual float           GetBoundingRadius();
-
     virtual void            DebugDraw(ColorRGB color);
 
-    float                   Radius;
+    float                   GetRadius();
+    void                    SetRadius(float radius);
+
+private:
+    float                   m_radius;
 };
 
 class BoxCollider : public Collider
@@ -53,10 +62,13 @@ public:
     virtual void            Serialize(tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc);
     virtual ColliderType    GetType();
     virtual float           GetBoundingRadius();
-
     virtual void            DebugDraw(ColorRGB color);
 
-    Vector3                 Size;
+    Vector3                 GetSize();
+    void                    SetSize(Vector3 size);
+
+private:
+    Vector3                 m_size;
 };
 
 class CapsuleCollider : public Collider
@@ -68,12 +80,19 @@ public:
     virtual void            Serialize(tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc);
     virtual ColliderType    GetType();
     virtual float           GetBoundingRadius();
-
     virtual void            DebugDraw(ColorRGB color);
 
-    float                   Radius;
-    float                   Height;
+    float                   GetRadius();
+    float                   GetHeight();
+
+    void                    SetRadius(float radius);
+    void                    SetHeight(float height);
 
 private:
+    void                    RefreshDebugInfo();
+
+    float                   m_radius;
+    float                   m_height;
+
     DebugCapsule*           m_debugCapsule;
 };
