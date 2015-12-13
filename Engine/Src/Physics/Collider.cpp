@@ -236,7 +236,7 @@ float CapsuleCollider::GetBoundingRadius()
 {
     float worldHeight = CalculateWorldHeight();
     float worldRadius = CalculateWorldRadius();
-    return worldHeight + 2 * worldRadius;
+    return worldHeight/2 + worldRadius;
 }
 
 void CapsuleCollider::DebugDraw(ColorRGB color, bool useDepth)

@@ -76,7 +76,7 @@ EDITOR (Thicket)
             - Fix occasioanl null refs after model delete & rebuild
 
     * Physics
-        * Visualize colliders in editor
+        * Refresh capsule draw on object scale
         * "Collider editing"
 
     * Visuals

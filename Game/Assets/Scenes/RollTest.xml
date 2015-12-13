@@ -14,6 +14,7 @@
         <Resource guid="536475533"/>
         <Resource guid="3780387270"/>
         <Resource guid="1863496264"/>
+        <Resource guid="3936014360"/>
     </Resources>
     <Camera>
         <Position x="0.00000" y="1.00000" z="10.00000"/>
@@ -48,8 +49,9 @@
                 </Material>
             </Mesh>
             <Colliders>
-                <Collider Type="0" IsStatic="1" Radius="1.5">
+                <Collider Type="1" IsStatic="1">
                     <Center x="0.00000" y="0.00000" z="0.00000"/>
+                    <Size x="1.10000" y="1.10000" z="1.10000"/>
                 </Collider>
             </Colliders>
             <Components>
@@ -74,8 +76,9 @@
                 </Material>
             </Mesh>
             <Colliders>
-                <Collider Type="0" IsStatic="1" Radius="1.5">
+                <Collider Type="1" IsStatic="1">
                     <Center x="0.00000" y="0.00000" z="0.00000"/>
+                    <Size x="1.10000" y="1.10000" z="1.10000"/>
                 </Collider>
             </Colliders>
             <Components/>
@@ -94,7 +97,12 @@
                     <Color r="0.29804" g="0.29804" b="0.29804" name="colorSpecular"/>
                 </Material>
             </Mesh>
-            <Colliders/>
+            <Colliders>
+                <Collider Type="1" IsStatic="1">
+                    <Center x="0.00000" y="0.00000" z="-1.00000"/>
+                    <Size x="1.50000" y="2.00000" z="2.00000"/>
+                </Collider>
+            </Colliders>
             <Components/>
         </GameObject>
         <GameObject guid="2032717194" name="Katamari">
@@ -149,7 +157,7 @@
             <Colliders>
                 <Collider Type="1" IsStatic="1">
                     <Center x="0.00000" y="0.00000" z="0.00000"/>
-                    <Size x="1.00000" y="1.00000" z="1.00000"/>
+                    <Size x="1.05000" y="1.10000" z="1.10000"/>
                 </Collider>
             </Colliders>
             <Components/>
@@ -196,14 +204,15 @@
             <Mesh guid="33727872">
                 <Material>
                     <Shader guid="3746892247"/>
-                    <Color r="1.00000" g="1.00000" b="0.49804" name="colorDiffuse"/>
-                    <Color r="1.00000" g="1.00000" b="0.49804" name="colorAmbient"/>
+                    <Color r="1.00000" g="1.00000" b="0.00000" name="colorDiffuse"/>
+                    <Color r="0.61961" g="0.61961" b="0.30588" name="colorAmbient"/>
                     <Color r="1.00000" g="1.00000" b="1.00000" name="colorSpecular"/>
                 </Material>
             </Mesh>
             <Colliders>
-                <Collider Type="0" IsStatic="1" Radius="1">
+                <Collider Type="1" IsStatic="1">
                     <Center x="0.00000" y="0.00000" z="0.00000"/>
+                    <Size x="1.10000" y="1.10000" z="1.10000"/>
                 </Collider>
             </Colliders>
             <Components/>
@@ -222,8 +231,9 @@
                 </Material>
             </Mesh>
             <Colliders>
-                <Collider Type="0" IsStatic="1" Radius="3.5">
+                <Collider Type="1" IsStatic="1">
                     <Center x="0.00000" y="0.00000" z="0.00000"/>
+                    <Size x="1.10000" y="1.10000" z="1.10000"/>
                 </Collider>
             </Colliders>
             <Components/>
@@ -243,8 +253,9 @@
                 </Material>
             </Mesh>
             <Colliders>
-                <Collider Type="0" IsStatic="1" Radius="1.5">
+                <Collider Type="1" IsStatic="1">
                     <Center x="0.00000" y="0.00000" z="0.00000"/>
+                    <Size x="1.10000" y="1.10000" z="1.10000"/>
                 </Collider>
             </Colliders>
             <Components/>
@@ -252,7 +263,7 @@
         <GameObject guid="2420281555" name="TallCube">
             <Transform>
                 <Position x="-0.99000" y="0.00000" z="10.00000"/>
-                <Rotation x="-41.50000" y="-0.00000" z="0.00000"/>
+                <Rotation x="45.00000" y="-0.00000" z="0.00000"/>
                 <Scale x="1.10000" y="4.40000" z="1.10000"/>
             </Transform>
             <Mesh guid="1863496264">
@@ -265,6 +276,46 @@
             </Mesh>
             <Colliders>
                 <Collider Type="2" IsStatic="1" Radius="1" Height="2" Axis="1">
+                    <Center x="0.00000" y="0.00000" z="0.00000"/>
+                </Collider>
+            </Colliders>
+            <Components/>
+        </GameObject>
+        <GameObject guid="1532105108" name="PurpleSphere">
+            <Transform>
+                <Position x="6.16000" y="0.00000" z="-4.73000"/>
+                <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
+                <Scale x="1.00000" y="1.00000" z="1.00000"/>
+            </Transform>
+            <Mesh guid="3936014360">
+                <Material>
+                    <Shader guid="3378413933"/>
+                    <Color r="0.47451" g="0.00000" b="0.70980" name="colorDiffuse"/>
+                    <Color r="1.00000" g="1.00000" b="1.00000" name="colorAmbient"/>
+                </Material>
+            </Mesh>
+            <Colliders>
+                <Collider Type="0" IsStatic="1" Radius="1.1">
+                    <Center x="0.00000" y="0.00000" z="0.00000"/>
+                </Collider>
+            </Colliders>
+            <Components/>
+        </GameObject>
+        <GameObject guid="1543037526" name="GreenSphere">
+            <Transform>
+                <Position x="2.97000" y="0.00000" z="6.60000"/>
+                <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
+                <Scale x="2.00000" y="2.00000" z="2.00000"/>
+            </Transform>
+            <Mesh guid="3936014360">
+                <Material>
+                    <Shader guid="3378413933"/>
+                    <Color r="0.29804" g="0.61176" b="0.00392" name="colorDiffuse"/>
+                    <Color r="0.27843" g="0.56078" b="0.00000" name="colorAmbient"/>
+                </Material>
+            </Mesh>
+            <Colliders>
+                <Collider Type="0" IsStatic="1" Radius="1">
                     <Center x="0.00000" y="0.00000" z="0.00000"/>
                 </Collider>
             </Colliders>
