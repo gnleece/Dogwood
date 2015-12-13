@@ -20,6 +20,7 @@ public:
 
     BoundingVolumeType              GetVolume();
     BVHNode<BoundingVolumeType>*    GetChild(int index);
+    Collider*                       GetCollider();
 
 private:
     unsigned int        GetPotentialContactsWith(PotentialContact* contacts, unsigned int limit, BVHNode<BoundingVolumeType>* other);

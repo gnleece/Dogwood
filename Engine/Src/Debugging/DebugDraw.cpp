@@ -112,19 +112,19 @@ void DebugDraw::RenderLines()
     m_numLines = 0;
 }
 
-void DebugDraw::DrawSphere(Matrix4x4& transform, ColorRGB color)
+void DebugDraw::DrawSphere(Matrix4x4& transform, ColorRGB color, bool useDepth)
 {
-    m_debugSphere.Draw(transform, color);
+    m_debugSphere.Draw(transform, color, useDepth);
 }
 
-void DebugDraw::DrawCube(Matrix4x4& transform, ColorRGB color)
+void DebugDraw::DrawCube(Matrix4x4& transform, ColorRGB color, bool useDepth)
 {
-    m_debugCube.Draw(transform, color);
+    m_debugCube.Draw(transform, color, useDepth);
 }
 
-void DebugDraw::DrawCapsule(Matrix4x4& transform, ColorRGB color)
+void DebugDraw::DrawCapsule(Matrix4x4& transform, ColorRGB color, bool useDepth)
 {
-    m_debugCapsule.Draw(transform, color);
+    m_debugCapsule.Draw(transform, color, useDepth);
 }
 
 Material* DebugDraw::GetDebugMaterial()
@@ -338,7 +338,7 @@ void DebugCube::Init()
     int numPoints = 8;
     m_positionBufferData = new Vector3[numPoints];
 
-    float size = 0.5f;
+    float size = 1.0f;
     m_positionBufferData[0] = Vector3(-size, -size, -size);
     m_positionBufferData[1] = Vector3(-size, -size,  size);
     m_positionBufferData[2] = Vector3(-size,  size, -size);

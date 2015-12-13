@@ -238,6 +238,16 @@ void Vector3::Normalize()
     m_values[2] = n[2];
 }
 
+float Vector3::MaxElement()
+{
+    return fmax(m_values[0], fmax(m_values[1], m_values[2]));
+}
+
+float Vector3::MinElement()
+{
+    return fmin(m_values[0], fmin(m_values[1], m_values[2]));
+}
+
 void Vector3::DebugPrint()
 {
     printf("%f\t%f\t%f\n", m_values[0], m_values[1], m_values[2]);

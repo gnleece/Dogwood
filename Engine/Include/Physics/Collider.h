@@ -21,9 +21,10 @@ public:
     virtual void            Serialize(tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc) = 0;
     virtual ColliderType    GetType() = 0;
     virtual float           GetBoundingRadius() = 0;
-    virtual void            DebugDraw(ColorRGB color);
+    virtual void            DebugDraw(ColorRGB color, bool useDepth = true);
 
-    Transform&              GetTransform();
+    Vector3                 GetWorldPosition();
+
     bool                    IsStatic();
     GameObjectBase*         GetGameObject();
     Vector3                 GetCenter();
@@ -45,7 +46,7 @@ public:
     virtual void            Serialize(tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc);
     virtual ColliderType    GetType();
     virtual float           GetBoundingRadius();
-    virtual void            DebugDraw(ColorRGB color);
+    virtual void            DebugDraw(ColorRGB color, bool useDepth = true);
 
     float                   GetRadius();
     void                    SetRadius(float radius);
@@ -62,7 +63,7 @@ public:
     virtual void            Serialize(tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc);
     virtual ColliderType    GetType();
     virtual float           GetBoundingRadius();
-    virtual void            DebugDraw(ColorRGB color);
+    virtual void            DebugDraw(ColorRGB color, bool useDepth = true);
 
     Vector3                 GetSize();
     void                    SetSize(Vector3 size);
@@ -80,7 +81,7 @@ public:
     virtual void            Serialize(tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc);
     virtual ColliderType    GetType();
     virtual float           GetBoundingRadius();
-    virtual void            DebugDraw(ColorRGB color);
+    virtual void            DebugDraw(ColorRGB color, bool useDepth = true);
 
     float                   GetRadius();
     float                   GetHeight();

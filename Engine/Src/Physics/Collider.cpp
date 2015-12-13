@@ -70,13 +70,16 @@ void Collider::AddToGameObject(GameObjectBase* gameObject, ColliderType type)
     }
 }
 
-void Collider::DebugDraw(ColorRGB color)
+void Collider::DebugDraw(ColorRGB color, bool useDepth)
 {
 }
 
-Transform& Collider::GetTransform()
+Vector3 Collider::GetWorldPosition()
 {
-    return m_gameObject->GetTransform();
+    Transform t = m_gameObject->GetTransform();
+    Vector3 offset = (t.GetWorldMatrix() * Vector4(m_center, 0)).xyz();
+    Vector3 position = t.GetWorldPosition() + offset;
+    return position;
 }
 
 bool Collider::IsStatic()
@@ -128,15 +131,15 @@ Collider::ColliderType SphereCollider::GetType()
 
 float SphereCollider::GetBoundingRadius()
 {
-    return m_radius;
+    float scale = m_gameObject->GetTransform().GetWorldScale().MaxElement();
+    return m_radius * scale;
 }
 
-void SphereCollider::DebugDraw(ColorRGB color)
+void SphereCollider::DebugDraw(ColorRGB color, bool useDepth)
 {
-    Vector3 position = GetTransform().GetWorldPosition();
-    Matrix4x4 m = Translation(position);
-    m = m * UniformScaling(m_radius);
-    DebugDraw::Singleton().DrawSphere(m, color);
+    Matrix4x4 m = Translation(GetWorldPosition());
+    m = m * UniformScaling(GetBoundingRadius());
+    DebugDraw::Singleton().DrawSphere(m, color, useDepth);
 }
 
 float SphereCollider::GetRadius()
@@ -173,15 +176,16 @@ Collider::ColliderType BoxCollider::GetType()
 
 float BoxCollider::GetBoundingRadius()
 {
-    return 1;       // TODO implement me!
+    Matrix4x4 m = m_gameObject->GetTransform().GetWorldMatrix();
+    Vector3 worldScale = (m * Vector4(m_size, 0)).xyz();
+    return worldScale.Magnitude();
 }
 
-void BoxCollider::DebugDraw(ColorRGB color)
+void BoxCollider::DebugDraw(ColorRGB color, bool useDepth)
 {
-    Vector3 position = GetTransform().GetWorldPosition();
-    Matrix4x4 m = Translation(position);
-    m = m * Scaling(m_size);
-    DebugDraw::Singleton().DrawCube(m, color);
+    Matrix4x4 m = m_gameObject->GetTransform().GetWorldMatrix();
+    m = m * Translation(m_center) * Scaling(m_size);
+    DebugDraw::Singleton().DrawCube(m, color, useDepth);
 }
 
 Vector3 BoxCollider::GetSize()
@@ -230,16 +234,15 @@ float CapsuleCollider::GetBoundingRadius()
     return m_height + 2*m_radius;
 }
 
-void CapsuleCollider::DebugDraw(ColorRGB color)
+void CapsuleCollider::DebugDraw(ColorRGB color, bool useDepth)
 {
     if (m_debugCapsule == NULL)
     {
         RefreshDebugInfo();
     }
 
-    Vector3 position = GetTransform().GetWorldPosition();
-    Matrix4x4 m = Translation(position);
-    m_debugCapsule->Draw(m, color);
+    Matrix4x4 m = Translation(GetWorldPosition());
+    m_debugCapsule->Draw(m, color, useDepth);
 }
 
 float CapsuleCollider::GetRadius()

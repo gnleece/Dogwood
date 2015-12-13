@@ -199,6 +199,12 @@ BVHNode<BoundingVolumeType>* BVHNode<BoundingVolumeType>::GetChild(int index)
 }
 
 template<class BoundingVolumeType>
+Collider* BVHNode<BoundingVolumeType>::GetCollider()
+{
+    return m_collider;
+}
+
+template<class BoundingVolumeType>
 bool BVHNode<BoundingVolumeType>::IsLeaf()
 {
     return m_collider != NULL;

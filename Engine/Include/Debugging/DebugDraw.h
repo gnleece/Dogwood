@@ -105,9 +105,9 @@ public:
     void            PrepareLineBuffer(Vector3* buffer, int count, GLuint &vao, GLuint &vbo);
     void            DrawLineBuffer(GLuint vao, GLuint vbo, Vector3* buffer, int size, ColorRGB color);
 
-    void            DrawSphere(Matrix4x4& transform, ColorRGB color);
-    void            DrawCube(Matrix4x4& transform, ColorRGB color);
-    void            DrawCapsule(Matrix4x4& transform, ColorRGB color);
+    void            DrawSphere(Matrix4x4& transform, ColorRGB color, bool useDepth = true);
+    void            DrawCube(Matrix4x4& transform, ColorRGB color, bool useDepth = true);
+    void            DrawCapsule(Matrix4x4& transform, ColorRGB color, bool useDepth = true);
 
     Material*       GetDebugMaterial();
 

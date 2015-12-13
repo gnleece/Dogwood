@@ -111,7 +111,7 @@
                 </Material>
             </Mesh>
             <Colliders>
-                <Collider Type="0" IsStatic="0" Radius="0.32499999">
+                <Collider Type="0" IsStatic="0" Radius="1">
                     <Center x="0.00000" y="0.00000" z="0.00000"/>
                 </Collider>
             </Colliders>
@@ -136,8 +136,8 @@
         <GameObject guid="1337922550" name="UVTestCube">
             <Transform>
                 <Position x="-8.36000" y="0.00000" z="-0.33000"/>
-                <Rotation x="-179.99998" y="89.99999" z="-179.99998"/>
-                <Scale x="1.00000" y="1.00000" z="1.00000"/>
+                <Rotation x="144.00000" y="51.49999" z="175.50000"/>
+                <Scale x="6.00000" y="1.40000" z="2.00000"/>
             </Transform>
             <Mesh guid="3303202035">
                 <Material>
@@ -190,8 +190,8 @@
         <GameObject guid="3825453907" name="YellowCube">
             <Transform>
                 <Position x="10.00000" y="0.00000" z="0.00000"/>
-                <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
-                <Scale x="1.00000" y="1.00000" z="1.00000"/>
+                <Rotation x="45.00000" y="-0.00000" z="0.00000"/>
+                <Scale x="1.00000" y="4.00000" z="1.00000"/>
             </Transform>
             <Mesh guid="33727872">
                 <Material>
@@ -202,7 +202,7 @@
                 </Material>
             </Mesh>
             <Colliders>
-                <Collider Type="0" IsStatic="1" Radius="1.5">
+                <Collider Type="0" IsStatic="1" Radius="1">
                     <Center x="0.00000" y="0.00000" z="0.00000"/>
                 </Collider>
             </Colliders>

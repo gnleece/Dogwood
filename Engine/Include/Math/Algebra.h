@@ -77,6 +77,9 @@ public:
     Vector3 Normalized() const;
     void Normalize();
 
+    float MaxElement();
+    float MinElement();
+
     void DebugPrint();
 
     static Vector3 Zero;

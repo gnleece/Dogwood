@@ -41,10 +41,10 @@ void CollisionEngine::Update(float deltaTime)
 
 void CollisionEngine::DrawDebugInfo()
 {
-    //DrawBoundingSpheres(m_staticCollisionHierarchy, ColorRGB::White);
+    DrawBoundingSpheres(m_staticCollisionHierarchy, ColorRGB::White);
 
-    //DrawColliders(m_staticColliders, ColorRGB::White);
-    //DrawColliders(m_dynamicColliders, ColorRGB::Yellow);
+    DrawColliders(m_staticColliders, ColorRGB(0.f, 1.f, 0.5f));
+    DrawColliders(m_dynamicColliders, ColorRGB::Yellow);
 }
 
 void CollisionEngine::DrawColliders(vector<Collider*>& colliders, ColorRGB color)
@@ -61,14 +61,19 @@ void CollisionEngine::DrawBoundingSpheres(BVHNode<BoundingSphere>* bvhNode, Colo
     if (bvhNode == NULL)
         return;
 
-    Vector3 position = bvhNode->GetVolume().Center;
-    float radius = bvhNode->GetVolume().Radius;
-    Matrix4x4 sphereMatrix = Translation(position);
-    sphereMatrix = sphereMatrix * UniformScaling(radius);
-    DebugDraw::Singleton().DrawSphere(sphereMatrix, color);
-
-    DrawBoundingSpheres(bvhNode->GetChild(0), color);
-    DrawBoundingSpheres(bvhNode->GetChild(1), color);
+    if (bvhNode->GetCollider() != NULL)
+    {
+        Vector3 position = bvhNode->GetVolume().Center;
+        float radius = bvhNode->GetVolume().Radius;
+        Matrix4x4 sphereMatrix = Translation(position);
+        sphereMatrix = sphereMatrix * UniformScaling(radius);
+        DebugDraw::Singleton().DrawSphere(sphereMatrix, color);
+    }
+    else
+    {
+        DrawBoundingSpheres(bvhNode->GetChild(0), color);
+        DrawBoundingSpheres(bvhNode->GetChild(1), color);
+    }
 }
 
 void CollisionEngine::RegisterCollider(Collider* collider)
