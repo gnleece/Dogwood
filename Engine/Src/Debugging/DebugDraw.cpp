@@ -328,8 +328,8 @@ void DebugSphere::Init(float radius, int divisions)
 
 DebugSphere::~DebugSphere()
 {
-    delete m_positionBufferData;
-    delete m_indices;
+    delete[] m_positionBufferData;
+    delete[] m_indices;
 }
 
 void DebugCube::Init()
@@ -383,8 +383,8 @@ void DebugCube::Init()
 
 DebugCube::~DebugCube()
 {
-    delete m_positionBufferData;
-    delete m_indices;
+    delete[] m_positionBufferData;
+    delete[] m_indices;
 }
 
 void DebugCapsule::Init(float radius, float height, int divisions, eAXIS axis)
@@ -476,8 +476,8 @@ void DebugCapsule::Draw(Matrix4x4& transform, ColorRGB& color, bool useDepth)
 
 DebugCapsule::~DebugCapsule()
 {
-    delete m_positionBufferData;
-    delete m_indices;
+    delete[] m_positionBufferData;
+    delete[] m_indices;
 }
 
 void Pyramid::Init(float base, float height)

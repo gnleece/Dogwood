@@ -101,6 +101,7 @@
     <ClInclude Include="Include\Physics\BoundingSphere.h" />
     <ClInclude Include="Include\Physics\BVHNode.h" />
     <ClInclude Include="Include\Physics\Collider.h" />
+    <ClInclude Include="Include\Physics\CollisionDetection.h" />
     <ClInclude Include="Include\Physics\Particle.h" />
     <ClInclude Include="Include\Physics\CollisionEngine.h" />
     <ClInclude Include="Include\Rendering\Camera.h" />
@@ -145,6 +146,7 @@
     <ClCompile Include="Src\Physics\BoundingSphere.cpp" />
     <ClCompile Include="Src\Physics\BVHNode.cpp" />
     <ClCompile Include="Src\Physics\Collider.cpp" />
+    <ClCompile Include="Src\Physics\CollisionDetection.cpp" />
     <ClCompile Include="Src\Physics\Particle.cpp" />
     <ClCompile Include="Src\Physics\CollisionEngine.cpp" />
     <ClCompile Include="Src\Rendering\Color.cpp" />

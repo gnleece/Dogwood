@@ -1,12 +1,18 @@
 #include "Physics/CollisionEngine.h"
 
-#include "Debugging/DebugDraw.h"
 #include "GameObjectBase.h"
+#include "Debugging/DebugDraw.h"
 #include "Math/Transformations.h"
 #include "Physics/Collider.h"
+#include "Physics/CollisionDetection.h"
 
 #include <algorithm>
 
+PotentialContact::PotentialContact()
+{
+    colliders[0] = NULL;
+    colliders[1] = NULL;
+}
 
 void CollisionEngine::Startup()
 {
@@ -26,7 +32,7 @@ void CollisionEngine::Update(float deltaTime)
 
     if (numPotentialContacts > 0)
     {
-        printf("POTENTIAL CONTACTS!!!\n");
+        printf("\n\nPotential Contacts\n");
         for (int i = 0; i < numPotentialContacts; i++)
         {
             printf("\t%s\n", potentialContacts[i].colliders[0]->GetGameObject()->GetName().c_str());
@@ -36,7 +42,19 @@ void CollisionEngine::Update(float deltaTime)
     }
 
     // Narrow phase: calculate actual contacts
-    NarrowPhaseCollision(potentialContacts);
+    CollisionData collisionData(MAX_POTENTIAL_CONTACTS);
+    int numContacts = NarrowPhaseCollision(potentialContacts, numPotentialContacts, &collisionData);
+
+    if (numContacts > 0)
+    {
+        printf("\nActual Contacts\n");
+        for (int i = 0; i < numContacts; i++)
+        {
+            printf("\t%s\n", collisionData.Contacts[i].ColliderA->GetGameObject()->GetName().c_str());
+            printf("\t%s\n", collisionData.Contacts[i].ColliderB->GetGameObject()->GetName().c_str());
+            printf("\t---\n");
+        }
+    }
 }
 
 void CollisionEngine::DrawDebugInfo()
@@ -157,8 +175,35 @@ int CollisionEngine::BroadPhaseCollision(PotentialContact* potentialContacts)
     return numPotentialContacts;
 }
 
-void CollisionEngine::NarrowPhaseCollision(PotentialContact* potentialContacts)
+int CollisionEngine::NarrowPhaseCollision(PotentialContact* potentialContacts, int count, CollisionData* collisionData)
 {
+    int numContacts = 0;
+    for (int i = 0; i < count; i++)
+    {
+        Collider* colliderA = potentialContacts[i].colliders[0];
+        Collider* colliderB = potentialContacts[i].colliders[1];
 
+        switch (colliderA->GetType())
+        {
+        case Collider::SPHERE_COLLIDER:
+        {
+            switch (colliderB->GetType())
+            {
+            case Collider::SPHERE_COLLIDER:
+                numContacts += CollisionDetection::SphereAndSphere((SphereCollider*)colliderA, (SphereCollider*)colliderB, collisionData);
+                break;
+            }
+            break;
+        }
+        case Collider::BOX_COLLIDER:
+        {
+            break;
+        }
+        case Collider::CAPSULE_COLLIDER:
+        {
+            break;
+        }
+        }
+    }
+    return numContacts;
 }
-

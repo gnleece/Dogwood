@@ -10,16 +10,13 @@
 using std::vector;
 
 class Collider;
+struct CollisionData;
 
 struct PotentialContact
 {
-    Collider* colliders[2];
+    PotentialContact();
 
-    PotentialContact()
-    {
-        colliders[0] = NULL;
-        colliders[1] = NULL;
-    }
+    Collider* colliders[2];
 };
 
 class CollisionEngine
@@ -47,7 +44,7 @@ private:
     void    RemoveColliderFromHierarchy(Collider* collider);
 
     int     BroadPhaseCollision(PotentialContact* potentialContacts);
-    void    NarrowPhaseCollision(PotentialContact* potentialContacts);
+    int     NarrowPhaseCollision(PotentialContact* potentialContacts, int count, CollisionData* collisionData);
 
     void    DrawColliders(vector<Collider*>& colliders, ColorRGB color);
     void    DrawBoundingSpheres(BVHNode<BoundingSphere>* bvhNode, ColorRGB color);

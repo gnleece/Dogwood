@@ -25,9 +25,9 @@ public:
     virtual void            DebugDraw(ColorRGB color, bool useDepth = true);
 
     Vector3                 GetWorldPosition();
+    GameObjectBase*         GetGameObject();
 
     bool                    IsStatic();
-    GameObjectBase*         GetGameObject();
     Vector3                 GetCenter();
 
     void                    SetStatic(bool isStatic);

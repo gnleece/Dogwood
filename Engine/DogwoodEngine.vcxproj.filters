@@ -190,6 +190,9 @@
     <ClInclude Include="Include\Rendering\Color.h">
       <Filter>Header Files\Rendering</Filter>
     </ClInclude>
+    <ClInclude Include="Include\Physics\CollisionDetection.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Debugging\DebugCameraControls.cpp">
@@ -310,6 +313,9 @@
       <Filter>Source Files\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="Src\Physics\Collider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Physics\CollisionDetection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
