@@ -21,7 +21,7 @@ public:
     virtual void            LoadFromXML(tinyxml2::XMLElement* xml) = 0;
     virtual void            Serialize(tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc) = 0;
     virtual ColliderType    GetType() = 0;
-    virtual float           GetBoundingRadius() = 0;
+    virtual float           GetWorldspaceBoundingRadius() = 0;
     virtual void            DebugDraw(ColorRGB color, bool useDepth = true);
 
     Vector3                 GetWorldPosition();
@@ -47,11 +47,11 @@ public:
     virtual void            LoadFromXML(tinyxml2::XMLElement* xml);
     virtual void            Serialize(tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc);
     virtual ColliderType    GetType();
-    virtual float           GetBoundingRadius();
+    virtual float           GetWorldspaceBoundingRadius();
     virtual void            DebugDraw(ColorRGB color, bool useDepth = true);
 
-    float                   GetRadius();
-    void                    SetRadius(float radius);
+    float                   GetLocalRadius();
+    void                    SetLocalRadius(float radius);
 
 private:
     float                   m_radius;
@@ -65,11 +65,11 @@ public:
     virtual void            LoadFromXML(tinyxml2::XMLElement* xml);
     virtual void            Serialize(tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc);
     virtual ColliderType    GetType();
-    virtual float           GetBoundingRadius();
+    virtual float           GetWorldspaceBoundingRadius();
     virtual void            DebugDraw(ColorRGB color, bool useDepth = true);
 
-    Vector3                 GetSize();
-    void                    SetSize(Vector3 size);
+    Vector3                 GetLocalSize();
+    void                    SetLocalSize(Vector3 size);
 
 private:
     Vector3                 m_size;
@@ -84,15 +84,15 @@ public:
     virtual void            LoadFromXML(tinyxml2::XMLElement* xml);
     virtual void            Serialize(tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc);
     virtual ColliderType    GetType();
-    virtual float           GetBoundingRadius();
+    virtual float           GetWorldspaceBoundingRadius();
     virtual void            DebugDraw(ColorRGB color, bool useDepth = true);
 
-    float                   GetRadius();
-    float                   GetHeight();
+    float                   GetLocalRadius();
+    float                   GetLocalHeight();
     eAXIS                   GetAxis();
 
-    void                    SetRadius(float radius);
-    void                    SetHeight(float height);
+    void                    SetLocalRadius(float radius);
+    void                    SetLocalHeight(float height);
     void                    SetAxis(eAXIS axis);
 
 private:

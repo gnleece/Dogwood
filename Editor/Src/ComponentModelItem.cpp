@@ -648,8 +648,8 @@ ComponentModelColliderItem::ComponentModelColliderItem(Collider* collider, bool 
         m_name = "Sphere Collider";
 
         // Radius parameter
-        ComponentValue radiusValue = ComponentValue(ComponentParameter::TYPE_FLOAT, ((SphereCollider*)m_collider)->GetRadius());
-        std::function<void(ComponentValue)> radiusCallback = [&](ComponentValue v) { ((SphereCollider*)m_collider)->SetRadius(v.f); };
+        ComponentValue radiusValue = ComponentValue(ComponentParameter::TYPE_FLOAT, ((SphereCollider*)m_collider)->GetLocalRadius());
+        std::function<void(ComponentValue)> radiusCallback = [&](ComponentValue v) { ((SphereCollider*)m_collider)->SetLocalRadius(v.f); };
         AddGenericParam("Radius", ComponentParameter::TYPE_FLOAT, radiusValue, radiusCallback);
         break;
     }
@@ -658,8 +658,8 @@ ComponentModelColliderItem::ComponentModelColliderItem(Collider* collider, bool 
         m_name = "Box Collider";
 
         // Size parameter
-        ComponentValue sizeValue = ComponentValue(ComponentParameter::TYPE_VECTOR3, ((BoxCollider*)m_collider)->GetSize());
-        std::function<void(ComponentValue)> sizeCallback = [&](ComponentValue v) { ((BoxCollider*)m_collider)->SetSize(v.v); };
+        ComponentValue sizeValue = ComponentValue(ComponentParameter::TYPE_VECTOR3, ((BoxCollider*)m_collider)->GetLocalSize());
+        std::function<void(ComponentValue)> sizeCallback = [&](ComponentValue v) { ((BoxCollider*)m_collider)->SetLocalSize(v.v); };
         AddGenericParam("Size", ComponentParameter::TYPE_VECTOR3, sizeValue, sizeCallback);
         break;
     }
@@ -668,13 +668,13 @@ ComponentModelColliderItem::ComponentModelColliderItem(Collider* collider, bool 
         m_name = "Capsule Collider";
 
         // Radius parameter
-        ComponentValue radiusValue = ComponentValue(ComponentParameter::TYPE_FLOAT, ((CapsuleCollider*)m_collider)->GetRadius());
-        std::function<void(ComponentValue)> radiusCallback = [&](ComponentValue v) { ((CapsuleCollider*)m_collider)->SetRadius(v.f); };
+        ComponentValue radiusValue = ComponentValue(ComponentParameter::TYPE_FLOAT, ((CapsuleCollider*)m_collider)->GetLocalRadius());
+        std::function<void(ComponentValue)> radiusCallback = [&](ComponentValue v) { ((CapsuleCollider*)m_collider)->SetLocalRadius(v.f); };
         AddGenericParam("Radius", ComponentParameter::TYPE_FLOAT, radiusValue, radiusCallback);
 
         // Height parameter
-        ComponentValue heightValue = ComponentValue(ComponentParameter::TYPE_FLOAT, ((CapsuleCollider*)m_collider)->GetHeight());
-        std::function<void(ComponentValue)> heightCallback = [&](ComponentValue v) { ((CapsuleCollider*)m_collider)->SetHeight(v.f); };
+        ComponentValue heightValue = ComponentValue(ComponentParameter::TYPE_FLOAT, ((CapsuleCollider*)m_collider)->GetLocalHeight());
+        std::function<void(ComponentValue)> heightCallback = [&](ComponentValue v) { ((CapsuleCollider*)m_collider)->SetLocalHeight(v.f); };
         AddGenericParam("Height", ComponentParameter::TYPE_FLOAT, heightValue, heightCallback);
 
         // Axis parameter

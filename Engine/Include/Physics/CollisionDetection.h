@@ -23,7 +23,10 @@ struct CollisionData
     CollisionData(int maxContacts);
     ~CollisionData();
 
+    CollisionContact*   ClaimNextContact();
+
     CollisionContact*   Contacts;
+    CollisionContact*   NextEmptyContact;
     int                 ContactsRemaining;
 };
 

@@ -97,7 +97,7 @@ void SphereCollider::LoadFromXML(XMLElement* xml)
 {
     SetStatic(xml->BoolAttribute("IsStatic"));
     SetCenter(ReadVector3FromXML(xml->FirstChildElement("Center")));
-    SetRadius(xml->FloatAttribute("Radius"));
+    SetLocalRadius(xml->FloatAttribute("Radius"));
 }
 
 void SphereCollider::Serialize(tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc)
@@ -115,7 +115,7 @@ Collider::ColliderType SphereCollider::GetType()
     return Collider::SPHERE_COLLIDER;
 }
 
-float SphereCollider::GetBoundingRadius()
+float SphereCollider::GetWorldspaceBoundingRadius()
 {
     float scale = m_gameObject->GetTransform().GetWorldScale().MaxElement();
     return m_radius * scale;
@@ -124,16 +124,16 @@ float SphereCollider::GetBoundingRadius()
 void SphereCollider::DebugDraw(ColorRGB color, bool useDepth)
 {
     Matrix4x4 m = Translation(GetWorldPosition());
-    m = m * UniformScaling(GetBoundingRadius());
+    m = m * UniformScaling(GetWorldspaceBoundingRadius());
     DebugDraw::Singleton().DrawSphere(m, color, useDepth);
 }
 
-float SphereCollider::GetRadius()
+float SphereCollider::GetLocalRadius()
 {
     return m_radius;
 }
 
-void SphereCollider::SetRadius(float radius)
+void SphereCollider::SetLocalRadius(float radius)
 {
     m_radius = radius;
 }
@@ -149,7 +149,7 @@ void BoxCollider::LoadFromXML(XMLElement* xml)
 {
     SetStatic(xml->BoolAttribute("IsStatic"));
     SetCenter(ReadVector3FromXML(xml->FirstChildElement("Center")));
-    SetSize(ReadVector3FromXML(xml->FirstChildElement("Size")));
+    SetLocalSize(ReadVector3FromXML(xml->FirstChildElement("Size")));
 }
 
 void BoxCollider::Serialize(tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc)
@@ -167,7 +167,7 @@ Collider::ColliderType BoxCollider::GetType()
     return Collider::BOX_COLLIDER;
 }
 
-float BoxCollider::GetBoundingRadius()
+float BoxCollider::GetWorldspaceBoundingRadius()
 {
     Matrix4x4 m = m_gameObject->GetTransform().GetWorldMatrix();
     Vector3 worldScale = (m * Vector4(m_size, 0)).xyz();
@@ -181,12 +181,12 @@ void BoxCollider::DebugDraw(ColorRGB color, bool useDepth)
     DebugDraw::Singleton().DrawCube(m, color, useDepth);
 }
 
-Vector3 BoxCollider::GetSize()
+Vector3 BoxCollider::GetLocalSize()
 {
     return m_size;
 }
 
-void BoxCollider::SetSize(Vector3 size)
+void BoxCollider::SetLocalSize(Vector3 size)
 {
     m_size = size;
 }
@@ -210,8 +210,8 @@ void CapsuleCollider::LoadFromXML(XMLElement* xml)
 {
     SetStatic(xml->BoolAttribute("IsStatic"));
     SetCenter(ReadVector3FromXML(xml->FirstChildElement("Center")));
-    SetRadius(xml->FloatAttribute("Radius"));
-    SetHeight(xml->FloatAttribute("Height"));
+    SetLocalRadius(xml->FloatAttribute("Radius"));
+    SetLocalHeight(xml->FloatAttribute("Height"));
     SetAxis((eAXIS)xml->IntAttribute("Axis"));
 }
 
@@ -232,7 +232,7 @@ Collider::ColliderType CapsuleCollider::GetType()
     return Collider::CAPSULE_COLLIDER;
 }
 
-float CapsuleCollider::GetBoundingRadius()
+float CapsuleCollider::GetWorldspaceBoundingRadius()
 {
     float worldHeight = CalculateWorldHeight();
     float worldRadius = CalculateWorldRadius();
@@ -251,12 +251,12 @@ void CapsuleCollider::DebugDraw(ColorRGB color, bool useDepth)
     m_debugCapsule->Draw(m, color, useDepth);
 }
 
-float CapsuleCollider::GetRadius()
+float CapsuleCollider::GetLocalRadius()
 {
     return m_radius;
 }
 
-float CapsuleCollider::GetHeight()
+float CapsuleCollider::GetLocalHeight()
 {
     return m_height;
 }
@@ -266,13 +266,13 @@ eAXIS CapsuleCollider::GetAxis()
     return m_axis;
 }
 
-void CapsuleCollider::SetRadius(float radius)
+void CapsuleCollider::SetLocalRadius(float radius)
 {
     m_radius = radius;
     RefreshDebugInfo();
 }
 
-void CapsuleCollider::SetHeight(float height)
+void CapsuleCollider::SetLocalHeight(float height)
 {
     m_height = height;
     RefreshDebugInfo();
