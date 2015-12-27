@@ -40,7 +40,12 @@ public:
     Vector3&    GetUp();
     Vector3&    GetForward();
 
-    // TODO implement math convenience functions
+    Matrix4x4&  GetInverseWorldMatrix();
+
+    Vector3     TransformPoint(Vector3 point);
+    Vector3     TransformVector(Vector3 vector);
+    Vector3     InverseTransformPoint(Vector3 point);
+    Vector3     InverseTransformVector(Vector3 vector);
 
 private:
     void        RemoveChild(Transform* transform);
@@ -49,6 +54,7 @@ private:
     void        ClearRecomputeWorldFlag();
     void        RecomputeLocalIfDirty();
     void        RecomputeWorldIfDirty();
+    void        RecomputeInverseIfDirty();
 
     void        CalculateDirectionVectors();
 
@@ -69,8 +75,11 @@ private:
     Vector3             m_up;
     Vector3             m_forward;
 
+    Matrix4x4           m_inverseWorldMatrix;
+
     bool                m_recomputeLocal;
     bool                m_recomputeWorld;
+    bool                m_recomputeInverse;
 };
 
 Transform operator *(Transform& a, Transform& b);

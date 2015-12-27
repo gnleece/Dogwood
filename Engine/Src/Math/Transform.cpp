@@ -13,6 +13,7 @@ Transform::Transform()
     m_localScale     = Vector3(1.0f, 1.0f, 1.0f);
     m_recomputeLocal = true;
     m_recomputeWorld = true;
+    m_recomputeInverse = true;
 }
 
 Transform::Transform(Matrix4x4& m)
@@ -175,6 +176,34 @@ Vector3& Transform::GetForward()
     return m_forward;
 }
 
+Matrix4x4& Transform::GetInverseWorldMatrix()
+{
+    RecomputeInverseIfDirty();
+    return m_inverseWorldMatrix;
+}
+
+Vector3 Transform::TransformPoint(Vector3 point)
+{
+    return (m_worldMatrix * Vector4(point, 1)).xyz();
+}
+
+Vector3 Transform::TransformVector(Vector3 vector)
+{
+    return (m_worldMatrix * Vector4(vector, 0)).xyz();
+}
+
+Vector3 Transform::InverseTransformPoint(Vector3 point)
+{
+    RecomputeInverseIfDirty();
+    return (m_inverseWorldMatrix * Vector4(point, 1)).xyz();
+}
+
+Vector3 Transform::InverseTransformVector(Vector3 vector)
+{
+    RecomputeInverseIfDirty();
+    return (m_inverseWorldMatrix * Vector4(vector, 0)).xyz();
+}
+
 void Transform::RemoveChild(Transform* transform)
 {
     m_children.erase(
@@ -185,6 +214,7 @@ void Transform::RemoveChild(Transform* transform)
 void Transform::SetRecomputeWorldFlag()
 {
     m_recomputeWorld = true;
+    m_recomputeInverse = true;
 
     vector<Transform*>::iterator iter;
     for (iter = m_children.begin(); iter != m_children.end(); iter++)
@@ -213,7 +243,7 @@ void Transform::RecomputeLocalIfDirty()
 
 void Transform::RecomputeWorldIfDirty()
 {
-    if (m_recomputeWorld)
+    if (m_recomputeWorld || m_recomputeLocal)
     {
         RecomputeLocalIfDirty();
         Matrix4x4 parentTransform = m_parent ? m_parent->GetWorldMatrix() : Matrix4x4::Identity;
@@ -221,6 +251,16 @@ void Transform::RecomputeWorldIfDirty()
         DecomposeMatrix(m_worldMatrix, m_worldPosition, m_worldRotation, m_worldScale);
         CalculateDirectionVectors();
         ClearRecomputeWorldFlag();
+    }
+}
+
+void Transform::RecomputeInverseIfDirty()
+{
+    if (m_recomputeInverse)
+    {
+        RecomputeWorldIfDirty();
+        m_inverseWorldMatrix = m_worldMatrix.Inverse();
+        m_recomputeInverse = false;
     }
 }
 
