@@ -109,14 +109,14 @@ unsigned int CollisionDetection::SphereAndBox(SphereCollider* s, BoxCollider* b,
 
     // Calculate the distance between the sphere and the closest point on the box, to see if
     // we are close enough for contact
-    float distance = (closestPoint - sphereBoxspacePos).MagnitudeSqrd();
+    Vector3 closestPointWorldspace = b->GetTransform().TransformPoint(closestPoint);
+    float distance = (closestPointWorldspace - sphereWorldPos).MagnitudeSqrd();
     if (distance > sphereWorldRadius * sphereWorldRadius)
     {
         return 0;
     }
 
     // The point is close enough and therefore there is a contact. Set contact data
-    Vector3 closestPointWorldspace = b->GetTransform().TransformPoint(closestPoint);
     CollisionContact* contact = data->ClaimNextContact();
     contact->ContactPoint = closestPointWorldspace;
     contact->ContactNormal = (closestPointWorldspace - sphereWorldPos).Normalized();
