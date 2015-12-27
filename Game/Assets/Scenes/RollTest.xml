@@ -107,7 +107,7 @@
         </GameObject>
         <GameObject guid="2032717194" name="Katamari">
             <Transform>
-                <Position x="0.00000" y="0.53900" z="0.00000"/>
+                <Position x="0.00000" y="0.2700" z="0.00000"/>
                 <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
                 <Scale x="0.30000" y="0.30000" z="0.30000"/>
             </Transform>
@@ -157,7 +157,7 @@
             <Colliders>
                 <Collider Type="1" IsStatic="1">
                     <Center x="0.00000" y="0.00000" z="0.00000"/>
-                    <Size x="1.05000" y="1.10000" z="1.10000"/>
+                    <Size x="1.0000" y="1.0000" z="1.0000"/>
                 </Collider>
             </Colliders>
             <Components/>

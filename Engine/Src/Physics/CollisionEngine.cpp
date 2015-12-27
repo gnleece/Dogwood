@@ -192,11 +192,20 @@ int CollisionEngine::NarrowPhaseCollision(PotentialContact* potentialContacts, i
             case Collider::SPHERE_COLLIDER:
                 numContacts += CollisionDetection::SphereAndSphere((SphereCollider*)colliderA, (SphereCollider*)colliderB, collisionData);
                 break;
+            case Collider::BOX_COLLIDER:
+                numContacts += CollisionDetection::SphereAndBox((SphereCollider*)colliderA, (BoxCollider*)colliderB, collisionData);
+                break;
             }
             break;
         }
         case Collider::BOX_COLLIDER:
         {
+            switch (colliderB->GetType())
+            {
+            case Collider::SPHERE_COLLIDER:
+                numContacts += CollisionDetection::SphereAndBox((SphereCollider*)colliderB, (BoxCollider*)colliderA, collisionData);
+                break;
+            }
             break;
         }
         case Collider::CAPSULE_COLLIDER:

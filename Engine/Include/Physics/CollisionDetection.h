@@ -34,4 +34,5 @@ class CollisionDetection
 {
 public:
     static unsigned int SphereAndSphere(SphereCollider* a, SphereCollider* b, CollisionData* data);
+    static unsigned int SphereAndBox(SphereCollider* s, BoxCollider* b, CollisionData* data);
 };
