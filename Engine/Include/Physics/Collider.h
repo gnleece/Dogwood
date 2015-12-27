@@ -74,6 +74,8 @@ public:
     Vector3                 GetLocalSize();
     void                    SetLocalSize(Vector3 size);
 
+    Vector3                 GetWorldScaleHalfsize();
+
 private:
     Vector3                 m_size;
 };

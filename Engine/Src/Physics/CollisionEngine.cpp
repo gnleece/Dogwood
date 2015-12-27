@@ -32,12 +32,12 @@ void CollisionEngine::Update(float deltaTime)
 
     if (numPotentialContacts > 0)
     {
-        printf("\n\nPotential Contacts\n");
+        //printf("\n\nPotential Contacts\n");
         for (int i = 0; i < numPotentialContacts; i++)
         {
-            printf("\t%s\n", potentialContacts[i].colliders[0]->GetGameObject()->GetName().c_str());
-            printf("\t%s\n", potentialContacts[i].colliders[1]->GetGameObject()->GetName().c_str());
-            printf("\t---\n");
+            //printf("\t%s\n", potentialContacts[i].colliders[0]->GetGameObject()->GetName().c_str());
+            //printf("\t%s\n", potentialContacts[i].colliders[1]->GetGameObject()->GetName().c_str());
+            //printf("\t---\n");
         }
     }
 
@@ -205,6 +205,8 @@ int CollisionEngine::NarrowPhaseCollision(PotentialContact* potentialContacts, i
             case Collider::SPHERE_COLLIDER:
                 numContacts += CollisionDetection::SphereAndBox((SphereCollider*)colliderB, (BoxCollider*)colliderA, collisionData);
                 break;
+            case Collider::BOX_COLLIDER:
+                numContacts += CollisionDetection::BoxAndBox((BoxCollider*)colliderA, (BoxCollider*)colliderB, collisionData);
             }
             break;
         }

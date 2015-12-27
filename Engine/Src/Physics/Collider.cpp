@@ -201,6 +201,11 @@ void BoxCollider::SetLocalSize(Vector3 size)
     m_size = size;
 }
 
+Vector3 BoxCollider::GetWorldScaleHalfsize()
+{
+    return (Scaling(m_transform.GetWorldScale()) * Vector4(m_size, 0)).xyz();
+}
+
 //------------------------------------------------------------------------------------
 
 CapsuleCollider::CapsuleCollider(GameObjectBase* gameObject, float radius, float height, eAXIS axis)

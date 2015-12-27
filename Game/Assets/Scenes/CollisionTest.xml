@@ -30,7 +30,7 @@
         <Components/>
         <GameObject guid="2032717194" name="Katamari">
             <Transform>
-                <Position x="-0.600000" y="0.53900" z="-5.00000"/>
+                <Position x="-0.60000" y="0.27000" z="-5.00000"/>
                 <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
                 <Scale x="0.30000" y="0.30000" z="0.30000"/>
             </Transform>
@@ -42,8 +42,9 @@
                 </Material>
             </Mesh>
             <Colliders>
-                <Collider Type="0" IsStatic="0" Radius="1">
+                <Collider Type="1" IsStatic="0">
                     <Center x="0.00000" y="0.00000" z="0.00000"/>
+                    <Size x="1.00000" y="1.00000" z="1.00000"/>
                 </Collider>
             </Colliders>
             <Components>
@@ -97,24 +98,24 @@
             <Colliders/>
             <Components/>
         </GameObject>
-        <GameObject guid="914776713" name="RedCube">
+        <GameObject guid="2300954628" name="RedCube">
             <Transform>
                 <Position x="0.00000" y="0.00000" z="0.00000"/>
                 <Rotation x="0.00000" y="0.00000" z="0.00000"/>
-              <Scale x="12.00000" y="2.80000" z="4.00000"/>
+                <Scale x="1.00000" y="1.00000" z="1.00000"/>
             </Transform>
             <Mesh guid="33727872">
                 <Material>
                     <Shader guid="3746892247"/>
                     <Color r="1.00000" g="0.00000" b="0.00000" name="colorDiffuse"/>
-                    <Color r="0.41961" g="0.00000" b="0.00000" name="colorAmbient"/>
+                    <Color r="0.52941" g="0.00000" b="0.00000" name="colorAmbient"/>
                     <Color r="1.00000" g="1.00000" b="1.00000" name="colorSpecular"/>
                 </Material>
             </Mesh>
             <Colliders>
                 <Collider Type="1" IsStatic="1">
                     <Center x="0.00000" y="0.00000" z="0.00000"/>
-                    <Size x="1.0000" y="1.0000" z="1.0000"/>
+                    <Size x="1.00000" y="1.00000" z="1.00000"/>
                 </Collider>
             </Colliders>
             <Components/>

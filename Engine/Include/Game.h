@@ -17,7 +17,7 @@ class Game
 {
 public:
     const static int MAX_FPS = 60;
-    const static int FPS_SNAPSHOT_SIZE = 120;
+    const static int FPS_SNAPSHOT_SIZE = 30;
 
     static Game& Singleton()
     {

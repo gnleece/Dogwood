@@ -176,6 +176,17 @@ Vector3& Transform::GetForward()
     return m_forward;
 }
 
+Vector3& Transform::GetAxis(int index)
+{
+    switch (index)
+    {
+    case 0: return GetRight();
+    case 1: return GetUp();
+    case 2: return GetForward();
+    }
+    return Vector3::Zero;
+}
+
 Matrix4x4& Transform::GetInverseWorldMatrix()
 {
     RecomputeInverseIfDirty();

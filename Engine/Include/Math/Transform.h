@@ -39,6 +39,7 @@ public:
     Vector3&    GetRight();
     Vector3&    GetUp();
     Vector3&    GetForward();
+    Vector3&    GetAxis(int index);
 
     Matrix4x4&  GetInverseWorldMatrix();
 

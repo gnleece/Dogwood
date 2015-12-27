@@ -7,8 +7,8 @@
         <Textures>
             <Texture guid="3535584211" path="Textures/test_texture2.bmp"/>
             <Texture guid="3780387270" path="Textures/test_texture.bmp"/>
-            <Texture guid="1537037577" path="Textures/icosphere_uvs.bmp"/>
             <Texture guid="2588998880" path="Textures/test_cube.bmp"/>
+            <Texture guid="1537037577" path="Textures/icosphere_uvs.bmp"/>
             <Texture guid="2416560045" path="Textures/skybox_test.bmp"/>
             <Texture guid="536475533" path="Textures/blender_uv_test.bmp"/>
             <Texture guid="2152164934" path="Textures/rainbowcube.bmp"/>
@@ -41,17 +41,17 @@
             <Script guid="1515607268" path="Scripts/FooComponent.h"/>
             <Script guid="943277816" path="Scripts/Translator.h"/>
             <Script guid="3075022151" path="Scripts/SpinningComponent.h"/>
-            <Script guid="3988628104" path="Scripts/Bouncer.h"/>
             <Script guid="3055461197" path="Scripts/Roller.h"/>
+            <Script guid="3988628104" path="Scripts/Bouncer.h"/>
         </Scripts>
         <DefaultResources>
-            <Asset name="mesh_torus" guid="2282599710"/>
             <Asset name="mesh_cone" guid="489851566"/>
-            <Asset name="mesh_sphere" guid="3936014360"/>
+            <Asset name="mesh_torus" guid="2282599710"/>
             <Asset name="mesh_cube" guid="33727872"/>
+            <Asset name="mesh_sphere" guid="3936014360"/>
             <Asset name="mesh_cylinder" guid="4197557055"/>
-            <Asset name="shader_unlit_unicolor" guid="441267611"/>
             <Asset name="mesh_plane" guid="156145593"/>
+            <Asset name="shader_unlit_unicolor" guid="441267611"/>
             <Asset name="shader_unlit" guid="311191123"/>
             <Asset name="shader_gouraud" guid="3746892247"/>
         </DefaultResources>
