@@ -14,6 +14,7 @@ public:
     enum ColliderType { SPHERE_COLLIDER, BOX_COLLIDER, CAPSULE_COLLIDER };
 
     Collider(GameObjectBase* gameObject);
+    virtual ~Collider();
 
     static Collider*        LoadFromXML(GameObjectBase* gameObject, tinyxml2::XMLElement* xml);
     static void             AddToGameObject(GameObjectBase* gameObject, ColliderType type);
@@ -26,6 +27,7 @@ public:
 
     Vector3                 GetWorldPosition();
     GameObjectBase*         GetGameObject();
+    Transform&              GetTransform();
 
     bool                    IsStatic();
     Vector3                 GetCenter();
@@ -36,6 +38,7 @@ public:
 protected:
     bool                    m_isStatic;
     GameObjectBase*         m_gameObject;
+    Transform               m_transform;
     Vector3                 m_center;
 };
 

@@ -10,6 +10,15 @@ using namespace tinyxml2;
 Collider::Collider(GameObjectBase* gameObject)
     : m_isStatic(true), m_gameObject(gameObject), m_center(Vector3::Zero)
 {
+    if (m_gameObject != NULL)
+    {
+        m_transform.SetParent(&(m_gameObject->GetTransform()));
+    }
+}
+
+Collider::~Collider()
+{
+    m_transform.SetParent(NULL);
 }
 
 Collider* Collider::LoadFromXML(GameObjectBase* gameObject, XMLElement* xml)
@@ -55,10 +64,7 @@ void Collider::DebugDraw(ColorRGB color, bool useDepth)
 
 Vector3 Collider::GetWorldPosition()
 {
-    Transform t = m_gameObject->GetTransform();
-    Vector3 offset = (t.GetWorldMatrix() * Vector4(m_center, 0)).xyz();
-    Vector3 position = t.GetWorldPosition() + offset;
-    return position;
+    return m_transform.GetWorldPosition();
 }
 
 bool Collider::IsStatic()
@@ -69,6 +75,11 @@ bool Collider::IsStatic()
 GameObjectBase* Collider::GetGameObject()
 {
     return m_gameObject;
+}
+
+Transform& Collider::GetTransform()
+{
+    return m_transform;
 }
 
 Vector3 Collider::GetCenter()
@@ -84,6 +95,7 @@ void Collider::SetStatic(bool isStatic)
 void Collider::SetCenter(Vector3 center)
 {
     m_center = center;
+    m_transform.SetLocalPosition(m_center);
 }
 
 //------------------------------------------------------------------------------------
@@ -117,7 +129,7 @@ Collider::ColliderType SphereCollider::GetType()
 
 float SphereCollider::GetWorldspaceBoundingRadius()
 {
-    float scale = m_gameObject->GetTransform().GetWorldScale().MaxElement();
+    float scale = m_transform.GetWorldScale().MaxElement();
     return m_radius * scale;
 }
 
@@ -169,15 +181,13 @@ Collider::ColliderType BoxCollider::GetType()
 
 float BoxCollider::GetWorldspaceBoundingRadius()
 {
-    Matrix4x4 m = m_gameObject->GetTransform().GetWorldMatrix();
-    Vector3 worldScale = (m * Vector4(m_size, 0)).xyz();
+    Vector3 worldScale = m_transform.TransformVector(m_size);
     return worldScale.Magnitude();
 }
 
 void BoxCollider::DebugDraw(ColorRGB color, bool useDepth)
 {
-    Matrix4x4 m = m_gameObject->GetTransform().GetWorldMatrix();
-    m = m * Translation(m_center) * Scaling(m_size);
+    Matrix4x4 m = m_transform.GetWorldMatrix() * Scaling(m_size);
     DebugDraw::Singleton().DrawCube(m, color, useDepth);
 }
 
@@ -246,7 +256,7 @@ void CapsuleCollider::DebugDraw(ColorRGB color, bool useDepth)
         RefreshDebugInfo();
     }
 
-    Matrix4x4 r = RotationEulerAngles(m_gameObject->GetTransform().GetWorldRotation());
+    Matrix4x4 r = RotationEulerAngles(m_transform.GetWorldRotation());
     Matrix4x4 m = Translation(GetWorldPosition()) * r;
     m_debugCapsule->Draw(m, color, useDepth);
 }
@@ -289,7 +299,7 @@ void CapsuleCollider::SetAxis(eAXIS axis)
 
 float CapsuleCollider::CalculateWorldRadius()
 {
-    Vector3 objectWorldScale = m_gameObject->GetTransform().GetWorldScale();
+    Vector3 objectWorldScale = m_transform.GetWorldScale();
     float a = objectWorldScale[(m_axis + 1) % 3];
     float b = objectWorldScale[(m_axis + 2) % 3];
     float maxRadius = sqrt(a*a + b*b);
@@ -299,7 +309,7 @@ float CapsuleCollider::CalculateWorldRadius()
 
 float CapsuleCollider::CalculateWorldHeight()
 {
-    Vector3 objectWorldScale = m_gameObject->GetTransform().GetWorldScale();
+    Vector3 objectWorldScale = m_transform.GetWorldScale();
     float worldHeight = m_height * objectWorldScale[m_axis];
     return worldHeight;
 }
