@@ -19,6 +19,10 @@ public:
     float y();
     float z();
 
+    void SetX(float x);
+    void SetY(float y);
+    void SetZ(float z);
+
 private:
     float m_values[3];
 };
@@ -38,6 +42,9 @@ public:
 
     float x();
     float y();
+
+    void SetX(float x);
+    void SetY(float y);
 
     void DebugPrint();
 
@@ -69,6 +76,10 @@ public:
     float y();
     float z();
 
+    void SetX(float x);
+    void SetY(float y);
+    void SetZ(float z);
+
     float MagnitudeSqrd() const;
     float Magnitude() const;
 
@@ -79,6 +90,9 @@ public:
 
     float MaxElement();
     float MinElement();
+
+    Vector3 ComponentwiseInverse() const;
+    bool HasZeroComponent() const;
 
     void DebugPrint();
 
@@ -117,6 +131,11 @@ public:
     float y();
     float z();
     float w();
+
+    void SetX(float x);
+    void SetY(float y);
+    void SetZ(float z);
+    void SetW(float w);
 
     void DebugPrint();
 

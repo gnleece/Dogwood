@@ -46,6 +46,21 @@ float Point3::z()
     return m_values[2];
 }
 
+void Point3::SetX(float x)
+{
+    m_values[0] = x;
+}
+
+void Point3::SetY(float y)
+{
+    m_values[1] = y;
+}
+
+void Point3::SetZ(float z)
+{
+    m_values[2] = z;
+}
+
 Vector2::Vector2()
 {
     m_values[0] = 0.0f;
@@ -100,6 +115,16 @@ float Vector2::x()
 float Vector2::y()
 {
     return m_values[1];
+}
+
+void Vector2::SetX(float x)
+{
+    m_values[0] = x;
+}
+
+void Vector2::SetY(float y)
+{
+    m_values[1] = y;
 }
 
 Vector2 operator +(const Vector2& a, const Vector2& b)
@@ -189,6 +214,21 @@ float Vector3::z()
     return m_values[2];
 }
 
+void Vector3::SetX(float x)
+{
+    m_values[0] = x;
+}
+
+void Vector3::SetY(float y)
+{
+    m_values[1] = y;
+}
+
+void Vector3::SetZ(float z)
+{
+    m_values[2] = z;
+}
+
 float Vector3::MagnitudeSqrd() const
 {
     return m_values[0]*m_values[0] +
@@ -246,6 +286,19 @@ float Vector3::MaxElement()
 float Vector3::MinElement()
 {
     return fmin(m_values[0], fmin(m_values[1], m_values[2]));
+}
+
+Vector3 Vector3::ComponentwiseInverse() const
+{
+    float x = m_values[0] == 0 ? 0 : 1 / m_values[0];
+    float y = m_values[1] == 0 ? 0 : 1 / m_values[1];
+    float z = m_values[2] == 0 ? 0 : 1 / m_values[2];
+    return Vector3(x, y, z);
+}
+
+bool Vector3::HasZeroComponent() const
+{
+    return (m_values[0] == 0 || m_values[1] == 0 || m_values[2] == 0);
 }
 
 void Vector3::DebugPrint()
@@ -363,6 +416,26 @@ float Vector4::z()
 float Vector4::w()
 {
     return m_values[3];
+}
+
+void Vector4::SetX(float x)
+{
+    m_values[0] = x;
+}
+
+void Vector4::SetY(float y)
+{
+    m_values[1] = y;
+}
+
+void Vector4::SetZ(float z)
+{
+    m_values[2] = z;
+}
+
+void Vector4::SetW(float w)
+{
+    m_values[3] = w;
 }
 
 Vector4 operator +(const Vector4& a, const Vector4& b)
