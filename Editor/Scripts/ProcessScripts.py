@@ -12,7 +12,7 @@ paramTypeStringToEnum = {
     "bool" : "2",
     "string" : "3",
     "Vector3" : "4",
-    "ColourRGB" : "5",
+    "ColorRGB" : "5",
     "GameObjectReference" : "6",
     "Mesh*" : "7",
     "Shader*" : "8",
@@ -99,7 +99,7 @@ def ParseVector(valueTokens, XMLelement):
 
 def ParseColor(valueTokens, XMLelement):
     cleanTokens = [t.strip(",()f") for t in valueTokens]
-    cleanTokens[0] = (cleanTokens[0])[len("ColourRGB("):]
+    cleanTokens[0] = (cleanTokens[0])[len("ColorRGB("):]
     print(cleanTokens)
     ET.SubElement(XMLelement, "value", r = cleanTokens[0] , g = cleanTokens[1] , b = cleanTokens[2])
 
