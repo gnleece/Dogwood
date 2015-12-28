@@ -32,7 +32,7 @@ Matrix4x4 Rotation(float angle, eAXIS axis)
   return r;
 }
 
-// Math from http://paulbourke.net/geometry/rotate/
+// Takes an angle in degrees. Math from http://paulbourke.net/geometry/rotate/
 Matrix4x4 Rotation(float angle, Vector3 axis)
 {
     Matrix4x4 r;

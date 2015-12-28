@@ -74,6 +74,7 @@ EDITOR (Thicket)
             - For reference types, show full asset path on hover (Scripts)
             - Reference type params should be styled differently (font color?)
             - Fix occasioanl null refs after model delete & rebuild
+        * Write python script info to log file
 
     * Physics
         * Refresh capsule draw on object scale

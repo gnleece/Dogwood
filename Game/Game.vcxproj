@@ -84,6 +84,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Assets\Scripts\Bouncer.h" />
+    <ClInclude Include="Assets\Scripts\CameraControls.h" />
     <ClInclude Include="Assets\Scripts\FooComponent.h" />
     <ClInclude Include="Assets\Scripts\Roller.h" />
     <ClInclude Include="Assets\Scripts\SpinningComponent.h" />
@@ -93,6 +94,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Assets\Scripts\Bouncer.cpp" />
+    <ClCompile Include="Assets\Scripts\CameraControls.cpp" />
     <ClCompile Include="Assets\Scripts\FooComponent.cpp" />
     <ClCompile Include="Assets\Scripts\Roller.cpp" />
     <ClCompile Include="Assets\Scripts\SpinningComponent.cpp" />

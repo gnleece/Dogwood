@@ -59,10 +59,10 @@ void CollisionEngine::Update(float deltaTime)
 
 void CollisionEngine::DrawDebugInfo()
 {
-    DrawBoundingSpheres(m_staticCollisionHierarchy, ColorRGB::White);
-
-    DrawColliders(m_staticColliders, ColorRGB(0.f, 1.f, 0.5f));
-    DrawColliders(m_dynamicColliders, ColorRGB::Yellow);
+    //DrawBoundingSpheres(m_staticCollisionHierarchy, ColorRGB::White);
+    //
+    //DrawColliders(m_staticColliders, ColorRGB(0.f, 1.f, 0.5f));
+    //DrawColliders(m_dynamicColliders, ColorRGB::Yellow);
 }
 
 void CollisionEngine::DrawColliders(vector<Collider*>& colliders, ColorRGB color)

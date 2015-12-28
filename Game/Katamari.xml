@@ -43,6 +43,7 @@
             <Script guid="3075022151" path="Scripts/SpinningComponent.h"/>
             <Script guid="3055461197" path="Scripts/Roller.h"/>
             <Script guid="3988628104" path="Scripts/Bouncer.h"/>
+            <Script guid="1661142292" path="Scripts/CameraControls.h"/>
         </Scripts>
         <DefaultResources>
             <Asset name="mesh_cone" guid="489851566"/>

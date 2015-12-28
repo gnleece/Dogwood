@@ -4,8 +4,6 @@
 #include "Math/Transformations.h"
 #include "Input/InputManager.h"
 #include "Input/GamePad.h"
-#include "Rendering/Texture.h"
-#include "Rendering/RenderManager.h"
 
 void Roller::OnCreate()
 {
@@ -19,40 +17,33 @@ void Roller::OnStart()
 
 void Roller::Update(float deltaTime)
 {
-    if (!m_setupDone)
+    // Use the direction of the left joystick as a "push" vector to roll the object.
+    // The x direction of the joystick applies a push in the x direction in camera space,
+    // and the y direction of the joystick applies a push in the z direction in camera space.
+
+    float lstickX = InputManager::Singleton().GetGamePad(0)->GetAxisValue(GAMEPAD_LSTICK_X);
+    float lstickY = InputManager::Singleton().GetGamePad(0)->GetAxisValue(GAMEPAD_LSTICK_Y);
+
+    // Calculate the camera space direction and convert it to object space
+    float pushDelta = Speed * deltaTime;
+    Vector3 directionCameraSpace = Vector3(-lstickX * pushDelta, 0.0f, lstickY * pushDelta);
+    Vector3 directionWorldSpace = CameraObject.GetGameObject()->GetTransform().TransformVector(directionCameraSpace);
+    Vector3 directionObjectSpace = m_gameObject->GetTransform().InverseTransformVector(directionWorldSpace);
+    Vector3 upObjectSpace = m_gameObject->GetTransform().InverseTransformVector(Vector3::Up);
+
+    if (directionObjectSpace.Magnitude() > 0.0000001f)
     {
-        m_parentMatrix = m_gameObject->GetTransform().GetLocalMatrix();
-        m_setupDone = true;
-    }
-    
-    float lstick = InputManager::Singleton().GetGamePad(0)->GetAxisValue(GAMEPAD_LSTICK_Y);
-    float rstick = InputManager::Singleton().GetGamePad(0)->GetAxisValue(GAMEPAD_RSTICK_X);
+        Vector3 rotationAxis = directionObjectSpace.Cross(upObjectSpace).Normalized();
+        float rotationAngle = -1 * directionObjectSpace.Magnitude();
 
-    float rot_amt = lstick * Speed * deltaTime;
-    float trans_amt = rot_amt * Radius/5;
-    float turn_amt = -rstick * Speed * deltaTime;
+        // TODO set world translation instead of local translation to use proper formula with radius
+        float translationAmount = DegreesToRadians(-1 * rotationAngle);
 
-    Matrix4x4 rChild = RotationEulerAngles(Vector3(rot_amt, 0, 0));
-    Matrix4x4 rParent = RotationEulerAngles(Vector3(0, turn_amt, 0));
-    Matrix4x4 t = Translation(Vector3(0, 0, trans_amt));
-    
-    m_parentMatrix = m_parentMatrix * t * rParent;
-    m_childMatrix = m_childMatrix * rChild;
+        Matrix4x4 r = Rotation(rotationAngle, rotationAxis);
+        Vector3 trans = directionObjectSpace.Normalized() * translationAmount;
+        Matrix4x4 t = Translation(trans);
 
-    m_gameObject->GetTransform().SetLocalMatrix(m_parentMatrix*m_childMatrix);
-
-    Vector3 forward = (m_parentMatrix*Vector4(Vector3::Forward, 0)).xyz().Normalized();
-    Vector3 objectPosition = m_gameObject->GetTransform().GetLocalPosition();
-    Vector3 cameraPosition = objectPosition - 3.5 * forward;
-    cameraPosition[1] = cameraPosition[1] + 0.7f;
-    Vector3 cameraDirection = forward;
-
-    Camera cam(cameraPosition, cameraDirection, Vector3::Up);
-    RenderManager::Singleton().SetCamera(cam);
-
-    GameObject* child = RotationChild.GetGameObject();
-    if (child != NULL)
-    {
-        int x = 0;
+        Matrix4x4 m = m_gameObject->GetTransform().GetWorldMatrix() * t * r;
+        m_gameObject->GetTransform().SetLocalMatrix(m);
     }
 }

@@ -4,8 +4,8 @@
         <Resource guid="2152164934"/>
         <Resource guid="2234616278"/>
         <Resource guid="33727872"/>
+        <Resource guid="3936014360"/>
         <Resource guid="3746892247"/>
-        <Resource guid="1537037577"/>
         <Resource guid="870516493"/>
         <Resource guid="3303202035"/>
         <Resource guid="3125582585"/>
@@ -14,7 +14,6 @@
         <Resource guid="536475533"/>
         <Resource guid="3780387270"/>
         <Resource guid="1863496264"/>
-        <Resource guid="3936014360"/>
     </Resources>
     <Camera>
         <Position x="0.00000" y="1.00000" z="10.00000"/>
@@ -107,7 +106,7 @@
         </GameObject>
         <GameObject guid="2032717194" name="Katamari">
             <Transform>
-                <Position x="0.00000" y="0.2700" z="0.00000"/>
+                <Position x="0.00000" y="0.30000" z="0.00000"/>
                 <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
                 <Scale x="0.30000" y="0.30000" z="0.30000"/>
             </Transform>
@@ -125,11 +124,9 @@
             </Colliders>
             <Components>
                 <Component guid="3055461197">
-                    <Param name="Speed" type="1" value="250"/>
-                    <Param name="Radius" type="1" value="0.5"/>
-                    <Param name="RotationChild" type="6" value="0"/>
-                    <Param name="MyTex" type="9" value="1537037577"/>
-                    <Param name="MyMesh" type="7" value="2234616278"/>
+                    <Param name="Speed" type="1" value="90"/>
+                    <Param name="Radius" type="1" value="0.3000000"/>
+                    <Param name="CameraObject" type="6" value="2471797450"/>
                 </Component>
                 <Component guid="3988628104">
                     <Param name="BounceHeight" type="1" value="0"/>
@@ -157,7 +154,7 @@
             <Colliders>
                 <Collider Type="1" IsStatic="1">
                     <Center x="0.00000" y="0.00000" z="0.00000"/>
-                    <Size x="1.0000" y="1.0000" z="1.0000"/>
+                    <Size x="1.00000" y="1.00000" z="1.00000"/>
                 </Collider>
             </Colliders>
             <Components/>
@@ -310,8 +307,8 @@
             <Mesh guid="3936014360">
                 <Material>
                     <Shader guid="3378413933"/>
-                    <Color r="0.29804" g="0.61176" b="0.00392" name="colorDiffuse"/>
-                    <Color r="0.27843" g="0.56078" b="0.00000" name="colorAmbient"/>
+                    <Color r="1.00000" g="0.66667" b="0.00000" name="colorDiffuse"/>
+                    <Color r="1.00000" g="0.66667" b="0.00000" name="colorAmbient"/>
                 </Material>
             </Mesh>
             <Colliders>
@@ -320,6 +317,33 @@
                 </Collider>
             </Colliders>
             <Components/>
+        </GameObject>
+        <GameObject guid="1890346747" name="CameraControls">
+            <Transform>
+                <Position x="0.00000" y="0.00000" z="0.00000"/>
+                <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
+                <Scale x="1.00000" y="1.00000" z="1.00000"/>
+            </Transform>
+            <Colliders/>
+            <Components>
+                <Component guid="1661142292">
+                    <Param name="TargetObject" type="6" value="2032717194"/>
+                    <Param name="CameraObject" type="6" value="2471797450"/>
+                    <Param name="Distance" type="1" value="3.5"/>
+                    <Param name="HorizSpeed" type="1" value="100"/>
+                    <Param name="VertSpeed" type="1" value="100"/>
+                    <Param name="VertMax" type="1" value="45"/>
+                </Component>
+            </Components>
+            <GameObject guid="2471797450" name="CameraObject">
+                <Transform>
+                    <Position x="0.00000" y="0.00000" z="0.00000"/>
+                    <Rotation x="0.00000" y="-0.00000" z="0.00000"/>
+                    <Scale x="1.00000" y="1.00000" z="1.00000"/>
+                </Transform>
+                <Colliders/>
+                <Components/>
+            </GameObject>
         </GameObject>
     </GameObject>
 </Scene>

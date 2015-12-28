@@ -4,28 +4,18 @@
 #include "GameObjectReference.h"
 #include "Math\Algebra.h"
 
-class Mesh;
-class Texture;
-
 class Roller : public GameComponent
 {
 public:
 
 #pragma region Serializable
-    float               Speed = 0.5f;
+    float               Speed = 25.0f;
     float               Radius = 0.1f;
-    GameObjectReference RotationChild;
-    Texture*            MyTex;
-    Mesh*               MyMesh;
+
+    GameObjectReference CameraObject;
 #pragma endregion
 
     void OnCreate();
     void OnStart();
     void Update(float deltaTime);
-
-private:
-    Matrix4x4 m_parentMatrix;
-    Matrix4x4 m_childMatrix;
-
-    bool m_setupDone = false;
 };
