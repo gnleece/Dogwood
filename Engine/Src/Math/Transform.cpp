@@ -195,22 +195,26 @@ Matrix4x4& Transform::GetInverseWorldMatrix()
 
 Vector3 Transform::TransformPoint(Vector3 point)
 {
+    RecomputeWorldIfDirty();
     return (m_worldMatrix * Vector4(point, 1)).xyz();
 }
 
 Vector3 Transform::TransformVector(Vector3 vector)
 {
+    RecomputeWorldIfDirty();
     return (m_worldMatrix * Vector4(vector, 0)).xyz();
 }
 
 Vector3 Transform::InverseTransformPoint(Vector3 point)
 {
+    RecomputeWorldIfDirty();
     RecomputeInverseIfDirty();
     return (m_inverseWorldMatrix * Vector4(point, 1)).xyz();
 }
 
 Vector3 Transform::InverseTransformVector(Vector3 vector)
 {
+    RecomputeWorldIfDirty();
     RecomputeInverseIfDirty();
     return (m_inverseWorldMatrix * Vector4(vector, 0)).xyz();
 }
