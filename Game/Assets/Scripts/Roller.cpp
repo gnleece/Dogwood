@@ -28,6 +28,7 @@ void Roller::Update(float deltaTime)
     float pushDelta = Speed * deltaTime;
     Vector3 directionCameraSpace = Vector3(-lstickX * pushDelta, 0.0f, lstickY * pushDelta);
     Vector3 directionWorldSpace = CameraObject.GetGameObject()->GetTransform().TransformVector(directionCameraSpace);
+    directionWorldSpace.SetY(0.0f);
     Vector3 directionObjectSpace = m_gameObject->GetTransform().InverseTransformVector(directionWorldSpace);
     Vector3 upObjectSpace = m_gameObject->GetTransform().InverseTransformVector(Vector3::Up);
 

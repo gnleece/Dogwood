@@ -4,16 +4,16 @@
         <Resource guid="2152164934"/>
         <Resource guid="2234616278"/>
         <Resource guid="33727872"/>
-        <Resource guid="3936014360"/>
         <Resource guid="3746892247"/>
         <Resource guid="870516493"/>
+        <Resource guid="156145593"/>
         <Resource guid="3303202035"/>
         <Resource guid="3125582585"/>
-        <Resource guid="156145593"/>
         <Resource guid="3205911089"/>
         <Resource guid="536475533"/>
         <Resource guid="3780387270"/>
         <Resource guid="1863496264"/>
+        <Resource guid="3936014360"/>
     </Resources>
     <Camera>
         <Position x="0.00000" y="1.00000" z="10.00000"/>
@@ -125,7 +125,7 @@
             <Components>
                 <Component guid="3055461197">
                     <Param name="Speed" type="1" value="90"/>
-                    <Param name="Radius" type="1" value="0.3000000"/>
+                    <Param name="Radius" type="1" value="0.30000001"/>
                     <Param name="CameraObject" type="6" value="2471797450"/>
                 </Component>
                 <Component guid="3988628104">
@@ -330,9 +330,11 @@
                     <Param name="TargetObject" type="6" value="2032717194"/>
                     <Param name="CameraObject" type="6" value="2471797450"/>
                     <Param name="Distance" type="1" value="3.5"/>
+                    <Param name="Height" type="1" value="0.64999998"/>
                     <Param name="HorizSpeed" type="1" value="100"/>
                     <Param name="VertSpeed" type="1" value="100"/>
-                    <Param name="VertMax" type="1" value="45"/>
+                    <Param name="VertMin" type="1" value="-20"/>
+                    <Param name="VertMax" type="1" value="35"/>
                 </Component>
             </Components>
             <GameObject guid="2471797450" name="CameraObject">

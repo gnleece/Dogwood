@@ -29,7 +29,7 @@ void CameraControls::OnStart()
     m_gameObject->GetTransform().SetLocalRotation(targetTransform.GetLocalRotation());
 
     // Position the camera object behind the target position
-    cameraGO->GetTransform().SetLocalPosition(Vector3(0.0f, 0.0f, -Distance));
+    cameraGO->GetTransform().SetLocalPosition(Vector3(0.0f, Height, -Distance));
 
     ApplyCameraSettings(cameraGO->GetTransform());
 }
@@ -52,13 +52,11 @@ void CameraControls::Update(float deltaTime)
     m_gameObject->GetTransform().SetLocalPosition(targetPosition);
 
     // Rotate the camera parent based on joystick input
-    float horizAngle = -rstickX * HorizSpeed * deltaTime;
-    float vertAngle = rstickY * VertSpeed * deltaTime;
-    Matrix4x4 r = Rotation(horizAngle, AXIS_Y);
-    Matrix4x4 m = m_gameObject->GetTransform().GetLocalMatrix() * r;
-    m_gameObject->GetTransform().SetLocalMatrix(m);
-
-    // TODO allow vertical rotation
+    float horizAngleDelta = -rstickX * HorizSpeed * deltaTime;
+    float vertAngleDelta = -rstickY * VertSpeed * deltaTime;
+    m_horizRotation += horizAngleDelta;
+    m_vertRotation = Clamp(m_vertRotation + vertAngleDelta, VertMin, VertMax);
+    m_gameObject->GetTransform().SetLocalRotation(Vector3(m_vertRotation, m_horizRotation, 0.0f));
 
     ApplyCameraSettings(cameraTransform);
 }
