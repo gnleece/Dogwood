@@ -53,6 +53,7 @@ unsigned int CollisionDetection::SphereAndSphere(SphereCollider* a, SphereCollid
     CollisionContact* contact = data->ClaimNextContact();
     contact->ContactPoint = aPos - midline * 0.5f;
     contact->ContactNormal = midline * (1.0f / distance);
+    contact->Penetration = aRadius + bRadius - distance;
     contact->ColliderA = a;
     contact->ColliderB = b;
 
@@ -110,8 +111,8 @@ unsigned int CollisionDetection::SphereAndBox(SphereCollider* s, BoxCollider* b,
     // Calculate the distance between the sphere and the closest point on the box, to see if
     // we are close enough for contact
     Vector3 closestPointWorldspace = b->GetTransform().TransformPoint(closestPoint);
-    float distance = (closestPointWorldspace - sphereWorldPos).MagnitudeSqrd();
-    if (distance > sphereWorldRadius * sphereWorldRadius)
+    float distanceSqrd = (closestPointWorldspace - sphereWorldPos).MagnitudeSqrd();
+    if (distanceSqrd > sphereWorldRadius * sphereWorldRadius)
     {
         return 0;
     }
@@ -120,6 +121,7 @@ unsigned int CollisionDetection::SphereAndBox(SphereCollider* s, BoxCollider* b,
     CollisionContact* contact = data->ClaimNextContact();
     contact->ContactPoint = closestPointWorldspace;
     contact->ContactNormal = (closestPointWorldspace - sphereWorldPos).Normalized();
+    contact->Penetration = sphereWorldRadius - sqrt(distanceSqrd);
     contact->ColliderA = s;
     contact->ColliderB = b;
 
@@ -190,15 +192,13 @@ unsigned int CollisionDetection::BoxAndBox(BoxCollider* a, BoxCollider* b, Colli
     if (bestCase < 3)
     {
         // Contact between face of box A and vertex of box B
-        SetFaceVertexContactData(a, b, centerAToCenterB, data, axis);
-        printf("FACE VERTEX\n");
+        SetFaceVertexContactData(a, b, centerAToCenterB, data, axis, bestOverlap);
         return 1;
     }
     else if (bestCase < 6)
     {
         // Contact between face of box B and vertex of box A
-        SetFaceVertexContactData(b, a, -1.0f*centerAToCenterB, data, axis);
-        printf("VERTEX FACE\n");
+        SetFaceVertexContactData(b, a, -1.0f*centerAToCenterB, data, axis, bestOverlap);
         return 1;
     }
     else
@@ -209,8 +209,7 @@ unsigned int CollisionDetection::BoxAndBox(BoxCollider* a, BoxCollider* b, Colli
         unsigned int twoAxisIndex = bestCase % 3;
 
         // Calculate contact data
-        SetEdgeEdgeContactData(a, b, data, oneAxisIndex, twoAxisIndex, centerAToCenterB);
-        printf("EDGE EDGE\n");
+        SetEdgeEdgeContactData(a, b, data, oneAxisIndex, twoAxisIndex, centerAToCenterB, bestOverlap);
         return 1;
     }
 
@@ -240,7 +239,7 @@ float CollisionDetection::PenetrationOnAxis(BoxCollider* a, BoxCollider* b, Vect
     return projectionA + projectionB - distance;
 }
 
-void CollisionDetection::SetFaceVertexContactData(BoxCollider* faceBox, BoxCollider* vertexBox, Vector3& centerToCenter, CollisionData* data, Vector3 axis)
+void CollisionDetection::SetFaceVertexContactData(BoxCollider* faceBox, BoxCollider* vertexBox, Vector3& centerToCenter, CollisionData* data, Vector3 axis, float bestOverlap)
 {
     // Determine which face is in contact (we know it's one of the two along the given axis)
     if (axis.Dot(centerToCenter) > 0)
@@ -267,11 +266,12 @@ void CollisionDetection::SetFaceVertexContactData(BoxCollider* faceBox, BoxColli
     CollisionContact* contact = data->ClaimNextContact();
     contact->ContactPoint = vertexBox->GetTransform().TransformPoint(vertex);
     contact->ContactNormal = axis;
+    contact->Penetration = bestOverlap;
     contact->ColliderA = faceBox;
     contact->ColliderB = vertexBox;
 }
 
-void CollisionDetection::SetEdgeEdgeContactData(BoxCollider* a, BoxCollider* b, CollisionData* data, int oneAxisIndex, int twoAxisIndex, Vector3& centerToCenter)
+void CollisionDetection::SetEdgeEdgeContactData(BoxCollider* a, BoxCollider* b, CollisionData* data, int oneAxisIndex, int twoAxisIndex, Vector3& centerToCenter, float bestOverlap)
 {
     Vector3 oneAxis = a->GetTransform().GetAxis(oneAxisIndex);
     Vector3 twoAxis = b->GetTransform().GetAxis(twoAxisIndex);
@@ -319,6 +319,7 @@ void CollisionDetection::SetEdgeEdgeContactData(BoxCollider* a, BoxCollider* b, 
     CollisionContact* contact = data->ClaimNextContact();
     contact->ContactPoint = vertex;
     contact->ContactNormal = axis;
+    contact->Penetration = bestOverlap;
     contact->ColliderA = a;
     contact->ColliderB = b;
 }
