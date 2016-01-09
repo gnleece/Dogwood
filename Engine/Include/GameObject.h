@@ -37,6 +37,10 @@ public:
     void    OnActivate();
     void    OnDeactivate();
 
+    void    OnCollisionEnter();
+    void    OnCollisionHold();
+    void    OnCollisionExit();
+
     // TODO this shouldn't be here
     void    Render(bool dirty, bool wireframe = false);
 

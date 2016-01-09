@@ -1,5 +1,6 @@
 #include "Physics/CollisionEngine.h"
 
+#include "GameObject.h"
 #include "GameObjectBase.h"
 #include "Debugging/DebugDraw.h"
 #include "Math/Transformations.h"
@@ -47,12 +48,17 @@ void CollisionEngine::Update(float deltaTime)
 
     if (numContacts > 0)
     {
-        printf("\nActual Contacts\n");
+        //printf("\nActual Contacts\n");
         for (int i = 0; i < numContacts; i++)
         {
-            printf("\t%s\n", collisionData.Contacts[i].ColliderA->GetGameObject()->GetName().c_str());
-            printf("\t%s\n", collisionData.Contacts[i].ColliderB->GetGameObject()->GetName().c_str());
-            printf("\t---\n");
+            // TODO track enter/exit
+            // TODO pass collision info
+            ((GameObject*)(collisionData.Contacts[i].ColliderA->GetGameObject()))->OnCollisionHold();
+            ((GameObject*)(collisionData.Contacts[i].ColliderB->GetGameObject()))->OnCollisionHold();
+
+            //printf("\t%s\n", collisionData.Contacts[i].ColliderA->GetGameObject()->GetName().c_str());
+            //printf("\t%s\n", collisionData.Contacts[i].ColliderB->GetGameObject()->GetName().c_str());
+            //printf("\t---\n");
         }
     }
 }

@@ -112,6 +112,39 @@ void GameObject::OnDeactivate()
     }
 }
 
+void GameObject::OnCollisionEnter()
+{
+    // Notify all components of collision enter
+    std::vector<GameComponent*>::iterator compIter;
+    for (compIter = m_components.begin(); compIter != m_components.end(); compIter++)
+    {
+        GameComponent* component = *compIter;
+        component->OnCollisionEnter();
+    }
+}
+
+void GameObject::OnCollisionHold()
+{
+    // Notify all components of collision hold
+    std::vector<GameComponent*>::iterator compIter;
+    for (compIter = m_components.begin(); compIter != m_components.end(); compIter++)
+    {
+        GameComponent* component = *compIter;
+        component->OnCollisionHold();
+    }
+}
+
+void GameObject::OnCollisionExit()
+{
+    // Notify all components of collision exit
+    std::vector<GameComponent*>::iterator compIter;
+    for (compIter = m_components.begin(); compIter != m_components.end(); compIter++)
+    {
+        GameComponent* component = *compIter;
+        component->OnCollisionExit();
+    }
+}
+
 void GameObject::Render(bool dirty, bool wireframe)
 {
     // Render the mesh

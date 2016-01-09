@@ -48,3 +48,8 @@ void Roller::Update(float deltaTime)
         m_gameObject->GetTransform().SetLocalMatrix(m);
     }
 }
+
+void Roller::OnCollisionHold()
+{
+    printf("\t\tRoller collision!\n");
+}

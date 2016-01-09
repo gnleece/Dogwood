@@ -15,6 +15,10 @@ public:
     virtual void    OnEnable() {}
     virtual void    OnDisable() {}
 
+    virtual void    OnCollisionEnter() {}
+    virtual void    OnCollisionHold() {}
+    virtual void    OnCollisionExit() {}
+
     bool            IsEnabled();
 
     // Engine use only - TODO enforce this

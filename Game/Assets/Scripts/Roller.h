@@ -18,4 +18,6 @@ public:
     void OnCreate();
     void OnStart();
     void Update(float deltaTime);
+
+    void OnCollisionHold();
 };
