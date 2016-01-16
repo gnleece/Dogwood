@@ -293,7 +293,7 @@ bool ComponentModelTransformItem::SetData(QVariant value)
 
     m_vector = ReadVector3FromString(value.toString().toStdString());
 
-    EditorCommands::ModifyTransformCommand* command = new EditorCommands::ModifyTransformCommand(m_gameObject, m_vector, m_vectorType);
+    EditorCommands::ModifyTransformCommand* command = new EditorCommands::ModifyTransformCommand( m_gameObject, m_vector, m_vectorType);
     CommandManager::Singleton().ExecuteCommand(command);
 
     return true;

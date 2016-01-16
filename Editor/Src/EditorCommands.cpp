@@ -151,7 +151,7 @@ namespace EditorCommands
         {
             m_previousVector = m_gameObject->GetTransform().GetLocalVector(m_type);
             m_gameObject->GetTransform().SetLocalVector(m_vector, m_type);
-            sComponentWidget->Refresh();
+            //sComponentWidget->Refresh();
         }
     }
 
@@ -160,7 +160,7 @@ namespace EditorCommands
         if (m_gameObject != NULL)
         {
             m_gameObject->GetTransform().SetLocalVector(m_previousVector, m_type);
-            sComponentWidget->Refresh();
+            //sComponentWidget->Refresh();
         }
     }
 
