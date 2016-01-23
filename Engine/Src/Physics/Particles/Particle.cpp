@@ -1,4 +1,4 @@
-#include "Physics/Particle.h"
+#include "Physics/Particles/Particle.h"
 #include <assert.h>
 #include <math.h>
 
@@ -28,8 +28,11 @@ void Particle::Integrate(float deltaTime)
     // Update position (deltaTime is small so acceleration term is negligible here)
     m_position = m_position + deltaTime * m_velocity;
 
+    // Calculate acceleration from force
+    Vector3 netAcceleration = m_acceleration;
+
     // Update velocity
-    m_velocity = m_velocity + deltaTime * m_acceleration;
+    m_velocity = m_velocity + deltaTime * netAcceleration;
 
     // Apply damping
     m_velocity = pow(DAMPING, deltaTime) * m_velocity;      // TODO calculate pow(DAMPING, dt) once per frame

@@ -172,9 +172,6 @@
     <ClInclude Include="Include\GameObjectBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Physics\Particle.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Include\Physics\Collider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -191,6 +188,12 @@
       <Filter>Header Files\Rendering</Filter>
     </ClInclude>
     <ClInclude Include="Include\Physics\CollisionDetection.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Physics\Particles\Particle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Physics\Particles\Firework.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -297,9 +300,6 @@
     <ClCompile Include="Src\GameObjectBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Physics\Particle.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Src\Physics\BVHNode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -316,6 +316,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Src\Physics\CollisionDetection.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Physics\Particles\Particle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Physics\Particles\Firework.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
