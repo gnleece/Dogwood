@@ -2,6 +2,36 @@
 #include <assert.h>
 #include <math.h>
 
+void Particle::SetPosition(Vector3 position)
+{
+    m_position = position;
+}
+
+Vector3 Particle::GetPosition()
+{
+    return m_position;
+}
+
+void Particle::SetVelocity(Vector3 velocity)
+{
+    m_velocity = velocity;
+}
+
+Vector3 Particle::GetVelocity()
+{
+    return m_velocity;
+}
+
+void Particle::SetAcceleration(Vector3 acceleration)
+{
+    m_acceleration = acceleration;
+}
+
+Vector3 Particle::GetAcceleration()
+{
+    return m_acceleration;
+}
+
 void Particle::SetMass(float mass)
 {
     if (mass < 0 || Approximately(mass, 0.f))
@@ -17,6 +47,12 @@ void Particle::SetInverseMass(float inverseMass)
         return;
     m_inverseMass = inverseMass;
 }
+
+float Particle::GetInverseMass()
+{
+    return m_inverseMass;
+}
+
 
 void Particle::Integrate(float deltaTime)
 {
@@ -36,4 +72,9 @@ void Particle::Integrate(float deltaTime)
 
     // Apply damping
     m_velocity = pow(DAMPING, deltaTime) * m_velocity;      // TODO calculate pow(DAMPING, dt) once per frame
+}
+
+void Particle::ClearAccumulator()
+{
+    // TODO implement me
 }

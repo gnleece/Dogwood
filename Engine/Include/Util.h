@@ -29,5 +29,3 @@ string                  WriteVector3ToString(Vector3 str);
 void                    FileCopy(string source, string destination);
 
 string                  GetFriendlyAssetNameFromPath(string path);
-
-float                   RandomFloat(float min, float max);

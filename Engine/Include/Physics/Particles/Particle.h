@@ -5,11 +5,22 @@
 class Particle
 {
 public:
+    void        SetPosition(Vector3 position);
+    Vector3     GetPosition();
+
+    void        SetVelocity(Vector3 velocity);
+    Vector3     GetVelocity();
+
+    void        SetAcceleration(Vector3 acceleration);
+    Vector3     GetAcceleration();
+
     void        SetMass(float mass);
     void        SetInverseMass(float inverseMass);
-    
+    float       GetInverseMass();
+
     // Integrates the particle forward in time (i.e. updates position and velocity)
     void        Integrate(float deltaTime);
+    void        ClearAccumulator();
 
 protected:
     Vector3     m_position;

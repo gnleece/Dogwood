@@ -95,6 +95,7 @@
     <ClInclude Include="Include\Input\InputManager.h" />
     <ClInclude Include="Include\Input\XInputGamePad.h" />
     <ClInclude Include="Include\Math\Algebra.h" />
+    <ClInclude Include="Include\Math\MathUtil.h" />
     <ClInclude Include="Include\Math\Raycast.h" />
     <ClInclude Include="Include\Math\Transform.h" />
     <ClInclude Include="Include\Math\Transformations.h" />
@@ -141,6 +142,7 @@
     <ClCompile Include="Src\Input\InputManager.cpp" />
     <ClCompile Include="Src\Input\XInputGamePad.cpp" />
     <ClCompile Include="Src\Math\Algebra.cpp" />
+    <ClCompile Include="Src\Math\MathUtil.cpp" />
     <ClCompile Include="Src\Math\Raycast.cpp" />
     <ClCompile Include="Src\Math\Transform.cpp" />
     <ClCompile Include="Src\Math\Transformations.cpp" />

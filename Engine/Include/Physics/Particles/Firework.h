@@ -2,6 +2,8 @@
 
 #include "Physics/Particles/Particle.h"
 
+class Firework;
+
 struct FireworkRule
 {
 public:
@@ -30,7 +32,7 @@ public:
     unsigned int PayloadCount;
     Payload* Payload;
 
-    void Create(Firework* firework, const Firework* parent = NULL);
+    void Create(Firework* firework, Firework* parent = NULL);
 };
 
 class Firework : public Particle
