@@ -39,7 +39,6 @@ ENGINE (Dogwood)
             * #define to compile without XInput?
         * Re-factor MainEditorWindow.cpp
         * typedef guid type?
-        * Remove un-used guids on scene serialization
 
 ---------------------------------------------------------------------------
 

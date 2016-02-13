@@ -19,6 +19,8 @@ class SettingsDialog : public QDialog
 public:
     SettingsDialog(MainEditorWindow* window, QWidget* parent = 0);
 
+    virtual void accept();
+
 private:
     Ui::SettingsDialog*     m_ui;
     MainEditorWindow*       m_window;
