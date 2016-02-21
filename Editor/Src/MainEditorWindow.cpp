@@ -45,7 +45,7 @@ MainEditorWindow::MainEditorWindow(QWidget* parent)
     m_sceneViewWidget = new SceneViewWidget(this, this);
     m_sceneViewWidget->setFixedSize(990, 610);      // TODO set this properly
     m_ui->verticalLayout->addWidget(m_sceneViewWidget);
-    m_scene = new Scene();
+    m_scene = Scene::New();
 
     // Game object widget (components list)
     m_componentWidget = new ComponentWidget(this);
@@ -334,8 +334,9 @@ void MainEditorWindow::OpenScene()
         return;
 
     UnloadScene();
+    m_scene = Scene::Load(fileName.toStdString());
 
-    if (m_scene->Load(fileName.toStdString()))
+    if (m_scene != NULL)
     {
         HierarchyModel* model = new HierarchyModel(m_scene->GetToolsideRootObject());
         SetHierarchyModel(model);
@@ -345,21 +346,15 @@ void MainEditorWindow::OpenScene()
     else
     {
         DebugLogger::Singleton().Log("Error loading scene");
-        m_scene = NULL;
     }
 }
 
 void MainEditorWindow::UnloadScene()
 {
-    if (m_scene == NULL)
-    {
-        m_scene = new Scene();
-    }
-
     if (m_scene != NULL && m_scene->IsLoaded())
     {
         // TODO prompt user to save if there are unsaved changes
-        m_scene->Unload();
+        Scene::Unload(m_scene);
     }
 }
 
@@ -374,7 +369,10 @@ void MainEditorWindow::OpenTestProject()
         return;
     }
     
-    if (m_scene->Load("..\\Game\\Assets\\Scenes\\RollTest.xml"))
+    UnloadScene();
+    m_scene = Scene::Load("..\\Game\\Assets\\Scenes\\RollTest.xml");
+
+    if (m_scene != NULL)
     {
         HierarchyModel* model = new HierarchyModel(m_scene->GetToolsideRootObject());
         SetHierarchyModel(model);

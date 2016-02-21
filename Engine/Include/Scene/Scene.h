@@ -24,12 +24,11 @@ class ToolsideGameObject;
 class Scene
 {
 public:
-    Scene();
+    static Scene*       New(string filename = "");
+    static Scene*       Load(string filename);
+    static void         Unload(Scene* scene);
 
-    bool                New(string filename = "");
-    bool                Load(string filename);
     bool                Save(string filename = "");
-    bool                Unload();
 
     GameObjectBase*     GetRootObject();
     GameObject*         GetRuntimeRootObject();
@@ -38,6 +37,8 @@ public:
     bool                IsLoaded();
 
 private:
+    Scene();
+
     void                DoGlobalSetup(tinyxml2::XMLElement* sceneXML);
     void                DoHierarchySetup(tinyxml2::XMLElement* sceneXML);
 
@@ -63,6 +64,7 @@ private:
     void                SerializeComponents(ToolsideGameObject* gameObject, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc, unordered_set<unsigned int>& guids);
     void                SerializeResourceList(unordered_set<unsigned int>& guids, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc);
 
+    unsigned int        m_guid;
     bool                m_loaded;
     string              m_filename;
     Camera              m_mainCamera;

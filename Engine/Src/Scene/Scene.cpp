@@ -22,7 +22,7 @@ Scene::Scene()
 : m_loaded(false)
 { }
 
-bool Scene::New(string filename)
+Scene* Scene::New(string filename)
 {
     if (!GameProject::Singleton().IsToolside())
     {
@@ -30,62 +30,71 @@ bool Scene::New(string filename)
         return false;
     }
 
-    if (m_loaded)
+    Scene* scene = new Scene();
+
+    if (scene != NULL)
     {
-        printf("Scene error: can't init new scene because scene is already loaded.\n");
-        return false;
+        scene->m_filename = filename;
+        scene->m_guid = MakeGuid(filename);
+        unsigned int guid = MakeGuid("ROOT");
+        scene->m_rootObject = new ToolsideGameObject(guid, "ROOT");
+        scene->m_loaded = true;
+
+        // TODO more default scene setup
     }
 
-    m_filename = filename;
-    unsigned int guid = MakeGuid("ROOT");
-    m_rootObject = new ToolsideGameObject(guid, "ROOT");
-
-    m_loaded = true;
-    return true;
+    return scene;
 }
 
-bool Scene::Load(string filename)
+Scene* Scene::Load(string filename)
 {
-    if (m_loaded)
+    Scene* scene = new Scene();
+
+    if (scene != NULL)
     {
-        printf("Scene error: can't load because scene is already loaded.\n");
-        return false;
+        scene->m_filename = filename;
+
+        printf("LOADING SCENE: %s\n", scene->m_filename.c_str());
+
+        // Open the scene XML file
+        XMLDocument sceneDoc;
+        XMLError result = sceneDoc.LoadFile(scene->m_filename.c_str());
+        if (result != XML_SUCCESS)
+        {
+            printf("Error reading scene file %s.\nXMLError %d\n", scene->m_filename.c_str(), result);
+            return false;
+        }
+        XMLElement* sceneXML = sceneDoc.FirstChildElement("Scene");
+
+        // Read the guid
+        scene->m_guid = sceneXML->UnsignedAttribute("guid");
+        if (scene->m_guid == XML_NO_ATTRIBUTE || scene->m_guid == 0)
+        {
+            scene->m_guid = MakeGuid(scene->m_filename);
+        }
+
+        // Load the required resources
+        printf("Loading scene resources...\n");
+        XMLElement* resources = sceneXML->FirstChildElement("Resources");
+        if (resources == NULL)
+        {
+            printf("Error parsing scene file. Could not find resource list.\n");
+            return false;
+        }
+        ResourceManager::Singleton().LoadSceneResources(resources);
+
+        // Apply global settings (camera, light, etc.)
+        scene->DoGlobalSetup(sceneXML);
+
+        // Build the game object hierarchy
+        scene->DoHierarchySetup(sceneXML);
+
+        printf("DONE LOADING SCENE!\n");
+
+        scene->m_loaded = true;
     }
 
-    m_filename = filename;
-
-    printf("LOADING SCENE: %s\n", m_filename.c_str());
-
-    // Open the scene XML file
-    XMLDocument sceneDoc;
-    XMLError result = sceneDoc.LoadFile(m_filename.c_str());
-    if (result != XML_SUCCESS)
-    {
-        printf("Error reading scene file %s.\nXMLError %d\n", m_filename.c_str(), result);
-        return false;
-    }
-    XMLElement* sceneXML = sceneDoc.FirstChildElement("Scene");
-
-    // Load the required resources
-    printf("Loading scene resources...\n");
-    XMLElement* resources = sceneXML->FirstChildElement("Resources");
-    if (resources == NULL)
-    {
-        printf("Error parsing scene file. Could not find resource list.\n");
-        return false;
-    }
-    ResourceManager::Singleton().LoadSceneResources(resources);
-
-    // Apply global settings (camera, light, etc.)
-    DoGlobalSetup(sceneXML);
-
-    // Build the game object hierarchy
-    DoHierarchySetup(sceneXML);
-
-    printf("DONE LOADING SCENE!\n");
-
-    m_loaded = true;
-    return true;
+    return scene;
 }
 
 bool Scene::Save(string filename)
@@ -111,6 +120,7 @@ bool Scene::Save(string filename)
     // Root setup
     XMLDocument sceneDoc;
     XMLElement* rootElement = sceneDoc.NewElement("Scene");
+    rootElement->SetAttribute("guid", m_guid);
     sceneDoc.InsertEndChild(rootElement);
 
     // Track which resources are needed by the scene
@@ -127,24 +137,25 @@ bool Scene::Save(string filename)
     return true;
 }
 
-bool Scene::Unload()
+void Scene::Unload(Scene* scene)
 {
-    if (!m_loaded)
+    if (scene == NULL)
+        return;
+
+    if (!scene->m_loaded)
     {
         printf("Scene error: can't unload because scene is not loaded.\n");
-        return false;
+    }
+    else
+    {
+        // Unload resources
+        ResourceManager::Singleton().UnloadSceneResources();
+
+        // Tear down the hierarchy
+        // TODO implement me
     }
 
-    // Unload resources
-    ResourceManager::Singleton().UnloadSceneResources();
-
-    // Tear down the hierarchy
-    // TODO implement me
-
-    m_rootObject = NULL;
-    m_loaded = false;
-
-    return true;
+    delete scene;
 }
 
 GameObjectBase* Scene::GetRootObject()
