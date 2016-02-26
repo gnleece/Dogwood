@@ -406,7 +406,8 @@ void Scene::AddGameComponents(GameObjectBase* go, XMLElement* xmlnode)
             else
             {
                 unsigned int guid = componentXML->UnsignedAttribute("guid");
-                GameComponentFactory* factory = GameProject::Singleton().GetRuntimeComponentFactory();
+                bool isEngineComponent = componentXML->BoolAttribute("engine");
+                GameComponentFactory* factory = GameProject::Singleton().GetRuntimeComponentFactory(isEngineComponent);
                 GameComponent* component = factory->CreateComponent(guid);
                 RuntimeParamList params = ComponentValue::ParseRuntimeParams(componentXML);
                 factory->SetParams(guid, component, &params);

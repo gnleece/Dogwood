@@ -333,8 +333,15 @@
      <addaction name="actionAdd_Box_Collider"/>
      <addaction name="actionAdd_Capsule_Collider"/>
     </widget>
+    <widget class="QMenu" name="menuAdd_Effect">
+     <property name="title">
+      <string>Add Effect...</string>
+     </property>
+     <addaction name="actionParticle_System"/>
+    </widget>
     <addaction name="menuAdd_Mesh"/>
     <addaction name="menuAdd_Physics"/>
+    <addaction name="menuAdd_Effect"/>
     <addaction name="actionAdd_Component"/>
     <addaction name="separator"/>
     <addaction name="actionRebuild_Script_Info"/>
@@ -636,6 +643,11 @@
    </property>
    <property name="toolTip">
     <string>Add Capsule Collider</string>
+   </property>
+  </action>
+  <action name="actionParticle_System">
+   <property name="text">
+    <string>Particle System</string>
    </property>
   </action>
  </widget>

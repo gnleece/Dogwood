@@ -28,8 +28,8 @@ public:
     bool    IsLoaded();
     bool    IsToolside();
 
-    void    SetRuntimeComponentFactory(GameComponentFactory* factory);
-    GameComponentFactory* GetRuntimeComponentFactory();
+    void    SetRuntimeComponentFactory(GameComponentFactory* factory, bool engine);
+    GameComponentFactory* GetRuntimeComponentFactory(bool engine);
 
     string  GetName();
     void    SetName(string name);
@@ -63,5 +63,6 @@ private:
 
     string  m_resourceDir;
 
-    GameComponentFactory* m_componentFactory;
+    GameComponentFactory* m_gameComponentFactory;
+    GameComponentFactory* m_engineComponentFactory;
 };

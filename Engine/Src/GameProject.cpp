@@ -142,14 +142,21 @@ bool GameProject::IsLoaded()
     return m_loaded;
 }
 
-void GameProject::SetRuntimeComponentFactory(GameComponentFactory* factory)
+void GameProject::SetRuntimeComponentFactory(GameComponentFactory* factory, bool engine)
 {
-    m_componentFactory = factory;
+    if (engine)
+    {
+        m_engineComponentFactory = factory;
+    }
+    else
+    {
+        m_gameComponentFactory = factory;
+    }
 }
 
-GameComponentFactory* GameProject::GetRuntimeComponentFactory()
+GameComponentFactory* GameProject::GetRuntimeComponentFactory(bool engine)
 {
-    return m_componentFactory;
+    return engine ? m_engineComponentFactory : m_gameComponentFactory;
 }
 
 string GameProject::GetName()

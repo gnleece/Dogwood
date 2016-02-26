@@ -27,7 +27,7 @@ public:
     Game() {}
 
     void Init(string projectPath, GameComponentFactory* componentFactory);
-    void Run(Scene& scene);
+    void Run(Scene* scene);
     
 private:
     void Shutdown();

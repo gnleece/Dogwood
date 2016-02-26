@@ -29,7 +29,7 @@ void Game::Init(string projectPath, GameComponentFactory* componentFactory)
     bool success = GameProject::Singleton().Load(projectPath);
     if (!success)
         return;
-    GameProject::Singleton().SetRuntimeComponentFactory(componentFactory);
+    GameProject::Singleton().SetRuntimeComponentFactory(componentFactory, false);
 
     // Window setup
     int windowWidth, windowHeight;
@@ -54,11 +54,11 @@ void Game::Init(string projectPath, GameComponentFactory* componentFactory)
     GameObjectManager::Singleton().Startup();
 }
 
-void Game::Run(Scene& scene)
+void Game::Run(Scene* scene)
 {
     printf("\n=============== GAME RUN ===============\n");
 
-    m_rootObject = scene.GetRuntimeRootObject();
+    m_rootObject = scene->GetRuntimeRootObject();
     RenderManager::Singleton().SetRootObject(m_rootObject);
     
     // Frame time setup
