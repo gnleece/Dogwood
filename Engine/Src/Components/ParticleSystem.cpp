@@ -2,12 +2,12 @@
 
 void ParticleSystem::OnCreate()
 {
-    printf("\t\ParticleSystem OnCreate\n");
+    printf("\t\tParticleSystem OnCreate\n");
 }
 
 void ParticleSystem::OnStart()
 {
-    printf("\t\ParticleSystem OnStart\n");
+    printf("\t\tParticleSystem OnStart\n");
 }
 
 void ParticleSystem::Update(float deltaTime)

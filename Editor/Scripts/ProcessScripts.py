@@ -103,7 +103,7 @@ def ParseColor(valueTokens, XMLelement):
     print(cleanTokens)
     ET.SubElement(XMLelement, "value", r = cleanTokens[0] , g = cleanTokens[1] , b = cleanTokens[2])
 
-def ProcessScripts(projectFilePath):
+def ProcessScripts(projectFilePath, isEngine = False):
     # Create root XML elemnt
     rootXML = ET.Element("Scripts")
 
@@ -138,7 +138,7 @@ def ProcessScripts(projectFilePath):
     tree.write(assetPath + "ScriptSchema.xml")
 
     # Use component list to generate bindings code
-    ComponentBindings.GenerateBindings(componentList, assetPath)
+    ComponentBindings.GenerateBindings(componentList, assetPath, isEngine)
 
 
 if __name__ == "__main__":

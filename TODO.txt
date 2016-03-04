@@ -106,6 +106,8 @@ EDITOR (Thicket)
         - fix translation tool interactions
         - Undo/redo broken with delete/undo create. Need to avoid use of QModelIndex
         - Non-uniform scaling breaks object picking
+        - Move processing scripts out of Editor and into Engine
+        - Engine component setup for new projects
 
 ---------------------------------------------------------------------------
 

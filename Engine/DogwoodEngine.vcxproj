@@ -81,8 +81,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Libraries\tinyxml2\tinyxml2.h" />
-    <ClInclude Include="Include\Components\EngineComponentBindings.h" />
     <ClInclude Include="Include\Components\ParticleSystem.h" />
+    <ClInclude Include="Include\Components\TestComponent.h" />
     <ClInclude Include="Include\Debugging\DebugCameraControls.h" />
     <ClInclude Include="Include\Debugging\DebugDraw.h" />
     <ClInclude Include="Include\Game.h" />
@@ -93,6 +93,7 @@
     <ClInclude Include="Include\GameObjectManager.h" />
     <ClInclude Include="Include\GameObjectReference.h" />
     <ClInclude Include="Include\GameProject.h" />
+    <ClInclude Include="Include\Generated\EngineComponentBindings.h" />
     <ClInclude Include="Include\Input\GamePad.h" />
     <ClInclude Include="Include\Input\InputManager.h" />
     <ClInclude Include="Include\Input\XInputGamePad.h" />

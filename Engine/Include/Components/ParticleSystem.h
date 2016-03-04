@@ -6,6 +6,7 @@
 
 class ParticleSystem : public GameComponent
 {
+public:
 #pragma region Serializable
     ColorRGB    Color;
     float       MinAge;

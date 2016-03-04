@@ -202,7 +202,10 @@
     <ClInclude Include="Include\Components\ParticleSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Components\EngineComponentBindings.h">
+    <ClInclude Include="Include\Components\TestComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Generated\EngineComponentBindings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -17,7 +17,7 @@ class GameComponent;
 
 ///PARAMETER_SETTER_DECLARATIONS
 
-class MyFactory : public GameComponentFactory
+///CLASS_DEFINITION
 {
     GameComponent* CreateComponent(unsigned int guid)
     {

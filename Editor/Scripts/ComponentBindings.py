@@ -1,15 +1,19 @@
 import ProcessScripts
 
 TEMPLATE_PATH = "Scripts/ComponentBindingsTemplate.h"
+TEMPLATE_PATH_ENGINE = "../../Editor/" + TEMPLATE_PATH         #TODO hacks, FIXME
 
 paramEnumToValueStr = { 0 : 'i',  1 : 'f', 2 : 'b', 3 : 'str', 4 : 'v', 5 : 'c', 6 : 'go', 7 : 'ref', 8 : 'ref', 9 : 'ref' }
 
 paramEnumToResourceName = { 7 : 'Mesh', 8 : 'ShaderProgram', 9 : 'Texture' }
 
-def WriteHeaderSection(outputFile, componentList):
+def WriteHeaderSection(outputFile, componentList, isEngine = False):
     outputFile.write('// COMPONENT HEADERS\n');
     for component in componentList:
-        path = component.path[len('Scripts/'):]
+        if isEngine:
+            path = "Components/" + component.path
+        else:
+            path = component.path[len('Scripts/'):]
         outputFile.write('#include "{0}"\n'.format(path))
     return
 
@@ -64,11 +68,21 @@ def WriteSetterDefinitionSection(outputFile, componentList):
         outputFile.write('}\n\n')
     return
 
-def ProcessSection(outputFile, sectionName, componentList):
+def WriteClassDefinitionSection(outputFile, isEngine):
+    outputFile.write('// CLASS DEFINITION\n')
+    if isEngine:
+        outputFile.write("class EngineFactory : public GameComponentFactory\n")
+    else:
+        outputFile.write("class MyFactory : public GameComponentFactory\n")
+    return
+
+def ProcessSection(outputFile, sectionName, componentList, isEngine):
     if sectionName.startswith('COMPONENT_HEADERS'):
-        WriteHeaderSection(outputFile, componentList)
+        WriteHeaderSection(outputFile, componentList, isEngine)
     elif sectionName.startswith('PARAMETER_SETTER_DECLARATIONS'):
         WriteSetterDeclarationSection(outputFile, componentList)
+    elif sectionName.startswith('CLASS_DEFINITION'):
+        WriteClassDefinitionSection(outputFile, isEngine)
     elif sectionName.startswith('COMPONENT_CREATION_SWITCH'):
         WriteCreationSwitchSection(outputFile, componentList)
     elif sectionName.startswith('PARAMETER_SETTER_SWITCH'):
@@ -77,16 +91,23 @@ def ProcessSection(outputFile, sectionName, componentList):
         WriteSetterDefinitionSection(outputFile, componentList)
     return
 
-def GenerateBindings(componentList, assetPath):
+def GenerateBindings(componentList, assetPath, isEngine = False):
     print('\nGENERATING BINDINGS...\n')
 
     outputPath = assetPath + '..\\Generated\\GameComponentBindings.h'
+    if isEngine:
+        outputPath = assetPath + '..\\Generated\\EngineComponentBindings.h'
     outputFile = open(outputPath, 'w')
-    with open(TEMPLATE_PATH) as template:
+
+    templatePath = TEMPLATE_PATH
+    if isEngine:
+        templatePath = TEMPLATE_PATH_ENGINE
+
+    with open(templatePath) as template:
         line = template.readline()
         while(line):
             if line.startswith("///"):
-                ProcessSection(outputFile, line.lstrip('/'), componentList)
+                ProcessSection(outputFile, line.lstrip('/'), componentList, isEngine)
             else:
                 outputFile.write(line)
             line = template.readline()

@@ -1,0 +1,14 @@
+﻿<!-- TODO This format is used to match the GameProject xml format, so that the same component processing
+scripts can be used. This is kind of hacky, FIXME -->
+
+<EngineScripts>
+  <Settings>
+    <Resource-Root-Path path="C:\Users\Gwynneth\Coding\Dogwood\Engine\Include\Components\"/>
+  </Settings>
+  <Resources>
+    <Scripts>
+      <Script guid="248907459" path="ParticleSystem.h"/>
+      <Script guid="4141601931" path="TestComponent.h"/>
+    </Scripts>
+  </Resources>
+</EngineScripts>
