@@ -232,16 +232,18 @@ RuntimeParamList ComponentValue::ParseRuntimeParams(tinyxml2::XMLElement* xml)
     return params;
 }
 
-void ToolsideGameComponent::Create(unsigned int guid)
+void ToolsideGameComponent::Create(unsigned int guid, bool isEngine)
 {
     m_guid = guid;
-    m_paramList = *(ResourceManager::Singleton().GetComponentParamList(m_guid));
+    m_isEngine = isEngine;
+    m_paramList = *(ResourceManager::Singleton().GetComponentParamList(m_guid, m_isEngine));
     SetDisplayName();
 }
 
 void ToolsideGameComponent::Load(XMLElement* componentXML)
 {
     m_guid = componentXML->UnsignedAttribute("guid");
+    m_isEngine = componentXML->BoolAttribute("engine");
 
     // Build parameter list
     XMLElement* paramXML = componentXML->FirstChildElement("Param");
@@ -259,6 +261,7 @@ void ToolsideGameComponent::Serialize(tinyxml2::XMLNode* parentNode, tinyxml2::X
     XMLElement* componentNode = rootDoc.NewElement("Component");
     parentNode->InsertEndChild(componentNode);
     componentNode->SetAttribute("guid", m_guid);
+    componentNode->SetAttribute("engine", m_isEngine);
 
     ParamList::iterator iter = m_paramList.begin();
     for (; iter != m_paramList.end(); iter++)
@@ -323,7 +326,7 @@ void ToolsideGameComponent::ValidateParameters()
     // Validate parameter list by removing any parameters that no longer exist in the schema, and adding
     // any new values that did not exist before (while preserving non-default values for params that remain)
 
-    ParamList currentParams = *(ResourceManager::Singleton().GetComponentParamList(m_guid));
+    ParamList currentParams = *(ResourceManager::Singleton().GetComponentParamList(m_guid, m_isEngine));
 
     // This is pretty inefficient, but the list of parameters will typically be small
     ParamList::iterator oldIter = m_paramList.begin();
@@ -361,7 +364,14 @@ void ToolsideGameComponent::AddParameterToList(XMLElement* paramXML)
 
 void ToolsideGameComponent::SetDisplayName()
 {
-    string path = ResourceManager::Singleton().GetResourceInfo(m_guid)->path;
+    ResourceInfo* info = ResourceManager::Singleton().GetResourceInfo(m_guid);
+    if (info == NULL)
+    {
+        // TODO this happens for Engine components, needs a workaround
+        return;
+    }
+
+    string path = info->path;
     unsigned int startpos = path.find_last_of('/') + 1;
     unsigned int endpos = path.find_last_of('.') - 1;
     unsigned int length = endpos - startpos + 1;

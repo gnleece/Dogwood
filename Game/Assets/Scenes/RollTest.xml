@@ -54,7 +54,7 @@
                 </Collider>
             </Colliders>
             <Components>
-                <Component guid="3988628104">
+                <Component guid="3988628104" engine="0">
                     <Param name="BounceHeight" type="1" value="0"/>
                     <Param name="BounceSpeed" type="1" value="1.337"/>
                 </Component>
@@ -123,18 +123,31 @@
                 </Collider>
             </Colliders>
             <Components>
-                <Component guid="3055461197">
+                <Component guid="3055461197" engine="0">
                     <Param name="Speed" type="1" value="90"/>
                     <Param name="Radius" type="1" value="0.30000001"/>
                     <Param name="CameraObject" type="6" value="2471797450"/>
                 </Component>
-                <Component guid="3988628104">
+                <Component guid="3988628104" engine="0">
                     <Param name="BounceHeight" type="1" value="0"/>
                     <Param name="BounceSpeed" type="1" value="1.337"/>
                 </Component>
-                <Component guid="1515607268">
+                <Component guid="1515607268" engine="0">
                     <Param name="BarParam" type="1" value="0"/>
                     <Param name="IntParam" type="0" value="12"/>
+                </Component>
+                <Component guid="248907459" engine="1">
+                    <Param name="Color" type="5" value="">
+                        <value r="1.00000" g="1.00000" b="0.00000"/>
+                    </Param>
+                    <Param name="MinAge" type="1" value="0"/>
+                    <Param name="MaxAge" type="1" value="1818"/>
+                    <Param name="MinVelocity" type="4" value="">
+                        <value x="0.00000" y="0.00000" z="0.00000"/>
+                    </Param>
+                    <Param name="MaxVelocity" type="4" value="">
+                        <value x="0.00000" y="0.00000" z="0.00000"/>
+                    </Param>
                 </Component>
             </Components>
         </GameObject>
@@ -296,7 +309,21 @@
                     <Center x="0.00000" y="0.00000" z="0.00000"/>
                 </Collider>
             </Colliders>
-            <Components/>
+            <Components>
+                <Component guid="248907459" engine="1">
+                    <Param name="Color" type="5" value="">
+                        <value r="1.00000" g="0.00000" b="0.00000"/>
+                    </Param>
+                    <Param name="MinAge" type="1" value="0"/>
+                    <Param name="MaxAge" type="1" value="0"/>
+                    <Param name="MinVelocity" type="4" value="">
+                        <value x="0.00000" y="0.00000" z="0.00000"/>
+                    </Param>
+                    <Param name="MaxVelocity" type="4" value="">
+                        <value x="0.00000" y="0.00000" z="0.00000"/>
+                    </Param>
+                </Component>
+            </Components>
         </GameObject>
         <GameObject guid="1543037526" name="GreenSphere">
             <Transform>
@@ -326,7 +353,7 @@
             </Transform>
             <Colliders/>
             <Components>
-                <Component guid="1661142292">
+                <Component guid="1661142292" engine="0">
                     <Param name="TargetObject" type="6" value="2032717194"/>
                     <Param name="CameraObject" type="6" value="2471797450"/>
                     <Param name="Distance" type="1" value="3.5"/>

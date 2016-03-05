@@ -12,5 +12,4 @@ void ParticleSystem::OnStart()
 
 void ParticleSystem::Update(float deltaTime)
 {
-
 }

@@ -35,6 +35,7 @@ private:
 
     GameWindow  m_gameWindow;
     GameObject* m_rootObject;
+    GameComponentFactory* m_engineComponentFactory;
 
     float       m_prevFrameEndTime;
     float       m_deltaTime;

@@ -82,7 +82,7 @@ public:
 class ToolsideGameComponent
 {
 public:
-    void            Create(unsigned int guid);
+    void            Create(unsigned int guid, bool isEngine);
     void            Load(tinyxml2::XMLElement* componentXML);
     void            Serialize(tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc, unordered_set<unsigned int>& guids);
 
@@ -103,6 +103,7 @@ private:
 
     ToolsideGameObject* m_gameObject;
     unsigned int    m_guid;
+    bool            m_isEngine;
     string          m_displayName;
     ParamList       m_paramList;
 };

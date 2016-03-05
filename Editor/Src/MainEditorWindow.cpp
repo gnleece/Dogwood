@@ -116,6 +116,9 @@ void MainEditorWindow::SetupMenuCommands()
     SignalMapHookup(m_addPhysicsSignalMapper, m_ui->actionAdd_Sphere_Collider,  (int)Collider::SPHERE_COLLIDER);
     SignalMapHookup(m_addPhysicsSignalMapper, m_ui->actionAdd_Box_Collider,     (int)Collider::BOX_COLLIDER);
     SignalMapHookup(m_addPhysicsSignalMapper, m_ui->actionAdd_Capsule_Collider, (int)Collider::CAPSULE_COLLIDER);
+
+    // Effect menu
+    connect(m_ui->actionParticle_System, SIGNAL(triggered()), this, SLOT(AddParticleSystem()));
 }
 
 MainEditorWindow::~MainEditorWindow()
@@ -550,6 +553,17 @@ void MainEditorWindow::AddCollider(int type)
     if (m_selectedGameObject != NULL)
     {
         Collider::AddToGameObject(m_selectedGameObject, (Collider::ColliderType)type);
+    }
+}
+
+void MainEditorWindow::AddParticleSystem()
+{
+    if (m_selectedGameObject != NULL)
+    {
+        // TODO hardcoding this guid is so, so ugly
+        ToolsideGameComponent* component = new ToolsideGameComponent();
+        component->Create(248907459, true);
+        m_selectedGameObject->AddComponent(component);
     }
 }
 

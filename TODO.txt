@@ -74,6 +74,7 @@ EDITOR (Thicket)
             - Reference type params should be styled differently (font color?)
             - Fix occasioanl null refs after model delete & rebuild
         * Write python script info to log file
+        * Live preview of engine components (e.g. particle systems)
 
     * Physics
         * Refresh capsule draw on object scale
@@ -108,6 +109,7 @@ EDITOR (Thicket)
         - Non-uniform scaling breaks object picking
         - Move processing scripts out of Editor and into Engine
         - Engine component setup for new projects
+        - Don't hardcode engine component guids
 
 ---------------------------------------------------------------------------
 

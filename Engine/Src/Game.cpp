@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <thread>
 
+#include "Generated\EngineComponentBindings.h"
 #include "Input\InputManager.h"
 #include "Input\XInputGamePad.h"
 #include "Physics\CollisionEngine.h"
@@ -29,7 +30,11 @@ void Game::Init(string projectPath, GameComponentFactory* componentFactory)
     bool success = GameProject::Singleton().Load(projectPath);
     if (!success)
         return;
+
+    // Component factory setup
     GameProject::Singleton().SetRuntimeComponentFactory(componentFactory, false);
+    m_engineComponentFactory = new EngineFactory();
+    GameProject::Singleton().SetRuntimeComponentFactory(m_engineComponentFactory, true);
 
     // Window setup
     int windowWidth, windowHeight;
@@ -99,6 +104,8 @@ void Game::Shutdown()
     ResourceManager::Singleton().Shutdown();
     InputManager::Singleton().Shutdown();
     RenderManager::Singleton().Shutdown();
+
+    delete m_engineComponentFactory;
 
     // Window cleanup
     m_gameWindow.Destroy();

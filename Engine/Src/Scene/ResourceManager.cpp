@@ -85,7 +85,7 @@ struct ScriptResourceInfo : ResourceInfo
         if (GameProject::Singleton().IsToolside())
         {
             ToolsideGameComponent* component = new ToolsideGameComponent();
-            component->Create(guid);
+            component->Create(guid, false);
             gameObject->AddComponent(component);
         }
         else
@@ -244,6 +244,13 @@ void ResourceManager::SerializeResourceMap(XMLDocument& rootDoc, XMLElement* par
             continue;
         }
 
+        if (iter->second == NULL)
+        {
+            // This occurs for engine components
+            // TODO do we need to serialize the list of non-engine components at all?
+            continue;
+        }
+
         // TODO this is pretty ugly
         XMLElement* resourceParent = NULL;
         if (strcmp(iter->second->TypeName().c_str(), "Texture") == 0)
@@ -284,12 +291,21 @@ void ResourceManager::SerializeResourceMap(XMLDocument& rootDoc, XMLElement* par
 
 void ResourceManager::LoadComponentSchema()
 {
-    if (m_componentSchema == NULL)
+    // Game components
+    if (m_componentSchema != NULL)
     {
-        m_componentSchema = new ToolsideComponentSchema();
+        delete m_componentSchema;
     }
-
+    m_componentSchema = new ToolsideComponentSchema();
     m_componentSchema->Load(m_resourceBasePath + "ScriptSchema.xml");
+
+    // Engine components
+    if (m_engineComponentSchema != NULL)
+    {
+        delete m_engineComponentSchema;
+    }
+    m_engineComponentSchema = new ToolsideComponentSchema();
+    m_engineComponentSchema->Load(m_resourceBasePath + "EngineScriptSchema.xml");
 }
 
 void ResourceManager::LoadShaderSchema()
@@ -499,9 +515,16 @@ ResourceMap& ResourceManager::GetResourceMap()
     return m_resourceMap;
 }
 
-ParamList* ResourceManager::GetComponentParamList(unsigned int guid)
+ParamList* ResourceManager::GetComponentParamList(unsigned int guid, bool isEngine)
 {
-    return m_componentSchema->GetDefaultParameterList(guid);
+    if (isEngine)
+    {
+        return m_engineComponentSchema->GetDefaultParameterList(guid);
+    }
+    else
+    {
+        return m_componentSchema->GetDefaultParameterList(guid);
+    }
 }
 
 ShaderParamList* ResourceManager::GetShaderParamList(unsigned int guid)

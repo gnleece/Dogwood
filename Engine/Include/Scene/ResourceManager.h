@@ -79,7 +79,7 @@ public:
     string          AbsolutePathToProjectPath(string& absolutePath);
 
     ResourceMap&    GetResourceMap();
-    ParamList*      GetComponentParamList(unsigned int guid);
+    ParamList*      GetComponentParamList(unsigned int guid, bool isEngine);
     ShaderParamList* GetShaderParamList(unsigned int guid);
 
 private:
@@ -93,7 +93,9 @@ private:
     ResourceMap                                  m_resourceMap;
     unordered_map<unsigned int, Resource*>       m_loadedResources;
     unordered_map<string, unsigned int>          m_defaultResources;
+
     ToolsideComponentSchema*                     m_componentSchema;
+    ToolsideComponentSchema*                     m_engineComponentSchema;
     ToolsideShaderSchema*                        m_shaderSchema;
 
     bool m_lookupTableLoaded;

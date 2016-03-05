@@ -112,6 +112,7 @@ private slots:
 
     void AddMeshPrimitive(const QString& meshName);
     void AddCollider(int type);
+    void AddParticleSystem();
 
     void OnHierarchySelectionChanged(QModelIndex& newIndex);
     void SwitchSelectObject(ToolsideGameObject* gameobject);
