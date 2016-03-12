@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Physics/Particles/Particle.h"
+#include "Physics/Particles/PhysicsParticle.h"
 
-class Firework;
+class EffectParticle;
 
 struct FireworkRule
 {
@@ -32,10 +32,10 @@ public:
     unsigned int PayloadCount;
     Payload* Payload;
 
-    void Create(Firework* firework, Firework* parent = NULL);
+    void Create(EffectParticle* firework, EffectParticle* parent = NULL);
 };
 
-class Firework : public Particle
+class EffectParticle : public PhysicsParticle
 {
 public:
     FireworkRule::FireworkType Type;

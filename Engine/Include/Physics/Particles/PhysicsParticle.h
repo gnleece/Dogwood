@@ -2,7 +2,7 @@
 
 #include "Math/Algebra.h"
 
-class Particle
+class PhysicsParticle
 {
 public:
     void        SetPosition(Vector3 position);

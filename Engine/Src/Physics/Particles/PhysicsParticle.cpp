@@ -1,38 +1,38 @@
-#include "Physics/Particles/Particle.h"
+#include "Physics/Particles/PhysicsParticle.h"
 #include <assert.h>
 #include <math.h>
 
-void Particle::SetPosition(Vector3 position)
+void PhysicsParticle::SetPosition(Vector3 position)
 {
     m_position = position;
 }
 
-Vector3 Particle::GetPosition()
+Vector3 PhysicsParticle::GetPosition()
 {
     return m_position;
 }
 
-void Particle::SetVelocity(Vector3 velocity)
+void PhysicsParticle::SetVelocity(Vector3 velocity)
 {
     m_velocity = velocity;
 }
 
-Vector3 Particle::GetVelocity()
+Vector3 PhysicsParticle::GetVelocity()
 {
     return m_velocity;
 }
 
-void Particle::SetAcceleration(Vector3 acceleration)
+void PhysicsParticle::SetAcceleration(Vector3 acceleration)
 {
     m_acceleration = acceleration;
 }
 
-Vector3 Particle::GetAcceleration()
+Vector3 PhysicsParticle::GetAcceleration()
 {
     return m_acceleration;
 }
 
-void Particle::SetMass(float mass)
+void PhysicsParticle::SetMass(float mass)
 {
     if (mass < 0 || Approximately(mass, 0.f))
     {
@@ -41,20 +41,20 @@ void Particle::SetMass(float mass)
     m_inverseMass = 1 / mass;
 }
 
-void Particle::SetInverseMass(float inverseMass)
+void PhysicsParticle::SetInverseMass(float inverseMass)
 {
     if (inverseMass < 0)
         return;
     m_inverseMass = inverseMass;
 }
 
-float Particle::GetInverseMass()
+float PhysicsParticle::GetInverseMass()
 {
     return m_inverseMass;
 }
 
 
-void Particle::Integrate(float deltaTime)
+void PhysicsParticle::Integrate(float deltaTime)
 {
     if (m_inverseMass <= 0.f)
         return;
@@ -74,7 +74,7 @@ void Particle::Integrate(float deltaTime)
     m_velocity = pow(DAMPING, deltaTime) * m_velocity;      // TODO calculate pow(DAMPING, dt) once per frame
 }
 
-void Particle::ClearAccumulator()
+void PhysicsParticle::ClearAccumulator()
 {
     // TODO implement me
 }

@@ -106,9 +106,10 @@
     <ClInclude Include="Include\Physics\BVHNode.h" />
     <ClInclude Include="Include\Physics\Collider.h" />
     <ClInclude Include="Include\Physics\CollisionDetection.h" />
-    <ClInclude Include="Include\Physics\Particles\Firework.h" />
-    <ClInclude Include="Include\Physics\Particles\Particle.h" />
+    <ClInclude Include="Include\Physics\Particles\EffectParticle.h" />
+    <ClInclude Include="Include\Physics\Particles\PhysicsParticle.h" />
     <ClInclude Include="Include\Physics\CollisionEngine.h" />
+    <ClInclude Include="Include\Physics\Particles\ParticleEngine.h" />
     <ClInclude Include="Include\Rendering\Camera.h" />
     <ClInclude Include="Include\Rendering\Color.h" />
     <ClInclude Include="Include\Rendering\Image.h" />
@@ -155,9 +156,10 @@
     <ClCompile Include="Src\Physics\BVHNode.cpp" />
     <ClCompile Include="Src\Physics\Collider.cpp" />
     <ClCompile Include="Src\Physics\CollisionDetection.cpp" />
-    <ClCompile Include="Src\Physics\Particles\Firework.cpp" />
-    <ClCompile Include="Src\Physics\Particles\Particle.cpp" />
+    <ClCompile Include="Src\Physics\Particles\EffectParticle.cpp" />
+    <ClCompile Include="Src\Physics\Particles\PhysicsParticle.cpp" />
     <ClCompile Include="Src\Physics\CollisionEngine.cpp" />
+    <ClCompile Include="Src\Physics\Particles\ParticleEngine.cpp" />
     <ClCompile Include="Src\Rendering\Color.cpp" />
     <ClCompile Include="Src\Rendering\Image.cpp" />
     <ClCompile Include="Src\Rendering\Light.cpp" />

@@ -4,6 +4,8 @@
 #include "Math/Algebra.h"
 #include "Rendering/Color.h"
 
+class EffectParticle;
+
 class ParticleSystem : public GameComponent
 {
 public:
@@ -18,4 +20,6 @@ public:
     void OnCreate();
     void OnStart();
     void Update(float deltaTime);
+
+    void Create(EffectParticle* particle, EffectParticle* parent);
 };
