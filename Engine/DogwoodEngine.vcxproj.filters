@@ -190,9 +190,6 @@
     <ClInclude Include="Include\Physics\CollisionDetection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Physics\Particles\Firework.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Include\Math\MathUtil.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -209,6 +206,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Include\Physics\Particles\PhysicsParticle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Physics\Particles\EffectParticle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -333,9 +333,6 @@
     <ClCompile Include="Src\Physics\CollisionDetection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Physics\Particles\Firework.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Src\Math\MathUtil.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -349,6 +346,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Src\Physics\Particles\PhysicsParticle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Physics\Particles\EffectParticle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Serialization\HierarchicalSerializer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -173,6 +173,7 @@
     <ClCompile Include="Src\Rendering\Vertex.cpp" />
     <ClCompile Include="Src\Scene\ResourceManager.cpp" />
     <ClCompile Include="Src\Scene\Scene.cpp" />
+    <ClCompile Include="Src\Serialization\HierarchicalSerializer.cpp" />
     <ClCompile Include="Src\ToolsideGameComponent.cpp" />
     <ClCompile Include="Src\ToolsideGameObject.cpp" />
     <ClCompile Include="Src\ToolsideShaderSchema.cpp" />
