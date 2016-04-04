@@ -3,9 +3,10 @@
 void HierarchicalSerializer::PushScope(string name)
 {
     XMLElement* newElement = m_document.NewElement(name.c_str());
-    XMLElement* parentElement = m_elementStack.top();
-    if (parentElement != NULL)
+
+    if (m_elementStack.size() > 0)
     {
+        XMLElement* parentElement = m_elementStack.top();
         parentElement->InsertEndChild(newElement);
     }
     else
@@ -17,24 +18,17 @@ void HierarchicalSerializer::PushScope(string name)
 
 void HierarchicalSerializer::PopScope()
 {
-    m_elementStack.pop();
-}
-
-template<typename T>
-void HierarchicalSerializer::SetAttribute(string name, T value)
-{
-    XMLElement* element = m_elementStack.top();
-    if (element != NULL)
+    if (m_elementStack.size() > 0)
     {
-        element->SetAttribute(name.c_str(), value);
+        m_elementStack.pop();
     }
 }
 
 void HierarchicalSerializer::SetAttributeVector3(Vector3 value)
 {
-    XMLElement* element = m_elementStack.top();
-    if (element != NULL)
+    if (m_elementStack.size() > 0)
     {
+        XMLElement* element = m_elementStack.top();
         element->SetAttribute("x", value.x());
         element->SetAttribute("y", value.y());
         element->SetAttribute("z", value.z());
@@ -43,31 +37,23 @@ void HierarchicalSerializer::SetAttributeVector3(Vector3 value)
 
 void HierarchicalSerializer::SetAttributeColorRGB(ColorRGB value)
 {
-    XMLElement* element = m_elementStack.top();
-    if (element != NULL)
+    if (m_elementStack.size() > 0)
     {
+        XMLElement* element = m_elementStack.top();
         element->SetAttribute("r", value.r);
         element->SetAttribute("g", value.g);
         element->SetAttribute("b", value.b);
     }
 }
 
-template<typename T>
-void HierarchicalSerializer::AddLeaf(string name, string valueName, T value)
-{
-    PushScope(name);
-    SetAttribute(valueName, value);
-    PopScope();
-}
-
-void HierarchicalSerializer::AddLeafVector3(string name, Vector3 value)
+void HierarchicalSerializer::InsertLeafVector3(string name, Vector3 value)
 {
     PushScope(name);
     SetAttributeVector3(value);
     PopScope();
 }
 
-void HierarchicalSerializer::AddLeafColorRGB(string name, ColorRGB value)
+void HierarchicalSerializer::InsertLeafColorRGB(string name, ColorRGB value)
 {
     PushScope(name);
     SetAttributeColorRGB(value);

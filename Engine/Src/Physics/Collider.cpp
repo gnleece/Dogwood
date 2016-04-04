@@ -2,6 +2,7 @@
 
 #include "Debugging/DebugDraw.h"
 #include "Math/Transformations.h"
+#include "Serialization/HierarchicalSerializer.h"
 #include "GameObjectBase.h"
 #include "Util.h"
 
@@ -112,14 +113,14 @@ void SphereCollider::LoadFromXML(XMLElement* xml)
     SetLocalRadius(xml->FloatAttribute("Radius"));
 }
 
-void SphereCollider::Serialize(tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc)
+void SphereCollider::Serialize(HierarchicalSerializer* serializer)
 {
-    XMLElement* node = rootDoc.NewElement("Collider");
-    parentNode->InsertEndChild(node);
-    node->SetAttribute("Type", Collider::SPHERE_COLLIDER);
-    node->SetAttribute("IsStatic", m_isStatic);
-    node->InsertEndChild(WriteVector3ToXML(m_center, "Center", rootDoc));
-    node->SetAttribute("Radius", m_radius);
+    serializer->PushScope("Collider");
+    serializer->SetAttribute("Type", Collider::SPHERE_COLLIDER);
+    serializer->SetAttribute("IsStatic", m_isStatic);
+    serializer->SetAttribute("Radius", m_radius);
+    serializer->InsertLeafVector3("Center", m_center);
+    serializer->PopScope();
 }
 
 Collider::ColliderType SphereCollider::GetType()
@@ -164,14 +165,14 @@ void BoxCollider::LoadFromXML(XMLElement* xml)
     SetLocalSize(ReadVector3FromXML(xml->FirstChildElement("Size")));
 }
 
-void BoxCollider::Serialize(tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc)
+void BoxCollider::Serialize(HierarchicalSerializer* serializer)
 {
-    XMLElement* node = rootDoc.NewElement("Collider");
-    parentNode->InsertEndChild(node);
-    node->SetAttribute("Type", Collider::BOX_COLLIDER);
-    node->SetAttribute("IsStatic", m_isStatic);
-    node->InsertEndChild(WriteVector3ToXML(m_center, "Center", rootDoc));
-    node->InsertEndChild(WriteVector3ToXML(m_size, "Size", rootDoc));
+    serializer->PushScope("Collider");
+    serializer->SetAttribute("Type", Collider::BOX_COLLIDER);
+    serializer->SetAttribute("IsStatic", m_isStatic);
+    serializer->InsertLeafVector3("Center", m_center);
+    serializer->InsertLeafVector3("Size", m_size);
+    serializer->PopScope();
 }
 
 Collider::ColliderType BoxCollider::GetType()
@@ -230,16 +231,16 @@ void CapsuleCollider::LoadFromXML(XMLElement* xml)
     SetAxis((eAXIS)xml->IntAttribute("Axis"));
 }
 
-void CapsuleCollider::Serialize(tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc)
+void CapsuleCollider::Serialize(HierarchicalSerializer* serializer)
 {
-    XMLElement* node = rootDoc.NewElement("Collider");
-    parentNode->InsertEndChild(node);
-    node->SetAttribute("Type", Collider::CAPSULE_COLLIDER);
-    node->SetAttribute("IsStatic", m_isStatic);
-    node->InsertEndChild(WriteVector3ToXML(m_center, "Center", rootDoc));
-    node->SetAttribute("Radius", m_radius);
-    node->SetAttribute("Height", m_height);
-    node->SetAttribute("Axis", m_axis);
+    serializer->PushScope("Collider");
+    serializer->SetAttribute("Type", Collider::CAPSULE_COLLIDER);
+    serializer->SetAttribute("IsStatic", m_isStatic);
+    serializer->SetAttribute("Radius", m_radius);
+    serializer->SetAttribute("Height", m_height);
+    serializer->SetAttribute("Axis", m_axis);
+    serializer->InsertLeafVector3("Center", m_center);
+    serializer->PopScope();
 }
 
 Collider::ColliderType CapsuleCollider::GetType()

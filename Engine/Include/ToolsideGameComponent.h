@@ -19,6 +19,7 @@ using std::vector;
 struct ComponentParameter;
 struct ComponentValue;
 
+class HierarchicalSerializer;
 class ToolsideGameObject;
 
 typedef pair <ComponentParameter, ComponentValue> ParamPair;
@@ -63,7 +64,7 @@ public:
 
     void    SetValue(ComponentParameter::ParameterType type, tinyxml2::XMLElement* xml);
     void    SetValue(ComponentParameter::ParameterType type, string text);
-    void    SerializeValue(ComponentParameter::ParameterType type, tinyxml2::XMLElement* parentNode, tinyxml2::XMLDocument& rootDoc);
+    void    SerializeValue(HierarchicalSerializer* serializer, ComponentParameter::ParameterType type);
     string  GetValueString(ComponentParameter::ParameterType type);
     string  GetVectorValueString(Vector3 v);
 
@@ -84,7 +85,7 @@ class ToolsideGameComponent
 public:
     void            Create(unsigned int guid, bool isEngine);
     void            Load(tinyxml2::XMLElement* componentXML);
-    void            Serialize(tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc, unordered_set<unsigned int>& guids);
+    void            Serialize(HierarchicalSerializer* serializer, unordered_set<unsigned int>& guids);
 
     ToolsideGameObject* GetGameObject();
     void            SetGameObject(ToolsideGameObject* go);

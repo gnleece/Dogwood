@@ -1,5 +1,6 @@
 #include "ToolsideGameComponent.h"
 #include "Scene\ResourceManager.h"
+#include "Serialization\HierarchicalSerializer.h"
 #include "Util.h"
 #include <sstream>
 
@@ -161,37 +162,37 @@ void ComponentValue::SetValue(ComponentParameter::ParameterType type, string tex
     }
 }
 
-void ComponentValue::SerializeValue(ComponentParameter::ParameterType type, tinyxml2::XMLElement* parentNode, tinyxml2::XMLDocument& rootDoc)
+void ComponentValue::SerializeValue(HierarchicalSerializer* serializer, ComponentParameter::ParameterType type)
 {
     switch (type)
     {
         case ComponentParameter::TYPE_INT:
-            parentNode->SetAttribute("value", i);
+            serializer->SetAttribute("value", i);
             break;
         case ComponentParameter::TYPE_FLOAT:
-            parentNode->SetAttribute("value", f);
+            serializer->SetAttribute("value", f);
             break;
         case ComponentParameter::TYPE_BOOL:
-            parentNode->SetAttribute("value", b);
+            serializer->SetAttribute("value", b);
             break;
         case ComponentParameter::TYPE_STRING:
-            parentNode->SetAttribute("value", str.c_str());
+            serializer->SetAttribute("value", str.c_str());
             break;
         case ComponentParameter::TYPE_VECTOR3:
-            parentNode->SetAttribute("value", "");
-            parentNode->InsertEndChild(WriteVector3ToXML(v, "value", rootDoc));
+            serializer->SetAttribute("value", "");
+            serializer->InsertLeafVector3("value", v);
             break;
         case ComponentParameter::TYPE_COLOR:
-            parentNode->SetAttribute("value", "");
-            parentNode->InsertEndChild(WriteColorToXML(c, "value", rootDoc));
+            serializer->SetAttribute("value", "");
+            serializer->InsertLeafColorRGB("value", c);
             break;
         case ComponentParameter::TYPE_GAMEOBJECT:
-            parentNode->SetAttribute("value", go);
+            serializer->SetAttribute("value", go);
             break;
         case ComponentParameter::TYPE_MESH:
         case ComponentParameter::TYPE_SHADER:
         case ComponentParameter::TYPE_TEXTURE:
-            parentNode->SetAttribute("value", ref);
+            serializer->SetAttribute("value", ref);
             break;
     }
 }
@@ -256,30 +257,32 @@ void ToolsideGameComponent::Load(XMLElement* componentXML)
     ValidateParameters();
 }
 
-void ToolsideGameComponent::Serialize(tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc, unordered_set<unsigned int>& guids)
+void ToolsideGameComponent::Serialize(HierarchicalSerializer* serializer, unordered_set<unsigned int>& guids)
 {
-    XMLElement* componentNode = rootDoc.NewElement("Component");
-    parentNode->InsertEndChild(componentNode);
-    componentNode->SetAttribute("guid", m_guid);
-    componentNode->SetAttribute("engine", m_isEngine);
+    serializer->PushScope("Component");
+    serializer->SetAttribute("guid", m_guid);
+    serializer->SetAttribute("engine", m_isEngine);
 
     ParamList::iterator iter = m_paramList.begin();
     for (; iter != m_paramList.end(); iter++)
     {
         ParamPair pair = *iter;
 
-        XMLElement* paramNode = rootDoc.NewElement("Param");
-        componentNode->InsertEndChild(paramNode);
+        serializer->PushScope("Param");
 
-        paramNode->SetAttribute("name", pair.first.Name.c_str());
-        paramNode->SetAttribute("type", pair.first.Type);
-        pair.second.SerializeValue(pair.first.Type, paramNode, rootDoc);
+        serializer->SetAttribute("name", pair.first.Name.c_str());
+        serializer->SetAttribute("type", pair.first.Type);
+        pair.second.SerializeValue(serializer, pair.first.Type);
 
         if (ComponentParameter::IsReferenceType(pair.first.Type))
         {
             guids.insert(pair.second.ref);
         }
+
+        serializer->PopScope();
     }
+
+    serializer->PopScope();
 }
 
 ToolsideGameObject* ToolsideGameComponent::GetGameObject()

@@ -7,6 +7,7 @@
 
 class DebugCapsule;
 class GameObjectBase;
+class HierarchicalSerializer;
 
 class Collider
 {
@@ -20,7 +21,7 @@ public:
     static void             AddToGameObject(GameObjectBase* gameObject, ColliderType type);
 
     virtual void            LoadFromXML(tinyxml2::XMLElement* xml) = 0;
-    virtual void            Serialize(tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc) = 0;
+    virtual void            Serialize(HierarchicalSerializer* serializer) = 0;
     virtual ColliderType    GetType() = 0;
     virtual float           GetWorldspaceBoundingRadius() = 0;
     virtual void            DebugDraw(ColorRGB color, bool useDepth = true);
@@ -48,7 +49,7 @@ public:
     SphereCollider(GameObjectBase* gameObject, float radius = 1.0f);
 
     virtual void            LoadFromXML(tinyxml2::XMLElement* xml);
-    virtual void            Serialize(tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc);
+    virtual void            Serialize(HierarchicalSerializer* serializer);
     virtual ColliderType    GetType();
     virtual float           GetWorldspaceBoundingRadius();
     virtual void            DebugDraw(ColorRGB color, bool useDepth = true);
@@ -66,7 +67,7 @@ public:
     BoxCollider(GameObjectBase* gameObject);
 
     virtual void            LoadFromXML(tinyxml2::XMLElement* xml);
-    virtual void            Serialize(tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc);
+    virtual void            Serialize(HierarchicalSerializer* serializer);
     virtual ColliderType    GetType();
     virtual float           GetWorldspaceBoundingRadius();
     virtual void            DebugDraw(ColorRGB color, bool useDepth = true);
@@ -87,7 +88,7 @@ public:
     ~CapsuleCollider();
 
     virtual void            LoadFromXML(tinyxml2::XMLElement* xml);
-    virtual void            Serialize(tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc);
+    virtual void            Serialize(HierarchicalSerializer* serializer);
     virtual ColliderType    GetType();
     virtual float           GetWorldspaceBoundingRadius();
     virtual void            DebugDraw(ColorRGB color, bool useDepth = true);

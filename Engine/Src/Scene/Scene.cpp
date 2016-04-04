@@ -15,6 +15,7 @@
 #include "Rendering\MeshInstance.h"
 #include "Rendering\RenderManager.h"
 #include "Rendering\Texture.h"
+#include "Serialization\HierarchicalSerializer.h"
 
 using namespace tinyxml2;
 
@@ -118,21 +119,20 @@ bool Scene::Save(string filename)
     }
 
     // Root setup
-    XMLDocument sceneDoc;
-    XMLElement* rootElement = sceneDoc.NewElement("Scene");
-    rootElement->SetAttribute("guid", m_guid);
-    sceneDoc.InsertEndChild(rootElement);
+    HierarchicalSerializer serializer;
+    serializer.PushScope("Scene");
+    serializer.SetAttribute("guid", m_guid);
 
     // Track which resources are needed by the scene
     unordered_set<unsigned int> resourceGuids;
 
     // Serialize body
-    SerializeGlobalSettings(rootElement, sceneDoc);
-    SerializeHierarchy((ToolsideGameObject*)m_rootObject, rootElement, sceneDoc, resourceGuids);
-    SerializeResourceList(resourceGuids, rootElement, sceneDoc);
+    SerializeGlobalSettings(&serializer);
+    SerializeHierarchy(&serializer, (ToolsideGameObject*)m_rootObject, resourceGuids);
+    SerializeResourceList(&serializer, resourceGuids);
 
     // Save it!
-    sceneDoc.SaveFile(m_filename.c_str());
+    serializer.Save(m_filename);
 
     return true;
 }
@@ -418,98 +418,106 @@ void Scene::AddGameComponents(GameObjectBase* go, XMLElement* xmlnode)
     }
 }
 
-void Scene::SerializeGlobalSettings(XMLElement* parentNode, XMLDocument& rootDoc)
+void Scene::SerializeGlobalSettings(HierarchicalSerializer* serializer)
 {
     // Camera
-    XMLNode* cameraNode = parentNode->InsertEndChild(rootDoc.NewElement("Camera"));
-    cameraNode->InsertEndChild(WriteVector3ToXML(m_mainCamera.position, "Position", rootDoc));
-    cameraNode->InsertEndChild(WriteVector3ToXML(m_mainCamera.direction, "Direction", rootDoc));
-    cameraNode->InsertEndChild(WriteVector3ToXML(m_mainCamera.up, "Up", rootDoc));
+    serializer->PushScope("Camera");
+    serializer->InsertLeafVector3("Position",  m_mainCamera.position);
+    serializer->InsertLeafVector3("Direction", m_mainCamera.direction);
+    serializer->InsertLeafVector3("Up",        m_mainCamera.up);
+    serializer->PopScope();
 
     // Light
-    XMLNode* lightNode = parentNode->InsertEndChild(rootDoc.NewElement("Light"));
-    lightNode->InsertEndChild(WriteVector3ToXML(m_light.position, "Position", rootDoc));
-    lightNode->InsertEndChild(WriteColorToXML(m_light.color, "Color", rootDoc));
-    lightNode->InsertEndChild(WriteFloatToXML(m_light.power, "Power", "value", rootDoc));
+    serializer->PushScope("Light");
+    serializer->InsertLeafVector3("Position",  m_light.position);
+    serializer->InsertLeafColorRGB("Color",    m_light.color);
+    serializer->InsertLeaf("Power", "value",   m_light.power);
+    serializer->PopScope();
 }
 
-void Scene::SerializeHierarchy(ToolsideGameObject* gameObject, XMLNode* parentNode, XMLDocument& rootDoc, unordered_set<unsigned int>& guids)
+void Scene::SerializeHierarchy(HierarchicalSerializer* serializer, ToolsideGameObject* gameObject, unordered_set<unsigned int>& guids)
 {
     if (gameObject == NULL)
         return;
 
     // Create node
-    XMLElement* goXML = rootDoc.NewElement("GameObject");
-    goXML->SetAttribute("guid", gameObject->GetID());
-    goXML->SetAttribute("name", gameObject->GetName().c_str());
-    parentNode->InsertEndChild(goXML);
+    serializer->PushScope("GameObject");
+    serializer->SetAttribute("guid", gameObject->GetID());
+    serializer->SetAttribute("name", gameObject->GetName().c_str());
 
     // Serialize components
-    SerializeTransform(gameObject, goXML, rootDoc);
-    SerializeMesh(gameObject, goXML, rootDoc, guids);
-    SerializeColliders(gameObject, goXML, rootDoc);
-    SerializeComponents(gameObject, goXML, rootDoc, guids);
+    SerializeTransform(serializer, gameObject);
+    SerializeMesh(serializer, gameObject, guids);
+    SerializeColliders(serializer, gameObject);
+    SerializeComponents(serializer, gameObject, guids);
 
     // Serialize children
     std::vector<GameObjectBase*>::iterator childIter;
     for (childIter = gameObject->GetChildren().begin(); childIter != gameObject->GetChildren().end(); childIter++)
     {
         ToolsideGameObject* child = (ToolsideGameObject*)*childIter;
-        SerializeHierarchy(child, goXML, rootDoc, guids);
+        SerializeHierarchy(serializer, child, guids);
     }
+
+    serializer->PopScope();
 }
-void Scene::SerializeTransform(ToolsideGameObject* gameObject, XMLNode* parentNode, XMLDocument& rootDoc)
+void Scene::SerializeTransform(HierarchicalSerializer* serializer, ToolsideGameObject* gameObject)
 {
     if (gameObject == NULL)
         return;
 
-    XMLNode* transformNode = parentNode->InsertEndChild(rootDoc.NewElement("Transform"));
-    transformNode->InsertEndChild(WriteVector3ToXML(gameObject->GetTransform().GetLocalPosition(), "Position", rootDoc));
-    transformNode->InsertEndChild(WriteVector3ToXML(gameObject->GetTransform().GetLocalRotation(), "Rotation", rootDoc));
-    transformNode->InsertEndChild(WriteVector3ToXML(gameObject->GetTransform().GetLocalScale(), "Scale", rootDoc));
+    serializer->PushScope("Transform");
+    serializer->InsertLeafVector3("Position",  gameObject->GetTransform().GetLocalPosition());
+    serializer->InsertLeafVector3("Rotation",  gameObject->GetTransform().GetLocalRotation());
+    serializer->InsertLeafVector3("Scale",     gameObject->GetTransform().GetLocalScale());
+    serializer->PopScope();
 }
 
-void Scene::SerializeMesh(ToolsideGameObject* gameObject, XMLNode* parentNode, XMLDocument& rootDoc, unordered_set<unsigned int>& guids)
+void Scene::SerializeMesh(HierarchicalSerializer* serializer, ToolsideGameObject* gameObject, unordered_set<unsigned int>& guids)
 {
     if (gameObject == NULL || gameObject->GetMesh() == NULL)
         return;
 
-    XMLElement* meshNode = rootDoc.NewElement("Mesh");
+    serializer->PushScope("Mesh");
+
     unsigned int guid = gameObject->GetMesh()->GetMesh()->GetResourceInfo()->guid;
-    meshNode->SetAttribute("guid", guid);
+    serializer->SetAttribute("guid", guid);
     guids.insert(guid);
-    parentNode->InsertEndChild(meshNode);
-    SerializeMaterial(gameObject, meshNode, rootDoc, guids);
+
+    SerializeMaterial(serializer, gameObject, guids);
+
+    serializer->PopScope();
 }
 
-void Scene::SerializeMaterial(ToolsideGameObject* gameObject, XMLNode* parentNode, XMLDocument& rootDoc, unordered_set<unsigned int>& guids)
+void Scene::SerializeMaterial(HierarchicalSerializer* serializer, ToolsideGameObject* gameObject, unordered_set<unsigned int>& guids)
 {
     if (gameObject == NULL || gameObject->GetMesh() == NULL || gameObject->GetMesh()->GetMaterial() == NULL)
         return;
 
-    Material* mat = gameObject->GetMesh()->GetMaterial();
+    Material* material = gameObject->GetMesh()->GetMaterial();
 
-    XMLElement* matNode = rootDoc.NewElement("Material");
-    parentNode->InsertEndChild(matNode);
+    serializer->PushScope("Material");
 
     // Serialize shader info
-    if (mat->GetShader() != NULL)
+    if (material->GetShader() != NULL)
     {
-        XMLElement* shaderNode = rootDoc.NewElement("Shader");
-        unsigned int guid = mat->GetShader()->GetResourceInfo()->guid;
-        shaderNode->SetAttribute("guid", guid);
+        serializer->PushScope("Shader");
+        unsigned int guid = material->GetShader()->GetResourceInfo()->guid;
+        serializer->SetAttribute("guid", guid);
         guids.insert(guid);
-        matNode->InsertEndChild(shaderNode);
+        serializer->PopScope();
     }
 
     // Serialize Color info
-    SerializeMaterialColors(mat, matNode, rootDoc);
+    SerializeMaterialColors(serializer, material);
 
     // Serialize texture info
-    SerializeMaterialTextures(mat, matNode, rootDoc, guids);
+    SerializeMaterialTextures(serializer, material, guids);
+
+    serializer->PopScope();
 }
 
-void Scene::SerializeMaterialColors(Material* material, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc)
+void Scene::SerializeMaterialColors(HierarchicalSerializer* serializer, Material* material)
 {
     unordered_map<GLint, ColorRGB> colors = material->GetColorList();
     unordered_map<GLint, ColorRGB>::iterator iter = colors.begin();
@@ -518,14 +526,17 @@ void Scene::SerializeMaterialColors(Material* material, tinyxml2::XMLNode* paren
 
     for (; iter != colors.end(); iter++)
     {
-        XMLElement* node = (WriteColorToXML(iter->second, "Color", rootDoc));
+        serializer->PushScope("Color");
+
         string paramName = shader->GetUniformName(iter->first);
-        node->SetAttribute("name", paramName.c_str());
-        parentNode->InsertEndChild(node);
+        serializer->SetAttribute("name", paramName.c_str());
+        serializer->SetAttributeColorRGB(iter->second);
+
+        serializer->PopScope();
     }
 }
 
-void Scene::SerializeMaterialTextures(Material* material, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc, unordered_set<unsigned int>& guids)
+void Scene::SerializeMaterialTextures(HierarchicalSerializer* serializer, Material* material, unordered_set<unsigned int>& guids)
 {
     unordered_map<GLint, Texture*> textures = material->GetTextureList();
     unordered_map<GLint, Texture*>::iterator iter = textures.begin();
@@ -534,7 +545,7 @@ void Scene::SerializeMaterialTextures(Material* material, tinyxml2::XMLNode* par
 
     for (; iter != textures.end(); iter++)
     {
-        XMLElement* textureNode = rootDoc.NewElement("Texture");
+        serializer->PushScope("Texture");
 
         unsigned int guid = 0;
         if (iter->second != NULL && iter->second != Texture::DefaultTexture())
@@ -542,58 +553,61 @@ void Scene::SerializeMaterialTextures(Material* material, tinyxml2::XMLNode* par
             guid = iter->second->GetResourceInfo()->guid;
         }
 
-        textureNode->SetAttribute("guid", guid);
+        serializer->SetAttribute("guid", guid);
         guids.insert(guid);
 
         string paramName = shader->GetUniformName(iter->first);
-        textureNode->SetAttribute("name", paramName.c_str());
+        serializer->SetAttribute("name", paramName.c_str());
 
-        parentNode->InsertEndChild(textureNode);
+        serializer->PopScope();
     }
 }
 
-void Scene::SerializeColliders(ToolsideGameObject* gameObject, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc)
+void Scene::SerializeColliders(HierarchicalSerializer* serializer, ToolsideGameObject* gameObject)
 {
     if (gameObject == NULL)
         return;
 
-    XMLElement* collidersNode = rootDoc.NewElement("Colliders");
-    parentNode->InsertEndChild(collidersNode);
+    serializer->PushScope("Colliders");
 
     std::vector<Collider*> colliderList = gameObject->GetColliders();
     std::vector<Collider*>::iterator iter;
     for (iter = colliderList.begin(); iter != colliderList.end(); iter++)
     {
         Collider* collider = *iter;
-        collider->Serialize(collidersNode, rootDoc);
+        collider->Serialize(serializer);
     }
+
+    serializer->PopScope();
 }
 
-void Scene::SerializeComponents(ToolsideGameObject* gameObject, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc, unordered_set<unsigned int>& guids)
+void Scene::SerializeComponents(HierarchicalSerializer* serializer, ToolsideGameObject* gameObject, unordered_set<unsigned int>& guids)
 {
     if (gameObject == NULL)
         return;
 
-    XMLElement* componentsNode = rootDoc.NewElement("Components");
-    parentNode->InsertEndChild(componentsNode);
+    serializer->PushScope("Components");
 
     std::vector<ToolsideGameComponent*> compList = gameObject->GetComponentList();
     std::vector<ToolsideGameComponent*>::iterator compIter;
     for (compIter = compList.begin(); compIter != compList.end(); compIter++)
     {
         ToolsideGameComponent* comp = *compIter;
-        comp->Serialize(componentsNode, rootDoc, guids);
+        comp->Serialize(serializer, guids);
     }
+
+    serializer->PopScope();
 }
 
-void Scene::SerializeResourceList(unordered_set<unsigned int>& guids, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc)
+void Scene::SerializeResourceList(HierarchicalSerializer* serializer, unordered_set<unsigned int>& guids)
 {
-    XMLElement* resourcesNode = rootDoc.NewElement("Resources");
-    parentNode->InsertFirstChild(resourcesNode);
+    serializer->PushScope("Resources");
 
     unordered_set<unsigned int>::iterator iter;
     for (iter = guids.begin(); iter != guids.end(); iter++)
     {
-        resourcesNode->InsertEndChild(WriteUnsignedIntToXML(*iter, "Resource", "guid", rootDoc));
+        serializer->InsertLeaf("Resource", "guid", *iter);
     }
+
+    serializer->PopScope();
 }

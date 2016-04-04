@@ -9,15 +9,16 @@
 #include <tinyxml2.h>
 #include <unordered_set>
 
-#include "..\Rendering\Camera.h"
-#include "..\Rendering\Light.h"
-#include "..\Rendering\Material.h"
+#include "Rendering\Camera.h"
+#include "Rendering\Light.h"
+#include "Rendering\Material.h"
 
 using std::string;
 using std::unordered_set;
 
 class GameObject;
 class GameObjectBase;
+class HierarchicalSerializer;
 class MeshInstance;
 class ToolsideGameObject;
 
@@ -53,16 +54,16 @@ private:
     void                AddMaterialTextures(tinyxml2::XMLElement* xmlnode, Material* material);
     
     // Scene saving helper functions
-    void                SerializeGlobalSettings(tinyxml2::XMLElement* parentNode, tinyxml2::XMLDocument& rootDoc);
-    void                SerializeHierarchy(ToolsideGameObject* gameObject, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc, unordered_set<unsigned int>& guids);
-    void                SerializeTransform(ToolsideGameObject* gameObject, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc);
-    void                SerializeMesh(ToolsideGameObject* gameObject, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc, unordered_set<unsigned int>& guids);
-    void                SerializeMaterial(ToolsideGameObject* gameObject, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc, unordered_set<unsigned int>& guids);
-    void                SerializeMaterialColors(Material* material, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc);
-    void                SerializeMaterialTextures(Material* material, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc, unordered_set<unsigned int>& guids);
-    void                SerializeColliders(ToolsideGameObject* gameObject, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc);
-    void                SerializeComponents(ToolsideGameObject* gameObject, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc, unordered_set<unsigned int>& guids);
-    void                SerializeResourceList(unordered_set<unsigned int>& guids, tinyxml2::XMLNode* parentNode, tinyxml2::XMLDocument& rootDoc);
+    void                SerializeGlobalSettings(HierarchicalSerializer* serializer);
+    void                SerializeHierarchy(HierarchicalSerializer* serializer, ToolsideGameObject* gameObject, unordered_set<unsigned int>& guids);
+    void                SerializeTransform(HierarchicalSerializer* serializer, ToolsideGameObject* gameObject);
+    void                SerializeMesh(HierarchicalSerializer* serializer, ToolsideGameObject* gameObject, unordered_set<unsigned int>& guids);
+    void                SerializeMaterial(HierarchicalSerializer* serializer, ToolsideGameObject* gameObject, unordered_set<unsigned int>& guids);
+    void                SerializeMaterialColors(HierarchicalSerializer* serializer, Material* material);
+    void                SerializeMaterialTextures(HierarchicalSerializer* serializer, Material* material, unordered_set<unsigned int>& guids);
+    void                SerializeColliders(HierarchicalSerializer* serializer, ToolsideGameObject* gameObject);
+    void                SerializeComponents(HierarchicalSerializer* serializer, ToolsideGameObject* gameObject, unordered_set<unsigned int>& guids);
+    void                SerializeResourceList(HierarchicalSerializer* serializer, unordered_set<unsigned int>& guids);
 
     unsigned int        m_guid;
     bool                m_loaded;

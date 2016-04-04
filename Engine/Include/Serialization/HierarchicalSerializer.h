@@ -23,9 +23,9 @@ public:
     void    SetAttributeColorRGB(ColorRGB value);
 
     template<typename T>
-    void    AddLeaf(string name, string valueName, T value);
-    void    AddLeafVector3(string name, Vector3 value);
-    void    AddLeafColorRGB(string name, ColorRGB value);
+    void    InsertLeaf(string name, string valueName, T value);
+    void    InsertLeafVector3(string name, Vector3 value);
+    void    InsertLeafColorRGB(string name, ColorRGB value);
 
     void    Save(string filepath);
     void    Load(string filepath);
@@ -34,3 +34,21 @@ private:
     XMLDocument         m_document;
     stack<XMLElement*>  m_elementStack;
 };
+
+template<typename T>
+void HierarchicalSerializer::SetAttribute(string name, T value)
+{
+    if (m_elementStack.size() > 0)
+    {
+        XMLElement* element = m_elementStack.top();
+        element->SetAttribute(name.c_str(), value);
+    }
+}
+
+template<typename T>
+void HierarchicalSerializer::InsertLeaf(string name, string valueName, T value)
+{
+    PushScope(name);
+    SetAttribute(valueName, value);
+    PopScope();
+}
