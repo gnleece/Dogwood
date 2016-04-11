@@ -1,12 +1,12 @@
 #pragma once
 
-#include "tinyxml2.h"
 #include "Math/Algebra.h"
 #include "Math/Transform.h"
 #include "Rendering/Color.h"
 
 class DebugCapsule;
 class GameObjectBase;
+class HierarchicalDeserializer;
 class HierarchicalSerializer;
 
 class Collider
@@ -17,11 +17,12 @@ public:
     Collider(GameObjectBase* gameObject);
     virtual ~Collider();
 
-    static Collider*        LoadFromXML(GameObjectBase* gameObject, tinyxml2::XMLElement* xml);
+    static Collider*        Load(HierarchicalDeserializer* deserializer, GameObjectBase* gameObject);
     static void             AddToGameObject(GameObjectBase* gameObject, ColliderType type);
 
-    virtual void            LoadFromXML(tinyxml2::XMLElement* xml) = 0;
-    virtual void            Serialize(HierarchicalSerializer* serializer) = 0;
+    virtual void            Save(HierarchicalSerializer* serializer) = 0;
+    virtual void            Load(HierarchicalDeserializer* deserializer) = 0;
+
     virtual ColliderType    GetType() = 0;
     virtual float           GetWorldspaceBoundingRadius() = 0;
     virtual void            DebugDraw(ColorRGB color, bool useDepth = true);
@@ -48,8 +49,9 @@ class SphereCollider : public Collider
 public:
     SphereCollider(GameObjectBase* gameObject, float radius = 1.0f);
 
-    virtual void            LoadFromXML(tinyxml2::XMLElement* xml);
-    virtual void            Serialize(HierarchicalSerializer* serializer);
+    virtual void            Save(HierarchicalSerializer* serializer);
+    virtual void            Load(HierarchicalDeserializer* deserializer);
+
     virtual ColliderType    GetType();
     virtual float           GetWorldspaceBoundingRadius();
     virtual void            DebugDraw(ColorRGB color, bool useDepth = true);
@@ -66,8 +68,9 @@ class BoxCollider : public Collider
 public:
     BoxCollider(GameObjectBase* gameObject);
 
-    virtual void            LoadFromXML(tinyxml2::XMLElement* xml);
-    virtual void            Serialize(HierarchicalSerializer* serializer);
+    virtual void            Save(HierarchicalSerializer* serializer);
+    virtual void            Load(HierarchicalDeserializer* deserializer);
+
     virtual ColliderType    GetType();
     virtual float           GetWorldspaceBoundingRadius();
     virtual void            DebugDraw(ColorRGB color, bool useDepth = true);
@@ -87,8 +90,9 @@ public:
     CapsuleCollider(GameObjectBase* gameObject, float radius = 1, float height = 2, eAXIS axis = AXIS_Y);
     ~CapsuleCollider();
 
-    virtual void            LoadFromXML(tinyxml2::XMLElement* xml);
-    virtual void            Serialize(HierarchicalSerializer* serializer);
+    virtual void            Save(HierarchicalSerializer* serializer);
+    virtual void            Load(HierarchicalDeserializer* deserializer);
+
     virtual ColliderType    GetType();
     virtual float           GetWorldspaceBoundingRadius();
     virtual void            DebugDraw(ColorRGB color, bool useDepth = true);

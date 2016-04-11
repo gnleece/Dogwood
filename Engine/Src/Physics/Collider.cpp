@@ -6,8 +6,6 @@
 #include "GameObjectBase.h"
 #include "Util.h"
 
-using namespace tinyxml2;
-
 Collider::Collider(GameObjectBase* gameObject)
     : m_isStatic(true), m_gameObject(gameObject), m_center(Vector3::Zero)
 {
@@ -22,9 +20,10 @@ Collider::~Collider()
     m_transform.SetParent(NULL);
 }
 
-Collider* Collider::LoadFromXML(GameObjectBase* gameObject, XMLElement* xml)
+Collider* Collider::Load(HierarchicalDeserializer* deserializer, GameObjectBase* gameObject)
 {
-    Collider::ColliderType type = (Collider::ColliderType)xml->IntAttribute("Type");
+    Collider::ColliderType type;
+    deserializer->GetAttribute("Type", (int&)type);
     Collider* collider = NULL;
 
     switch(type)
@@ -36,7 +35,7 @@ Collider* Collider::LoadFromXML(GameObjectBase* gameObject, XMLElement* xml)
 
     if (collider != NULL)
     {
-        collider->LoadFromXML(xml);
+        collider->Load(deserializer);
     }
 
     return collider;
@@ -106,14 +105,7 @@ SphereCollider::SphereCollider(GameObjectBase* gameObject, float radius)
 {
 }
 
-void SphereCollider::LoadFromXML(XMLElement* xml)
-{
-    SetStatic(xml->BoolAttribute("IsStatic"));
-    SetCenter(ReadVector3FromXML(xml->FirstChildElement("Center")));
-    SetLocalRadius(xml->FloatAttribute("Radius"));
-}
-
-void SphereCollider::Serialize(HierarchicalSerializer* serializer)
+void SphereCollider::Save(HierarchicalSerializer* serializer)
 {
     serializer->PushScope("Collider");
     serializer->SetAttribute("Type", Collider::SPHERE_COLLIDER);
@@ -121,6 +113,21 @@ void SphereCollider::Serialize(HierarchicalSerializer* serializer)
     serializer->SetAttribute("Radius", m_radius);
     serializer->InsertLeafVector3("Center", m_center);
     serializer->PopScope();
+}
+
+void SphereCollider::Load(HierarchicalDeserializer* deserializer)
+{
+    bool isStatic;
+    deserializer->GetAttribute("IsStatic", isStatic);
+    SetStatic(isStatic);
+
+    Vector3 center;
+    deserializer->ReadLeafVector3("Center", center);
+    SetCenter(center);
+
+    float radius;
+    deserializer->GetAttribute("Radius", radius);
+    SetLocalRadius(radius);
 }
 
 Collider::ColliderType SphereCollider::GetType()
@@ -158,14 +165,7 @@ BoxCollider::BoxCollider(GameObjectBase* gameObject)
 {
 }
 
-void BoxCollider::LoadFromXML(XMLElement* xml)
-{
-    SetStatic(xml->BoolAttribute("IsStatic"));
-    SetCenter(ReadVector3FromXML(xml->FirstChildElement("Center")));
-    SetLocalSize(ReadVector3FromXML(xml->FirstChildElement("Size")));
-}
-
-void BoxCollider::Serialize(HierarchicalSerializer* serializer)
+void BoxCollider::Save(HierarchicalSerializer* serializer)
 {
     serializer->PushScope("Collider");
     serializer->SetAttribute("Type", Collider::BOX_COLLIDER);
@@ -173,6 +173,21 @@ void BoxCollider::Serialize(HierarchicalSerializer* serializer)
     serializer->InsertLeafVector3("Center", m_center);
     serializer->InsertLeafVector3("Size", m_size);
     serializer->PopScope();
+}
+
+void BoxCollider::Load(HierarchicalDeserializer* deserializer)
+{
+    bool isStatic;
+    deserializer->GetAttribute("IsStatic", isStatic);
+    SetStatic(isStatic);
+
+    Vector3 center;
+    deserializer->ReadLeafVector3("Center", center);
+    SetCenter(center);
+
+    Vector3 size;
+    deserializer->ReadLeafVector3("Size", size);
+    SetLocalSize(size);
 }
 
 Collider::ColliderType BoxCollider::GetType()
@@ -222,16 +237,7 @@ CapsuleCollider::~CapsuleCollider()
     }
 }
 
-void CapsuleCollider::LoadFromXML(XMLElement* xml)
-{
-    SetStatic(xml->BoolAttribute("IsStatic"));
-    SetCenter(ReadVector3FromXML(xml->FirstChildElement("Center")));
-    SetLocalRadius(xml->FloatAttribute("Radius"));
-    SetLocalHeight(xml->FloatAttribute("Height"));
-    SetAxis((eAXIS)xml->IntAttribute("Axis"));
-}
-
-void CapsuleCollider::Serialize(HierarchicalSerializer* serializer)
+void CapsuleCollider::Save(HierarchicalSerializer* serializer)
 {
     serializer->PushScope("Collider");
     serializer->SetAttribute("Type", Collider::CAPSULE_COLLIDER);
@@ -241,6 +247,29 @@ void CapsuleCollider::Serialize(HierarchicalSerializer* serializer)
     serializer->SetAttribute("Axis", m_axis);
     serializer->InsertLeafVector3("Center", m_center);
     serializer->PopScope();
+}
+
+void CapsuleCollider::Load(HierarchicalDeserializer* deserializer)
+{
+    bool isStatic;
+    deserializer->GetAttribute("IsStatic", isStatic);
+    SetStatic(isStatic);
+
+    Vector3 center;
+    deserializer->ReadLeafVector3("Center", center);
+    SetCenter(center);
+
+    float radius;
+    deserializer->GetAttribute("Radius", radius);
+    SetLocalRadius(radius);
+
+    float height;
+    deserializer->GetAttribute("Height", height);
+    SetLocalHeight(height);
+
+    int axis;
+    deserializer->GetAttribute("Axis", axis);
+    SetAxis((eAXIS)axis);
 }
 
 Collider::ColliderType CapsuleCollider::GetType()

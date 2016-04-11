@@ -340,7 +340,7 @@ void Scene::SaveColliders(HierarchicalSerializer* serializer, ToolsideGameObject
     for (iter = colliderList.begin(); iter != colliderList.end(); iter++)
     {
         Collider* collider = *iter;
-        collider->Serialize(serializer);
+        collider->Save(serializer);
     }
 
     serializer->PopScope();
@@ -599,14 +599,13 @@ void Scene::LoadColliders(HierarchicalDeserializer* deserializer, GameObjectBase
         bool collidersToProcess = deserializer->PushScope("Collider");
         while (collidersToProcess)
         {
-            // TODO FIX ME
-            //Collider* collider = Collider::LoadFromXML(go, colliderXML);
-            //go->AddCollider(collider);
-            //
-            //if (!GameProject::Singleton().IsToolside())
-            //{
-            //    CollisionEngine::Singleton().RegisterCollider(collider);
-            //}
+            Collider* collider = Collider::Load(deserializer, go);
+            go->AddCollider(collider);
+
+            if (!GameProject::Singleton().IsToolside())
+            {
+                CollisionEngine::Singleton().RegisterCollider(collider);
+            }
 
             collidersToProcess = deserializer->NextSiblingScope("Collider");
         }
