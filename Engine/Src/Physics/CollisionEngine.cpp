@@ -139,6 +139,9 @@ void CollisionEngine::UnregisterCollider(Collider* collider)
 
 void CollisionEngine::AddColliderToHierarchy(Collider* collider)
 {
+    if (collider == NULL)
+        return;
+
     BoundingSphere boundingSphere(collider);
     if (m_staticCollisionHierarchy == NULL)
     {
@@ -152,6 +155,9 @@ void CollisionEngine::AddColliderToHierarchy(Collider* collider)
 
 void CollisionEngine::RemoveColliderFromHierarchy(Collider* collider)
 {
+    if (m_staticCollisionHierarchy == NULL)
+        return;
+
     BVHNode<BoundingSphere>* node = m_staticCollisionHierarchy->Find(collider);
     if (node != NULL)
     {
@@ -167,6 +173,10 @@ int CollisionEngine::BroadPhaseCollision(PotentialContact* potentialContacts)
     {
         AddColliderToHierarchy(*iter);
     }
+
+    // If there are no colliders at all, there can be no contact
+    if (m_staticCollisionHierarchy == NULL)
+        return 0;
 
     // Generate the list of potential contacts
     int numPotentialContacts = m_staticCollisionHierarchy->GetPotentialContacts(potentialContacts, MAX_POTENTIAL_CONTACTS);

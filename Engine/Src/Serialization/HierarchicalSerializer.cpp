@@ -1,5 +1,10 @@
 #include "Serialization/HierarchicalSerializer.h"
 
+void HierarchicalSerializer::Save(string filepath)
+{
+    m_document.SaveFile(filepath.c_str());
+}
+
 void HierarchicalSerializer::PushScope(string name)
 {
     XMLElement* newElement = m_document.NewElement(name.c_str());
@@ -60,12 +65,188 @@ void HierarchicalSerializer::InsertLeafColorRGB(string name, ColorRGB value)
     PopScope();
 }
 
-void HierarchicalSerializer::Save(string filepath)
+//------------------------------------------------------------------------------
+
+HierarchicalDeserializer::HierarchicalDeserializer() : m_loaded(false)
+{ }
+
+bool HierarchicalDeserializer::Load(string filepath)
 {
-    m_document.SaveFile(filepath.c_str());
+    XMLError result = m_document.LoadFile(filepath.c_str());
+    if (result != XML_SUCCESS)
+    {
+        printf("Error reading scene file %s.\nXMLError %d\n", filepath.c_str(), result);
+        return false;
+    }
+
+    m_loaded = true;
+    return true;
 }
 
-void HierarchicalSerializer::Load(string filepath)
+bool HierarchicalDeserializer::PushScope(string name)
 {
-    // TODO implement me
+    if (!m_loaded)
+        return false;
+
+    XMLElement* element = NULL;
+    if (m_elementStack.size() > 0)
+    {
+        XMLElement* parent = m_elementStack.top();
+        element = parent->FirstChildElement(name.c_str());
+    }
+    else
+    {
+        element = m_document.FirstChildElement(name.c_str());
+    }
+
+    if (element != NULL)
+    {
+        m_elementStack.push(element);
+        return true;
+    }
+
+    return false;
+}
+
+void HierarchicalDeserializer::PopScope()
+{
+    if (m_elementStack.size() > 0)
+    {
+        m_elementStack.pop();
+    }
+}
+
+bool HierarchicalDeserializer::NextSiblingScope(string name)
+{
+    if (m_elementStack.size() > 0)
+    {
+        XMLElement* element = m_elementStack.top();
+        m_elementStack.pop();
+
+        XMLElement* nextElement = element->NextSiblingElement(name.c_str());
+        if (nextElement != NULL)
+        {
+            m_elementStack.push(nextElement);
+            return true;
+        }
+    }
+    return false;
+}
+
+template <>
+bool HierarchicalDeserializer::GetAttribute(string name, int& value)
+{
+    bool success = false;
+    if (m_elementStack.size() > 0)
+    {
+        XMLElement* element = m_elementStack.top();
+        value = element->IntAttribute(name.c_str());
+        success = true;
+    }
+    return success;
+}
+
+
+template <>
+bool HierarchicalDeserializer::GetAttribute(string name, float& value)
+{
+    bool success = false;
+    if (m_elementStack.size() > 0)
+    {
+        XMLElement* element = m_elementStack.top();
+        value = element->FloatAttribute(name.c_str());
+        success = true;
+    }
+    return success;
+}
+
+
+template <>
+bool HierarchicalDeserializer::GetAttribute(string name, bool& value)
+{
+    bool success = false;
+    if (m_elementStack.size() > 0)
+    {
+        XMLElement* element = m_elementStack.top();
+        value = element->BoolAttribute(name.c_str());
+        success = true;
+    }
+    return success;
+}
+
+
+template <>
+bool HierarchicalDeserializer::GetAttribute(string name, string& value)
+{
+    bool success = false;
+    if (m_elementStack.size() > 0)
+    {
+        XMLElement* element = m_elementStack.top();
+        value = element->Attribute(name.c_str());
+        success = true;
+    }
+    return success;
+}
+
+template <>
+bool HierarchicalDeserializer::GetAttribute(string name, unsigned int& value)
+{
+    bool success = false;
+    if (m_elementStack.size() > 0)
+    {
+        XMLElement* element = m_elementStack.top();
+        value = element->UnsignedAttribute(name.c_str());
+        success = true;
+    }
+    return success;
+}
+
+bool HierarchicalDeserializer::GetAttributeVector3(Vector3& value)
+{
+    bool success = false;
+    if (m_elementStack.size() > 0)
+    {
+        XMLElement* element = m_elementStack.top();
+        value.SetX(element->FloatAttribute("x"));
+        value.SetY(element->FloatAttribute("y"));
+        value.SetZ(element->FloatAttribute("z"));
+        success = true;
+    }
+    return success;
+}
+
+bool HierarchicalDeserializer::GetAttributeColorRGB(ColorRGB& value)
+{
+    bool success = false;
+    if (m_elementStack.size() > 0)
+    {
+        XMLElement* element = m_elementStack.top();
+        value.r = element->FloatAttribute("r");
+        value.g = element->FloatAttribute("g");
+        value.b = element->FloatAttribute("b");
+        success = true;
+    }
+    return success;
+}
+
+bool HierarchicalDeserializer::ReadLeafVector3(string name, Vector3& value)
+{
+    bool success = false;
+    if (PushScope(name))
+    {
+        success = GetAttributeVector3(value);
+        PopScope();
+    }
+    return success;
+}
+
+bool HierarchicalDeserializer::ReadLeafColorRGB(string name, ColorRGB& value)
+{
+    bool success = false;
+    if (PushScope(name))
+    {
+        success = GetAttributeColorRGB(value);
+        PopScope();
+    }
+    return success;
 }

@@ -39,6 +39,7 @@ ENGINE (Dogwood)
             * #define to compile without XInput?
         * Re-factor MainEditorWindow.cpp
         * typedef guid type?
+        * Use tinyxml "query" functions for better error handling
 
 ---------------------------------------------------------------------------
 

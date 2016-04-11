@@ -49,51 +49,55 @@ Scene* Scene::New(string filename)
 
 Scene* Scene::Load(string filename)
 {
-    Scene* scene = new Scene();
+    printf("LOADING SCENE: %s\n", filename);
 
-    if (scene != NULL)
+    // Load the file into the deserializer
+    HierarchicalDeserializer deserializer;
+    bool success = deserializer.Load(filename);
+    if (!success)
     {
-        scene->m_filename = filename;
-
-        printf("LOADING SCENE: %s\n", scene->m_filename.c_str());
-
-        // Open the scene XML file
-        XMLDocument sceneDoc;
-        XMLError result = sceneDoc.LoadFile(scene->m_filename.c_str());
-        if (result != XML_SUCCESS)
-        {
-            printf("Error reading scene file %s.\nXMLError %d\n", scene->m_filename.c_str(), result);
-            return false;
-        }
-        XMLElement* sceneXML = sceneDoc.FirstChildElement("Scene");
-
-        // Read the guid
-        scene->m_guid = sceneXML->UnsignedAttribute("guid");
-        if (scene->m_guid == XML_NO_ATTRIBUTE || scene->m_guid == 0)
-        {
-            scene->m_guid = MakeGuid(scene->m_filename);
-        }
-
-        // Load the required resources
-        printf("Loading scene resources...\n");
-        XMLElement* resources = sceneXML->FirstChildElement("Resources");
-        if (resources == NULL)
-        {
-            printf("Error parsing scene file. Could not find resource list.\n");
-            return false;
-        }
-        ResourceManager::Singleton().LoadSceneResources(resources);
-
-        // Apply global settings (camera, light, etc.)
-        scene->DoGlobalSetup(sceneXML);
-
-        // Build the game object hierarchy
-        scene->DoHierarchySetup(sceneXML);
-
-        printf("DONE LOADING SCENE!\n");
-
-        scene->m_loaded = true;
+        return NULL;
     }
+
+    Scene* scene = new Scene();
+    scene->m_filename = filename;
+
+    success = deserializer.PushScope("Scene");
+    if (!success)
+    {
+        delete scene;
+        return NULL;
+    }
+
+    // Read the guid
+    success = deserializer.GetAttribute<unsigned int>("guid", scene->m_guid);
+    //if (scene->m_guid == XML_NO_ATTRIBUTE || scene->m_guid == 0)
+    if (!success || scene->m_guid == 0)
+    {
+        scene->m_guid = MakeGuid(scene->m_filename);
+    }
+
+    // Load the required resources
+    printf("Loading scene resources...\n");
+    success = deserializer.PushScope("Resources");
+    if (!success)
+    {
+        printf("Error parsing scene file. Could not find resource list.\n");
+        delete scene;
+        return NULL;
+    }
+    //ResourceManager::Singleton().LoadSceneResources(&deserializer);
+    deserializer.PopScope();
+
+    // Apply global settings (camera, light, etc.)
+    scene->LoadGlobalSettings(&deserializer);
+
+    // Build the game object hierarchy
+    scene->LoadHierarchy(&deserializer);
+
+    printf("DONE LOADING SCENE!\n");
+
+    scene->m_loaded = true;
 
     return scene;
 }
@@ -178,260 +182,21 @@ bool Scene::IsLoaded()
     return m_loaded;
 }
 
-void Scene::DoGlobalSetup(XMLElement* sceneXML)
-{
-    printf("Doing camera & light setup...\n");
-
-    XMLElement* cameraNode = sceneXML->FirstChildElement("Camera");
-    if (cameraNode)
-    {
-        m_mainCamera.position = ReadVector3FromXML(cameraNode->FirstChildElement("Position"));
-        m_mainCamera.direction = ReadVector3FromXML(cameraNode->FirstChildElement("Direction"));
-        m_mainCamera.up = ReadVector3FromXML(cameraNode->FirstChildElement("Up"));
-        RenderManager::Singleton().SetCamera(m_mainCamera);
-    }
-    else
-    {
-        printf("Warning: no camera specified in scene file.\n");
-    }
-
-    XMLElement* lightNode = sceneXML->FirstChildElement("Light");
-    if (lightNode)
-    {
-        Vector3 lightPosition = ReadVector3FromXML(lightNode->FirstChildElement("Position"));
-        ColorRGB lightColor = ReadColorFromXML(lightNode->FirstChildElement("Color"));
-        GLfloat lightPower = lightNode->FirstChildElement("Power")->FloatAttribute("value");
-        Light light(lightPosition, lightColor, lightPower);
-        RenderManager::Singleton().SetLight(light);
-        m_light = light;
-    }
-    else
-    {
-        printf("Warning: no light specified in scene file.\n");
-    }
-}
-
-void Scene::DoHierarchySetup(XMLElement* sceneXML)
-{
-    printf("Building game object hierarchy...\n");
-
-    XMLElement* rootNode = sceneXML->FirstChildElement("GameObject");
-    if (rootNode == NULL)
-    {
-        printf("Warning: no gameobject hierarchy found in scene file!\n");
-        return;
-    }
-
-    // Process the tree of game objects (recursively, depth first)
-    m_rootObject = BuildSubtree(rootNode);
-}
-
-GameObjectBase* Scene::BuildSubtree(XMLElement* xmlnode)
-{
-    if (xmlnode == NULL)
-        return NULL;
-
-    // Build & add components on this node
-    string name = xmlnode->Attribute("name");
-    unsigned int guid = xmlnode->UnsignedAttribute("guid");
-    if (guid == 0)
-    {
-        guid = MakeGuid(name);
-    }
-
-    GameObjectBase* go = NULL;
-    if (GameProject::Singleton().IsToolside())
-    {
-        go = new ToolsideGameObject(guid, name);
-    }
-    else
-    {
-        go = new GameObject(guid, name);
-    }
-    AddTransform(go, xmlnode);
-    AddMesh(go, xmlnode);
-    AddColliders(go, xmlnode);
-    AddGameComponents(go, xmlnode);
-
-    // Recursively process child game objects
-    XMLElement* childXML = xmlnode->FirstChildElement("GameObject");
-    while (childXML)
-    {
-        GameObjectBase* childgo = BuildSubtree(childXML);
-        childgo->SetParent(go);
-        childXML = childXML->NextSiblingElement("GameObject");
-    }
-
-    return go;
-}
-
-void Scene::AddTransform(GameObjectBase* go, XMLElement* xmlnode)
-{
-    XMLElement* transformXML = xmlnode->FirstChildElement("Transform");
-    if (transformXML == NULL)
-    {
-        return;
-    }
-
-    Vector3 position = ReadVector3FromXML(transformXML->FirstChildElement("Position"));
-    Vector3 rotation = ReadVector3FromXML(transformXML->FirstChildElement("Rotation"));
-    Vector3 scale = ReadVector3FromXML(transformXML->FirstChildElement("Scale"));
-
-    // TODO cleanup with transform functions
-    Matrix4x4 matrix = Translation(position);
-    matrix = matrix*RotationEulerAngles(rotation);
-    matrix = matrix*Scaling(scale);
-
-    go->GetTransform().SetLocalMatrix(matrix);
-}
-
-void Scene::AddMesh(GameObjectBase* go, XMLElement* xmlnode)
-{
-    XMLElement* meshXML = xmlnode->FirstChildElement("Mesh");
-    if (meshXML)
-    {
-        // Find the mesh resource by guid
-        unsigned int guid = meshXML->UnsignedAttribute("guid");
-        Mesh* mesh = ResourceManager::Singleton().GetMesh(guid);
-        if (mesh == NULL)
-        {
-            printf("Warning: mesh referenced by game object is not loaded\n");
-            return;
-        }
-
-        // Attach the mesh instance component & do material setup
-        MeshInstance* meshInstance = new MeshInstance();
-        meshInstance->SetMesh(mesh);
-        AddMaterial(meshInstance, meshXML);
-        go->SetMesh(meshInstance);
-    }
-}
-
-void Scene::AddMaterial(MeshInstance* meshInstance, XMLElement* xmlnode)
-{
-    XMLElement* materialXML = xmlnode->FirstChildElement("Material");
-    if (materialXML && meshInstance)
-    {
-        // Get material component
-        Material* material = meshInstance->GetMaterial();
-
-        // Attach shader
-        XMLElement* shaderXML = materialXML->FirstChildElement("Shader");
-        if (shaderXML)
-        {
-            unsigned int guid = shaderXML->UnsignedAttribute("guid");
-            ShaderProgram* shader = ResourceManager::Singleton().GetShader(guid);
-            if (shader == NULL)
-            {
-                printf("Warning: shader referenced by game object is not loaded\n");
-            }
-            material->SetShader(shader);
-        }
-
-        // Add Colors
-        AddMaterialColors(materialXML, material);
-
-        // Add textures
-        AddMaterialTextures(materialXML, material);
-    }
-}
-
-void Scene::AddMaterialColors(XMLElement* xmlnode, Material* material)
-{
-    XMLElement* colorXML = xmlnode->FirstChildElement("Color");
-    while (colorXML)
-    {
-        string name = colorXML->Attribute("name");
-        ColorRGB color = ReadColorFromXML(colorXML);
-        material->SetColor(name, color);
-
-        colorXML = colorXML->NextSiblingElement("Color");
-    }
-}
-
-void Scene::AddMaterialTextures(XMLElement* xmlnode, Material* material)
-{
-    XMLElement* textureXML = xmlnode->FirstChildElement("Texture");
-    while (textureXML)
-    {
-        unsigned int guid = textureXML->UnsignedAttribute("guid");
-        Texture* texture = ResourceManager::Singleton().GetTexture(guid);
-        if (texture == NULL)
-        {
-            printf("Warning: texture referenced by game object is not loaded\n");
-            return;
-        }
-        string name = textureXML->Attribute("name");
-        material->SetTexture(name, texture);
-
-        textureXML = textureXML->NextSiblingElement("Texture");
-    }
-}
-
-void Scene::AddColliders(GameObjectBase* go, tinyxml2::XMLElement* xmlnode)
-{
-    XMLElement* colliders = xmlnode->FirstChildElement("Colliders");
-    if (colliders)
-    {
-        XMLElement* colliderXML = colliders->FirstChildElement("Collider");
-        while (colliderXML)
-        {
-            Collider* collider = Collider::LoadFromXML(go, colliderXML);
-            go->AddCollider(collider);
-
-            if (!GameProject::Singleton().IsToolside())
-            {
-                CollisionEngine::Singleton().RegisterCollider(collider);
-            }
-
-            colliderXML = colliderXML->NextSiblingElement("Collider");
-        }
-    }
-}
-
-void Scene::AddGameComponents(GameObjectBase* go, XMLElement* xmlnode)
-{
-    XMLElement* gameComponents = xmlnode->FirstChildElement("Components");
-    if (gameComponents)
-    {
-        XMLElement* componentXML = gameComponents->FirstChildElement("Component");
-        while (componentXML)
-        {
-            if (GameProject::Singleton().IsToolside())
-            {
-                ToolsideGameComponent* component = new ToolsideGameComponent();
-                component->Load(componentXML);
-                ((ToolsideGameObject*)go)->AddComponent(component);
-            }
-            else
-            {
-                unsigned int guid = componentXML->UnsignedAttribute("guid");
-                bool isEngineComponent = componentXML->BoolAttribute("engine");
-                GameComponentFactory* factory = GameProject::Singleton().GetRuntimeComponentFactory(isEngineComponent);
-                GameComponent* component = factory->CreateComponent(guid);
-                RuntimeParamList params = ComponentValue::ParseRuntimeParams(componentXML);
-                factory->SetParams(guid, component, &params);
-                ((GameObject*)go)->AddComponent(component);
-            }
-            componentXML = componentXML->NextSiblingElement("Component");
-        }
-    }
-}
 
 void Scene::SerializeGlobalSettings(HierarchicalSerializer* serializer)
 {
     // Camera
     serializer->PushScope("Camera");
-    serializer->InsertLeafVector3("Position",  m_mainCamera.position);
-    serializer->InsertLeafVector3("Direction", m_mainCamera.direction);
-    serializer->InsertLeafVector3("Up",        m_mainCamera.up);
+    serializer->InsertLeafVector3("Position",   m_mainCamera.position);
+    serializer->InsertLeafVector3("Direction",  m_mainCamera.direction);
+    serializer->InsertLeafVector3("Up",         m_mainCamera.up);
     serializer->PopScope();
 
     // Light
     serializer->PushScope("Light");
-    serializer->InsertLeafVector3("Position",  m_light.position);
-    serializer->InsertLeafColorRGB("Color",    m_light.color);
-    serializer->InsertLeaf("Power", "value",   m_light.power);
+    serializer->InsertLeafVector3("Position",   m_light.position);
+    serializer->InsertLeafColorRGB("Color",     m_light.color);
+    serializer->InsertLeaf("Power", "value",    m_light.power);
     serializer->PopScope();
 }
 
@@ -467,9 +232,9 @@ void Scene::SerializeTransform(HierarchicalSerializer* serializer, ToolsideGameO
         return;
 
     serializer->PushScope("Transform");
-    serializer->InsertLeafVector3("Position",  gameObject->GetTransform().GetLocalPosition());
-    serializer->InsertLeafVector3("Rotation",  gameObject->GetTransform().GetLocalRotation());
-    serializer->InsertLeafVector3("Scale",     gameObject->GetTransform().GetLocalScale());
+    serializer->InsertLeafVector3("Position",   gameObject->GetTransform().GetLocalPosition());
+    serializer->InsertLeafVector3("Rotation",   gameObject->GetTransform().GetLocalRotation());
+    serializer->InsertLeafVector3("Scale",      gameObject->GetTransform().GetLocalScale());
     serializer->PopScope();
 }
 
@@ -610,4 +375,274 @@ void Scene::SerializeResourceList(HierarchicalSerializer* serializer, unordered_
     }
 
     serializer->PopScope();
+}
+
+void Scene::LoadGlobalSettings(HierarchicalDeserializer* deserializer)
+{
+    printf("Doing camera & light setup...\n");
+
+    if (deserializer->PushScope("Camera"))
+    {
+        deserializer->ReadLeafVector3("Position",   m_mainCamera.position);
+        deserializer->ReadLeafVector3("Direction",  m_mainCamera.direction);
+        deserializer->ReadLeafVector3("Up",         m_mainCamera.up);
+
+        RenderManager::Singleton().SetCamera(m_mainCamera);
+        deserializer->PopScope();
+    }
+    else
+    {
+        printf("Warning: no camera specified in scene file.\n");
+    }
+
+    if (deserializer->PushScope("Light"))
+    {
+        deserializer->ReadLeafVector3("Position",   m_light.position);
+        deserializer->ReadLeafColorRGB("Color",     m_light.color);
+
+        //TODO FIX ME
+        //deserializer->ReadLeaf("Power", "value",    m_light.power);
+        m_light.power = 5000;
+
+        RenderManager::Singleton().SetLight(m_light);
+        deserializer->PopScope();
+    }
+    else
+    {
+        printf("Warning: no light specified in scene file.\n");
+    }
+}
+
+void Scene::LoadHierarchy(HierarchicalDeserializer* deserializer)
+{
+    printf("Building game object hierarchy...\n");
+
+    if (deserializer->PushScope("GameObject"))
+    {
+        // Process the tree of game objects (recursively, depth first)
+        m_rootObject = LoadHierarchySubtree(deserializer);
+        deserializer->PopScope();
+    }
+    else
+    {
+        printf("Warning: no gameobject hierarchy found in scene file!\n");
+    }
+}
+
+GameObjectBase* Scene::LoadHierarchySubtree(HierarchicalDeserializer* deserializer)
+{
+    // Build & add components on this node
+    string name;
+    deserializer->GetAttribute("name", name);
+
+    unsigned int guid;
+    deserializer->GetAttribute("guid", guid);
+    if (guid == 0)
+    {
+        guid = MakeGuid(name);
+    }
+
+    GameObjectBase* go = NULL;
+    if (GameProject::Singleton().IsToolside())
+    {
+        go = new ToolsideGameObject(guid, name);
+    }
+    else
+    {
+        go = new GameObject(guid, name);
+    }
+
+    LoadTransform(deserializer, go);
+    LoadMesh(deserializer, go);
+    LoadColliders(deserializer, go);
+    LoadGameComponents(deserializer, go);
+
+    // Recursively process child game objects
+    bool childrenToProcess = deserializer->PushScope("GameObject");
+    while (childrenToProcess)
+    {
+        GameObjectBase* childgo = LoadHierarchySubtree(deserializer);
+        childgo->SetParent(go);
+        childrenToProcess = deserializer->NextSiblingScope("GameObject");
+    }
+
+    return go;
+}
+
+void Scene::LoadTransform(HierarchicalDeserializer* deserializer, GameObjectBase* go)
+{
+    if (deserializer->PushScope("Transform"))
+    {
+        Vector3 position;
+        deserializer->ReadLeafVector3("Position", position);
+
+        Vector3 rotation;
+        deserializer->ReadLeafVector3("Rotation", rotation);
+
+        Vector3 scale;
+        deserializer->ReadLeafVector3("Scale", scale);
+
+        // TODO cleanup with transform functions
+        Matrix4x4 matrix = Translation(position);
+        matrix = matrix*RotationEulerAngles(rotation);
+        matrix = matrix*Scaling(scale);
+
+        go->GetTransform().SetLocalMatrix(matrix);
+
+        deserializer->PopScope();
+    }
+}
+
+void Scene::LoadMesh(HierarchicalDeserializer* deserializer, GameObjectBase* go)
+{
+    if (deserializer->PushScope("Mesh"))
+    {
+        // Find the mesh resource by guid
+        unsigned int guid;
+        deserializer->GetAttribute("guid", guid);
+
+        Mesh* mesh = ResourceManager::Singleton().GetMesh(guid);
+        if (mesh != NULL)
+        {
+            // Attach the mesh instance component & do material setup
+            MeshInstance* meshInstance = new MeshInstance();
+            meshInstance->SetMesh(mesh);
+            LoadMaterial(deserializer, meshInstance);
+            go->SetMesh(meshInstance);
+        }
+        else
+        {
+            printf("Warning: mesh referenced by game object is not loaded\n");
+        }
+
+        deserializer->PopScope();
+    }
+}
+
+void Scene::LoadMaterial(HierarchicalDeserializer* deserializer, MeshInstance* meshInstance)
+{
+    if (meshInstance == NULL)
+        return;
+
+    if (deserializer->PushScope("Material"))
+    {
+        // Get material component
+        Material* material = meshInstance->GetMaterial();
+
+        // Attach shader
+        if (deserializer->PushScope("Shader"))
+        {
+            unsigned int guid;
+            deserializer->GetAttribute("guid", guid);
+            ShaderProgram* shader = ResourceManager::Singleton().GetShader(guid);
+            if (shader == NULL)
+            {
+                printf("Warning: shader referenced by game object is not loaded\n");
+            }
+            material->SetShader(shader);
+
+            deserializer->PopScope();
+        }
+
+        // Add colors & textures
+        LoadMaterialColors(deserializer, material);
+        LoadMaterialTextures(deserializer, material);
+
+        deserializer->PopScope();
+    }
+}
+
+void Scene::LoadMaterialColors(HierarchicalDeserializer* deserializer, Material* material)
+{
+    bool colorsToProcess = deserializer->PushScope("Color");
+    while (colorsToProcess)
+    {
+        string name;
+        deserializer->GetAttribute("name", name);
+
+        ColorRGB color;
+        deserializer->GetAttributeColorRGB(color);
+
+        material->SetColor(name, color);
+
+        colorsToProcess = deserializer->NextSiblingScope("Color");
+    }
+}
+
+void Scene::LoadMaterialTextures(HierarchicalDeserializer* deserializer, Material* material)
+{
+    bool texturesToProcess = deserializer->PushScope("Texture");
+    while (texturesToProcess)
+    {
+        unsigned int guid;
+        deserializer->GetAttribute("guid", guid);
+
+        string name;
+        deserializer->GetAttribute("name", name);
+
+        Texture* texture = ResourceManager::Singleton().GetTexture(guid);
+        if (texture == NULL)
+        {
+            printf("Warning: texture referenced by game object is not loaded\n");
+        }
+
+        material->SetTexture(name, texture);
+
+        texturesToProcess = deserializer->NextSiblingScope("Texture");
+    }
+}
+
+void Scene::LoadColliders(HierarchicalDeserializer* deserializer, GameObjectBase* go)
+{
+    if (deserializer->PushScope("Colliders"))
+    {
+        bool collidersToProcess = deserializer->PushScope("Collider");
+        while (collidersToProcess)
+        {
+            // TODO FIX ME
+            //Collider* collider = Collider::LoadFromXML(go, colliderXML);
+            //go->AddCollider(collider);
+            //
+            //if (!GameProject::Singleton().IsToolside())
+            //{
+            //    CollisionEngine::Singleton().RegisterCollider(collider);
+            //}
+
+            collidersToProcess = deserializer->NextSiblingScope("Collider");
+        }
+
+        deserializer->PopScope();
+    }
+}
+
+void Scene::LoadGameComponents(HierarchicalDeserializer* deserializer,GameObjectBase* go)
+{
+    if (deserializer->PushScope("Components"))
+    {
+        bool componentsToProcess = deserializer->PushScope("Component");
+        while (componentsToProcess)
+        {
+            // TODO FIX ME
+            //if (GameProject::Singleton().IsToolside())
+            //{
+            //    ToolsideGameComponent* component = new ToolsideGameComponent();
+            //    component->Load(componentXML);
+            //    ((ToolsideGameObject*)go)->AddComponent(component);
+            //}
+            //else
+            //{
+            //    unsigned int guid = componentXML->UnsignedAttribute("guid");
+            //    bool isEngineComponent = componentXML->BoolAttribute("engine");
+            //    GameComponentFactory* factory = GameProject::Singleton().GetRuntimeComponentFactory(isEngineComponent);
+            //    GameComponent* component = factory->CreateComponent(guid);
+            //    RuntimeParamList params = ComponentValue::ParseRuntimeParams(componentXML);
+            //    factory->SetParams(guid, component, &params);
+            //    ((GameObject*)go)->AddComponent(component);
+            //}
+
+            componentsToProcess = deserializer->NextSiblingScope("Component");
+        }
+
+        deserializer->PopScope();
+    }
 }

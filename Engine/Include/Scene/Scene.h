@@ -18,6 +18,7 @@ using std::unordered_set;
 
 class GameObject;
 class GameObjectBase;
+class HierarchicalDeserializer;
 class HierarchicalSerializer;
 class MeshInstance;
 class ToolsideGameObject;
@@ -40,19 +41,6 @@ public:
 private:
     Scene();
 
-    void                DoGlobalSetup(tinyxml2::XMLElement* sceneXML);
-    void                DoHierarchySetup(tinyxml2::XMLElement* sceneXML);
-
-    // Scene loading helper functions
-    GameObjectBase*     BuildSubtree(tinyxml2::XMLElement* xmlnode);
-    void                AddTransform(GameObjectBase* go, tinyxml2::XMLElement* xmlnode);
-    void                AddMesh(GameObjectBase* go, tinyxml2::XMLElement* xmlnode);
-    void                AddMaterial(MeshInstance* meshInstance, tinyxml2::XMLElement* xmlnode);
-    void                AddColliders(GameObjectBase* go, tinyxml2::XMLElement* xmlnode);
-    void                AddGameComponents(GameObjectBase* go, tinyxml2::XMLElement* xmlnode);
-    void                AddMaterialColors(tinyxml2::XMLElement* xmlnode, Material* material);
-    void                AddMaterialTextures(tinyxml2::XMLElement* xmlnode, Material* material);
-    
     // Scene saving helper functions
     void                SerializeGlobalSettings(HierarchicalSerializer* serializer);
     void                SerializeHierarchy(HierarchicalSerializer* serializer, ToolsideGameObject* gameObject, unordered_set<unsigned int>& guids);
@@ -64,6 +52,19 @@ private:
     void                SerializeColliders(HierarchicalSerializer* serializer, ToolsideGameObject* gameObject);
     void                SerializeComponents(HierarchicalSerializer* serializer, ToolsideGameObject* gameObject, unordered_set<unsigned int>& guids);
     void                SerializeResourceList(HierarchicalSerializer* serializer, unordered_set<unsigned int>& guids);
+
+    // Scene loading helper functions
+    void                LoadGlobalSettings(HierarchicalDeserializer* deserializer);
+    void                LoadHierarchy(HierarchicalDeserializer* deserializer);
+    GameObjectBase*     LoadHierarchySubtree(HierarchicalDeserializer* deserializer);
+    void                LoadTransform(HierarchicalDeserializer* deserializer, GameObjectBase* go);
+    void                LoadMesh(HierarchicalDeserializer* deserializer, GameObjectBase* go);
+    void                LoadMaterial(HierarchicalDeserializer* deserializer, MeshInstance* meshInstance);
+    void                LoadColliders(HierarchicalDeserializer* deserializer, GameObjectBase* go);
+    void                LoadGameComponents(HierarchicalDeserializer* deserializer, GameObjectBase* go);
+    void                LoadMaterialColors(HierarchicalDeserializer* deserializer, Material* material);
+    void                LoadMaterialTextures(HierarchicalDeserializer* deserializer, Material* material);
+
 
     unsigned int        m_guid;
     bool                m_loaded;
