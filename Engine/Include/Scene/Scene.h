@@ -42,16 +42,16 @@ private:
     Scene();
 
     // Scene saving helper functions
-    void                SerializeGlobalSettings(HierarchicalSerializer* serializer);
-    void                SerializeHierarchy(HierarchicalSerializer* serializer, ToolsideGameObject* gameObject, unordered_set<unsigned int>& guids);
-    void                SerializeTransform(HierarchicalSerializer* serializer, ToolsideGameObject* gameObject);
-    void                SerializeMesh(HierarchicalSerializer* serializer, ToolsideGameObject* gameObject, unordered_set<unsigned int>& guids);
-    void                SerializeMaterial(HierarchicalSerializer* serializer, ToolsideGameObject* gameObject, unordered_set<unsigned int>& guids);
-    void                SerializeMaterialColors(HierarchicalSerializer* serializer, Material* material);
-    void                SerializeMaterialTextures(HierarchicalSerializer* serializer, Material* material, unordered_set<unsigned int>& guids);
-    void                SerializeColliders(HierarchicalSerializer* serializer, ToolsideGameObject* gameObject);
-    void                SerializeComponents(HierarchicalSerializer* serializer, ToolsideGameObject* gameObject, unordered_set<unsigned int>& guids);
-    void                SerializeResourceList(HierarchicalSerializer* serializer, unordered_set<unsigned int>& guids);
+    void                SaveGlobalSettings(HierarchicalSerializer* serializer);
+    void                SaveHierarchy(HierarchicalSerializer* serializer, ToolsideGameObject* gameObject, unordered_set<unsigned int>& guids);
+    void                SaveTransform(HierarchicalSerializer* serializer, ToolsideGameObject* gameObject);
+    void                SaveMesh(HierarchicalSerializer* serializer, ToolsideGameObject* gameObject, unordered_set<unsigned int>& guids);
+    void                SaveMaterial(HierarchicalSerializer* serializer, ToolsideGameObject* gameObject, unordered_set<unsigned int>& guids);
+    void                SaveMaterialColors(HierarchicalSerializer* serializer, Material* material);
+    void                SaveMaterialTextures(HierarchicalSerializer* serializer, Material* material, unordered_set<unsigned int>& guids);
+    void                SaveColliders(HierarchicalSerializer* serializer, ToolsideGameObject* gameObject);
+    void                SaveComponents(HierarchicalSerializer* serializer, ToolsideGameObject* gameObject, unordered_set<unsigned int>& guids);
+    void                SaveResourceList(HierarchicalSerializer* serializer, unordered_set<unsigned int>& guids);
 
     // Scene loading helper functions
     void                LoadGlobalSettings(HierarchicalDeserializer* deserializer);

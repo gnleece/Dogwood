@@ -131,9 +131,9 @@ bool Scene::Save(string filename)
     unordered_set<unsigned int> resourceGuids;
 
     // Serialize body
-    SerializeGlobalSettings(&serializer);
-    SerializeHierarchy(&serializer, (ToolsideGameObject*)m_rootObject, resourceGuids);
-    SerializeResourceList(&serializer, resourceGuids);
+    SaveGlobalSettings(&serializer);
+    SaveHierarchy(&serializer, (ToolsideGameObject*)m_rootObject, resourceGuids);
+    SaveResourceList(&serializer, resourceGuids);
 
     // Save it!
     serializer.Save(m_filename);
@@ -183,7 +183,7 @@ bool Scene::IsLoaded()
 }
 
 
-void Scene::SerializeGlobalSettings(HierarchicalSerializer* serializer)
+void Scene::SaveGlobalSettings(HierarchicalSerializer* serializer)
 {
     // Camera
     serializer->PushScope("Camera");
@@ -200,7 +200,7 @@ void Scene::SerializeGlobalSettings(HierarchicalSerializer* serializer)
     serializer->PopScope();
 }
 
-void Scene::SerializeHierarchy(HierarchicalSerializer* serializer, ToolsideGameObject* gameObject, unordered_set<unsigned int>& guids)
+void Scene::SaveHierarchy(HierarchicalSerializer* serializer, ToolsideGameObject* gameObject, unordered_set<unsigned int>& guids)
 {
     if (gameObject == NULL)
         return;
@@ -211,22 +211,22 @@ void Scene::SerializeHierarchy(HierarchicalSerializer* serializer, ToolsideGameO
     serializer->SetAttribute("name", gameObject->GetName().c_str());
 
     // Serialize components
-    SerializeTransform(serializer, gameObject);
-    SerializeMesh(serializer, gameObject, guids);
-    SerializeColliders(serializer, gameObject);
-    SerializeComponents(serializer, gameObject, guids);
+    SaveTransform(serializer, gameObject);
+    SaveMesh(serializer, gameObject, guids);
+    SaveColliders(serializer, gameObject);
+    SaveComponents(serializer, gameObject, guids);
 
     // Serialize children
     std::vector<GameObjectBase*>::iterator childIter;
     for (childIter = gameObject->GetChildren().begin(); childIter != gameObject->GetChildren().end(); childIter++)
     {
         ToolsideGameObject* child = (ToolsideGameObject*)*childIter;
-        SerializeHierarchy(serializer, child, guids);
+        SaveHierarchy(serializer, child, guids);
     }
 
     serializer->PopScope();
 }
-void Scene::SerializeTransform(HierarchicalSerializer* serializer, ToolsideGameObject* gameObject)
+void Scene::SaveTransform(HierarchicalSerializer* serializer, ToolsideGameObject* gameObject)
 {
     if (gameObject == NULL)
         return;
@@ -238,7 +238,7 @@ void Scene::SerializeTransform(HierarchicalSerializer* serializer, ToolsideGameO
     serializer->PopScope();
 }
 
-void Scene::SerializeMesh(HierarchicalSerializer* serializer, ToolsideGameObject* gameObject, unordered_set<unsigned int>& guids)
+void Scene::SaveMesh(HierarchicalSerializer* serializer, ToolsideGameObject* gameObject, unordered_set<unsigned int>& guids)
 {
     if (gameObject == NULL || gameObject->GetMesh() == NULL)
         return;
@@ -249,12 +249,12 @@ void Scene::SerializeMesh(HierarchicalSerializer* serializer, ToolsideGameObject
     serializer->SetAttribute("guid", guid);
     guids.insert(guid);
 
-    SerializeMaterial(serializer, gameObject, guids);
+    SaveMaterial(serializer, gameObject, guids);
 
     serializer->PopScope();
 }
 
-void Scene::SerializeMaterial(HierarchicalSerializer* serializer, ToolsideGameObject* gameObject, unordered_set<unsigned int>& guids)
+void Scene::SaveMaterial(HierarchicalSerializer* serializer, ToolsideGameObject* gameObject, unordered_set<unsigned int>& guids)
 {
     if (gameObject == NULL || gameObject->GetMesh() == NULL || gameObject->GetMesh()->GetMaterial() == NULL)
         return;
@@ -274,15 +274,15 @@ void Scene::SerializeMaterial(HierarchicalSerializer* serializer, ToolsideGameOb
     }
 
     // Serialize Color info
-    SerializeMaterialColors(serializer, material);
+    SaveMaterialColors(serializer, material);
 
     // Serialize texture info
-    SerializeMaterialTextures(serializer, material, guids);
+    SaveMaterialTextures(serializer, material, guids);
 
     serializer->PopScope();
 }
 
-void Scene::SerializeMaterialColors(HierarchicalSerializer* serializer, Material* material)
+void Scene::SaveMaterialColors(HierarchicalSerializer* serializer, Material* material)
 {
     unordered_map<GLint, ColorRGB> colors = material->GetColorList();
     unordered_map<GLint, ColorRGB>::iterator iter = colors.begin();
@@ -301,7 +301,7 @@ void Scene::SerializeMaterialColors(HierarchicalSerializer* serializer, Material
     }
 }
 
-void Scene::SerializeMaterialTextures(HierarchicalSerializer* serializer, Material* material, unordered_set<unsigned int>& guids)
+void Scene::SaveMaterialTextures(HierarchicalSerializer* serializer, Material* material, unordered_set<unsigned int>& guids)
 {
     unordered_map<GLint, Texture*> textures = material->GetTextureList();
     unordered_map<GLint, Texture*>::iterator iter = textures.begin();
@@ -328,7 +328,7 @@ void Scene::SerializeMaterialTextures(HierarchicalSerializer* serializer, Materi
     }
 }
 
-void Scene::SerializeColliders(HierarchicalSerializer* serializer, ToolsideGameObject* gameObject)
+void Scene::SaveColliders(HierarchicalSerializer* serializer, ToolsideGameObject* gameObject)
 {
     if (gameObject == NULL)
         return;
@@ -346,7 +346,7 @@ void Scene::SerializeColliders(HierarchicalSerializer* serializer, ToolsideGameO
     serializer->PopScope();
 }
 
-void Scene::SerializeComponents(HierarchicalSerializer* serializer, ToolsideGameObject* gameObject, unordered_set<unsigned int>& guids)
+void Scene::SaveComponents(HierarchicalSerializer* serializer, ToolsideGameObject* gameObject, unordered_set<unsigned int>& guids)
 {
     if (gameObject == NULL)
         return;
@@ -364,7 +364,7 @@ void Scene::SerializeComponents(HierarchicalSerializer* serializer, ToolsideGame
     serializer->PopScope();
 }
 
-void Scene::SerializeResourceList(HierarchicalSerializer* serializer, unordered_set<unsigned int>& guids)
+void Scene::SaveResourceList(HierarchicalSerializer* serializer, unordered_set<unsigned int>& guids)
 {
     serializer->PushScope("Resources");
 
