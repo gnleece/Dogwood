@@ -164,6 +164,8 @@ DESIGN DECISIONS
         - Mergeable/diffable
         - Human readable
         - Human writeable (before tool is ready)
+    - Wrap in Serializer class
+        - Allows easy replacement of XML library
 
     Editor
     - Start early! Build in lockstep with Engine features

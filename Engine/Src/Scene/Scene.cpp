@@ -358,7 +358,7 @@ void Scene::SaveComponents(HierarchicalSerializer* serializer, ToolsideGameObjec
     for (compIter = compList.begin(); compIter != compList.end(); compIter++)
     {
         ToolsideGameComponent* comp = *compIter;
-        comp->Serialize(serializer, guids);
+        comp->Save(serializer, guids);
     }
 
     serializer->PopScope();
@@ -621,23 +621,26 @@ void Scene::LoadGameComponents(HierarchicalDeserializer* deserializer,GameObject
         bool componentsToProcess = deserializer->PushScope("Component");
         while (componentsToProcess)
         {
-            // TODO FIX ME
-            //if (GameProject::Singleton().IsToolside())
-            //{
-            //    ToolsideGameComponent* component = new ToolsideGameComponent();
-            //    component->Load(componentXML);
-            //    ((ToolsideGameObject*)go)->AddComponent(component);
-            //}
-            //else
-            //{
-            //    unsigned int guid = componentXML->UnsignedAttribute("guid");
-            //    bool isEngineComponent = componentXML->BoolAttribute("engine");
-            //    GameComponentFactory* factory = GameProject::Singleton().GetRuntimeComponentFactory(isEngineComponent);
-            //    GameComponent* component = factory->CreateComponent(guid);
-            //    RuntimeParamList params = ComponentValue::ParseRuntimeParams(componentXML);
-            //    factory->SetParams(guid, component, &params);
-            //    ((GameObject*)go)->AddComponent(component);
-            //}
+            if (GameProject::Singleton().IsToolside())
+            {
+                ToolsideGameComponent* component = new ToolsideGameComponent();
+                component->Load(deserializer);
+                ((ToolsideGameObject*)go)->AddComponent(component);
+            }
+            else
+            {
+                unsigned int guid;
+                deserializer->GetAttribute("guid", guid);
+
+                bool isEngineComponent;
+                deserializer->GetAttribute("engine", isEngineComponent);
+
+                GameComponentFactory* factory = GameProject::Singleton().GetRuntimeComponentFactory(isEngineComponent);
+                GameComponent* component = factory->CreateComponent(guid);
+                RuntimeParamList params = ComponentValue::ParseRuntimeParams(deserializer);
+                factory->SetParams(guid, component, &params);
+                ((GameObject*)go)->AddComponent(component);
+            }
 
             componentsToProcess = deserializer->NextSiblingScope("Component");
         }

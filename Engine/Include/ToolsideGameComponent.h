@@ -1,7 +1,6 @@
 #pragma once
 
 #include <string>
-#include <tinyxml2.h>
 #include <unordered_map>
 #include <unordered_set>
 #include <utility>
@@ -19,6 +18,7 @@ using std::vector;
 struct ComponentParameter;
 struct ComponentValue;
 
+class HierarchicalDeserializer;
 class HierarchicalSerializer;
 class ToolsideGameObject;
 
@@ -60,15 +60,15 @@ public:
     ComponentValue(ComponentParameter::ParameterType type, Vector3 value);
     ComponentValue(ComponentParameter::ParameterType type, ColorRGB value);
     ComponentValue(ComponentParameter::ParameterType type, unsigned int value);
-    ComponentValue(ComponentParameter::ParameterType type, tinyxml2::XMLElement* xml);
+    ComponentValue(ComponentParameter::ParameterType type, HierarchicalDeserializer* deserializer);
 
-    void    SetValue(ComponentParameter::ParameterType type, tinyxml2::XMLElement* xml);
+    void    SetValue(ComponentParameter::ParameterType type, HierarchicalDeserializer* deserializer);
     void    SetValue(ComponentParameter::ParameterType type, string text);
-    void    SerializeValue(HierarchicalSerializer* serializer, ComponentParameter::ParameterType type);
+    void    SaveValue(HierarchicalSerializer* serializer, ComponentParameter::ParameterType type);
     string  GetValueString(ComponentParameter::ParameterType type);
     string  GetVectorValueString(Vector3 v);
 
-    static RuntimeParamList ParseRuntimeParams(tinyxml2::XMLElement* xml);
+    static RuntimeParamList ParseRuntimeParams(HierarchicalDeserializer* deserializer);
 
     int             i;
     float           f;
@@ -84,8 +84,8 @@ class ToolsideGameComponent
 {
 public:
     void            Create(unsigned int guid, bool isEngine);
-    void            Load(tinyxml2::XMLElement* componentXML);
-    void            Serialize(HierarchicalSerializer* serializer, unordered_set<unsigned int>& guids);
+    void            Save(HierarchicalSerializer* serializer, unordered_set<unsigned int>& guids);
+    void            Load(HierarchicalDeserializer* deserializer);
 
     ToolsideGameObject* GetGameObject();
     void            SetGameObject(ToolsideGameObject* go);
@@ -99,7 +99,7 @@ public:
     void            ValidateParameters();
 
 private:
-    void            AddParameterToList(tinyxml2::XMLElement* paramXML);
+    void            AddParameterToList(HierarchicalDeserializer* deserializer);
     void            SetDisplayName();
 
     ToolsideGameObject* m_gameObject;

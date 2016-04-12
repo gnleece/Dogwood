@@ -4,10 +4,6 @@
 #include "Util.h"
 #include <sstream>
 
-using tinyxml2::XMLDocument;
-using tinyxml2::XMLElement;
-using tinyxml2::XMLError;
-
 bool ComponentParameter::operator==(const ComponentParameter &other) const
 {
     return ((Name.compare(other.Name) == 0) && Type == other.Type);
@@ -81,51 +77,47 @@ ComponentValue::ComponentValue(ComponentParameter::ParameterType type, unsigned 
         ref = value;
 }
 
-ComponentValue::ComponentValue(ComponentParameter::ParameterType type, tinyxml2::XMLElement* xml)
+ComponentValue::ComponentValue(ComponentParameter::ParameterType type, HierarchicalDeserializer* deserializer)
 {
-    SetValue(type, xml);
+    SetValue(type, deserializer);
 }
 
-void ComponentValue::SetValue(ComponentParameter::ParameterType type, tinyxml2::XMLElement* xml)
+void ComponentValue::SetValue(ComponentParameter::ParameterType type, HierarchicalDeserializer* deserializer)
 {
     char* valueStr = "value";
-    if (xml->Attribute(valueStr))
+
+    switch (type)
     {
-        switch (type)
+        case ComponentParameter::TYPE_INT:
+            deserializer->GetAttribute("value", i);
+            break;
+        case ComponentParameter::TYPE_FLOAT:
+            deserializer->GetAttribute("value", f);
+            break;
+        case ComponentParameter::TYPE_BOOL:
+            deserializer->GetAttribute("value", b);
+            break;
+        case ComponentParameter::TYPE_STRING:
+            deserializer->GetAttribute("value", str);
+            break;
+        case ComponentParameter::TYPE_VECTOR3:
         {
-            case ComponentParameter::TYPE_INT:
-                i = xml->IntAttribute(valueStr);
-                break;
-            case ComponentParameter::TYPE_FLOAT:
-                f = xml->FloatAttribute(valueStr);
-                break;
-            case ComponentParameter::TYPE_BOOL:
-                b = xml->BoolAttribute(valueStr);
-                break;
-            case ComponentParameter::TYPE_STRING:
-                str = xml->Attribute(valueStr);
-                break;
-            case ComponentParameter::TYPE_VECTOR3:
-            {
-                XMLElement* vectorXML = xml->FirstChildElement(valueStr);
-                v = ReadVector3FromXML(vectorXML);
-                break;
-            }
-            case ComponentParameter::TYPE_COLOR:
-            {
-                XMLElement* colorXML = xml->FirstChildElement(valueStr);
-                c = ReadColorFromXML(colorXML);
-                break;
-            }
-            case ComponentParameter::TYPE_GAMEOBJECT:
-                go = xml->UnsignedAttribute(valueStr);
-                break;
-            case ComponentParameter::TYPE_MESH:
-            case ComponentParameter::TYPE_SHADER:
-            case ComponentParameter::TYPE_TEXTURE:
-                ref = xml->UnsignedAttribute(valueStr);
-                break;
+            deserializer->ReadLeafVector3("value", v);
+            break;
         }
+        case ComponentParameter::TYPE_COLOR:
+        {
+            deserializer->ReadLeafColorRGB("value", c);
+            break;
+        }
+        case ComponentParameter::TYPE_GAMEOBJECT:
+            deserializer->GetAttribute("value", go);
+            break;
+        case ComponentParameter::TYPE_MESH:
+        case ComponentParameter::TYPE_SHADER:
+        case ComponentParameter::TYPE_TEXTURE:
+            deserializer->GetAttribute("value", ref);
+            break;
     }
 }
 
@@ -162,7 +154,7 @@ void ComponentValue::SetValue(ComponentParameter::ParameterType type, string tex
     }
 }
 
-void ComponentValue::SerializeValue(HierarchicalSerializer* serializer, ComponentParameter::ParameterType type)
+void ComponentValue::SaveValue(HierarchicalSerializer* serializer, ComponentParameter::ParameterType type)
 {
     switch (type)
     {
@@ -216,18 +208,20 @@ string ComponentValue::GetValueString(ComponentParameter::ParameterType type)
     return "";
 }
 
-RuntimeParamList ComponentValue::ParseRuntimeParams(tinyxml2::XMLElement* xml)
+RuntimeParamList ComponentValue::ParseRuntimeParams(HierarchicalDeserializer* deserializer)
 {
     RuntimeParamList params;
 
-    XMLElement* paramXML = xml->FirstChildElement("Param");
-    while (paramXML)
+    bool paramsToProcess = deserializer->PushScope("Param");
+    while (paramsToProcess)
     {
-        ComponentParameter::ParameterType type = (ComponentParameter::ParameterType)(paramXML->IntAttribute("type"));
-        ComponentValue value(type, paramXML);
+        ComponentParameter::ParameterType type;
+        deserializer->GetAttribute("type", (int&)type);
+
+        ComponentValue value(type, deserializer);
         params.push_back(value);
 
-        paramXML = paramXML->NextSiblingElement("Param");
+        paramsToProcess = deserializer->NextSiblingScope("Param");
     }
 
     return params;
@@ -241,23 +235,7 @@ void ToolsideGameComponent::Create(unsigned int guid, bool isEngine)
     SetDisplayName();
 }
 
-void ToolsideGameComponent::Load(XMLElement* componentXML)
-{
-    m_guid = componentXML->UnsignedAttribute("guid");
-    m_isEngine = componentXML->BoolAttribute("engine");
-
-    // Build parameter list
-    XMLElement* paramXML = componentXML->FirstChildElement("Param");
-    while (paramXML)
-    {
-        AddParameterToList(paramXML);
-        paramXML = paramXML->NextSiblingElement("Param");
-    }
-    SetDisplayName();
-    ValidateParameters();
-}
-
-void ToolsideGameComponent::Serialize(HierarchicalSerializer* serializer, unordered_set<unsigned int>& guids)
+void ToolsideGameComponent::Save(HierarchicalSerializer* serializer, unordered_set<unsigned int>& guids)
 {
     serializer->PushScope("Component");
     serializer->SetAttribute("guid", m_guid);
@@ -272,7 +250,7 @@ void ToolsideGameComponent::Serialize(HierarchicalSerializer* serializer, unorde
 
         serializer->SetAttribute("name", pair.first.Name.c_str());
         serializer->SetAttribute("type", pair.first.Type);
-        pair.second.SerializeValue(serializer, pair.first.Type);
+        pair.second.SaveValue(serializer, pair.first.Type);
 
         if (ComponentParameter::IsReferenceType(pair.first.Type))
         {
@@ -283,6 +261,22 @@ void ToolsideGameComponent::Serialize(HierarchicalSerializer* serializer, unorde
     }
 
     serializer->PopScope();
+}
+
+void ToolsideGameComponent::Load(HierarchicalDeserializer* deserializer)
+{
+    deserializer->GetAttribute("guid", m_guid);
+    deserializer->GetAttribute("engine", m_isEngine);
+
+    // Build parameter list
+    bool paramsToProcess = deserializer->PushScope("Param");
+    while (paramsToProcess)
+    {
+        AddParameterToList(deserializer);
+        paramsToProcess = deserializer->NextSiblingScope("Param");
+    }
+    SetDisplayName();
+    ValidateParameters();
 }
 
 ToolsideGameObject* ToolsideGameComponent::GetGameObject()
@@ -351,15 +345,17 @@ void ToolsideGameComponent::ValidateParameters()
     m_paramList = currentParams;
 }
 
-void ToolsideGameComponent::AddParameterToList(XMLElement* paramXML)
+void ToolsideGameComponent::AddParameterToList(HierarchicalDeserializer* deserializer)
 {
-    string name = paramXML->Attribute("name");
+    string name;
+    deserializer->GetAttribute("name", name);
 
-    ComponentParameter::ParameterType type = (ComponentParameter::ParameterType)(paramXML->IntAttribute("type"));
+    ComponentParameter::ParameterType type;
+    deserializer->GetAttribute("type", (int&)type);
     ComponentParameter key(name, type);
 
     ComponentValue value;
-    value.SetValue(type, paramXML);
+    value.SetValue(type, deserializer);
 
     ParamPair pair(key, value);
     m_paramList.push_back(pair);
@@ -386,43 +382,46 @@ bool ToolsideComponentSchema::Load(string filename)
     Unload();
 
     // Open the schema doc
-    XMLDocument schemaDoc;
-    XMLError result = schemaDoc.LoadFile(filename.c_str());
-    if (result != tinyxml2::XML_SUCCESS)
+    HierarchicalDeserializer deserializer;
+    bool success = deserializer.Load(filename);
+    if (!success)
     {
-        printf("Error reading component schema file %s.\nXMLError %d\n", filename.c_str(), result);
+        printf("Error reading component schema file %s.\n", filename.c_str());
         return false;
     }
 
     // Process each script in the schema
-    XMLElement* scriptsXML = schemaDoc.FirstChildElement("Scripts");
-    XMLElement* scriptXML = scriptsXML->FirstChildElement("Script");
-    while (scriptXML != NULL)
+    deserializer.PushScope("Scripts");
+    bool scriptsToProcess = deserializer.PushScope("Script");
+    while (scriptsToProcess)
     {
         // Build the param map for this script
         ParamList* paramList = new ParamList();
-        XMLElement* paramXML = scriptXML->FirstChildElement("Param");
-        while (paramXML != NULL)
+        bool paramsToProcess = deserializer.PushScope("Param");
+        while (paramsToProcess)
         {
             ComponentParameter param;
-            param.Name = paramXML->Attribute("name");
-            param.Type = (ComponentParameter::ParameterType)(paramXML->IntAttribute("type"));
+            deserializer.GetAttribute("name", param.Name);
+            deserializer.GetAttribute("type", (int&)param.Type);
 
             ComponentValue value;
-            value.SetValue(param.Type, paramXML);
+            value.SetValue(param.Type, &deserializer);
 
             ParamPair pair(param, value);
             paramList->push_back(pair);
-            paramXML = paramXML->NextSiblingElement("Param");
+
+            paramsToProcess = deserializer.NextSiblingScope("Param");
         }
 
         // Add the map to the schema
-        unsigned int guid = scriptXML->UnsignedAttribute("guid");
+        unsigned int guid;
+        deserializer.GetAttribute("guid", guid);
         m_schema[guid] = paramList;
 
         // Move to the next script
-        scriptXML = scriptXML->NextSiblingElement("Script");
+        scriptsToProcess = deserializer.NextSiblingScope("Script");
     }
+    deserializer.PopScope();
 
     return true;
 }
