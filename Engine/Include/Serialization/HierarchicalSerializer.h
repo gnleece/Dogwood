@@ -42,8 +42,10 @@ public:
     bool    Load(string filepath);
 
     bool    PushScope(string name);
+    bool    PushScope();
     void    PopScope();
     bool    NextSiblingScope(string name);
+    bool    NextSiblingScope();
 
     template<typename T>
     bool    GetAttribute(string name, T& value);
@@ -71,6 +73,8 @@ void HierarchicalSerializer::SetAttribute(string name, T value)
         element->SetAttribute(name.c_str(), value);
     }
 }
+
+template <> void HierarchicalSerializer::SetAttribute(string name, string value);
 
 template<typename T>
 void HierarchicalSerializer::InsertLeaf(string name, string valueName, T value)

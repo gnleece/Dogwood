@@ -6,8 +6,8 @@
 #define QT_NO_OPENGL_ES_2
 
 #include <string>
-#include <tinyxml2.h>
 #include <unordered_map>
+#include <vector>
 
 #include "Resource.h"
 #include "ToolsideGameComponent.h"
@@ -15,6 +15,8 @@
 
 class GameObject;
 class GameProject;
+class HierarchicalDeserializer;
+class HierarchicalSerializer;
 class Mesh;
 class ShaderProgram;
 class Texture;
@@ -22,12 +24,13 @@ class ToolsideGameObject;
 
 using std::string;
 using std::unordered_map;
+using std::vector;
 
 class ResourceInfo
 {
 public:
-    virtual void        AddToMap(tinyxml2::XMLElement* element, unordered_map<unsigned int, ResourceInfo*> & map);
-    virtual void        Serialize(tinyxml2::XMLDocument& rootDoc, tinyxml2::XMLElement* parent);
+    virtual void        AddToMap(HierarchicalDeserializer* deserializer, unordered_map<unsigned int, ResourceInfo*> & map);
+    virtual void        Serialize(HierarchicalSerializer* serializer);
 
     virtual Resource*   Load() = 0;
     virtual void        Unload();
@@ -53,16 +56,16 @@ public:
     void            Startup();
     void            Shutdown();
 
-    void            LoadResourceMap(tinyxml2::XMLElement* resources);
+    void            LoadResourceMap(HierarchicalDeserializer* deserializer);
     void            ClearResourceMap();
-    void            SerializeResourceMap(tinyxml2::XMLDocument& rootDoc, tinyxml2::XMLElement* parent);
+    void            SerializeResourceMap(HierarchicalSerializer* serializer);
     void            LoadComponentSchema();
     void            LoadShaderSchema();
 
     unsigned int    ImportResource(string& filepath, string type);
     void            ImportDefaultResources();
 
-    void            LoadSceneResources(tinyxml2::XMLElement* resources);
+    void            LoadSceneResources(HierarchicalDeserializer* deserializer);
     void            UnloadSceneResources();
 
     Resource*       GetResource(unsigned int guid, bool load = true);
@@ -84,11 +87,12 @@ public:
 
 private:
     unsigned int    Import(ResourceInfo* resource);
-    void            ImportDefaultResourceType(tinyxml2::XMLElement* subtree, string folderName, string extension);
-    void            ImportDefaultShaders(tinyxml2::XMLElement* subtree);
+    void            ImportDefaultResourceType(HierarchicalDeserializer* deserializer, string typeName, string extension);
+
+    void            SerializeResourceList(HierarchicalSerializer* serializer, string name, vector<ResourceInfo*>& resources);
 
     template<typename T>
-    void AddResourcesToMap(tinyxml2::XMLElement* resources, string typeName);
+    void AddResourcesToMap(HierarchicalDeserializer* deserializer, string typeName);
 
     ResourceMap                                  m_resourceMap;
     unordered_map<unsigned int, Resource*>       m_loadedResources;

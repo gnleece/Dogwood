@@ -6,13 +6,10 @@
 #include "Rendering\Mesh.h"
 #include "Rendering\MeshInstance.h"
 #include "Rendering\Texture.h"
+#include "Serialization\HierarchicalSerializer.h"
 #include "ToolsideGameComponent.h"
 #include "ToolsideGameObject.h"
 #include "ToolsideShaderSchema.h"
-
-#include "tinyxml2.h"
-
-using namespace tinyxml2;
 
 struct TextureResourceInfo : ResourceInfo
 { 
@@ -144,19 +141,19 @@ struct ShaderResourceInfo : ResourceInfo
     }
 };
 
-void ResourceInfo::AddToMap(XMLElement* element, unordered_map<unsigned int, ResourceInfo*> & map)
+void ResourceInfo::AddToMap(HierarchicalDeserializer* deserializer, unordered_map<unsigned int, ResourceInfo*> & map)
 {
-    path = element->Attribute("path");
-    guid = element->UnsignedAttribute("guid");
+    deserializer->GetAttribute("guid", guid);
+    deserializer->GetAttribute("path", path);
     map[guid] = this;
 }
 
-void ResourceInfo::Serialize(XMLDocument& rootDoc, XMLElement* parent)
+void ResourceInfo::Serialize(HierarchicalSerializer* serializer)
 {
-    XMLElement* xml = rootDoc.NewElement(TypeName().c_str());
-    xml->SetAttribute("guid", guid);
-    xml->SetAttribute("path", path.c_str());
-    parent->InsertEndChild(xml);
+    serializer->PushScope(TypeName());
+    serializer->SetAttribute("guid", guid);
+    serializer->SetAttribute("path", path);
+    serializer->PopScope();
 }
 
 void ResourceInfo::Unload()
@@ -178,32 +175,44 @@ void ResourceManager::Shutdown()
     ClearResourceMap();
 }
 
-void ResourceManager::LoadResourceMap(XMLElement* resources)
+void ResourceManager::LoadResourceMap(HierarchicalDeserializer* deserializer)
 {
     // Unload previous project
     ClearResourceMap();
 
-    // Process each resource type
-    AddResourcesToMap<TextureResourceInfo>(resources, "Textures");
-    AddResourcesToMap<MeshResourceInfo>(resources, "Meshes");
-    AddResourcesToMap<ShaderResourceInfo>(resources, "Shaders");
-    AddResourcesToMap<ScriptResourceInfo>(resources, "Scripts");
-
-    // Load default resource map
-    XMLElement* elements = resources->FirstChildElement("DefaultResources");
-    if (elements)
+    if (deserializer->PushScope("Resources"))
     {
-        XMLElement* element = elements->FirstChildElement();
-        while (element)
-        {
-            string name = element->Attribute("name");
-            unsigned int guid = element->UnsignedAttribute("guid");
-            m_defaultResources[name] = guid;
-            element = element->NextSiblingElement();
-        }
-    }
 
-    m_lookupTableLoaded = true;
+        // Process each resource type
+        AddResourcesToMap<TextureResourceInfo>(deserializer, "Textures");
+        AddResourcesToMap<MeshResourceInfo>(deserializer, "Meshes");
+        AddResourcesToMap<ShaderResourceInfo>(deserializer, "Shaders");
+        AddResourcesToMap<ScriptResourceInfo>(deserializer, "Scripts");
+
+        // Load default resource map
+        bool success = deserializer->PushScope("DefaultResources");
+        if (success)
+        {
+            bool assetsToProcess = deserializer->PushScope();
+            while (assetsToProcess)
+            {
+                string name;
+                deserializer->GetAttribute("name", name);
+
+                unsigned int guid;
+                deserializer->GetAttribute("guid", guid);
+
+                m_defaultResources[name] = guid;
+
+                assetsToProcess = deserializer->NextSiblingScope();
+            }
+            deserializer->PopScope();
+        }
+
+        m_lookupTableLoaded = true;
+
+        deserializer->PopScope();
+    }
 }
 
 void ResourceManager::ClearResourceMap()
@@ -222,19 +231,16 @@ void ResourceManager::ClearResourceMap()
     m_lookupTableLoaded = false;
 }
 
-void ResourceManager::SerializeResourceMap(XMLDocument& rootDoc, XMLElement* parent)
+void ResourceManager::SerializeResourceMap(HierarchicalSerializer* serializer)
 {
-    // Create parent node for each resource type
-    XMLElement* textureXML = rootDoc.NewElement("Textures");
-    XMLElement* meshXML = rootDoc.NewElement("Meshes");
-    XMLElement* shaderXML = rootDoc.NewElement("Shaders");
-    XMLElement* scriptXML = rootDoc.NewElement("Scripts");
-    parent->InsertEndChild(textureXML);
-    parent->InsertEndChild(meshXML);
-    parent->InsertEndChild(shaderXML);
-    parent->InsertEndChild(scriptXML);
+    serializer->PushScope("Resources");
 
-    // Serialize lookup table
+    // Sort the lookup table by type, putting each type into its own list
+    vector<ResourceInfo*> textureList;
+    vector<ResourceInfo*> meshList;
+    vector<ResourceInfo*> shaderList;
+    vector<ResourceInfo*> scriptList;
+
     unordered_map<unsigned int, ResourceInfo*>::iterator iter;
     for (iter = m_resourceMap.begin(); iter != m_resourceMap.end(); iter++)
     {
@@ -252,41 +258,56 @@ void ResourceManager::SerializeResourceMap(XMLDocument& rootDoc, XMLElement* par
         }
 
         // TODO this is pretty ugly
-        XMLElement* resourceParent = NULL;
+
         if (strcmp(iter->second->TypeName().c_str(), "Texture") == 0)
         {
-            resourceParent = textureXML;
+            textureList.push_back(iter->second);
         }
         else if (strcmp(iter->second->TypeName().c_str(), "Mesh") == 0)
         {
-            resourceParent = meshXML;
+            meshList.push_back(iter->second);
         }
         else if (strcmp(iter->second->TypeName().c_str(), "Shader") == 0)
         {
-            resourceParent = shaderXML;
+            shaderList.push_back(iter->second);
         }
         else if (strcmp(iter->second->TypeName().c_str(), "Script") == 0)
         {
-            resourceParent = scriptXML;
-        }
-
-        if (resourceParent != NULL)
-        {
-            iter->second->Serialize(rootDoc, resourceParent);
+            scriptList.push_back(iter->second);
         }
     }
 
+    SerializeResourceList(serializer, "Textures",   textureList);
+    SerializeResourceList(serializer, "Meshes",     meshList);
+    SerializeResourceList(serializer, "Shaders",    shaderList);
+    SerializeResourceList(serializer, "Scripts",    scriptList);
+
     // Serialize default resource lookup
-    XMLElement* defaultXML = rootDoc.NewElement("DefaultResources");
-    parent->InsertEndChild(defaultXML);
+    serializer->PushScope("DefaultResources");
     unordered_map<string, unsigned int>::iterator defIter;
     for (defIter = m_defaultResources.begin(); defIter != m_defaultResources.end(); defIter++)
     {
-        XMLElement* xml = rootDoc.NewElement("Asset");
-        xml->SetAttribute("name", defIter->first.c_str());
-        xml->SetAttribute("guid", defIter->second);
-        defaultXML->InsertEndChild(xml);
+        serializer->PushScope("Asset");
+        serializer->SetAttribute("name", defIter->first);
+        serializer->SetAttribute("guid", defIter->second);
+        serializer->PopScope();
     }
+    serializer->PopScope();
+
+    serializer->PopScope();
+}
+
+void ResourceManager::SerializeResourceList(HierarchicalSerializer* serializer, string name, vector<ResourceInfo*>& resources)
+{
+    serializer->PushScope(name);
+
+    vector<ResourceInfo*>::iterator iter;
+    for (iter = resources.begin(); iter != resources.end(); iter++)
+    {
+        (*iter)->Serialize(serializer);
+    }
+
+    serializer->PopScope();
 }
 
 void ResourceManager::LoadComponentSchema()
@@ -373,34 +394,37 @@ unsigned int ResourceManager::Import(ResourceInfo* resource)
 
 void ResourceManager::ImportDefaultResources()
 {
-    XMLDocument assetsDoc;
-    XMLError result = assetsDoc.LoadFile("..\\Engine\\Assets\\DefaultAssets.xml");
-    if (result != XML_SUCCESS)
+    HierarchicalDeserializer deserializer;
+    bool success = deserializer.Load("..\\Engine\\Assets\\DefaultAssets.xml");
+
+    if (!success)
     {
-        printf("Error reading default assets file.\nXMLError %d\n", result);
+        printf("Error reading default assets file.\n");
+        return;
     }
-    XMLElement* assetsXML = assetsDoc.FirstChildElement("Dogwood-Default-Resources");
+    deserializer.PushScope("Dogwood-Default-Resources");
 
     // Import each asset, by type
-    XMLElement* meshesXML = assetsXML->FirstChildElement("Meshes");
-    ImportDefaultResourceType(meshesXML, "Meshes", "obj");
-    XMLElement* texturesXML = assetsXML->FirstChildElement("Textures");
-    ImportDefaultResourceType(texturesXML, "Textures", "bmp");
-    XMLElement* shadersXML = assetsXML->FirstChildElement("Shaders");
-    ImportDefaultResourceType(shadersXML, "Shaders", "glsl");
+    ImportDefaultResourceType(&deserializer, "Textures", "bmp");
+    ImportDefaultResourceType(&deserializer, "Meshes", "obj");
+    ImportDefaultResourceType(&deserializer, "Shaders", "glsl");
+
+    deserializer.PopScope();
 }
 
-void ResourceManager::ImportDefaultResourceType(tinyxml2::XMLElement* subtree, string folderName, string extension)
+void ResourceManager::ImportDefaultResourceType(HierarchicalDeserializer* deserializer, string typeName, string extension)
 {
-    if (subtree != NULL)
+    if (deserializer->PushScope(typeName))
     {
-        XMLElement* resourceXML = subtree->FirstChildElement();
-        while (resourceXML != NULL)
+        bool resourcesToProcess = deserializer->PushScope();
+        while (resourcesToProcess)
         {
             // Copy the asset to the project's asset folder
-            string srcfile = resourceXML->Attribute("path");
-            string name = resourceXML->Attribute("name");
-            string destfile = m_resourceBasePath + folderName + "/" + name + "." + extension;
+            string srcfile;
+            deserializer->GetAttribute("path", srcfile);
+            string name;
+            deserializer->GetAttribute("name", name);
+            string destfile = m_resourceBasePath + typeName + "/" + name + "." + extension;
             FileCopy(srcfile, destfile);
 
             // Import the asset to the project
@@ -408,17 +432,27 @@ void ResourceManager::ImportDefaultResourceType(tinyxml2::XMLElement* subtree, s
             unsigned int guid = ImportResource(relativePath, extension);
             m_defaultResources[name] = guid;
 
-            resourceXML = resourceXML->NextSiblingElement();
+            resourcesToProcess = deserializer->NextSiblingScope();
         }
+        deserializer->PopScope();
     }
 }
 
-void ResourceManager::LoadSceneResources(XMLElement* resources)
+void ResourceManager::LoadSceneResources(HierarchicalDeserializer* deserializer)
 {
-    XMLElement* element = resources->FirstChildElement();
-    while (element)
+    printf("Loading scene resources...\n");
+    bool success = deserializer->PushScope("Resources");
+    if (!success)
     {
-        unsigned int guid = element->UnsignedAttribute("guid");
+        printf("Error parsing scene file. Could not find resource list.\n");
+        return;
+    }
+
+    bool resourcesToProcess = deserializer->PushScope("GameObject");
+    while (resourcesToProcess)
+    {
+        unsigned int guid;
+        deserializer->GetAttribute("guid", guid);
         ResourceInfo* info = m_resourceMap[guid];
         if (info)
         {
@@ -429,8 +463,10 @@ void ResourceManager::LoadSceneResources(XMLElement* resources)
         {
             printf("Error! Could not find guid %d in database\n", guid);
         }
-        element = element->NextSiblingElement();
+        resourcesToProcess = deserializer->PushScope("GameObject");
     }
+
+    deserializer->PopScope();
 }
 
 void ResourceManager::UnloadSceneResources()
@@ -533,17 +569,18 @@ ShaderParamList* ResourceManager::GetShaderParamList(unsigned int guid)
 }
 
 template<typename T>
-void ResourceManager::AddResourcesToMap(XMLElement* resources, string typeName)
+void ResourceManager::AddResourcesToMap(HierarchicalDeserializer* deserializer, string typeName)
 {
-    XMLElement* elements = resources->FirstChildElement(typeName.c_str());
-    if (elements)
+    bool success = deserializer->PushScope(typeName);
+    if (success)
     {
-        XMLElement* element = elements->FirstChildElement();
-        while (element)
+        bool resourcesToProcess = deserializer->PushScope();
+        while (resourcesToProcess)
         {
             T* info = new T();
-            info->AddToMap(element, m_resourceMap);
-            element = element->NextSiblingElement();
+            info->AddToMap(deserializer, m_resourceMap);
+            resourcesToProcess = deserializer->NextSiblingScope();
         }
+        deserializer->PopScope();
     }
 }

@@ -1,11 +1,12 @@
 #pragma once
 
 #include <string>
-#include <tinyxml2.h>
 
 using std::string;
 
 class GameComponentFactory;
+class HierarchicalDeserializer;
+class HierarchicalSerializer;
 class Scene;
 
 class GameProject
@@ -46,10 +47,10 @@ public:
     void    RemoveScene(Scene* scene);
 
 private:
-    void    LoadSettings(tinyxml2::XMLElement* settingsXML);
+    void    LoadSettings(HierarchicalDeserializer* deserializer);
     void    LoadSceneList();
 
-    void    SerializeSettings(tinyxml2::XMLDocument& rootDoc, tinyxml2::XMLElement* parent);
+    void    SerializeSettings(HierarchicalSerializer* serializer);
     void    SerilaizeSceneList();
 
     bool    m_loaded;

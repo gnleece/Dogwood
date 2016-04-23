@@ -51,6 +51,16 @@ void HierarchicalSerializer::SetAttributeColorRGB(ColorRGB value)
     }
 }
 
+template <>
+void HierarchicalSerializer::SetAttribute(string name, string value)
+{
+    if (m_elementStack.size() > 0)
+    {
+        XMLElement* element = m_elementStack.top();
+        element->SetAttribute(name.c_str(), value.c_str());
+    }
+}
+
 void HierarchicalSerializer::InsertLeafVector3(string name, Vector3 value)
 {
     PushScope(name);
@@ -108,6 +118,31 @@ bool HierarchicalDeserializer::PushScope(string name)
     return false;
 }
 
+bool HierarchicalDeserializer::PushScope()
+{
+    if (!m_loaded)
+        return false;
+
+    XMLElement* element = NULL;
+    if (m_elementStack.size() > 0)
+    {
+        XMLElement* parent = m_elementStack.top();
+        element = parent->FirstChildElement();
+    }
+    else
+    {
+        element = m_document.FirstChildElement();
+    }
+
+    if (element != NULL)
+    {
+        m_elementStack.push(element);
+        return true;
+    }
+
+    return false;
+}
+
 void HierarchicalDeserializer::PopScope()
 {
     if (m_elementStack.size() > 0)
@@ -124,6 +159,23 @@ bool HierarchicalDeserializer::NextSiblingScope(string name)
         m_elementStack.pop();
 
         XMLElement* nextElement = element->NextSiblingElement(name.c_str());
+        if (nextElement != NULL)
+        {
+            m_elementStack.push(nextElement);
+            return true;
+        }
+    }
+    return false;
+}
+
+bool HierarchicalDeserializer::NextSiblingScope()
+{
+    if (m_elementStack.size() > 0)
+    {
+        XMLElement* element = m_elementStack.top();
+        m_elementStack.pop();
+
+        XMLElement* nextElement = element->NextSiblingElement();
         if (nextElement != NULL)
         {
             m_elementStack.push(nextElement);

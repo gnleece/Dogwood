@@ -78,16 +78,7 @@ Scene* Scene::Load(string filename)
     }
 
     // Load the required resources
-    printf("Loading scene resources...\n");
-    success = deserializer.PushScope("Resources");
-    if (!success)
-    {
-        printf("Error parsing scene file. Could not find resource list.\n");
-        delete scene;
-        return NULL;
-    }
-    //ResourceManager::Singleton().LoadSceneResources(&deserializer);
-    deserializer.PopScope();
+    ResourceManager::Singleton().LoadSceneResources(&deserializer);
 
     // Apply global settings (camera, light, etc.)
     scene->LoadGlobalSettings(&deserializer);

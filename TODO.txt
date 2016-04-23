@@ -111,6 +111,7 @@ EDITOR (Thicket)
         - Move processing scripts out of Editor and into Engine
         - Engine component setup for new projects
         - Don't hardcode engine component guids
+        - Fix light power loading - remove GLint from Light
 
 ---------------------------------------------------------------------------
 
@@ -192,6 +193,12 @@ DESIGN DECISIONS
 
     Do cleanup / deletion code right away
     - Leaving it as a TODO means it probably won't get done
+
+    Refactors
+    - Shaders (2 files per shader -> single file format)
+    - Serialization (raw XML -> HierarchicalSerializer)
+    - TODO wrap all OpenGL
+    - TODO quaternions
 
 References
 

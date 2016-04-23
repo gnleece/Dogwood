@@ -1,9 +1,6 @@
 #include "GameProject.h"
 #include "Scene\ResourceManager.h"
-
-#include <tinyxml2.h>
-
-using namespace tinyxml2;
+#include "Serialization\HierarchicalSerializer.h"
 
 void GameProject::Startup(bool toolside)
 {
@@ -58,24 +55,23 @@ bool GameProject::Load(string filename)
 
     printf("LOADING PROJECT: %s\n", m_filename.c_str());
 
-    // Open the project XML file
-    XMLDocument projectDoc;
-    XMLError result = projectDoc.LoadFile(m_filename.c_str());
-    if (result != XML_SUCCESS)
+    // Open the project file
+    HierarchicalDeserializer deserializer;
+    bool success = deserializer.Load(m_filename);
+    if (!success)
     {
-        printf("Error reading project file %s.\nXMLError %d\n", m_filename.c_str(), result);
+        printf("Error reading project file %s.\n", m_filename.c_str());
         return false;
     }
-    XMLElement* projectXML = projectDoc.FirstChildElement("Dogwood-Project");
-    m_name = projectXML->Attribute("name");
+
+    deserializer.PushScope("Dogwood-Project");
+    deserializer.GetAttribute("name", m_name);
 
     // Get project settings
-    XMLElement* settingsXML = projectXML->FirstChildElement("Settings");
-    LoadSettings(settingsXML);
+    LoadSettings(&deserializer);
 
     // Give the resources list to the ResourceManager
-    XMLElement* resourcesXML = projectXML->FirstChildElement("Resources");
-    ResourceManager::Singleton().LoadResourceMap(resourcesXML);
+    ResourceManager::Singleton().LoadResourceMap(&deserializer);
     ResourceManager::Singleton().SetResourceBasePath(m_resourceDir);
 
     // Get the list of scenes
@@ -104,24 +100,21 @@ bool GameProject::Save(string filename)
     }
 
     // Root setup
-    XMLDocument projectDoc;
-    XMLElement* rootElement = projectDoc.NewElement("Dogwood-Project");
-    rootElement->SetAttribute("name", m_name.c_str());
-    projectDoc.InsertEndChild(rootElement);
+    HierarchicalSerializer serializer;
+    serializer.PushScope("Dogwood-Project");
+    serializer.SetAttribute("name", m_name);
 
     // Save settings
-    SerializeSettings(projectDoc, rootElement);
+    SerializeSettings(&serializer);
 
     // Save resource map
-    XMLElement* resourcesXML = projectDoc.NewElement("Resources");
-    rootElement->InsertEndChild(resourcesXML);
-    ResourceManager::Singleton().SerializeResourceMap(projectDoc, resourcesXML);
+    ResourceManager::Singleton().SerializeResourceMap(&serializer);
 
     // Save the scene list
     SerilaizeSceneList();
 
     // Save it!
-    projectDoc.SaveFile(m_filename.c_str());
+    serializer.Save(m_filename);
     return true;
 }
 
@@ -208,22 +201,24 @@ void GameProject::RemoveScene(Scene* scene)
     // TODO implement me
 }
 
-void GameProject::LoadSettings(XMLElement* settingsXML)
+void GameProject::LoadSettings(HierarchicalDeserializer* deserializer)
 {
-    if (settingsXML == NULL)
-        return;
-
-    XMLElement* resolutionXML = settingsXML->FirstChildElement("Resolution");
-    if (resolutionXML)
+    if (deserializer->PushScope("Settings"))
     {
-        m_width = resolutionXML->IntAttribute("width");
-        m_height = resolutionXML->IntAttribute("height");
-    }
+        if (deserializer->PushScope("Resolution"))
+        {
+            deserializer->GetAttribute("width", m_width);
+            deserializer->GetAttribute("height", m_height);
+            deserializer->PopScope();
+        }
 
-    XMLElement* resourcePathXML = settingsXML->FirstChildElement("Resource-Root-Path");
-    if (resourcePathXML)
-    {
-        m_resourceDir = resourcePathXML->Attribute("path");
+        if (deserializer->PushScope("Resource-Root-Path"))
+        {
+            deserializer->GetAttribute("path", m_resourceDir);
+            deserializer->PopScope();
+        }
+
+        deserializer->PopScope();
     }
 }
 
@@ -232,19 +227,20 @@ void GameProject::LoadSceneList()
     // TODO implement me
 }
 
-void GameProject::SerializeSettings(XMLDocument& rootDoc, XMLElement* parent)
+void GameProject::SerializeSettings(HierarchicalSerializer* serializer)
 {
-    XMLElement* settingsXML = rootDoc.NewElement("Settings");
-    parent->InsertEndChild(settingsXML);
+    serializer->PushScope("Settings");
 
-    XMLElement* resolutionXML = rootDoc.NewElement("Resolution");
-    resolutionXML->SetAttribute("width", m_width);
-    resolutionXML->SetAttribute("height", m_height);
-    settingsXML->InsertEndChild(resolutionXML);
+    serializer->PushScope("Resolution");
+    serializer->SetAttribute("width", m_width);
+    serializer->SetAttribute("height", m_height);
+    serializer->PopScope();
 
-    XMLElement* resourcePathXML = rootDoc.NewElement("Resource-Root-Path");
-    resourcePathXML->SetAttribute("path", m_resourceDir.c_str());
-    settingsXML->InsertEndChild(resourcePathXML);
+    serializer->PushScope("Resource-Root-Path");
+    serializer->SetAttribute("path", m_resourceDir);
+    serializer->PopScope();
+
+    serializer->PopScope();
 }
 
 void GameProject::SerilaizeSceneList()
