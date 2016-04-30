@@ -6,7 +6,6 @@
 #define QT_NO_OPENGL_ES_2
 
 #include <string>
-#include <tinyxml2.h>
 #include <unordered_set>
 
 #include "Rendering\Camera.h"

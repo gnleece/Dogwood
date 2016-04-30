@@ -211,6 +211,9 @@
     <ClInclude Include="Include\Physics\Particles\EffectParticle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Include\Serialization\HierarchicalSerializer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Debugging\DebugCameraControls.cpp">

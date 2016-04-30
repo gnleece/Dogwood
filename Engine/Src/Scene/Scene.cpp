@@ -17,8 +17,6 @@
 #include "Rendering\Texture.h"
 #include "Serialization\HierarchicalSerializer.h"
 
-using namespace tinyxml2;
-
 Scene::Scene()
 : m_loaded(false)
 { }
@@ -71,7 +69,6 @@ Scene* Scene::Load(string filename)
 
     // Read the guid
     success = deserializer.GetAttribute<unsigned int>("guid", scene->m_guid);
-    //if (scene->m_guid == XML_NO_ATTRIBUTE || scene->m_guid == 0)
     if (!success || scene->m_guid == 0)
     {
         scene->m_guid = MakeGuid(scene->m_filename);

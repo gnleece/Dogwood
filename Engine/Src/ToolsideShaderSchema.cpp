@@ -1,48 +1,50 @@
 #include "ToolsideShaderSchema.h"
-#include "tinyxml2.h"
-
-using tinyxml2::XMLDocument;
-using tinyxml2::XMLElement;
-using tinyxml2::XMLError;
+#include "Serialization/HierarchicalSerializer.h"
 
 bool ToolsideShaderSchema::Load(string filename)
 {
     Unload();
 
     // Open the schema doc
-    XMLDocument schemaDoc;
-    XMLError result = schemaDoc.LoadFile(filename.c_str());
-    if (result != tinyxml2::XML_SUCCESS)
+    HierarchicalDeserializer deserializer;
+    bool success = deserializer.Load(filename);
+    if (!success)
     {
-        printf("Error reading shader schema file %s.\nXMLError %d\n", filename.c_str(), result);
+        printf("Error reading shader schema file %s.\n", filename.c_str());
         return false;
     }
 
     // Process each script in the schema
-    XMLElement* scriptsXML = schemaDoc.FirstChildElement("Shaders");
-    XMLElement* scriptXML = scriptsXML->FirstChildElement("Shader");
-    while (scriptXML != NULL)
+    deserializer.PushScope("Shaders");
+    bool scriptsToProcess = deserializer.PushScope("Shader");
+    while (scriptsToProcess)
     {
         // Build the param map for this script
         ShaderParamList* paramList = new ShaderParamList();
-        XMLElement* paramXML = scriptXML->FirstChildElement("Param");
-        while (paramXML != NULL)
+        bool paramsToProcess = deserializer.PushScope("Param");
+        while (paramsToProcess)
         {
-            ShaderParamType type = (ShaderParamType)(paramXML->IntAttribute("type"));
-            string name = paramXML->Attribute("name");
+            int type;
+            deserializer.GetAttribute("type", type);
 
-            ShaderParamPair paramPair(type, name);
+            string name;
+            deserializer.GetAttribute("name", name);
+
+            ShaderParamPair paramPair((ShaderParamType)type, name);
             paramList->push_back(paramPair);
-            paramXML = paramXML->NextSiblingElement("Param");
+
+            paramsToProcess = deserializer.NextSiblingScope("Param");
         }
 
         // Add the map to the schema
-        unsigned int guid = scriptXML->UnsignedAttribute("guid");
+        unsigned int guid;
+        deserializer.GetAttribute("guid", guid);
         m_schema[guid] = paramList;
 
         // Move to the next script
-        scriptXML = scriptXML->NextSiblingElement("Shader");
+        scriptsToProcess = deserializer.NextSiblingScope("Shader");
     }
+    deserializer.PopScope();
 
     return true;
 }
