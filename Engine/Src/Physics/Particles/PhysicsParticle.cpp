@@ -39,6 +39,7 @@ void PhysicsParticle::SetMass(float mass)
         return;
     }
     m_inverseMass = 1 / mass;
+    m_mass = mass;
 }
 
 void PhysicsParticle::SetInverseMass(float inverseMass)
@@ -46,6 +47,15 @@ void PhysicsParticle::SetInverseMass(float inverseMass)
     if (inverseMass < 0)
         return;
     m_inverseMass = inverseMass;
+    m_mass = Approximately(inverseMass, 0.f) ? 0.f : 1 / inverseMass;
+}
+
+float PhysicsParticle::GetMass()
+{
+    if (!HasFiniteMass())
+        return 0;
+
+    return 1 / m_inverseMass;
 }
 
 float PhysicsParticle::GetInverseMass()
@@ -53,6 +63,10 @@ float PhysicsParticle::GetInverseMass()
     return m_inverseMass;
 }
 
+bool PhysicsParticle::HasFiniteMass()
+{
+    return m_inverseMass > 0;
+}
 
 void PhysicsParticle::Integrate(float deltaTime)
 {
@@ -61,20 +75,29 @@ void PhysicsParticle::Integrate(float deltaTime)
 
     assert(deltaTime > 0.0);
 
+
     // Update position (deltaTime is small so acceleration term is negligible here)
     m_position = m_position + deltaTime * m_velocity;
 
     // Calculate acceleration from force
     Vector3 netAcceleration = m_acceleration;
+    netAcceleration = netAcceleration + m_accumulatedForce * m_inverseMass;
 
     // Update velocity
     m_velocity = m_velocity + deltaTime * netAcceleration;
 
     // Apply damping
     m_velocity = pow(DAMPING, deltaTime) * m_velocity;      // TODO calculate pow(DAMPING, dt) once per frame
+
+    ClearAccumulator();
+}
+
+void PhysicsParticle::AddForce(Vector3 force)
+{
+    m_accumulatedForce += force;
 }
 
 void PhysicsParticle::ClearAccumulator()
 {
-    // TODO implement me
+    m_accumulatedForce = Vector3::Zero;
 }
