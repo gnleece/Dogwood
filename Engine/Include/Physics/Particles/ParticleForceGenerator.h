@@ -20,8 +20,68 @@ public:
     virtual void    UpdateForce(PhysicsParticle* particle, float deltaTime);
 
 private:
-    Vector3     m_gravity;
+    Vector3         m_gravity;
 
+};
+
+class ParticleDrag : public ParticleForceGenerator
+{
+public:
+    ParticleDrag(float k1, float k2);
+    virtual void    UpdateForce(PhysicsParticle* particle, float deltaTime);
+
+private:
+    float           m_k1;
+    float           m_k2;
+};
+
+class ParticleSpring : public ParticleForceGenerator
+{
+public:
+    ParticleSpring(PhysicsParticle* other, float springConstant, float restLength);
+    virtual void UpdateForce(PhysicsParticle* particle, float deltaTime);
+
+private:
+    PhysicsParticle* m_other;
+    float            m_springConstant;
+    float            m_restLength;
+};
+
+class ParticleAnchoredSpring : public ParticleForceGenerator
+{
+public:
+    ParticleAnchoredSpring(Vector3& anchor, float springConstant, float restLength);
+    virtual void UpdateForce(PhysicsParticle* particle, float deltaTime);
+
+private:
+    Vector3         m_anchor;
+    float           m_sprintConstant;
+    float           m_restLength;
+};
+
+class ParticleBungee : public ParticleForceGenerator
+{
+public:
+    ParticleBungee(PhysicsParticle* other, float springConstant, float restLength);
+    virtual void UpdateForce(PhysicsParticle* particle, float deltaTime);
+
+private:
+    PhysicsParticle* m_other;
+    float            m_springConstant;
+    float            m_restLength;
+};
+
+class ParticleBuoyancy : public ParticleForceGenerator
+{
+public:
+    ParticleBuoyancy(float maxDepth, float volume, float waterHeight, float liquidDensity = 1000.0f);
+    virtual void UpdateForce(PhysicsParticle* particle, float deltaTime);
+
+private:
+    float           m_maxDepth;
+    float           m_volume;
+    float           m_waterHeight;
+    float           m_liquidDensity;
 };
 
 class ParticleForceRegistry
