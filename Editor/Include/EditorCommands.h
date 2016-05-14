@@ -8,9 +8,12 @@
 ///////////////////////////////////////////////////////////////////////
 
 #include "CommandManager.h"
+
 #include "Rendering\Color.h"
+
 #include "Math\Algebra.h"
 #include "Math\Transform.h"
+
 
 #include <qabstractitemmodel.h>
 #include <QTime>
@@ -21,6 +24,7 @@ class GameObjectMimeData;
 class HierarchyModel;
 class Material;
 class QTreeView;
+class ResourceInfo;
 class ToolsideGameObject;
 class TransformWidget;
 
@@ -128,5 +132,17 @@ namespace EditorCommands
         string              m_name;
         ColorRGB            m_color;
         ColorRGB            m_previousColor;
+    };
+
+    class AddAssetToGameObjectCommand : public ICommand
+    {
+    public:
+        AddAssetToGameObjectCommand(ToolsideGameObject* go, ResourceInfo* info);
+        void Execute();
+        void Undo();
+    private:
+        ToolsideGameObject* m_go;
+        ResourceInfo*       m_resourceInfo;
+
     };
 }

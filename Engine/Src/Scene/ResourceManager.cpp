@@ -30,6 +30,11 @@ struct TextureResourceInfo : ResourceInfo
         // Do nothing here. Textures need to be set as specific material or component param references
         // (i.e. there is no single unique texture per object so we can't simply "add" one to a game object)
     }
+
+    virtual void RemoveFromGameObject(ToolsideGameObject* gameObject)
+    {
+        // Do nothing.
+    }
 };
 
 struct MeshResourceInfo : ResourceInfo
@@ -62,6 +67,19 @@ struct MeshResourceInfo : ResourceInfo
         ShaderProgram* shader = (ShaderProgram*)ResourceManager::Singleton().GetDefaultResource("shader_gouraud");
         shader->GetResourceInfo()->AddToGameObject(gameObject);
     }
+
+    virtual void RemoveFromGameObject(ToolsideGameObject* gameObject)
+    {
+        MeshInstance* meshInstance = gameObject->GetMesh();
+        if (meshInstance != NULL)
+        {
+            bool match = (meshInstance->GetMesh()->GetResourceInfo()->guid == guid);
+            if (match)
+            {
+                delete meshInstance;
+            }
+        }
+    }
 };
 
 struct ScriptResourceInfo : ResourceInfo
@@ -79,17 +97,17 @@ struct ScriptResourceInfo : ResourceInfo
 
     virtual void AddToGameObject(ToolsideGameObject* gameObject)
     {
-        if (GameProject::Singleton().IsToolside())
-        {
-            ToolsideGameComponent* component = new ToolsideGameComponent();
-            component->Create(guid, false);
-            gameObject->AddComponent(component);
-        }
-        else
-        {
-            // TODO implement me
+        if (!GameProject::Singleton().IsToolside())
             return;
-        }
+
+        ToolsideGameComponent* component = new ToolsideGameComponent();
+        component->Create(guid, false);
+        gameObject->AddComponent(component);
+    }
+
+    virtual void RemoveFromGameObject(ToolsideGameObject* gameObject)
+    {
+        // TODO implement me
     }
 };
 
@@ -123,7 +141,7 @@ struct ShaderResourceInfo : ResourceInfo
                 for (; iter != params->end(); iter++)
                 {
                     ShaderParamType paramType = iter->first;
-                    switch(paramType)
+                    switch (paramType)
                     {
                     case SHADERPARAM_COLOR:
                         mat->SetColor(iter->second, ColorRGB::White);
@@ -135,6 +153,23 @@ struct ShaderResourceInfo : ResourceInfo
                         mat->SetTexture(iter->second, Texture::DefaultTexture());
                         break;
                     }
+                }
+            }
+        }
+    }
+
+    virtual void RemoveFromGameObject(ToolsideGameObject* gameObject)
+    {
+        MeshInstance* meshInstance = gameObject->GetMesh();
+        if (meshInstance != NULL)
+        {
+            Material* mat = meshInstance->GetMaterial();
+            if (mat != NULL)
+            {
+                bool match = (mat->GetShader()->GetResourceInfo()->guid == guid);
+                if (match)
+                {
+                    mat->SetShader(NULL);
                 }
             }
         }

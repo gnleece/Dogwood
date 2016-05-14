@@ -4,8 +4,10 @@
 #include "Widgets\AssetWidget.h"
 #include "AssetDatabaseModel.h"
 #include "DebugLogger.h"
+
 #include "MainEditorWindow.h"
 #include "Scene\ResourceManager.h"
+//#include "EditorCommands.h"
 
 #include "..\GeneratedFiles\ui_assetwidget.h"
 
@@ -130,7 +132,9 @@ void AssetWidget::AddButtonClicked()
             ToolsideGameObject* go = m_window->GetSelectedObject();
             if (go != NULL)
             {
-                info->AddToGameObject(go);
+                EditorCommands::AddAssetToGameObjectCommand* command;
+                command = new EditorCommands::AddAssetToGameObjectCommand(go, info);
+                command->Execute();
                 m_window->Refresh();
             }
         }

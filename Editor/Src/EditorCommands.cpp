@@ -3,6 +3,7 @@
 #include "HierarchyModel.h"
 #include "ToolsideGameObject.h"
 #include "Rendering\Material.h"
+#include "Scene\ResourceManager.h"
 #include "Widgets\ComponentWidget.h"
 
 #include <QtWidgets>
@@ -209,5 +210,23 @@ namespace EditorCommands
     void ChangeMaterialColorCommand::Undo()
     {
         m_material->SetColor(m_name, m_previousColor);
+    }
+
+    //-----------------------------------------------------------------------------------------------
+
+    AddAssetToGameObjectCommand::AddAssetToGameObjectCommand(ToolsideGameObject* go, ResourceInfo* info)
+    {
+        m_go = go;
+        m_resourceInfo = info;
+    }
+
+    void AddAssetToGameObjectCommand::Execute()
+    {
+        m_resourceInfo->AddToGameObject(m_go);
+    }
+
+    void AddAssetToGameObjectCommand::Undo()
+    {
+        // TODO implement me
     }
 }
