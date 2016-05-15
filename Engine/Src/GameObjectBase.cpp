@@ -14,6 +14,8 @@ GameObjectBase::GameObjectBase(unsigned int guid, string name, GameObjectBase* p
         m_transform.SetParent(&(m_parent->m_transform));
     }
 
+    m_mesh = NULL;
+
     GameObjectReference::AddToMap(guid, this);
 }
 
@@ -101,7 +103,7 @@ void GameObjectBase::Render(bool dirty, bool wireframe)
 {
 }
 
-void GameObjectBase::SetMesh(MeshInstance* mesh)
+void GameObjectBase::SetMeshInstance(MeshInstance* mesh)
 {
     // clear previous mesh
     if (m_mesh != NULL)
@@ -117,7 +119,7 @@ void GameObjectBase::SetMesh(MeshInstance* mesh)
     }
 }
 
-MeshInstance* GameObjectBase::GetMesh()
+MeshInstance* GameObjectBase::GetMeshInstance()
 {
     return m_mesh;
 }

@@ -19,16 +19,14 @@ Mesh::Mesh(std::string path, ResourceInfo* resourceInfo)
     m_drawMode = GL_TRIANGLES;
     m_resourceInfo = resourceInfo;
 
-    std::vector<Vector3> positions;
     std::vector<Vector3> normals;
     std::vector<Vector2> uvs;
-    std::vector<GLuint>  indices;
 
-    LoadIndexedModel(path, positions, normals, uvs, indices);
-    CalculateBoundingRadius(positions);
+    LoadIndexedModel(path, m_positions, normals, uvs, m_indices);
+    CalculateBoundingRadius(m_positions);
 
-    m_vertexCount = positions.size();
-    m_indexedVertexCount = indices.size();
+    m_vertexCount = m_positions.size();
+    m_indexedVertexCount = m_indices.size();
     m_hasUVs = uvs.size() > 0;
 
     // Bind buffer data
@@ -38,7 +36,7 @@ Mesh::Mesh(std::string path, ResourceInfo* resourceInfo)
     // Upload vertex data: Positions
     glGenBuffers(1, &m_vboPosition);
     glBindBuffer(GL_ARRAY_BUFFER, m_vboPosition);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*m_vertexCount * 3, positions[0].Start(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*m_vertexCount * 3, m_positions[0].Start(), GL_STATIC_DRAW);
 
     // Upload vertex data: Normals
     glGenBuffers(1, &m_vboNormal);
@@ -56,7 +54,7 @@ Mesh::Mesh(std::string path, ResourceInfo* resourceInfo)
     // Upload vertex data: Element buffer (for indexing)
     glGenBuffers(1, &m_ebo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)*m_indexedVertexCount, indices.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)*m_indexedVertexCount, m_indices.data(), GL_STATIC_DRAW);
 }
 
 void Mesh::Render(Transform& transform, Material* material, bool wireframe)
@@ -96,6 +94,23 @@ void Mesh::Delete()
 float Mesh::GetBoundingRadius()
 {
     return m_boundingRadius;
+}
+
+int Mesh::GetTriangleCount()
+{
+    return m_indexedVertexCount / 3;
+}
+
+void Mesh::GetTriangle(int index, Vector3* triangle)
+{
+    if (index < 0 || index >= m_indexedVertexCount / 3)
+        return;
+
+    for (int i = 0; i < 3; i++)
+    {
+        int triangleIndex = index * 3 + i;
+        triangle[i] = m_positions[m_indices[triangleIndex]];
+    }
 }
 
 void Mesh::CalculateBoundingRadius(std::vector<Vector3>& vertices)

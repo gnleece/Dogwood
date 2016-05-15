@@ -54,7 +54,7 @@ struct MeshResourceInfo : ResourceInfo
     virtual void AddToGameObject(ToolsideGameObject* gameObject)
     {
         Mesh* mesh = ResourceManager::Singleton().GetMesh(guid);
-        MeshInstance* meshInstance = gameObject->GetMesh();
+        MeshInstance* meshInstance = gameObject->GetMeshInstance();
         if (meshInstance != NULL)
         {
             delete meshInstance;
@@ -62,7 +62,7 @@ struct MeshResourceInfo : ResourceInfo
         }
         meshInstance = new MeshInstance();
         meshInstance->SetMesh(mesh);
-        gameObject->SetMesh(meshInstance);
+        gameObject->SetMeshInstance(meshInstance);
 
         ShaderProgram* shader = (ShaderProgram*)ResourceManager::Singleton().GetDefaultResource("shader_gouraud");
         shader->GetResourceInfo()->AddToGameObject(gameObject);
@@ -70,7 +70,7 @@ struct MeshResourceInfo : ResourceInfo
 
     virtual void RemoveFromGameObject(ToolsideGameObject* gameObject)
     {
-        MeshInstance* meshInstance = gameObject->GetMesh();
+        MeshInstance* meshInstance = gameObject->GetMeshInstance();
         if (meshInstance != NULL)
         {
             bool match = (meshInstance->GetMesh()->GetResourceInfo()->guid == guid);
@@ -127,7 +127,7 @@ struct ShaderResourceInfo : ResourceInfo
 
     virtual void AddToGameObject(ToolsideGameObject* gameObject)
     {
-        MeshInstance* meshInstance = gameObject->GetMesh();
+        MeshInstance* meshInstance = gameObject->GetMeshInstance();
         if (meshInstance != NULL)
         {
             Material* mat = meshInstance->GetMaterial();
@@ -160,7 +160,7 @@ struct ShaderResourceInfo : ResourceInfo
 
     virtual void RemoveFromGameObject(ToolsideGameObject* gameObject)
     {
-        MeshInstance* meshInstance = gameObject->GetMesh();
+        MeshInstance* meshInstance = gameObject->GetMeshInstance();
         if (meshInstance != NULL)
         {
             Material* mat = meshInstance->GetMaterial();

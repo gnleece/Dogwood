@@ -410,7 +410,7 @@ bool ComponentModelMeshItem::HandleMenuSelection(ContextMenuOption selection)
     case CONTEXTMENU_DELETE:
         DebugLogger::Singleton().Log("delete mesh component");
         GameObjectBase* go = m_mesh->GetGameObject();
-        go->SetMesh(NULL);
+        go->SetMeshInstance(NULL);
         return true;
     }
 

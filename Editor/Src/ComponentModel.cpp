@@ -179,7 +179,7 @@ void ComponentModel::AddTransformData()
 
 void ComponentModel::AddMeshData()
 {
-    MeshInstance* meshInstance = m_gameObject->GetMesh();
+    MeshInstance* meshInstance = m_gameObject->GetMeshInstance();
     if (meshInstance == NULL)
         return;
 

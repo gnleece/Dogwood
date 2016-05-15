@@ -228,12 +228,12 @@ void Scene::SaveTransform(HierarchicalSerializer* serializer, ToolsideGameObject
 
 void Scene::SaveMesh(HierarchicalSerializer* serializer, ToolsideGameObject* gameObject, unordered_set<unsigned int>& guids)
 {
-    if (gameObject == NULL || gameObject->GetMesh() == NULL)
+    if (gameObject == NULL || gameObject->GetMeshInstance() == NULL)
         return;
 
     serializer->PushScope("Mesh");
 
-    unsigned int guid = gameObject->GetMesh()->GetMesh()->GetResourceInfo()->guid;
+    unsigned int guid = gameObject->GetMeshInstance()->GetMesh()->GetResourceInfo()->guid;
     serializer->SetAttribute("guid", guid);
     guids.insert(guid);
 
@@ -244,10 +244,10 @@ void Scene::SaveMesh(HierarchicalSerializer* serializer, ToolsideGameObject* gam
 
 void Scene::SaveMaterial(HierarchicalSerializer* serializer, ToolsideGameObject* gameObject, unordered_set<unsigned int>& guids)
 {
-    if (gameObject == NULL || gameObject->GetMesh() == NULL || gameObject->GetMesh()->GetMaterial() == NULL)
+    if (gameObject == NULL || gameObject->GetMeshInstance() == NULL || gameObject->GetMeshInstance()->GetMaterial() == NULL)
         return;
 
-    Material* material = gameObject->GetMesh()->GetMaterial();
+    Material* material = gameObject->GetMeshInstance()->GetMaterial();
 
     serializer->PushScope("Material");
 
@@ -496,7 +496,7 @@ void Scene::LoadMesh(HierarchicalDeserializer* deserializer, GameObjectBase* go)
             MeshInstance* meshInstance = new MeshInstance();
             meshInstance->SetMesh(mesh);
             LoadMaterial(deserializer, meshInstance);
-            go->SetMesh(meshInstance);
+            go->SetMeshInstance(meshInstance);
         }
         else
         {

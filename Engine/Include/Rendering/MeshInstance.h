@@ -23,6 +23,11 @@ public:
     GameObjectBase* GetGameObject();
     void            SetGameObject(GameObjectBase* gameObject);
 
+    int             GetTriangleCount();
+    void            GetTriangle(int index, Vector3* triangle, bool worldspace = false);
+
+    float           GetBoundingRadius(bool worldspace = false);
+
     MeshInstance*   DeepCopy();
 
 private:

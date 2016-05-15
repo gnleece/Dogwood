@@ -37,8 +37,8 @@ public:
 
     // TODO Rendering/Mesh function should not exist here
     virtual void    Render(bool dirty, bool wireframe = false);
-    void            SetMesh(MeshInstance* mesh);
-    MeshInstance*   GetMesh();
+    void            SetMeshInstance(MeshInstance* mesh);
+    MeshInstance*   GetMeshInstance();
 
     vector<Collider*>& GetColliders();
     void            ClearColliders();

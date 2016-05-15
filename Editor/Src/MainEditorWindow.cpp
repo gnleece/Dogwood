@@ -537,7 +537,7 @@ void MainEditorWindow::AddMeshPrimitive(const QString& meshName)
 {
     if (m_selectedGameObject != NULL)
     {
-        if (m_selectedGameObject->GetMesh() != NULL)
+        if (m_selectedGameObject->GetMeshInstance() != NULL)
         {
             DebugLogger::Singleton().Log("Error: object already has a mesh component. Remove it before adding a new one.");
             return;

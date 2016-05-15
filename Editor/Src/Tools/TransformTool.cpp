@@ -60,7 +60,7 @@ bool TransformTool::OnMouseDown(int screenX, int screenY, Vector3 rayOrigin, Vec
     {
         Raycast::HitInfo hitInfo;
         Vector3 arrowCenter = ((*m_transform)*m_arrowTransforms[i]).GetWorldPosition();
-        bool hit = Raycast::RaycastBoundingSphere(rayOrigin, rayDirection, arrowRadius, arrowCenter, hitInfo);
+        bool hit = Raycast::RaycastSphere(rayOrigin, rayDirection, arrowRadius, arrowCenter, hitInfo);
         if (hit && hitInfo.distance < minDistance)
         {
             minDistance = hitInfo.distance;

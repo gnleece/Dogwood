@@ -22,6 +22,9 @@ public:
 
     float   GetBoundingRadius();
 
+    int     GetTriangleCount();
+    void    GetTriangle(int index, Vector3* triangle);
+
 private:
     void    CalculateBoundingRadius(std::vector<Vector3>& vertices);
 
@@ -34,6 +37,9 @@ private:
     GLsizei     m_vertexCount;
     GLsizei     m_indexedVertexCount;
     bool        m_hasUVs;
+
+    std::vector<Vector3> m_positions;
+    std::vector<GLuint>  m_indices;
 
     GLenum      m_drawMode;
     float       m_boundingRadius;

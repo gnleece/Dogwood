@@ -29,7 +29,6 @@ public:
     vector<ToolsideGameComponent*>&  GetComponentList();
     
     ToolsideGameObject*     DeepCopy(ToolsideGameObject* parent = NULL);
-    ToolsideGameObject*     BoundingSphereRaycast(Vector3 rayOrigin, Vector3 rayDirection, float& distance);
 
     // TODO this shouldn't be here
     void                    Render(bool dirty, bool wireframe = false);

@@ -9,6 +9,7 @@
 #include <QtWidgets>
 
 #include "Math\Transformations.h"
+#include "Math\Raycast.h"
 
 using namespace EditorCommands;
 
@@ -293,12 +294,14 @@ bool SceneViewWidget::PickTool(const QPointF clickPosition, Vector3 rayOrigin, V
 
 bool SceneViewWidget::PickObject(Vector3 rayOrigin, Vector3 rayDirection)
 {
-    // Do raycast against all objects in hierarchy   TODO this is pretty terrible
-    float hitDistance;
-    ToolsideGameObject* hitObject = m_scene->GetToolsideRootObject()->BoundingSphereRaycast(rayOrigin, rayDirection, hitDistance);
+    // Raycast against the scene root to see if we have hit any objects in the scene
+    GameObjectBase* rootObject = m_scene->GetToolsideRootObject();
+    GameObjectBase* hitObject = NULL;
+    Raycast::HitInfo hitInfo;
+    Raycast::RaycastGameObject(rayOrigin, rayDirection, rootObject, true, hitObject, hitInfo);
     if (hitObject != NULL)
     {
-        m_window->SelectObject(hitObject);
+        m_window->SelectObject((ToolsideGameObject*)hitObject);
         return true;
     }
     m_window->SelectObject(NULL);

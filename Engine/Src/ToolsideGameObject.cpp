@@ -108,7 +108,7 @@ ToolsideGameObject* ToolsideGameObject::DeepCopy(ToolsideGameObject* parent)
 
     if (m_mesh != NULL)
     {
-        newGO->SetMesh(m_mesh->DeepCopy());
+        newGO->SetMeshInstance(m_mesh->DeepCopy());
     }
 
     // TODO copy other components
@@ -121,71 +121,6 @@ ToolsideGameObject* ToolsideGameObject::DeepCopy(ToolsideGameObject* parent)
     }
 
     return newGO;
-}
-
-ToolsideGameObject* ToolsideGameObject::BoundingSphereRaycast(Vector3 rayOrigin, Vector3 rayDirection, float& distance)
-{
-    // TODO this function is less optimized than Render, i.e. we don't both caching the world transform
-    // This is because this function shouldn't get called very often currently (e.g. right now it is only
-    // needed for object picking in the Editor). Also, this code probably shouldn't live here. Also, because
-    // of the way we apply scale to the radius, the bounding sphere is nowhere near optimal. But it is good enough :)
-
-    // TODO also it's kind of insane to raycast against literally every object in the scene here
-    // Really, we should do some kind of space partitioning first
-
-    bool hit = false;
-    float bestDistance = FLT_MAX;
-    ToolsideGameObject* bestGameObject = NULL;
-
-    // Raycast against self, if we have a mesh
-    if (m_mesh != NULL && m_mesh->GetMesh() != NULL)
-    {
-        // Calculate the radius for a bounding sphere for the mesh
-        float radius = m_mesh->GetMesh()->GetBoundingRadius();
-        Vector3 scale = m_transform.GetWorldScale();
-        float maxScale = std::fmaxf(scale[0], scale[1]);
-        maxScale = std::fmaxf(maxScale, scale[2]);
-        radius *= maxScale;        // this is pretty hacky and gives a suboptimal radius, but it's good enough
-
-        Vector3 objectCenter = m_transform.GetWorldPosition();
-
-        // Do the raycast
-        Raycast::HitInfo hitInfo;
-        hit = Raycast::RaycastBoundingSphere(rayOrigin, rayDirection, radius, objectCenter, hitInfo);
-        if (hit)
-        {
-            bestDistance = hitInfo.distance;
-            bestGameObject = this;
-        }
-    }
-
-    // Raycast against children
-    std::vector<GameObjectBase*>::iterator childIter;
-    for (childIter = m_children.begin(); childIter != m_children.end(); childIter++)
-    {
-        ToolsideGameObject* child = (ToolsideGameObject*)*childIter;    // TODO hacky
-        float childDistance;
-        ToolsideGameObject* hitObject = child->BoundingSphereRaycast(rayOrigin, rayDirection, childDistance);
-        if (hitObject != NULL)
-        {
-            hit = true;
-            if (childDistance < bestDistance)
-            {
-                bestDistance = childDistance;
-                bestGameObject = hitObject;
-            }
-        }
-    }
-
-    // Return object with smallest distance from ray origin
-    if (hit)
-    {
-        distance = bestDistance;
-        return bestGameObject;
-    }
-
-    distance = FLT_MAX;
-    return NULL;
 }
 
 // TODO this shouldn't be here
