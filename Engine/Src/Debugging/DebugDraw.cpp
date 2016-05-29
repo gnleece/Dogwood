@@ -191,9 +191,14 @@ void Gnomon::Draw(Matrix4x4& transform)
     // Bind arrays/buffers
     glBindVertexArray(m_vertexArrayID);
 
+    // Undo scale from the given transform
+    // TODO scale based on distance from camera
+    Transform gnomonTransform(transform);
+    gnomonTransform.SetLocalScale(Vector3::One);
+
     // Set model matrix
     GLint uniModel = m_shader->GetUniformLocation("model");
-    glUniformMatrix4fv(uniModel, 1, GL_FALSE, transform.Transpose().Start());
+    glUniformMatrix4fv(uniModel, 1, GL_FALSE, gnomonTransform.GetWorldMatrix().Transpose().Start());
 
     // Bind position data
     GLint posParamLocation = m_shader->GetAttributeLocation("position");
@@ -215,9 +220,9 @@ void Gnomon::Draw(Matrix4x4& transform)
     glDisableVertexAttribArray(colParamLocation);
 
     // Draw arrows!
-    m_arrow.Draw(transform*(m_arrowTransforms[0]), ColorRGB::Red);
-    m_arrow.Draw(transform*(m_arrowTransforms[1]), ColorRGB::Green);
-    m_arrow.Draw(transform*(m_arrowTransforms[2]), ColorRGB::Blue);
+    m_arrow.Draw(gnomonTransform.GetWorldMatrix()*(m_arrowTransforms[0]), ColorRGB::Red);
+    m_arrow.Draw(gnomonTransform.GetWorldMatrix()*(m_arrowTransforms[1]), ColorRGB::Green);
+    m_arrow.Draw(gnomonTransform.GetWorldMatrix()*(m_arrowTransforms[2]), ColorRGB::Blue);
 
     // Re-enable depth
     glEnable(GL_DEPTH_TEST);
