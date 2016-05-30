@@ -177,6 +177,15 @@ Vector3& Vector3::operator +=(const Vector3 other)
     return *this;
 }
 
+
+Vector3& Vector3::operator -=(const Vector3 other)
+{
+    m_values[0] = m_values[0] - other.m_values[0];
+    m_values[1] = m_values[1] - other.m_values[1];
+    m_values[2] = m_values[2] - other.m_values[2];
+    return *this;
+}
+
 bool Vector3::operator ==(const Vector3 &other) const
 {
     return (m_values[0] == other.m_values[0] &&

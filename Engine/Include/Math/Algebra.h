@@ -66,6 +66,7 @@ public:
     Vector3(float x, float y, float z);
     Vector3& operator =(const Vector3 other);
     Vector3& operator +=(const Vector3 other);
+    Vector3& operator -=(const Vector3 other);
     bool operator ==(const Vector3 &other) const;
 
     float& operator[](int i);

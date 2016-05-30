@@ -107,6 +107,7 @@
     <ClInclude Include="Include\Physics\Collider.h" />
     <ClInclude Include="Include\Physics\CollisionDetection.h" />
     <ClInclude Include="Include\Physics\Particles\EffectParticle.h" />
+    <ClInclude Include="Include\Physics\Particles\ParticleContact.h" />
     <ClInclude Include="Include\Physics\Particles\ParticleForceGenerator.h" />
     <ClInclude Include="Include\Physics\Particles\PhysicsParticle.h" />
     <ClInclude Include="Include\Physics\CollisionEngine.h" />
@@ -159,6 +160,7 @@
     <ClCompile Include="Src\Physics\Collider.cpp" />
     <ClCompile Include="Src\Physics\CollisionDetection.cpp" />
     <ClCompile Include="Src\Physics\Particles\EffectParticle.cpp" />
+    <ClCompile Include="Src\Physics\Particles\ParticleContact.cpp" />
     <ClCompile Include="Src\Physics\Particles\ParticleForceGenerator.cpp" />
     <ClCompile Include="Src\Physics\Particles\PhysicsParticle.cpp" />
     <ClCompile Include="Src\Physics\CollisionEngine.cpp" />
