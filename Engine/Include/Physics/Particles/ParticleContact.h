@@ -23,15 +23,17 @@ class ParticleContact
 {
 public:
     PhysicsParticle* ParticleA;
-    PhysicsParticle* ParticleB;                 // May be NULL, for contact between object and immovable geometry
+    PhysicsParticle* ParticleB;                         // May be NULL, for contact between object and immovable geometry (e.g. ground)
 
-    float   Restitution;                        // The normal restitution coefficient at the contact    
-    Vector3 ContactNormal;                      // The direction of the contact, from ParticleA's perspective, in world space
+    float   Restitution;                                // The normal restitution coefficient at the contact
+    float   Penetration;                                // The depth of penetration at the contact
+    Vector3 ContactNormal;                              // The direction of the contact, from ParticleA's perspective, in world space
 
 protected:
-    void    Resolve(float duration);            // Resolves this contact for both velocity and interpenetration
-    float   CalculateSeparatingVelocity();      // Calculate the separating velocity at this contact
+    void    Resolve(float duration);                    // Resolves this contact for both velocity and interpenetration
+    float   CalculateSeparatingVelocity();              // Calculate the separating velocity at this contact
 
 private:
-    void    ResolveVelocity(float duration);    // Handles the impulse calculations for this collision
+    void    ResolveVelocity(float duration);            // Handles the impulse calculations for this collision
+    void    ResolveInterpenetration(float duration);    // Handles the interpenetration resolution for this contact
 };
