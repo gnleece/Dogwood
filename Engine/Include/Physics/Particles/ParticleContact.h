@@ -21,19 +21,40 @@ If the coefficient is 0, the objects will coalesce and travel together.
 // TODO reconcile with CollisionContact in CollisionDetection.h?
 class ParticleContact
 {
-public:
-    PhysicsParticle* ParticleA;
-    PhysicsParticle* ParticleB;                         // May be NULL, for contact between object and immovable geometry (e.g. ground)
+friend class ParticleContactResolver;
 
-    float   Restitution;                                // The normal restitution coefficient at the contact
-    float   Penetration;                                // The depth of penetration at the contact
-    Vector3 ContactNormal;                              // The direction of the contact, from ParticleA's perspective, in world space
+public:
+
+    struct ResolutionResult
+    {
+        Vector3 MovementA;
+        Vector3 MovementB;
+    };
+
+    PhysicsParticle*    ParticleA;
+    PhysicsParticle*    ParticleB;                                  // May be NULL, for contact between object and immovable geometry (e.g. ground)
+
+    float               Restitution;                                // The normal restitution coefficient at the contact
+    float               Penetration;                                // The depth of penetration at the contact
+    Vector3             ContactNormal;                              // The direction of the contact, from ParticleA's perspective, in world space
 
 protected:
-    void    Resolve(float duration);                    // Resolves this contact for both velocity and interpenetration
-    float   CalculateSeparatingVelocity();              // Calculate the separating velocity at this contact
+    ResolutionResult    Resolve(float deltaTime);                   // Resolves this contact for both velocity and interpenetration
+    float               CalculateSeparatingVelocity();              // Calculate the separating velocity at this contact
 
 private:
-    void    ResolveVelocity(float duration);            // Handles the impulse calculations for this collision
-    void    ResolveInterpenetration(float duration);    // Handles the interpenetration resolution for this contact
+    void                ResolveVelocity(float deltaTime);           // Handles the impulse calculations for this collision
+    ResolutionResult    ResolveInterpenetration(float deltaTime);   // Handles the interpenetration resolution for this contact
+};
+
+class ParticleContactResolver
+{
+public:
+    ParticleContactResolver(unsigned int iterations);
+
+    void                SetIterations(unsigned int iterations);
+    void                ResolveContacts(ParticleContact* contacts, unsigned int numContacts, float deltaTime);
+
+protected:
+    unsigned int        m_iterations;
 };
