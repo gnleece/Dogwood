@@ -337,7 +337,7 @@ float CapsuleCollider::CalculateWorldRadius()
     Vector3 objectWorldScale = m_transform.GetWorldScale();
     float a = objectWorldScale[(m_axis + 1) % 3];
     float b = objectWorldScale[(m_axis + 2) % 3];
-    float maxRadius = sqrt(a*a + b*b);
+    float maxRadius = sqrtf(a*a + b*b);
     float worldRadius = m_radius * maxRadius;
     return worldRadius;
 }

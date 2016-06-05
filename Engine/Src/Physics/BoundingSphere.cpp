@@ -39,7 +39,7 @@ BoundingSphere::BoundingSphere(const BoundingSphere& a, const BoundingSphere& b)
         // The diameter of the new sphere is the sum of the diameters of a and b, plus the distance
         // between the points on their edges that lie on the line between their centers.
         // So new radius = 0.5 * new diameter = 0.5 * (2*a.R + 2*b.R + (distance - a.R - b.R)) = 0.5 * (a.R + b.R + distance)
-        float distance = sqrt(distanceSqrd);
+        float distance = sqrtf(distanceSqrd);
         Radius = (distance + a.Radius + b.Radius) * 0.5f;
 
         // The center of the new sphere is based on a's center, then pulled toward b's center

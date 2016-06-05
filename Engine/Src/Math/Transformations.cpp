@@ -1,46 +1,57 @@
 #include "Math\Transformations.h"
 
-// Return a matrix to represent a counterclockwise rotation of "angle" degrees
+// Return a matrix to represent a displacement of the given vector.
+Matrix4x4 Translation(const Vector3& displacement)
+{
+    Matrix4x4 t(Vector4(1, 0, 0, displacement[0]),
+        Vector4(0, 1, 0, displacement[1]),
+        Vector4(0, 0, 1, displacement[2]),
+        Vector4(0, 0, 0, 1));
+    return t;
+}
+
+// Return a matrix to represent a counterclockwise rotation of "angle" degrees (in radians)
 Matrix4x4 Rotation(float angle, eAXIS axis)
 {
     Matrix4x4 r;
     angle = DegreesToRadians(angle);
 
-    switch(axis)
+    switch (axis)
     {
-        case AXIS_X:
-            r = Matrix4x4(Vector4(1, 0, 0, 0),
-                          Vector4(0, cos(angle), -sin(angle), 0),
-                          Vector4(0, sin(angle), cos(angle), 0),
-                          Vector4(0, 0, 0, 1));
-            break;
-        case AXIS_Y:
-            r = Matrix4x4(Vector4(cos(angle), 0, sin(angle), 0),
-                          Vector4(0, 1, 0, 0),
-                          Vector4(-sin(angle), 0, cos(angle), 0),
-                          Vector4(0, 0, 0, 1));
-            break;
-        case AXIS_Z:
-            r = Matrix4x4(Vector4(cos(angle), -sin(angle), 0, 0),
-                          Vector4(sin(angle), cos(angle), 0, 0),
-                          Vector4(0, 0, 1, 0),
-                          Vector4(0, 0, 0, 1));
-            break;
-        default:
-          break;  // return identity matrix
-  }
-  return r;
+    case AXIS_X:
+        r = Matrix4x4(Vector4(1, 0, 0, 0),
+            Vector4(0, cos(angle), -sin(angle), 0),
+            Vector4(0, sin(angle), cos(angle), 0),
+            Vector4(0, 0, 0, 1));
+        break;
+    case AXIS_Y:
+        r = Matrix4x4(Vector4(cos(angle), 0, sin(angle), 0),
+            Vector4(0, 1, 0, 0),
+            Vector4(-sin(angle), 0, cos(angle), 0),
+            Vector4(0, 0, 0, 1));
+        break;
+    case AXIS_Z:
+        r = Matrix4x4(Vector4(cos(angle), -sin(angle), 0, 0),
+            Vector4(sin(angle), cos(angle), 0, 0),
+            Vector4(0, 0, 1, 0),
+            Vector4(0, 0, 0, 1));
+        break;
+    default:
+        break;  // return identity matrix
+    }
+    return r;
 }
 
-// Takes an angle in degrees. Math from http://paulbourke.net/geometry/rotate/
-Matrix4x4 Rotation(float angle, Vector3 axis)
+// Return a matrix to represent a counterclockwise rotation of "angle" degrees (in radians)
+// Math from http://paulbourke.net/geometry/rotate/
+Matrix4x4 Rotation(float angle, const Vector3& axis)
 {
     Matrix4x4 r;
 
-    axis.Normalize();
-    float a = axis.x();
-    float b = axis.y();
-    float c = axis.z();
+    Vector3 normalizedAxis = axis.Normalized();
+    float a = normalizedAxis.x();
+    float b = normalizedAxis.y();
+    float c = normalizedAxis.z();
     float d = sqrtf(b*b + c*c);
 
     Matrix4x4 Rx, Rx_i;
@@ -75,7 +86,24 @@ Matrix4x4 Rotation(float angle, Vector3 axis)
     return r;
 }
 
-Matrix4x4 RotationEulerAngles(Vector3& euler)
+Matrix4x4 Rotation(const Quaternion& q)
+{
+    Matrix4x4 r;
+
+    r[0][0] = 1 - (2 * q.j()*q.j() + 2 * q.k()*q.k());
+    r[0][1] = 2 * q.i()*q.j() + 2 * q.k()*q.r();
+    r[0][2] = 2 * q.i()*q.k() - 2 * q.j()*q.r();
+    r[1][0] = 2 * q.i()*q.j() - 2 * q.k()*q.r();
+    r[1][1] = 1 - (2 * q.i()*q.i() + 2 * q.k()*q.k());
+    r[1][2] = 2 * q.j()*q.k() + 2 * q.i()*q.r();
+    r[2][0] = 2 * q.i()*q.k() + 2 * q.j()*q.r();
+    r[2][1] = 2 * q.j()*q.k() - 2 * q.i()*q.r();
+    r[2][2] = 1 - (2 * q.i()*q.i() + 2 * q.j()*q.j());
+
+    return r;
+}
+
+Matrix4x4 RotationEulerAngles(const Vector3& euler)
 {
     Matrix4x4 r = Rotation(euler[0], AXIS_X);
     r = Rotation(euler[1], AXIS_Y)*r;
@@ -83,14 +111,13 @@ Matrix4x4 RotationEulerAngles(Vector3& euler)
     return r;
 }
 
-// Return a matrix to represent a displacement of the given vector.
-Matrix4x4 Translation(const Vector3& displacement)
+Matrix4x4 RotationAndTranslation(const Quaternion& q, const Vector3& t)
 {
-  Matrix4x4 t(Vector4(1, 0, 0, displacement[0]),
-              Vector4(0, 1, 0, displacement[1]),
-              Vector4(0, 0, 1, displacement[2]),
-              Vector4(0, 0, 0, 1));
-  return t;
+    Matrix4x4 r = Rotation(q);
+    r[0][3] = t[0];
+    r[1][3] = t[1];
+    r[2][3] = t[2];
+    return r;
 }
 
 // Return a matrix to represent a nonuniform scale with the given factors.
@@ -106,31 +133,6 @@ Matrix4x4 Scaling(const Vector3& scale)
 Matrix4x4 UniformScaling(float scale)
 {
     return Scaling(Vector3(scale, scale, scale));
-}
-
-// rotation decomposition formula from http://nghiaho.com/?page_id=846
-void DecomposeMatrix(Matrix4x4& matrix, Vector3& position, Vector3& rotation, Vector3& scale)
-{
-    // extract position (4th column)
-    position = Vector3(matrix[0][3], matrix[1][3], matrix[2][3]);
-
-    // extract scale
-    Vector3 x = Vector3(matrix[0][0], matrix[1][0], matrix[2][0]);
-    Vector3 y = Vector3(matrix[0][1], matrix[1][1], matrix[2][1]);
-    Vector3 z = Vector3(matrix[0][2], matrix[1][2], matrix[2][2]);
-    float scaleX = x.Magnitude();
-    float scaleY = y.Magnitude();
-    float scaleZ = z.Magnitude();
-    scale = Vector3(scaleX, scaleY, scaleZ);
-
-    // extract rotation
-    x = x.Normalized();
-    y = y.Normalized();
-    z = z.Normalized();
-    float rotX = RadiansToDegrees(atan2(y[2], z[2]));
-    float rotY = RadiansToDegrees(atan2(-x[2], sqrtf(pow(y[2], 2) + pow(z[2], 2))));
-    float rotZ = RadiansToDegrees(atan2(x[1], x[0]));
-    rotation = Vector3(rotX, rotY, rotZ);
 }
 
 // based on pseudocode from http://www.3dgep.com/understanding-the-view-matrix/
@@ -161,4 +163,29 @@ Matrix4x4 PerspectiveProjection(float FOV, float aspect, float near, float far)
                      Vector4(0,f,0,0),
                      Vector4(0,0,(far+near)/(near-far),2*far*near/(near-far)),
                      Vector4(0,0,-1,0));
+}
+
+// rotation decomposition formula from http://nghiaho.com/?page_id=846
+void DecomposeMatrix(const Matrix4x4& matrix, Vector3& position, Vector3& rotation, Vector3& scale)
+{
+    // extract position (4th column)
+    position = Vector3(matrix[0][3], matrix[1][3], matrix[2][3]);
+
+    // extract scale
+    Vector3 x = Vector3(matrix[0][0], matrix[1][0], matrix[2][0]);
+    Vector3 y = Vector3(matrix[0][1], matrix[1][1], matrix[2][1]);
+    Vector3 z = Vector3(matrix[0][2], matrix[1][2], matrix[2][2]);
+    float scaleX = x.Magnitude();
+    float scaleY = y.Magnitude();
+    float scaleZ = z.Magnitude();
+    scale = Vector3(scaleX, scaleY, scaleZ);
+
+    // extract rotation
+    x = x.Normalized();
+    y = y.Normalized();
+    z = z.Normalized();
+    float rotX = RadiansToDegrees(atan2(y[2], z[2]));
+    float rotY = RadiansToDegrees(atan2(-x[2], sqrtf(pow(y[2], 2) + pow(z[2], 2))));
+    float rotZ = RadiansToDegrees(atan2(x[1], x[0]));
+    rotation = Vector3(rotX, rotY, rotZ);
 }

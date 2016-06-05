@@ -25,7 +25,7 @@ bool Raycast::RaycastSphere(Vector3 rayOrigin,
     else
     {
         // Calculate solution(s) (if descriminant is 0, they are equal)
-        float sqrtDescr = sqrt(descriminant);
+        float sqrtDescr = sqrtf(descriminant);
         float t_1 = -b + sqrtDescr;
         float t_2 = -b - sqrtDescr;
 

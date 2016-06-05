@@ -99,7 +99,7 @@ void XInputGamepad::NormalizeStickAxis(float x, float y, float& xNorm, float& yN
     yNorm = y;
 
     // Determine how far the controller is pushed
-    float magnitude = sqrt(x*x + y*y) / SHRT_MAX;
+    float magnitude = sqrtf(x*x + y*y) / SHRT_MAX;
 
     // Check if the controller is outside a circular dead zone
     if (magnitude > m_deadzone)

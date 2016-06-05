@@ -2,65 +2,6 @@
 #include <algorithm>
 #include <limits>
 
-Point3::Point3()
-{
-    m_values[0] = 0.0f;
-    m_values[1] = 0.0f;
-    m_values[2] = 0.0f;
-}
-
-Point3::Point3(const Point3& other)
-{
-    m_values[0] = other.m_values[0];
-    m_values[1] = other.m_values[1];
-    m_values[2] = other.m_values[2];
-}
-
-Point3::Point3(float x, float y, float z)
-{
-    m_values[0] = x;
-    m_values[1] = y;
-    m_values[2] = z;
-}
-
-Point3& Point3::operator =(const Point3 other)
-{
-    m_values[0] = other.m_values[0];
-    m_values[1] = other.m_values[1];
-    m_values[2] = other.m_values[2];
-    return *this;
-}
-
-float Point3::x()
-{
-    return m_values[0];
-}
-
-float Point3::y()
-{
-    return m_values[1];
-}
-
-float Point3::z()
-{
-    return m_values[2];
-}
-
-void Point3::SetX(float x)
-{
-    m_values[0] = x;
-}
-
-void Point3::SetY(float y)
-{
-    m_values[1] = y;
-}
-
-void Point3::SetZ(float z)
-{
-    m_values[2] = z;
-}
-
 Vector2::Vector2()
 {
     m_values[0] = 0.0f;
@@ -107,12 +48,12 @@ float* Vector2::Start()
     return m_values;
 }
 
-float Vector2::x()
+float Vector2::x() const
 {
     return m_values[0];
 }
 
-float Vector2::y()
+float Vector2::y() const
 {
     return m_values[1];
 }
@@ -177,7 +118,6 @@ Vector3& Vector3::operator +=(const Vector3 other)
     return *this;
 }
 
-
 Vector3& Vector3::operator -=(const Vector3 other)
 {
     m_values[0] = m_values[0] - other.m_values[0];
@@ -208,17 +148,17 @@ float* Vector3::Start()
     return m_values;
 }
 
-float Vector3::x()
+float Vector3::x() const
 {
     return m_values[0];
 }
 
-float Vector3::y()
+float Vector3::y() const
 {
     return m_values[1];
 }
 
-float Vector3::z()
+float Vector3::z() const
 {
     return m_values[2];
 }
@@ -247,7 +187,7 @@ float Vector3::MagnitudeSqrd() const
 
 float Vector3::Magnitude() const
 {
-    return sqrt(MagnitudeSqrd());
+    return sqrtf(MagnitudeSqrd());
 }
 
 float Vector3::Dot(const Vector3& other) const
@@ -264,7 +204,7 @@ Vector3 Vector3::Cross(const Vector3& other) const
                    m_values[0]*other.m_values[1] - m_values[1]*other.m_values[0]);
 }
 
-// TODO (gnleece) make this more robust against floating point weirdness
+// TODO make this more robust against floating point weirdness
 Vector3 Vector3::Normalized() const
 {
     Vector3 ret = *this;
@@ -314,7 +254,6 @@ void Vector3::DebugPrint()
 {
     printf("%f\t%f\t%f\n", m_values[0], m_values[1], m_values[2]);
 }
-
 
 Vector3 operator +(const Vector3& a, const Vector3& b)
 {
@@ -389,7 +328,7 @@ Vector4::Vector4(Vector3& v, float w)
     m_values[3] = w;
 }
 
-Vector4& Vector4::operator =(const Vector4 other)
+Vector4& Vector4::operator =(const Vector4& other)
 {
     m_values[0] = other.m_values[0];
     m_values[1] = other.m_values[1];
@@ -407,22 +346,22 @@ float Vector4::operator[](int i) const
     return m_values[i];
 }
 
-float Vector4::x()
+float Vector4::x() const
 {
     return m_values[0];
 }
 
-float Vector4::y()
+float Vector4::y() const
 {
     return m_values[1];
 }
 
-float Vector4::z()
+float Vector4::z() const
 {
     return m_values[2];
 }
 
-float Vector4::w()
+float Vector4::w() const
 {
     return m_values[3];
 }
@@ -511,7 +450,7 @@ Matrix4x4::Matrix4x4(Vector4 row0, Vector4 row1, Vector4 row2, Vector4 row3)
     m_values[15] = row3[3];
 }
 
-Matrix4x4 Matrix4x4::operator =(const Matrix4x4 other)
+Matrix4x4& Matrix4x4::operator =(const Matrix4x4& other)
 {
     std::copy(other.m_values, other.m_values + m_size, m_values);
     return *this;
@@ -535,13 +474,14 @@ const float* Matrix4x4::End() const
     return (float*)(m_values + m_size);
 }
 
+float* Matrix4x4::Row(int row)
+{
+    return (float*)m_values + 4 * row;
+}
+
 Vector4 Matrix4x4::Row(int row) const
 {
     return Vector4(m_values[4*row], m_values[4*row+1], m_values[4*row+2], m_values[4*row+3]);
-}
-float* Matrix4x4::Row(int row)
-{
-    return (float*)m_values + 4*row;
 }
 
 Vector4 Matrix4x4::Column(int col) const
@@ -692,13 +632,152 @@ Vector4 operator *(const Vector4& v, const Matrix4x4& m)
     for (int i = 0; i < 4; ++i)
     {
         ret[i] = m[0][i] * v[0] +
-            m[1][i] * v[1] +
-            m[2][i] * v[2] +
-            m[3][i] * v[3];
+                 m[1][i] * v[1] +
+                 m[2][i] * v[2] +
+                 m[3][i] * v[3];
     }
 
     return ret;
 }
+
+Quaternion::Quaternion()
+{
+    *this = Identity;
+}
+
+Quaternion::Quaternion(const Quaternion& other)
+{
+    m_values[0] = other.m_values[0];
+    m_values[1] = other.m_values[1];
+    m_values[2] = other.m_values[2];
+    m_values[3] = other.m_values[3];
+}
+
+Quaternion::Quaternion(float r, float i, float j, float k)
+{
+    m_values[0] = r;
+    m_values[1] = i;
+    m_values[2] = j;
+    m_values[3] = k;
+}
+
+Quaternion& Quaternion::operator =(const Quaternion& other)
+{
+    m_values[0] = other.m_values[0];
+    m_values[1] = other.m_values[1];
+    m_values[2] = other.m_values[2];
+    m_values[3] = other.m_values[3];
+    return *this;
+}
+
+Quaternion& Quaternion::operator *=(const Quaternion& other)
+{
+    Quaternion q = *this;
+    m_values[0] = q.r()*other.r() - q.i()*other.i() -
+                  q.j()*other.j() - q.k()*other.k();
+    m_values[1] = q.r()*other.i() + q.i()*other.r() +
+                  q.j()*other.k() - q.k()*other.j();
+    m_values[2] = q.r()*other.j() + q.j()*other.r() +
+                  q.k()*other.i() - q.i()*other.k();
+    m_values[3] = q.r()*other.k() + q.k()*other.r() +
+                  q.i()*other.j() - q.j()*other.i();
+    return *this;
+}
+
+float Quaternion::r() const
+{
+    return m_values[0];
+}
+
+float Quaternion::i() const
+{
+    return m_values[1];
+}
+
+float Quaternion::j() const
+{
+    return m_values[2];
+}
+
+float Quaternion::k() const
+{
+    return m_values[3];
+}
+
+void Quaternion::SetR(float r)
+{
+    m_values[0] = r;
+}
+
+void Quaternion::SetI(float i)
+{
+    m_values[1] = i;
+}
+
+void Quaternion::SetJ(float j)
+{
+    m_values[2] = j;
+}
+
+void Quaternion::SetK(float k)
+{
+    m_values[3] = k;
+}
+
+float Quaternion::MagnitudeSqrd() const
+{
+    return m_values[0] * m_values[0] +
+           m_values[1] * m_values[1] +
+           m_values[2] * m_values[2] +
+           m_values[3] * m_values[3];
+}
+
+float Quaternion::Magnitude() const
+{
+    return sqrtf(MagnitudeSqrd());
+}
+
+void Quaternion::Normalize()
+{
+    float d = MagnitudeSqrd();
+
+    if (Approximately(d, 0))
+    {
+        *this = Identity;
+        return;
+    }
+
+    d = (float)1.0 / sqrtf(d);
+    m_values[0] *= d;
+    m_values[1] *= d;
+    m_values[2] *= d;
+    m_values[3] *= d;
+}
+
+void Quaternion::RotateByVector(const Vector3& v)
+{
+    Quaternion q(0, v.x(), v.y(), v.z());
+    (*this) *= q;
+}
+
+void Quaternion::AddScaledVector(const Vector3& v, float s)
+{
+    Quaternion q(0, s*v.x(), s*v.y(), s*v.z());
+    q *= *this;
+    m_values[0] += 0.5f*q.r();
+    m_values[1] += 0.5f*q.i();
+    m_values[2] += 0.5f*q.j();
+    m_values[3] += 0.5f*q.k();
+}
+
+Quaternion operator *(const Quaternion& a, const Quaternion& b)
+{
+    Quaternion ret = a;
+    ret *= b;
+    return ret;
+}
+
+Quaternion Quaternion::Identity = Quaternion(1, 0, 0, 0);
 
 float DegreesToRadians(float degrees)
 {
@@ -742,5 +821,16 @@ bool Approximately(float a, float b)
     {
         // Use relative error
         return (diff / std::min((absA + absB), FLT_MAX)) < epsilon;
+    }
+}
+
+Vector3 AxisVector(eAXIS axis)
+{
+    switch(axis)
+    {
+    case AXIS_X:    return Vector3::Right;
+    case AXIS_Y:    return Vector3::Up;
+    case AXIS_Z:    return Vector3::Forward;
+    default:        return Vector3::Zero;
     }
 }
