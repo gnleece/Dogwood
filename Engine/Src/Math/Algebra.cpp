@@ -290,6 +290,11 @@ Vector3 normalize(Vector3 v)
     return v.Normalized();
 }
 
+float Vector3::Distance(Vector3& a, Vector3& b)
+{
+    return (a - b).Magnitude();
+}
+
 Vector3 Vector3::Zero       = Vector3(0.f, 0.f, 0.f);
 Vector3 Vector3::One        = Vector3(1.f, 1.f, 1.f);
 Vector3 Vector3::Right      = Vector3(1.f, 0.f, 0.f);

@@ -79,11 +79,13 @@ public:
 
     void        DebugPrint();
 
-    static Vector3 Zero;
-    static Vector3 One;
-    static Vector3 Right;
-    static Vector3 Up;
-    static Vector3 Forward;
+    static float    Distance(Vector3& a, Vector3& b);
+
+    static Vector3  Zero;
+    static Vector3  One;
+    static Vector3  Right;
+    static Vector3  Up;
+    static Vector3  Forward;
 
 private:
     float       m_values[3];
