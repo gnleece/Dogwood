@@ -26,7 +26,7 @@ void Roller::Update(float deltaTime)
 
     // Calculate the camera space direction and convert it to object space
     float pushDelta = Speed * deltaTime;
-    Vector3 directionCameraSpace = Vector3(-lstickX * pushDelta, 0.0f, lstickY * pushDelta);
+    Vector3 directionCameraSpace = Vector3(lstickX * pushDelta, 0.0f, -lstickY * pushDelta);
     Vector3 directionWorldSpace = CameraObject.GetGameObject()->GetTransform().TransformVector(directionCameraSpace);
     directionWorldSpace.SetY(0.0f);
     Vector3 directionObjectSpace = m_gameObject->GetTransform().InverseTransformVector(directionWorldSpace);

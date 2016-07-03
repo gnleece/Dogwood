@@ -41,7 +41,7 @@ void CameraControls::Update(float deltaTime)
     if (targetGO == NULL || cameraGO == NULL)
         return;
 
-    float rstickX = InputManager::Singleton().GetGamePad(0)->GetAxisValue(GAMEPAD_RSTICK_X);
+    float rstickX = InputManager::Singleton().GetGamePad(0)->GetAxisValue(GAMEPAD_RSTICK_X);// +0.1f;
     float rstickY = InputManager::Singleton().GetGamePad(0)->GetAxisValue(GAMEPAD_RSTICK_Y);
 
     Transform targetTransform = targetGO->GetTransform();
@@ -59,6 +59,7 @@ void CameraControls::Update(float deltaTime)
     m_gameObject->GetTransform().SetLocalRotation(Vector3(m_vertRotation, m_horizRotation, 0.0f));
 
     ApplyCameraSettings(cameraTransform);
+    //RenderManager::Singleton().SetCameraTransform(cameraTransform.GetWorldMatrix());
 }
 
 void CameraControls::ApplyCameraSettings(Transform& cameraTransform)
@@ -67,4 +68,11 @@ void CameraControls::ApplyCameraSettings(Transform& cameraTransform)
     Vector3 cameraDirection = cameraTransform.GetForward();
     Camera cam(cameraPosition, cameraDirection, Vector3::Up);
     RenderManager::Singleton().SetCamera(cam);
+
+    Transform renderCameraTransform = RenderManager::Singleton().GetCameraTransform();
+
+    Vector3 newCameraPosition = renderCameraTransform.GetWorldPosition();
+    Vector3 newCameraDirection = renderCameraTransform.GetForward();
+
+    Vector3 x;
 }

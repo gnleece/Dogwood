@@ -23,7 +23,7 @@ SceneViewWidget::SceneViewWidget(MainEditorWindow* window, QWidget* parent)
 void SceneViewWidget::PostSetup()
 {
     // This setup can't be done in the constructor, because glewInit hasn't been called
-    // at that point, and we need opengl to be ready
+    // at that point, and we need OpenGL to be ready
 
     // Make a buffer of lines for a unit grid in the x-z plane
     int z = -GRID_SIZE;
@@ -50,7 +50,10 @@ void SceneViewWidget::PostSetup()
 void SceneViewWidget::SetScene(Scene* scene)
 {
     m_scene = scene;
-    TranslateCamera(Vector3(0, -1, -5));
+
+    // TODO fix these ugly hacks
+    m_cameraOffset = Vector3(0, -1, 5);
+    m_cameraYaw = 180;
 }
 
 void SceneViewWidget::update()
@@ -194,9 +197,9 @@ void SceneViewWidget::SetTransformToolMode(TransformTool::eMode mode)
     m_transformTool.SetMode(mode);
 }
 
+// TODO fix this to manipulate camera transform instead of view transform
 void SceneViewWidget::TranslateCamera(Vector3 localSpaceOffset)
 {
-    // Convert the local (camera) space offset to world coords
     Matrix4x4 cameraRotation = Rotation(m_cameraPitch, eAXIS::AXIS_X)*Rotation(m_cameraYaw, eAXIS::AXIS_Y);
     Vector3 offset = (Vector4(localSpaceOffset, 0)*cameraRotation).xyz();
 
@@ -216,6 +219,7 @@ void SceneViewWidget::RotateCamera(CameraRotationType type, float degrees)
     {
         m_cameraYaw += degrees;
     }
+
     SetViewMatrix();
 }
 
@@ -224,9 +228,9 @@ void SceneViewWidget::SetViewMatrix()
     // We accumulate pitch and yaw separately because we want to rotate the camera in
     // world coords and never rotate in z (roll)
     Matrix4x4 view = Rotation(m_cameraPitch, eAXIS::AXIS_X)*Rotation(m_cameraYaw, eAXIS::AXIS_Y);
-
+    
     view = view*Translation(m_cameraOffset);
-    RenderManager::Singleton().SetView(view);
+    RenderManager::Singleton().SetViewTransform(Transform(view));
 }
 
 void SceneViewWidget::ClearMouseButtonState()
@@ -255,22 +259,20 @@ void SceneViewWidget::HandleSelectionClick(const QPointF clickPosition)
     float normalizedX = (2.0f * screenX) / width - 1.0f;
     float normalizedY = 1.0f - (2.0f * screenY) / height;
 
-    // Clip coords
+    // Ray direction: clip space
     Vector4 rayDirectionClipSpace = Vector4(normalizedX, normalizedY, -1.0, 1.0);
 
-    // Camera coords
-    Vector4 rayDirectionCameraSpace = RenderManager::Singleton().GetProjection().GetWorldMatrix().Inverse() * rayDirectionClipSpace;
+    // Ray direction: clip space -> camera space
+    Vector4 rayDirectionCameraSpace = RenderManager::Singleton().GetProjectionTransform().GetWorldMatrix().Inverse() * rayDirectionClipSpace;
     rayDirectionCameraSpace[2] = -1;     // we only need to unproject x and y, not z and w
     rayDirectionCameraSpace[3] = 0;
 
-    // World coords
-    Vector3 rayDirectionWorldSpace = (RenderManager::Singleton().GetView().GetWorldMatrix().Inverse() * rayDirectionCameraSpace).xyz();
+    // Ray direction: camera space -> world space
+    Vector3 rayDirectionWorldSpace = (RenderManager::Singleton().GetCameraTransform() * rayDirectionCameraSpace).xyz();
     rayDirectionWorldSpace = rayDirectionWorldSpace.Normalized();
 
-    // Ray origin is camera position
-    Vector4 cameraPosition = Vector4(RenderManager::Singleton().GetView().GetWorldPosition(), 0);
-    Vector4 cameraPositionWorldSpace = RenderManager::Singleton().GetView().GetWorldMatrix().Inverse() * cameraPosition;
-    Vector3 rayOriginWorldSpace = -1 * cameraPositionWorldSpace.xyz(); // TODO multiply by -1 is a hack, need to fix camera/view setup properly
+    // Ray origin: camera position (world space)
+    Vector3 rayOriginWorldSpace = RenderManager::Singleton().GetCameraTransform().GetWorldPosition();
 
     // First, check whether the click hit any of the tools
     bool hitTool = PickTool(clickPosition, rayOriginWorldSpace, rayDirectionWorldSpace);

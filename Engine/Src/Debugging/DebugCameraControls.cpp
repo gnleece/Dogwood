@@ -79,14 +79,14 @@ void DebugCameraControls::CheckGamePad(float deltaTime)
 
 void DebugCameraControls::MoveCamera(Vector3 localSpaceOffset)
 {
-    Matrix4x4 view = RenderManager::Singleton().GetView().GetLocalMatrix();
-    view = Translation(localSpaceOffset)*view;
-    RenderManager::Singleton().SetView(view);
+    Transform cameraTransform = RenderManager::Singleton().GetCameraTransform();
+    cameraTransform = Translation(localSpaceOffset)*cameraTransform;
+    RenderManager::Singleton().SetCameraTransform(cameraTransform);
 }
 
 void DebugCameraControls::RotateCamera(eAXIS axis, float degrees)
 {
-    Matrix4x4 view = RenderManager::Singleton().GetView().GetLocalMatrix();
-    view = Rotation(degrees, axis)*view;
-    RenderManager::Singleton().SetView(view);
+    Transform cameraTransform = RenderManager::Singleton().GetCameraTransform();
+    cameraTransform = Rotation(degrees, axis)*cameraTransform;
+    RenderManager::Singleton().SetCameraTransform(cameraTransform);
 }

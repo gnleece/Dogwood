@@ -13,7 +13,7 @@ void RenderManager::Startup(RenderConfig& config)
     // Prepare projection matrix
     float aspect = (float)m_config.width / m_config.height;
     Matrix4x4 projMatrix = PerspectiveProjection(m_config.FOV, aspect, m_config.nearPlane, m_config.farPlane);
-    m_projMatrix.SetLocalMatrix(projMatrix);
+    m_projectionTransform.SetLocalMatrix(projMatrix);
     glViewport(0, 0, m_config.width, m_config.height);
 
     // OpenGL setup
@@ -54,31 +54,50 @@ void RenderManager::SetLight(Light light)
     m_dirty = true;
 }
 
-void RenderManager::SetCamera(Camera camera)
-{
-    m_viewMatrix.SetLocalMatrix(LookAt(camera));
-    m_dirty = true;
-}
-
-void RenderManager::SetView(Matrix4x4& view)
-{
-    m_viewMatrix.SetLocalMatrix(view);
-    m_dirty = true;
-}
-
 void RenderManager::SetClearColor(ColorRGB Color)
 {
     m_clearColor = Color;
 }
 
-Transform& RenderManager::GetView()
+void RenderManager::SetCamera(Camera camera)
 {
-    return m_viewMatrix;
+    m_viewTransform.SetLocalMatrix(LookAt(camera));
+    m_cameraTransform.SetLocalMatrix(m_viewTransform.GetInverseWorldMatrix());
+    m_dirty = true;
 }
 
-Transform& RenderManager::GetProjection()
+void RenderManager::SetCameraTransform(Transform& transform)
 {
-    return m_projMatrix;
+    SetCameraTransform(transform.GetWorldMatrix());
+}
+
+void RenderManager::SetCameraTransform(Matrix4x4& worldMatrix)
+{
+    m_cameraTransform.SetLocalMatrix(worldMatrix);
+    m_viewTransform.SetLocalMatrix(m_cameraTransform.GetInverseWorldMatrix());
+    m_dirty = true;
+}
+
+Transform& RenderManager::GetCameraTransform()
+{
+    return m_cameraTransform;
+}
+
+void RenderManager::SetViewTransform(Transform& transform)
+{
+    m_viewTransform.SetLocalMatrix(transform.GetWorldMatrix());
+    m_cameraTransform.SetLocalMatrix(m_viewTransform.GetInverseWorldMatrix());
+    m_dirty = true;
+}
+
+Transform& RenderManager::GetViewTransform()
+{
+    return m_viewTransform;
+}
+
+Transform& RenderManager::GetProjectionTransform()
+{
+    return m_projectionTransform;
 }
 
 RenderConfig& RenderManager::GetConfig()
@@ -109,11 +128,11 @@ void RenderManager::ApplyGlobalParams(ShaderProgram* shader)
 
     // View matrix
     GLint viewLocation = shader->GetUniformLocation("view");
-    glUniformMatrix4fv(viewLocation, 1, GL_FALSE, m_viewMatrix.GetLocalMatrix().Transpose().Start());
+    glUniformMatrix4fv(viewLocation, 1, GL_FALSE, m_viewTransform.GetLocalMatrix().Transpose().Start());
 
     // Projection matrix
     GLint projLocation = shader->GetUniformLocation("proj");
-    glUniformMatrix4fv(projLocation, 1, GL_FALSE, m_projMatrix.GetLocalMatrix().Transpose().Start());
+    glUniformMatrix4fv(projLocation, 1, GL_FALSE, m_projectionTransform.GetLocalMatrix().Transpose().Start());
 
     m_dirty = false;
 }
@@ -135,7 +154,7 @@ Vector2 RenderManager::ToScreenSpace(Vector3 worldPosition)
     // TODO the math for this doesn't seem quite right, debug it
     Vector2 screenPos;
     Vector4 pos = (Vector4(worldPosition, 1));
-    Vector3 normalizedPosition = ((m_projMatrix.GetWorldMatrix()*m_viewMatrix.GetWorldMatrix())*pos).xyz();
+    Vector3 normalizedPosition = ((m_projectionTransform.GetWorldMatrix()*m_viewTransform.GetWorldMatrix())*pos).xyz();
     float x = Clamp(normalizedPosition[0] / normalizedPosition[2], -1.f, 1.f);
     float y = Clamp(normalizedPosition[1] / normalizedPosition[2], -1.f, 1.f);
     screenPos[0] = (x + 1.0f) * m_config.width / 2.0f;

@@ -1,6 +1,6 @@
 <Scene guid="3831924600">
     <Camera>
-        <Position x="0" y="1" z="10"/>
+        <Position x="0" y="1" z="-5"/>
         <Direction x="0" y="0" z="-1"/>
         <Up x="0" y="1" z="0"/>
     </Camera>
@@ -90,7 +90,7 @@
         </GameObject>
         <GameObject guid="2032717194" name="Katamari">
             <Transform>
-                <Position x="0" y="0.30000001" z="0"/>
+                <Position x="0" y="0.30000001" z="-3"/>
                 <Rotation x="0" y="-0" z="0"/>
                 <Scale x="0.30000001" y="0.30000001" z="0.30000001"/>
             </Transform>
@@ -351,12 +351,46 @@
             <GameObject guid="2471797450" name="CameraObject">
                 <Transform>
                     <Position x="0" y="0" z="0"/>
-                    <Rotation x="0" y="-0" z="0"/>
+                    <Rotation x="-179.99998" y="-5.0089557e-006" z="-179.99998"/>
                     <Scale x="1" y="1" z="1"/>
                 </Transform>
                 <Colliders/>
                 <Components/>
             </GameObject>
+        </GameObject>
+        <GameObject guid="2733155764" name="Marker">
+            <Transform>
+                <Position x="0" y="0" z="-2"/>
+                <Rotation x="0" y="-0" z="0"/>
+                <Scale x="0.2" y="0.2" z="0.2"/>
+            </Transform>
+            <Mesh guid="396944253">
+                <Material>
+                    <Shader guid="3746892247"/>
+                    <Color name="colorDiffuse" r="1" g="0" b="0"/>
+                    <Color name="colorAmbient" r="1" g="1" b="1"/>
+                    <Color name="colorSpecular" r="1" g="1" b="1"/>
+                </Material>
+            </Mesh>
+            <Colliders/>
+            <Components/>
+        </GameObject>
+        <GameObject guid="3232391516" name="Origin">
+            <Transform>
+                <Position x="0" y="0" z="0"/>
+                <Rotation x="0" y="0" z="0"/>
+                <Scale x="0.2" y="0.2" z="0.2"/>
+            </Transform>
+            <Mesh guid="396944253">
+                <Material>
+                    <Shader guid="3746892247"/>
+                    <Color name="colorDiffuse" r="1" g="1" b="1"/>
+                    <Color name="colorAmbient" r="1" g="1" b="1"/>
+                    <Color name="colorSpecular" r="1" g="1" b="1"/>
+                </Material>
+            </Mesh>
+            <Colliders/>
+            <Components/>
         </GameObject>
     </GameObject>
     <Resources>
@@ -374,5 +408,6 @@
         <Resource guid="3780387270"/>
         <Resource guid="1863496264"/>
         <Resource guid="3936014360"/>
+        <Resource guid="396944253"/>
     </Resources>
 </Scene>

@@ -191,10 +191,13 @@ void Gnomon::Draw(Matrix4x4& transform)
     // Bind arrays/buffers
     glBindVertexArray(m_vertexArrayID);
 
-    // Undo scale from the given transform
-    // TODO scale based on distance from camera
+    // Scale the gnomon to be a (roughly) constant size in screen space
     Transform gnomonTransform(transform);
-    gnomonTransform.SetLocalScale(Vector3::One);
+    Vector3 cameraPosition = RenderManager::Singleton().GetCameraTransform().GetWorldPosition();
+    Vector3 gnomonPosition = gnomonTransform.GetWorldPosition();
+    float distance = Vector3::Distance(cameraPosition, gnomonPosition);
+    Vector3 normalizedScale = 0.1f * distance * Vector3::One;
+    gnomonTransform.SetLocalScale(normalizedScale);
 
     // Set model matrix
     GLint uniModel = m_shader->GetUniformLocation("model");

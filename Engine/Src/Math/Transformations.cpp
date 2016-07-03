@@ -138,7 +138,7 @@ Matrix4x4 UniformScaling(float scale)
 // based on pseudocode from http://www.3dgep.com/understanding-the-view-matrix/
 Matrix4x4 LookAt(const Vector3 & eye, const Vector3 & direction, const Vector3 & up)
 {
-    Vector3 v_z = normalize(-1*direction);
+    Vector3 v_z = normalize(direction);
     Vector3 v_x = normalize(cross(up, v_z));
     Vector3 v_y = cross(v_z, v_x);
     Vector3 w = Vector3(-dot(v_x, 1*eye), -dot(v_y, 1*eye), -dot(v_z, 1*eye));
@@ -146,7 +146,7 @@ Matrix4x4 LookAt(const Vector3 & eye, const Vector3 & direction, const Vector3 &
     Matrix4x4 m = Matrix4x4(Vector4(v_x[0], v_y[0], v_z[0], 0),
                             Vector4(v_x[1], v_y[1], v_z[1], 0),
                             Vector4(v_x[2], v_y[2], v_z[2], 0),
-                            Vector4(w[0], w[1], w[2], 1));
+                            Vector4(w[0],   w[1],   w[2],   1));
 
     return m.Transpose();
 }

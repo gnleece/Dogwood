@@ -85,3 +85,5 @@ private:
 
 Transform operator *(Transform& a, Transform& b);
 Vector4 operator *(Transform& m, Vector4& v);
+Transform operator *(Transform& t, Matrix4x4& m);
+Transform operator *(Matrix4x4& m, Transform& t);

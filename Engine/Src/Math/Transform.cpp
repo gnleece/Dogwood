@@ -297,3 +297,17 @@ Vector4 operator *(Transform& m, Vector4& v)
 {
     return m.GetWorldMatrix() * v;
 }
+
+Transform operator *(Transform& t, Matrix4x4& m)
+{
+    Transform ret;
+    ret.SetLocalMatrix(t.GetWorldMatrix() * m);
+    return ret;
+}
+
+Transform operator *(Matrix4x4& m, Transform& t)
+{
+    Transform ret;
+    ret.SetLocalMatrix(m * t.GetWorldMatrix());
+    return ret;
+}

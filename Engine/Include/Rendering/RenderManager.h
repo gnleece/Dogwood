@@ -49,12 +49,16 @@ public:
 
     void            SetRootObject(GameObjectBase* rootObject);
     void            SetLight(Light light);
-    void            SetCamera(Camera camera);
-    void            SetView(Matrix4x4& view);
     void            SetClearColor(ColorRGB Color);
 
-    Transform&      GetView();
-    Transform&      GetProjection();
+    void            SetCamera(Camera camera);
+    void            SetCameraTransform(Transform& transform);
+    void            SetCameraTransform(Matrix4x4& worldMatrix);
+    Transform&      GetCameraTransform();
+
+    void            SetViewTransform(Transform& transform);
+    Transform&      GetViewTransform();
+    Transform&      GetProjectionTransform();
     RenderConfig&   GetConfig();
 
     void            RenderScene();
@@ -78,8 +82,9 @@ private:
     Light           m_light;        // TODO support multiple light sources
     ColorRGB        m_clearColor;
 
-    Transform       m_viewMatrix;
-    Transform       m_projMatrix;
+    Transform       m_viewTransform;
+    Transform       m_cameraTransform;          // Always the inverse of m_viewTransform
+    Transform       m_projectionTransform;
 
     bool            m_dirty;
 
