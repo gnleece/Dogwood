@@ -416,6 +416,181 @@ void Vector4::DebugPrint()
     printf("%f\t%f\t%f\t%f\n", m_values[0], m_values[1], m_values[2], m_values[3]);
 }
 
+
+Matrix3x3::Matrix3x3()
+{
+    // default is identity matrix
+    std::fill(m_values, m_values + m_size, 0.0f);
+    m_values[0] = 1.0f;
+    m_values[4] = 1.0f;
+    m_values[8] = 1.0f;
+}
+
+Matrix3x3::Matrix3x3(const Matrix3x3& other)
+{
+    std::copy(other.m_values, other.m_values + m_size, m_values);
+}
+
+Matrix3x3::Matrix3x3(Vector3 row0, Vector3 row1, Vector3 row2)
+{
+    m_values[0] = row0[0];
+    m_values[1] = row0[1];
+    m_values[2] = row0[2];
+
+    m_values[3] = row1[0];
+    m_values[4] = row1[1];
+    m_values[5] = row1[2];
+
+    m_values[6] = row2[0];
+    m_values[7] = row2[1];
+    m_values[8] = row2[2];
+}
+
+Matrix3x3& Matrix3x3::operator =(const Matrix3x3& other)
+{
+    std::copy(other.m_values, other.m_values + m_size, m_values);
+    return *this;
+}
+
+Vector3 Matrix3x3::operator[](int row) const
+{
+    return Row(row);
+}
+float* Matrix3x3::operator[](int row)
+{
+    return Row(row);
+}
+
+const float* Matrix3x3::Start() const
+{
+    return (float*)m_values;
+}
+const float* Matrix3x3::End() const
+{
+    return (float*)(m_values + m_size);
+}
+
+float* Matrix3x3::Row(int row)
+{
+    return (float*)m_values + 3 * row;
+}
+
+Vector3 Matrix3x3::Row(int row) const
+{
+    return Vector3(m_values[3 * row], m_values[3 * row + 1], m_values[3 * row + 2]);
+}
+
+Vector3 Matrix3x3::Column(int col) const
+{
+    return Vector3(m_values[col], m_values[3 + col], m_values[6 + col]);
+}
+
+Matrix3x3 Matrix3x3::Transpose() const
+{
+    return Matrix3x3(Column(0), Column(1), Column(2));
+}
+
+void Matrix3x3::DebugPrint()
+{
+    for (int i = 0; i < 3; i++)
+    {
+        printf("%f\t%f\t%f\n", m_values[i * 3], m_values[1 + i * 3], m_values[2 + i * 3]);
+    }
+}
+
+Matrix3x3 Matrix3x3::Identity = Matrix3x3();
+
+/*
+* Define some helper functions for matrix inversion.
+*/
+
+static void swaprows3x3(Matrix3x3& a, int r1, int r2)
+{
+    //printf("Swapping row %d and %d\n", r1, r2);
+    for (int col = 0; col < 3; col++)
+    {
+        float temp = a[r1][col];
+        a[r1][col] = a[r2][col];
+        a[r2][col] = temp;
+    }
+}
+
+static void dividerow3x3(Matrix3x3& a, int r, float fac)
+{
+    a[r][0] /= fac;
+    a[r][1] /= fac;
+    a[r][2] /= fac;
+}
+
+static void submultrow3x3(Matrix3x3& a, int dest, int src, float fac)
+{
+    a[dest][0] -= fac * a[src][0];
+    a[dest][1] -= fac * a[src][1];
+    a[dest][2] -= fac * a[src][2];
+}
+
+//TODO this is copied from the CS488 supplied code. RE-WRITE!
+/* ORIGINAL COMMENT FROM TA:
+* invertMatrix
+*
+* I lifted this code from the skeleton code of a raytracer assignment
+* from a different school.  I taught that course too, so I figured it
+* would be okay.
+*/
+
+
+Matrix3x3 Matrix3x3::Inverse() const
+{
+    /* The algorithm is plain old Gauss-Jordan elimination
+    with partial pivoting. */
+
+    Matrix3x3 a(*this);
+    Matrix3x3 ret;
+
+    /* Loop over cols of a from left to right,
+    eliminating above and below diag */
+
+    /* Find largest pivot in column j among rows j..2 */
+    for (int j = 0; j < 3; ++j)
+    {
+        int i1 = j; /* Row with largest pivot candidate */
+        for (int i = j + 1; i < 3; ++i)
+        {
+            if (fabs(a[i][j]) > fabs(a[i1][j]))
+            {
+                i1 = i;
+            }
+        }
+
+        /* Swap rows i1 and j in a and ret to put pivot on diagonal */
+        swaprows3x3(a, i1, j);
+        swaprows3x3(ret, i1, j);
+
+        /* Scale row j to have a unit diagonal */
+        if (a[j][j] == 0.0)
+        {
+            // Theoretically throw an exception.
+            return ret;
+        }
+
+        dividerow3x3(ret, j, a[j][j]);
+        dividerow3x3(a, j, a[j][j]);
+
+        /* Eliminate off-diagonal elems in col j of a, doing identical
+        ops to b */
+        for (int i = 0; i < 3; ++i)
+        {
+            if (i != j)
+            {
+                submultrow3x3(ret, i, j, a[i][j]);
+                submultrow3x3(a, i, j, a[i][j]);
+            }
+        }
+    }
+
+    return ret;
+}
+
 Matrix4x4::Matrix4x4()
 {
     // default is identity matrix
@@ -506,7 +681,7 @@ Matrix4x4 Matrix4x4::Identity = Matrix4x4();
  * Define some helper functions for matrix inversion.
  */
 
-static void swaprows(Matrix4x4& a, int r1, int r2)
+static void swaprows4x4(Matrix4x4& a, int r1, int r2)
 {
     //printf("Swapping row %d and %d\n", r1, r2);
     for (int col = 0; col < 4; col++)
@@ -517,23 +692,23 @@ static void swaprows(Matrix4x4& a, int r1, int r2)
     }
 }
 
-static void dividerow(Matrix4x4& a, int r, float fac)
+static void dividerow4x4(Matrix4x4& a, int r, float fac)
 {
-  a[r][0] /= fac;
-  a[r][1] /= fac;
-  a[r][2] /= fac;
-  a[r][3] /= fac;
+    a[r][0] /= fac;
+    a[r][1] /= fac;
+    a[r][2] /= fac;
+    a[r][3] /= fac;
 }
 
-static void submultrow(Matrix4x4& a, int dest, int src, float fac)
+static void submultrow4x4(Matrix4x4& a, int dest, int src, float fac)
 {
-  a[dest][0] -= fac * a[src][0];
-  a[dest][1] -= fac * a[src][1];
-  a[dest][2] -= fac * a[src][2];
-  a[dest][3] -= fac * a[src][3];
+    a[dest][0] -= fac * a[src][0];
+    a[dest][1] -= fac * a[src][1];
+    a[dest][2] -= fac * a[src][2];
+    a[dest][3] -= fac * a[src][3];
 }
 
-//TODO this is copied from the CS488 supplied code. RE-WRITE MYSELF!
+//TODO this is copied from the CS488 supplied code. RE-WRITE!
 /* ORIGINAL COMMENT FROM TA:
  * invertMatrix
  *
@@ -548,43 +723,49 @@ Matrix4x4 Matrix4x4::Inverse() const
     /* The algorithm is plain old Gauss-Jordan elimination 
      with partial pivoting. */
 
-  Matrix4x4 a(*this);
-  Matrix4x4 ret;
+    Matrix4x4 a(*this);
+    Matrix4x4 ret;
 
-  /* Loop over cols of a from left to right, 
-     eliminating above and below diag */
+    /* Loop over cols of a from left to right,
+       eliminating above and below diag */
 
-  /* Find largest pivot in column j among rows j..3 */
-  for(int j = 0; j < 4; ++j) { 
-    int i1 = j; /* Row with largest pivot candidate */
-    for(int i = j + 1; i < 4; ++i) {
-      if(fabs(a[i][j]) > fabs(a[i1][j])) {
-        i1 = i;
-      }
+    /* Find largest pivot in column j among rows j..3 */
+    for (int j = 0; j < 4; ++j)
+    {
+        int i1 = j; /* Row with largest pivot candidate */
+        for (int i = j + 1; i < 4; ++i)
+        {
+            if (fabs(a[i][j]) > fabs(a[i1][j]))
+            {
+                i1 = i;
+            }
+        }
+
+        /* Swap rows i1 and j in a and ret to put pivot on diagonal */
+        swaprows4x4(a, i1, j);
+        swaprows4x4(ret, i1, j);
+
+        /* Scale row j to have a unit diagonal */
+        if (a[j][j] == 0.0)
+        {
+            // Theoretically throw an exception.
+            return ret;
+        }
+
+        dividerow4x4(ret, j, a[j][j]);
+        dividerow4x4(a, j, a[j][j]);
+
+        /* Eliminate off-diagonal elems in col j of a, doing identical
+           ops to b */
+        for (int i = 0; i < 4; ++i)
+        {
+            if (i != j)
+            {
+                submultrow4x4(ret, i, j, a[i][j]);
+                submultrow4x4(a, i, j, a[i][j]);
+            }
+        }
     }
-
-    /* Swap rows i1 and j in a and ret to put pivot on diagonal */
-    swaprows(a, i1, j);
-    swaprows(ret, i1, j);
-
-    /* Scale row j to have a unit diagonal */
-    if(a[j][j] == 0.0) {
-      // Theoretically throw an exception.
-      return ret;
-    }
-
-    dividerow(ret, j, a[j][j]);
-    dividerow(a, j, a[j][j]);
-
-    /* Eliminate off-diagonal elems in col j of a, doing identical 
-       ops to b */
-    for(int i = 0; i < 4; ++i) {
-      if(i != j) {
-        submultrow(ret, i, j, a[i][j]);
-        submultrow(a, i, j, a[i][j]);
-      }
-    }
-  }
 
   return ret;
 }

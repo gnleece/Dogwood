@@ -133,6 +133,38 @@ Vector4 operator +(const Vector4& a, const Vector4& b);
 Vector4 operator -(const Vector4& a, const Vector4& b);
 Vector4 operator *(float s, const Vector4& v);
 
+class Matrix3x3
+{
+public:
+    Matrix3x3();
+    Matrix3x3(const Matrix3x3& other);
+    Matrix3x3(Vector3 row0, Vector3 row1, Vector3 row2);
+
+    Matrix3x3&  operator =(const Matrix3x3& other);
+
+    Vector3     operator[](int row) const;
+    float*      operator[](int row);
+
+    const float *Start() const;
+    const float *End() const;
+
+    float*      Row(int row);
+    Vector3     Row(int row) const;
+    Vector3     Column(int col) const;
+
+    Matrix3x3   Transpose() const;
+    Matrix3x3   Inverse() const;
+
+    void        DebugPrint();
+
+    static Matrix3x3 Identity;
+
+private:
+    static const int m_size = 9;
+
+    float       m_values[m_size];
+};
+
 class Matrix4x4
 {
 public:
