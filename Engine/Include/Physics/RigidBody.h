@@ -1,12 +1,14 @@
 #pragma once
 
-#pragma once
-
 #include "Math/Algebra.h"
+
+class GameObjectBase;
 
 class RigidBody
 {
 public:
+    RigidBody(GameObjectBase* gameObject);
+
     void        SetPosition(Vector3 position);
     Vector3     GetPosition();
 
@@ -22,6 +24,8 @@ public:
     float       GetInverseMass();
     bool        HasFiniteMass();
 
+    void        SetInertiaTensor(Matrix3x3& inertiaTensor);
+
     // Integrates the particle forward in time (i.e. updates position and velocity)
     void        Integrate(float deltaTime);
 
@@ -31,23 +35,30 @@ public:
     void        ClearAccumulator();
 
 protected:
-    Vector3     m_position;
-    Quaternion  m_rotation;
+    void        CalculateCachedData();
+    void        CalculateTransform(Vector3& position, Quaternion& rotation, Matrix4x4& transform);
 
-    Vector3     m_velocity;
-    Vector3     m_angularVelocity;
+    GameObjectBase* m_gameObject;
 
-    Vector3     m_acceleration;
+    // Transform values are in world space
+    Vector3         m_position;
+    Quaternion      m_rotation;
+    Vector3         m_velocity;
+    Vector3         m_angularVelocity;
+    Vector3         m_acceleration;
 
     // Inverse mass is used here instead of simply mass, so that we can represent "infinite" mass (with an
     // inverse mass of 0), and *cannot* represent zero mass (which we don't want to allow).
-    float       m_inverseMass;
+    float           m_inverseMass;
 
     // This is calculated from the inverse mass, and then cached. It is not set directly.
-    float       m_mass;
+    float           m_mass;
 
-    Vector3     m_accumulatedForce;
+    // Inverse inertia tensor is used here for similar reasons to why inverse mass is used (see above)
+    Matrix3x3       m_inverseInertiaTensor;
+
+    Vector3         m_accumulatedForce;
 
     // Damping is required to remove energy added from numerical instability in physics integration step.
-    const float DAMPING = 0.999f;
+    const float     DAMPING = 0.999f;
 };

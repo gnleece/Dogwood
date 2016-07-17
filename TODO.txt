@@ -1,8 +1,8 @@
 ---------------------------------------------------------------------------
-|                       FEATURE ROADMAP / TODO LIST                       |
+|               DOGWOOD ENGINE: FEATURE ROADMAP / TODO LIST               |
 ---------------------------------------------------------------------------
 
-ENGINE (Dogwood)
+ENGINE
     * Game object/component system
         * Proper awake/start/enable/disable/destroy/etc.
             * ActiveSelf / ActiveInHierarchy
@@ -32,7 +32,6 @@ ENGINE (Dogwood)
     * Fix-up stuff
         * Memory leaks everywhere! Lots of missing "deletes"
         * Rewrite matrix inversion. Currently just copied from CS488 provided code
-        * Add missing matrix maths (e.g. addition)
         * Input wrappers
             * Configurable gamepad setup
             * #define to compile without XInput?
@@ -42,7 +41,7 @@ ENGINE (Dogwood)
 
 ---------------------------------------------------------------------------
 
-EDITOR (Thicket)
+EDITOR
 
     * Project
         * Project settings window
@@ -101,7 +100,6 @@ EDITOR (Thicket)
         - Refresh widgets on schema rebuild
 
         Hi pri
-        - fix gnomon size
         - fix translation tool interactions
         - Undo/redo broken with delete/undo create. Need to avoid use of QModelIndex
         - Move processing scripts out of Editor and into Engine
