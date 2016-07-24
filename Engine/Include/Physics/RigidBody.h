@@ -36,7 +36,8 @@ public:
 
 protected:
     void        CalculateCachedData();
-    void        CalculateTransform(Vector3& position, Quaternion& rotation, Matrix4x4& transform);
+    void        CalculateTransform(const Vector3& position, const Quaternion& rotation, Matrix4x4& transform);
+    void        TransformInertiaTensor(const Quaternion& q, const Matrix3x3& iitLocal, const Matrix4x4 transformWorld, Matrix3x3& iitWorld);
 
     GameObjectBase* m_gameObject;
 
@@ -47,6 +48,8 @@ protected:
     Vector3         m_angularVelocity;
     Vector3         m_acceleration;
 
+    Matrix4x4       m_transformMatrix;      // TODO reconcile with go transform
+
     // Inverse mass is used here instead of simply mass, so that we can represent "infinite" mass (with an
     // inverse mass of 0), and *cannot* represent zero mass (which we don't want to allow).
     float           m_inverseMass;
@@ -54,8 +57,12 @@ protected:
     // This is calculated from the inverse mass, and then cached. It is not set directly.
     float           m_mass;
 
-    // Inverse inertia tensor is used here for similar reasons to why inverse mass is used (see above)
+    // Inverse inertia tensor is used here for similar reasons to why inverse mass is used (see above).
+    // Given in local space.
     Matrix3x3       m_inverseInertiaTensor;
+
+    // IIT in world space (calculated and cached)
+    Matrix3x3       m_inverseInertiaTensorWorld;
 
     Vector3         m_accumulatedForce;
 
