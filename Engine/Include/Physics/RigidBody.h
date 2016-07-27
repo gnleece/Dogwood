@@ -29,10 +29,20 @@ public:
     // Integrates the particle forward in time (i.e. updates position and velocity)
     void        Integrate(float deltaTime);
 
-    // Adds the given force to the particle to be applied at the next integration only
-    void        AddForce(Vector3 force);
+    // "AddForce" functions apply and next integration only
 
-    void        ClearAccumulator();
+    // Adds the given force to the particle, applied at the center of mass
+    void        AddForce(Vector3& force);
+
+    // Adds the given force to the given point on the rigid body. Both values given in world space.
+    // Because the force is not applied at the center of mass, it may be split into force and torque.
+    void        AddForceAtPoint(Vector3& force, Vector3& point);
+
+    // Adds the given force to the given point on the rigid body. Force given in world space and point in local space.
+    // Because the force is not applied at the center of mass, it may be split into force and torque.
+    //void        AddForceAtPointLocalSpace(Vector3& force, Vector3& point);
+
+    void        ClearAccumulators();
 
 protected:
     void        CalculateCachedData();
@@ -40,6 +50,7 @@ protected:
     void        TransformInertiaTensor(const Quaternion& q, const Matrix3x3& iitLocal, const Matrix4x4 transformWorld, Matrix3x3& iitWorld);
 
     GameObjectBase* m_gameObject;
+    bool            m_isAwake;
 
     // Transform values are in world space
     Vector3         m_position;
@@ -65,6 +76,7 @@ protected:
     Matrix3x3       m_inverseInertiaTensorWorld;
 
     Vector3         m_accumulatedForce;
+    Vector3         m_accumulatedTorque;
 
     // Damping is required to remove energy added from numerical instability in physics integration step.
     const float     DAMPING = 0.999f;

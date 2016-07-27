@@ -10,6 +10,40 @@ void RigidBody::SetInertiaTensor(Matrix3x3& inertiaTensor)
     m_inverseInertiaTensor = inertiaTensor.Inverse();
 }
 
+void RigidBody::Integrate(float deltaTime)
+{
+    ClearAccumulators();
+}
+
+void RigidBody::AddForce(Vector3& force)
+{
+    m_accumulatedForce += force;
+    m_isAwake = true;
+}
+
+void RigidBody::AddForceAtPoint(Vector3& force, Vector3& point)
+{
+    // Convert to coordinates relative to center of mass
+    Vector3 pt = point;
+    pt -= m_position;
+
+    m_accumulatedForce += force;
+    m_accumulatedTorque += pt.Cross(force);
+
+    m_isAwake = true;
+}
+
+//void RigidBody::AddForceAtPointLocalSpace(Vector3& force, Vector3& point)
+//{
+//     // TODO implement me
+//}
+
+void RigidBody::ClearAccumulators()
+{
+    m_accumulatedForce = Vector3::Zero;
+    m_accumulatedTorque = Vector3::Zero;
+}
+
 void RigidBody::CalculateCachedData()
 {
     m_rotation.Normalize();
