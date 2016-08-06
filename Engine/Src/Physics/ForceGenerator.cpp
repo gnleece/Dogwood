@@ -1,8 +1,8 @@
-#include "Physics/Particles/ParticleForceGenerator.h"
+#include "Physics/ForceGenerator.h"
 #include "Physics/Particles/PhysicsParticle.h"
 #include <algorithm>
 
-void ParticleGravity::UpdateForce(PhysicsParticle* particle, float deltaTime)
+void GravityGenerator::UpdateForce(PhysicsParticle* particle, float deltaTime)
 {
     if (!particle->HasFiniteMass())
         return;
@@ -13,7 +13,7 @@ void ParticleGravity::UpdateForce(PhysicsParticle* particle, float deltaTime)
 
 //-----------------------------------------------------------------------------------------------
 
-void ParticleDrag::UpdateForce(PhysicsParticle* particle, float deltaTime)
+void DragGenerator::UpdateForce(PhysicsParticle* particle, float deltaTime)
 {
     Vector3 force = particle->GetVelocity();
 
@@ -29,7 +29,7 @@ void ParticleDrag::UpdateForce(PhysicsParticle* particle, float deltaTime)
 
 //-----------------------------------------------------------------------------------------------
 
-void ParticleSpring::UpdateForce(PhysicsParticle* particle, float deltaTime)
+void SpringGenerator::UpdateForce(PhysicsParticle* particle, float deltaTime)
 {
     // Calculate the vector of the spring
     Vector3 force = particle->GetPosition() - m_other->GetPosition();
@@ -47,7 +47,7 @@ void ParticleSpring::UpdateForce(PhysicsParticle* particle, float deltaTime)
 
 //-----------------------------------------------------------------------------------------------
 
-void ParticleAnchoredSpring::UpdateForce(PhysicsParticle* particle, float deltaTime)
+void AnchoredSpringGenerator::UpdateForce(PhysicsParticle* particle, float deltaTime)
 {
     // Calculate the vector of the spring
     Vector3 force = particle->GetPosition() - m_anchor;
@@ -64,7 +64,7 @@ void ParticleAnchoredSpring::UpdateForce(PhysicsParticle* particle, float deltaT
 
 //-----------------------------------------------------------------------------------------------
 
-void ParticleBungee::UpdateForce(PhysicsParticle* particle, float deltaTime)
+void BungeeGenerator::UpdateForce(PhysicsParticle* particle, float deltaTime)
 {
     // Calculate the vector of the spring
     Vector3 force = particle->GetPosition() - m_other->GetPosition();
@@ -85,7 +85,7 @@ void ParticleBungee::UpdateForce(PhysicsParticle* particle, float deltaTime)
 
 //-----------------------------------------------------------------------------------------------
 
-void ParticleBuoyancy::UpdateForce(PhysicsParticle* particle, float deltaTime)
+void BuoyancyGenerator::UpdateForce(PhysicsParticle* particle, float deltaTime)
 {
     // Calculate the submersion depth
     float depth = particle->GetPosition().y();
@@ -112,13 +112,13 @@ void ParticleBuoyancy::UpdateForce(PhysicsParticle* particle, float deltaTime)
 
 //-----------------------------------------------------------------------------------------------
 
-void ParticleForceRegistry::Register(PhysicsParticle* particle, ParticleForceGenerator* generator)
+void ForceRegistry::Register(PhysicsParticle* particle, ForceGenerator* generator)
 {
     RegistrationInfo info(particle, generator);
     m_registry.push_back(info);
 }
 
-void ParticleForceRegistry::Unregister(PhysicsParticle* particle, ParticleForceGenerator* generator)
+void ForceRegistry::Unregister(PhysicsParticle* particle, ForceGenerator* generator)
 {
     RegistrationInfo info(particle, generator);
     m_registry.erase(
@@ -126,12 +126,12 @@ void ParticleForceRegistry::Unregister(PhysicsParticle* particle, ParticleForceG
         m_registry.end());
 }
 
-void ParticleForceRegistry::Clear()
+void ForceRegistry::Clear()
 {
     m_registry.clear();
 }
 
-void ParticleForceRegistry::UpdateForces(float deltaTime)
+void ForceRegistry::UpdateForces(float deltaTime)
 {
     vector<RegistrationInfo>::iterator iter;
     for (iter = m_registry.begin(); iter != m_registry.end(); iter++)
@@ -140,13 +140,13 @@ void ParticleForceRegistry::UpdateForces(float deltaTime)
     }
 }
 
-ParticleForceRegistry::RegistrationInfo::RegistrationInfo(PhysicsParticle* particle, ParticleForceGenerator* generator)
+ForceRegistry::RegistrationInfo::RegistrationInfo(PhysicsParticle* particle, ForceGenerator* generator)
 {
     Particle = particle;
     Generator = generator;
 }
 
-bool ParticleForceRegistry::RegistrationInfo::operator==(const RegistrationInfo &other) const
+bool ForceRegistry::RegistrationInfo::operator==(const RegistrationInfo &other) const
 {
     return Particle == other.Particle && Generator == other.Generator;
 }

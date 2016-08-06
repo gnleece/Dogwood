@@ -214,10 +214,13 @@
     <ClInclude Include="Include\Serialization\HierarchicalSerializer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Physics\Particles\ParticleForceGenerator.h">
+    <ClInclude Include="Include\Physics\Particles\ParticleContact.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Physics\Particles\ParticleContact.h">
+    <ClInclude Include="Include\Physics\RigidBody.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Physics\ForceGenerator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -363,10 +366,13 @@
     <ClCompile Include="Src\Serialization\HierarchicalSerializer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Physics\Particles\ParticleForceGenerator.cpp">
+    <ClCompile Include="Src\Physics\Particles\ParticleContact.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Physics\Particles\ParticleContact.cpp">
+    <ClCompile Include="Src\Physics\RigidBody.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Physics\ForceGenerator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

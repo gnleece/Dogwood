@@ -7,16 +7,16 @@ using std::vector;
 
 class PhysicsParticle;
 
-class ParticleForceGenerator
+class ForceGenerator
 {
 public:
     virtual void    UpdateForce(PhysicsParticle* particle, float deltaTime) = 0;
 };
 
-class ParticleGravity : public ParticleForceGenerator
+class GravityGenerator : public ForceGenerator
 {
 public:
-    ParticleGravity(Vector3& gravity);
+    GravityGenerator(Vector3& gravity);
     virtual void    UpdateForce(PhysicsParticle* particle, float deltaTime);
 
 private:
@@ -24,10 +24,10 @@ private:
 
 };
 
-class ParticleDrag : public ParticleForceGenerator
+class DragGenerator : public ForceGenerator
 {
 public:
-    ParticleDrag(float k1, float k2);
+    DragGenerator(float k1, float k2);
     virtual void    UpdateForce(PhysicsParticle* particle, float deltaTime);
 
 private:
@@ -35,10 +35,10 @@ private:
     float           m_k2;
 };
 
-class ParticleSpring : public ParticleForceGenerator
+class SpringGenerator : public ForceGenerator
 {
 public:
-    ParticleSpring(PhysicsParticle* other, float springConstant, float restLength);
+    SpringGenerator(PhysicsParticle* other, float springConstant, float restLength);
     virtual void UpdateForce(PhysicsParticle* particle, float deltaTime);
 
 private:
@@ -47,10 +47,10 @@ private:
     float            m_restLength;
 };
 
-class ParticleAnchoredSpring : public ParticleForceGenerator
+class AnchoredSpringGenerator : public ForceGenerator
 {
 public:
-    ParticleAnchoredSpring(Vector3& anchor, float springConstant, float restLength);
+    AnchoredSpringGenerator(Vector3& anchor, float springConstant, float restLength);
     virtual void UpdateForce(PhysicsParticle* particle, float deltaTime);
 
 private:
@@ -59,10 +59,10 @@ private:
     float           m_restLength;
 };
 
-class ParticleBungee : public ParticleForceGenerator
+class BungeeGenerator : public ForceGenerator
 {
 public:
-    ParticleBungee(PhysicsParticle* other, float springConstant, float restLength);
+    BungeeGenerator(PhysicsParticle* other, float springConstant, float restLength);
     virtual void UpdateForce(PhysicsParticle* particle, float deltaTime);
 
 private:
@@ -71,10 +71,10 @@ private:
     float            m_restLength;
 };
 
-class ParticleBuoyancy : public ParticleForceGenerator
+class BuoyancyGenerator : public ForceGenerator
 {
 public:
-    ParticleBuoyancy(float maxDepth, float volume, float waterHeight, float liquidDensity = 1000.0f);
+    BuoyancyGenerator(float maxDepth, float volume, float waterHeight, float liquidDensity = 1000.0f);
     virtual void UpdateForce(PhysicsParticle* particle, float deltaTime);
 
 private:
@@ -84,11 +84,11 @@ private:
     float           m_liquidDensity;
 };
 
-class ParticleForceRegistry
+class ForceRegistry
 {
 public:
-    void            Register(PhysicsParticle* particle, ParticleForceGenerator* generator);
-    void            Unregister(PhysicsParticle* particle, ParticleForceGenerator* generator);
+    void            Register(PhysicsParticle* particle, ForceGenerator* generator);
+    void            Unregister(PhysicsParticle* particle, ForceGenerator* generator);
     void            Clear();
     void            UpdateForces(float deltaTime);
 
@@ -96,9 +96,9 @@ protected:
     struct RegistrationInfo
     {
         PhysicsParticle*        Particle;
-        ParticleForceGenerator* Generator;
+        ForceGenerator* Generator;
 
-        RegistrationInfo(PhysicsParticle* particle, ParticleForceGenerator* generator);
+        RegistrationInfo(PhysicsParticle* particle, ForceGenerator* generator);
         bool operator==(const RegistrationInfo &other) const;
     };
     vector<RegistrationInfo> m_registry;
