@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Math/Algebra.h"
+#include "Math/Transform.h"
 
 class GameObjectBase;
 
@@ -25,6 +26,11 @@ public:
     bool        HasFiniteMass();
 
     void        SetInertiaTensor(Matrix3x3& inertiaTensor);
+
+    Vector3     GetPointInLocalSpace(const Vector3 &point);
+    Vector3     GetPointInWorldSpace(const Vector3 &point);
+    Vector3     GetDirectionInLocalSpace(const Vector3 &direction);
+    Vector3     GetDirectionInWorldSpace(const Vector3 &direction);
 
     // Integrates the particle forward in time (i.e. updates position and velocity)
     void        Integrate(float deltaTime);
@@ -59,7 +65,7 @@ protected:
     Vector3         m_angularVelocity;
     Vector3         m_acceleration;
 
-    Matrix4x4       m_transformMatrix;      // TODO reconcile with go transform
+    Transform       m_transform;      // TODO reconcile with go transform
 
     // Inverse mass is used here instead of simply mass, so that we can represent "infinite" mass (with an
     // inverse mass of 0), and *cannot* represent zero mass (which we don't want to allow).

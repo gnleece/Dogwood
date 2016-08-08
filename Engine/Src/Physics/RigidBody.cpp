@@ -10,6 +10,26 @@ void RigidBody::SetInertiaTensor(Matrix3x3& inertiaTensor)
     m_inverseInertiaTensor = inertiaTensor.Inverse();
 }
 
+Vector3 RigidBody::GetPointInLocalSpace(const Vector3 &point)
+{
+    return m_transform.InverseTransformPoint(point);
+}
+
+Vector3 RigidBody::GetPointInWorldSpace(const Vector3 &point)
+{
+    return m_transform.TransformPoint(point);
+}
+
+Vector3 RigidBody::GetDirectionInLocalSpace(const Vector3 &direction)
+{
+    return m_transform.InverseTransformVector(direction);
+}
+
+Vector3 RigidBody::GetDirectionInWorldSpace(const Vector3 &direction)
+{
+    return m_transform.TransformVector(direction);
+}
+
 void RigidBody::Integrate(float deltaTime)
 {
     ClearAccumulators();
@@ -49,12 +69,12 @@ void RigidBody::CalculateCachedData()
     m_rotation.Normalize();
 
     // Calculate the world transform
-    CalculateTransform(m_position, m_rotation, m_transformMatrix);
+    CalculateTransform(m_position, m_rotation, m_transform.GetWorldMatrix());
 
     // Convert the inertia tensor from local space to world space
     TransformInertiaTensor(m_rotation,
                            m_inverseInertiaTensor,
-                           m_transformMatrix,
+                           m_transform.GetWorldMatrix(),
                            m_inverseInertiaTensorWorld);
 }
 
