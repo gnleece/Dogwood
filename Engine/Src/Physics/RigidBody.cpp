@@ -1,8 +1,72 @@
 #include "Physics/RigidBody.h"
 
 RigidBody::RigidBody(GameObjectBase* gameObject) : m_gameObject(gameObject)
-{
+{ }
 
+void RigidBody::SetPosition(Vector3 position)
+{
+    m_position = position;
+}
+
+Vector3 RigidBody::GetPosition()
+{
+    return m_position;
+}
+
+void RigidBody::SetVelocity(Vector3 velocity)
+{
+    m_velocity = velocity;
+}
+
+Vector3 RigidBody::GetVelocity()
+{
+    return m_velocity;
+}
+
+void RigidBody::SetAcceleration(Vector3 acceleration)
+{
+    m_acceleration = acceleration;
+}
+
+Vector3 RigidBody::GetAcceleration()
+{
+    return m_acceleration;
+}
+
+void RigidBody::SetMass(float mass)
+{
+    if (mass < 0 || Approximately(mass, 0.f))
+    {
+        return;
+    }
+    m_inverseMass = 1.0f / mass;
+    m_mass = mass;
+}
+
+void RigidBody::SetInverseMass(float inverseMass)
+{
+    if (inverseMass < 0)
+        return;
+    m_inverseMass = inverseMass;
+    m_mass = Approximately(inverseMass, 0.f) ? 0.f : 1 / inverseMass;
+}
+
+float RigidBody::GetMass()
+{
+    if (!HasFiniteMass())
+        return 0;
+
+    return 1 / m_inverseMass;
+}
+
+float RigidBody::GetInverseMass()
+{
+    return m_inverseMass;
+}
+
+bool RigidBody::HasFiniteMass()
+{
+    return m_inverseMass > 0;
 }
 
 void RigidBody::SetInertiaTensor(Matrix3x3& inertiaTensor)
