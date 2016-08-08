@@ -1,4 +1,5 @@
 #include "Physics/RigidBody.h"
+#include <math.h>
 
 RigidBody::RigidBody(GameObjectBase* gameObject) : m_gameObject(gameObject)
 { }
@@ -96,6 +97,33 @@ Vector3 RigidBody::GetDirectionInWorldSpace(const Vector3 &direction)
 
 void RigidBody::Integrate(float deltaTime)
 {
+    // Calculate linear acceleration from force inputs
+    m_previousAcceleration = m_acceleration;
+    m_previousAcceleration += m_accumulatedForce * m_inverseMass;
+
+    // Calculate angular acceleration from torque inputs
+    Vector3 angularAcceleration = m_inverseInertiaTensorWorld * m_accumulatedTorque;
+
+    // Update linear velocity from both acceleration and impulse
+    m_velocity += m_previousAcceleration * deltaTime;
+
+    // Update angular velocity from both acceleration and impulse
+    m_angularVelocity += angularAcceleration * deltaTime;
+
+    // Impose drag
+    m_velocity *= pow(LINEAR_DAMPING, deltaTime);
+    m_angularVelocity *= pow(ANGULAR_DAMPING, deltaTime);
+
+    // Update linear position
+    m_position += m_velocity * deltaTime;
+
+    // Update angular position
+    m_rotation.AddScaledVector(m_angularVelocity, deltaTime);
+
+    // Normalize rotation and update cached data
+    CalculateCachedData();
+
+    // Reset for next frame
     ClearAccumulators();
 }
 

@@ -102,7 +102,7 @@ Vector3::Vector3(float x, float y, float z)
     m_values[2] = z;
 }
 
-Vector3& Vector3::operator =(const Vector3 other)
+Vector3& Vector3::operator =(const Vector3& other)
 {
     m_values[0] = other.m_values[0];
     m_values[1] = other.m_values[1];
@@ -110,7 +110,7 @@ Vector3& Vector3::operator =(const Vector3 other)
     return *this;
 }
 
-Vector3& Vector3::operator +=(const Vector3 other)
+Vector3& Vector3::operator +=(const Vector3& other)
 {
     m_values[0] = m_values[0] + other.m_values[0];
     m_values[1] = m_values[1] + other.m_values[1];
@@ -118,11 +118,19 @@ Vector3& Vector3::operator +=(const Vector3 other)
     return *this;
 }
 
-Vector3& Vector3::operator -=(const Vector3 other)
+Vector3& Vector3::operator -=(const Vector3& other)
 {
     m_values[0] = m_values[0] - other.m_values[0];
     m_values[1] = m_values[1] - other.m_values[1];
     m_values[2] = m_values[2] - other.m_values[2];
+    return *this;
+}
+
+Vector3& Vector3::operator *=(float s)
+{
+    m_values[0] *= s;
+    m_values[1] *= s;
+    m_values[2] *= s;
     return *this;
 }
 
@@ -586,6 +594,34 @@ Matrix3x3 Matrix3x3::Inverse() const
                 submultrow3x3(a, i, j, a[i][j]);
             }
         }
+    }
+
+    return ret;
+}
+
+Vector3 operator *(const Matrix3x3& m, const Vector3& v)
+{
+    Vector3 ret;
+
+    for (int i = 0; i < 3; ++i)
+    {
+        ret[i] = m[i][0] * v[0] +
+                 m[i][1] * v[1] +
+                 m[i][2] * v[2];
+    }
+
+    return ret;
+}
+
+Vector3 operator *(const Vector3& v, const Matrix3x3& m)
+{
+    Vector3 ret;
+
+    for (int i = 0; i < 3; ++i)
+    {
+        ret[i] = m[0][i] * v[0] +
+                 m[1][i] * v[1] +
+                 m[2][i] * v[2];
     }
 
     return ret;

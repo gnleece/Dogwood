@@ -46,10 +46,11 @@ public:
     Vector3(const Vector3& other);
     Vector3(float x, float y, float z);
 
-    Vector3&    operator =(const Vector3 other);
-    Vector3&    operator +=(const Vector3 other);
-    Vector3&    operator -=(const Vector3 other);
-    bool        operator ==(const Vector3 &other) const;
+    Vector3&    operator =(const Vector3& other);
+    Vector3&    operator +=(const Vector3& other);
+    Vector3&    operator -=(const Vector3& other);
+    Vector3&    operator *=(float s);
+    bool        operator ==(const Vector3& other) const;
 
     float&      operator[](int i);
     float       operator[](int i) const;
@@ -164,6 +165,9 @@ private:
 
     float       m_values[m_size];
 };
+
+Vector3 operator *(const Matrix3x3& m, const Vector3& v);
+Vector3 operator *(const Vector3& v, const Matrix3x3& m);
 
 class Matrix4x4
 {

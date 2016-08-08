@@ -64,6 +64,7 @@ protected:
     Vector3         m_velocity;
     Vector3         m_angularVelocity;
     Vector3         m_acceleration;
+    Vector3         m_previousAcceleration;
 
     Transform       m_transform;      // TODO reconcile with go transform
 
@@ -85,5 +86,6 @@ protected:
     Vector3         m_accumulatedTorque;
 
     // Damping is required to remove energy added from numerical instability in physics integration step.
-    const float     DAMPING = 0.999f;
+    const float     LINEAR_DAMPING = 0.999f;
+    const float     ANGULAR_DAMPING = 0.999f;
 };
