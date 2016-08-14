@@ -154,6 +154,8 @@ void RigidBody::ClearAccumulators()
 {
     m_accumulatedForce = Vector3::Zero;
     m_accumulatedTorque = Vector3::Zero;
+
+    CalculateCachedData();
 }
 
 void RigidBody::CalculateCachedData()

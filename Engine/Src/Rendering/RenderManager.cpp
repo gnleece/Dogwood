@@ -117,7 +117,7 @@ void RenderManager::RenderScene()
         m_rootObject->Render(false);
     }
 
-    // Render debug info
+    // Render debug info    // TODO this is hacky, RenderManager shouldn't have reference to CollisionEngine
     CollisionEngine::Singleton().DrawDebugInfo();
 }
 

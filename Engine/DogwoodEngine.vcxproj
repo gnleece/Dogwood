@@ -111,7 +111,7 @@
     <ClInclude Include="Include\Physics\ForceGenerator.h" />
     <ClInclude Include="Include\Physics\Particles\PhysicsParticle.h" />
     <ClInclude Include="Include\Physics\CollisionEngine.h" />
-    <ClInclude Include="Include\Physics\Particles\ParticleEngine.h" />
+    <ClInclude Include="Include\Physics\PhysicsEngine.h" />
     <ClInclude Include="Include\Physics\RigidBody.h" />
     <ClInclude Include="Include\Rendering\Camera.h" />
     <ClInclude Include="Include\Rendering\Color.h" />
@@ -165,7 +165,7 @@
     <ClCompile Include="Src\Physics\ForceGenerator.cpp" />
     <ClCompile Include="Src\Physics\Particles\PhysicsParticle.cpp" />
     <ClCompile Include="Src\Physics\CollisionEngine.cpp" />
-    <ClCompile Include="Src\Physics\Particles\ParticleEngine.cpp" />
+    <ClCompile Include="Src\Physics\PhysicsEngine.cpp" />
     <ClCompile Include="Src\Physics\RigidBody.cpp" />
     <ClCompile Include="Src\Rendering\Color.cpp" />
     <ClCompile Include="Src\Rendering\Image.cpp" />

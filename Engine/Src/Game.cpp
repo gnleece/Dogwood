@@ -9,6 +9,7 @@
 #include "Input\InputManager.h"
 #include "Input\XInputGamePad.h"
 #include "Physics\CollisionEngine.h"
+#include "Physics\PhysicsEngine.h"
 #include "Rendering\RenderManager.h"
 #include "Scene\ResourceManager.h"
 #include "Scene\Scene.h"
@@ -42,6 +43,7 @@ void Game::Init(string projectPath, GameComponentFactory* componentFactory)
     m_gameWindow.Setup(GameProject::Singleton().GetName(), windowWidth, windowHeight);
 
     // Physics setup
+    PhysicsEngine::Singleton().Startup();
     CollisionEngine::Singleton().Startup();
 
     // Rendering setup
@@ -83,7 +85,9 @@ void Game::Run(Scene* scene)
         GameObjectManager::Singleton().Update(m_deltaTime);
 
         // Physics update
-        CollisionEngine::Singleton().Update(m_deltaTime);                 // TODO fixed physics timestep?
+        PhysicsEngine::Singleton().StartFrame();
+        CollisionEngine::Singleton().Update(m_deltaTime);       // TODO fixed physics timestep?
+        PhysicsEngine::Singleton().Update(m_deltaTime);
 
         // Rendering update
         RenderManager::Singleton().RenderScene();
@@ -100,6 +104,7 @@ void Game::Shutdown()
     // Manager shutdown
     GameObjectManager::Singleton().Shutdown();
     CollisionEngine::Singleton().Shutdown();
+    PhysicsEngine::Singleton().Shutdown();
     GameProject::Singleton().Shutdown();
     ResourceManager::Singleton().Shutdown();
     InputManager::Singleton().Shutdown();
