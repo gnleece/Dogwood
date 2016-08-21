@@ -493,6 +493,21 @@ Vector3 Matrix3x3::Column(int col) const
     return Vector3(m_values[col], m_values[3 + col], m_values[6 + col]);
 }
 
+void Matrix3x3::SetColumns(Vector3& col0, Vector3& col1, Vector3& col2)
+{
+    m_values[0] = col0[0];
+    m_values[1] = col1[0];
+    m_values[2] = col2[0];
+
+    m_values[3] = col0[1];
+    m_values[4] = col1[1];
+    m_values[5] = col2[1];
+
+    m_values[6] = col0[2];
+    m_values[7] = col1[3];
+    m_values[8] = col2[2];
+}
+
 Matrix3x3 Matrix3x3::Transpose() const
 {
     return Matrix3x3(Column(0), Column(1), Column(2));
@@ -703,6 +718,29 @@ Vector4 Matrix4x4::Row(int row) const
 Vector4 Matrix4x4::Column(int col) const
 {
     return Vector4(m_values[col], m_values[4+col], m_values[8+col], m_values[12+col]);
+}
+
+void Matrix4x4::SetColumns(Vector4& col0, Vector4& col1, Vector4& col2, Vector4& col3)
+{
+    m_values[0] = col0[0];
+    m_values[1] = col1[0];
+    m_values[2] = col2[0];
+    m_values[3] = col3[0];
+
+    m_values[4] = col0[1];
+    m_values[5] = col1[1];
+    m_values[6] = col2[1];
+    m_values[7] = col3[1];
+
+    m_values[8] = col0[2];
+    m_values[9] = col1[2];
+    m_values[10] = col2[2];
+    m_values[11] = col3[2];
+
+    m_values[12] = col0[3];
+    m_values[13] = col1[3];
+    m_values[14] = col2[3];
+    m_values[15] = col3[3];
 }
 
 Matrix4x4 Matrix4x4::Transpose() const

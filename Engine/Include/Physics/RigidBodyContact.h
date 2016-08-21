@@ -45,6 +45,8 @@ protected:
 private:
     void                ResolveVelocity(float deltaTime);           // Handles the impulse calculations for this collision
     ResolutionResult    ResolveInterpenetration(float deltaTime);   // Handles the interpenetration resolution for this contact
+
+    Matrix3x3           m_contactToWorld;
 };
 
 class ContactResolver

@@ -153,6 +153,8 @@ public:
     Vector3     Row(int row) const;
     Vector3     Column(int col) const;
 
+    void        SetColumns(Vector3& col0, Vector3& col1, Vector3& col2);
+
     Matrix3x3   Transpose() const;
     Matrix3x3   Inverse() const;
 
@@ -187,6 +189,8 @@ public:
     float*      Row(int row);
     Vector4     Row(int row) const;
     Vector4     Column(int col) const;
+
+    void        SetColumns(Vector4& col0, Vector4& col1, Vector4& col2, Vector4& col3);
 
     Matrix4x4   Transpose() const;
     Matrix4x4   Inverse() const;

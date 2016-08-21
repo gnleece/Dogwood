@@ -19,11 +19,52 @@ float RigidBodyContact::CalculateSeparatingVelocity()
     return relativeVelocity.Dot(ContactNormal);
 }
 
-// Constructs an arbitrary orthonormal basis for the contact. The x direction is generated from
-// the contact normal, and the y and z directions are set to be at right angles to it
 void RigidBodyContact::CalculateContactBasis()
 {
+    // Calculate an orthonormal basis for the contact space. Choose the contact normal as the
+    // x direction, then choose an arbitrary (temp) second direction (either the world x-axis or
+    // world y-axis, whichever is further from the contact normal). The cross these two to get the
+    // third direction, then cross the third and the first to generate the actual second direction.
+    // Code is simplified/optimized (instead of using actual Vector3 cross function).
 
+    Vector3 contactTangents[2];
+
+    if (abs(ContactNormal.x()) > abs(ContactNormal.y()))
+    {
+        // Scaling factor used for normalization
+        float s = 1.0f / sqrtf(ContactNormal.z()*ContactNormal.z() +
+                               ContactNormal.x()*ContactNormal.x());
+
+        // The new x-axis is at right angles to the world y-axis
+        contactTangents[0].SetX(ContactNormal.z()*s);
+        contactTangents[0].SetY(0);
+        contactTangents[0].SetZ(-ContactNormal.x()*s);
+
+        // The new y-axis is at right angles to the new x and z-axes
+        contactTangents[1].SetX(ContactNormal.y()*contactTangents[0].x());
+        contactTangents[1].SetY(ContactNormal.z()*contactTangents[0].x() -
+                                ContactNormal.x()*contactTangents[0].z());
+        contactTangents[1].SetZ(-ContactNormal.y()*contactTangents[0].x());
+    }
+    else
+    {
+        // Scaling factor used for normalization
+        float s = 1.0f / sqrtf(ContactNormal.z()*ContactNormal.z() +
+            ContactNormal.y()*ContactNormal.y());
+
+        // The new x-axis is at right angles to the world x-axis
+        contactTangents[0].SetX(0);
+        contactTangents[0].SetY(-ContactNormal.z()*s);
+        contactTangents[0].SetZ(ContactNormal.y()*s);
+
+        // The new y-axis is at right angles to the new x and z-axes
+        contactTangents[1].SetX(ContactNormal.y()*contactTangents[0].z() -
+                                ContactNormal.z()*contactTangents[0].y());
+        contactTangents[1].SetY(-ContactNormal.x()*contactTangents[0].z());
+        contactTangents[1].SetZ(ContactNormal.x()*contactTangents[0].y());
+    }
+
+    m_contactToWorld.SetColumns(ContactNormal, contactTangents[0], contactTangents[1]);
 }
 
 void RigidBodyContact::ResolveVelocity(float deltaTime)
