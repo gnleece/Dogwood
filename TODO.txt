@@ -38,6 +38,7 @@ ENGINE
         * Re-factor MainEditorWindow.cpp
         * typedef guid type?
         * Use tinyxml "query" functions for better error handling
+        * Add textbook page references
 
 ---------------------------------------------------------------------------
 

@@ -1,7 +1,7 @@
-#include "Physics/Particles/ParticleContact.h"
-#include "Physics/Particles/PhysicsParticle.h"
+#include "Physics/RigidBodyContact.h"
+#include "Physics/RigidBody.h"
 
-ParticleContact::ResolutionResult ParticleContact::Resolve(float deltaTime)
+RigidBodyContact::ResolutionResult RigidBodyContact::Resolve(float deltaTime)
 {
     ResolveVelocity(deltaTime);
     ResolutionResult result = ResolveInterpenetration(deltaTime);
@@ -9,17 +9,24 @@ ParticleContact::ResolutionResult ParticleContact::Resolve(float deltaTime)
 }
 
 // Separating velocity (v_s) = (relative velocity) dot (contact normal) = (v_a - v_b) dot (norm(p_a - p_b))
-float ParticleContact::CalculateSeparatingVelocity()
+float RigidBodyContact::CalculateSeparatingVelocity()
 {
-    Vector3 relativeVelocity = ParticleA->GetVelocity();
-    if (ParticleB != NULL)
+    Vector3 relativeVelocity = BodyA->GetVelocity();
+    if (BodyB != NULL)
     {
-        relativeVelocity -= ParticleB->GetVelocity();
+        relativeVelocity -= BodyB->GetVelocity();
     }
     return relativeVelocity.Dot(ContactNormal);
 }
 
-void ParticleContact::ResolveVelocity(float deltaTime)
+// Constructs an arbitrary orthonormal basis for the contact. The x direction is generated from
+// the contact normal, and the y and z directions are set to be at right angles to it
+void RigidBodyContact::CalculateContactBasis()
+{
+
+}
+
+void RigidBodyContact::ResolveVelocity(float deltaTime)
 {
     // Calculate the velocity in the direction of the contact
     float separatingVelocity = CalculateSeparatingVelocity();
@@ -34,10 +41,10 @@ void ParticleContact::ResolveVelocity(float deltaTime)
     float newSeparatingVelocity = -Restitution * separatingVelocity;
 
     // Check the velocity buildup due only to acceleration. This is to prevent issues with resting contacts.
-    Vector3 accCausedVelocity = ParticleA->GetAcceleration();
-    if (ParticleB != NULL)
+    Vector3 accCausedVelocity = BodyA->GetAcceleration();
+    if (BodyB != NULL)
     {
-        accCausedVelocity -= ParticleB->GetAcceleration();
+        accCausedVelocity -= BodyB->GetAcceleration();
     }
     float accCausedSeparatingVelocity = accCausedVelocity.Dot(ContactNormal) * deltaTime;
 
@@ -54,10 +61,10 @@ void ParticleContact::ResolveVelocity(float deltaTime)
     float deltaVelocity = newSeparatingVelocity - separatingVelocity;
 
     // Calculate the total inverse mass
-    float totalInverseMass = ParticleA->GetInverseMass();
-    if (ParticleB != NULL)
+    float totalInverseMass = BodyA->GetInverseMass();
+    if (BodyB != NULL)
     {
-        totalInverseMass += ParticleB->GetInverseMass();
+        totalInverseMass += BodyB->GetInverseMass();
     }
 
     if (totalInverseMass <= 0)
@@ -73,17 +80,17 @@ void ParticleContact::ResolveVelocity(float deltaTime)
     Vector3 impulsePerInverseMass = ContactNormal * impulse;
 
     // Apply impulses, in the direction of the contact
-    Vector3 velocityA = ParticleA->GetVelocity() + impulsePerInverseMass * ParticleA->GetInverseMass();
-    ParticleA->SetVelocity(velocityA);
-    if (ParticleB != NULL)
+    Vector3 velocityA = BodyA->GetVelocity() + impulsePerInverseMass * BodyA->GetInverseMass();
+    BodyA->SetVelocity(velocityA);
+    if (BodyB != NULL)
     {
-        // ParticleB has motion in the opposite direction from ParticleA
-        Vector3 velocityB = ParticleB->GetVelocity() - impulsePerInverseMass * ParticleB->GetInverseMass();
-        ParticleB->SetVelocity(velocityB);
+        // BodyB has motion in the opposite direction from BodyA
+        Vector3 velocityB = BodyB->GetVelocity() - impulsePerInverseMass * BodyB->GetInverseMass();
+        BodyB->SetVelocity(velocityB);
     }
 }
 
-ParticleContact::ResolutionResult ParticleContact::ResolveInterpenetration(float deltaTime)
+RigidBodyContact::ResolutionResult RigidBodyContact::ResolveInterpenetration(float deltaTime)
 {
     if (Penetration <= 0)
     {
@@ -92,10 +99,10 @@ ParticleContact::ResolutionResult ParticleContact::ResolveInterpenetration(float
     }
 
     // Calculate the total inverse mass
-    float totalInverseMass = ParticleA->GetInverseMass();
-    if (ParticleB != NULL)
+    float totalInverseMass = BodyA->GetInverseMass();
+    if (BodyB != NULL)
     {
-        totalInverseMass += ParticleB->GetInverseMass();
+        totalInverseMass += BodyB->GetInverseMass();
     }
 
     if (totalInverseMass <= 0)
@@ -107,31 +114,31 @@ ParticleContact::ResolutionResult ParticleContact::ResolveInterpenetration(float
     // Calculate the movement amounts
     Vector3 movePerInverseMass = ContactNormal * (Penetration / totalInverseMass);
     ResolutionResult result;
-    result.MovementA = movePerInverseMass * ParticleA->GetInverseMass();
+    result.MovementA = movePerInverseMass * BodyA->GetInverseMass();
     result.MovementB = Vector3::Zero;
-    if (ParticleB != NULL)
+    if (BodyB != NULL)
     {
-        result.MovementB = movePerInverseMass * -ParticleB->GetInverseMass();
+        result.MovementB = movePerInverseMass * -BodyB->GetInverseMass();
     }
 
     // Apply penetration resolution
-    Vector3 positionA = ParticleA->GetPosition() + result.MovementA;
-    ParticleA->SetPosition(positionA);
-    if (ParticleB != NULL)
+    Vector3 positionA = BodyA->GetPosition() + result.MovementA;
+    BodyA->SetPosition(positionA);
+    if (BodyB != NULL)
     {
-        Vector3 positionB = ParticleB->GetPosition() + result.MovementB;
-        ParticleB->SetPosition(positionB);
+        Vector3 positionB = BodyB->GetPosition() + result.MovementB;
+        BodyB->SetPosition(positionB);
     }
 
     return result;
 }
 
-ParticleContactResolver::ParticleContactResolver(unsigned int iterations)
+ContactResolver::ContactResolver(unsigned int iterations)
 {
     SetIterations(iterations);
 }
 
-void ParticleContactResolver::SetIterations(unsigned int iterations)
+void ContactResolver::SetIterations(unsigned int iterations)
 {
     m_iterations = iterations;
 }
@@ -141,7 +148,7 @@ may change the closing velocity for other contacts, so check all contacts again 
 Since resolving one contact could create another contact, we could end up with an infinite loop of endless contacts.
 So, limit the total number of iterations (in practice this should be enough to resolve most contact sets in a 
 believable way)*/
-void ParticleContactResolver::ResolveContacts(ParticleContact* contacts, unsigned int numContacts, float deltaTime)
+void ContactResolver::ResolveContacts(RigidBodyContact* contacts, unsigned int numContacts, float deltaTime)
 {
     unsigned int iterationsUsed = 0;
     while(iterationsUsed < m_iterations)
@@ -164,28 +171,28 @@ void ParticleContactResolver::ResolveContacts(ParticleContact* contacts, unsigne
             break;
 
         // Resolve the contact we chose
-        ParticleContact::ResolutionResult result = contacts[maxIndex].Resolve(deltaTime);
+        RigidBodyContact::ResolutionResult result = contacts[maxIndex].Resolve(deltaTime);
 
         // Update the interpenetration for each particle
         for (unsigned int i = 0; i < numContacts; i++)
         {
-            if (contacts[i].ParticleA == contacts[maxIndex].ParticleA)
+            if (contacts[i].BodyA == contacts[maxIndex].BodyA)
             {
                 contacts[i].Penetration -= result.MovementA.Dot(contacts[i].ContactNormal);
             }
-            else if (contacts[i].ParticleA == contacts[maxIndex].ParticleB)
+            else if (contacts[i].BodyA == contacts[maxIndex].BodyB)
             {
                 contacts[i].Penetration -= result.MovementB.Dot(contacts[i].ContactNormal);
             }
 
-            if (contacts[i].ParticleB == NULL)
+            if (contacts[i].BodyB == NULL)
                 continue;
 
-            if (contacts[i].ParticleB == contacts[maxIndex].ParticleA)
+            if (contacts[i].BodyB == contacts[maxIndex].BodyA)
             {
                 contacts[i].Penetration += result.MovementA.Dot(contacts[i].ContactNormal);
             }
-            else if (contacts[i].ParticleB == contacts[maxIndex].ParticleB)
+            else if (contacts[i].BodyB == contacts[maxIndex].BodyB)
             {
                 contacts[i].Penetration += result.MovementB.Dot(contacts[i].ContactNormal);
             }

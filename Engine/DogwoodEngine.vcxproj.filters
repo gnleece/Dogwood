@@ -223,6 +223,9 @@
     <ClInclude Include="Include\Physics\PhysicsEngine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Include\Physics\RigidBodyContact.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Debugging\DebugCameraControls.cpp">
@@ -373,6 +376,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Src\Physics\PhysicsEngine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Physics\RigidBodyContact.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
