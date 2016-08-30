@@ -6,6 +6,8 @@ using std::string;
 
 class QTextEdit;
 
+// TODO reconcile with Engine DebugLog
+
 class DebugLogger
 {
 public:

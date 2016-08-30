@@ -27,6 +27,7 @@ ENGINE
 
     * Debugging
         * Debug logging (with streams)
+            * Convert printfs to use logging system
         * Tweakables?
 
     * Fix-up stuff

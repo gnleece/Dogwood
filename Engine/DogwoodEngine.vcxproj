@@ -85,6 +85,7 @@
     <ClInclude Include="Include\Components\TestComponent.h" />
     <ClInclude Include="Include\Debugging\DebugCameraControls.h" />
     <ClInclude Include="Include\Debugging\DebugDraw.h" />
+    <ClInclude Include="Include\Debugging\DebugLog.h" />
     <ClInclude Include="Include\Game.h" />
     <ClInclude Include="Include\GameComponent.h" />
     <ClInclude Include="Include\GameComponentFactory.h" />
@@ -141,6 +142,7 @@
     <ClCompile Include="Src\Components\TestComponent.cpp" />
     <ClCompile Include="Src\Debugging\DebugCameraControls.cpp" />
     <ClCompile Include="Src\Debugging\DebugDraw.cpp" />
+    <ClCompile Include="Src\Debugging\DebugLog.cpp" />
     <ClCompile Include="Src\Game.cpp" />
     <ClCompile Include="Src\GameComponent.cpp" />
     <ClCompile Include="Src\GameObject.cpp" />
