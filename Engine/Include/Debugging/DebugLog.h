@@ -1,7 +1,10 @@
 #pragma once
 
 #include <string>
+#include <iostream>
+#include <fstream>
 
+using std::ofstream;
 using std::string;
 
 class DebugLog
@@ -9,12 +12,13 @@ class DebugLog
 public:
     enum LogType
     {
-        Rendering = 1,
-        Physics = 2,
-        GameObject = 4,
-        Other = 8
+        Standard = 1,
+        Rendering = 2,
+        Physics = 4,
+        GameObject = 8,
+        Assets = 16
     };
-    const int ALL_TYPES = Rendering | Physics | GameObject | Other;
+    const int ALL_TYPES = Standard | Rendering | Physics | GameObject;
 
     static DebugLog& Singleton()
     {
@@ -23,12 +27,16 @@ public:
     }
     DebugLog() {}
 
-    void    Startup();
-    void    Shutdown();
+    void        Startup(string logFilepath = "");
+    void        Shutdown();
 
-    void    Log(string text, LogType type);
-    void    SetEnabledTypes(int typeBitMask);
+    void        Log(string text, LogType type);
+    void        SetEnabledTypes(int typeBitMask);
+    void        SetLogFile(string logFilepath);
+    void        EnableStdOut(bool enable);
 
 private:
-    int     m_enabledTypes;
+    int         m_enabledTypes;
+    bool        m_stdOutEnabled;
+    ofstream    m_logfile;
 };
