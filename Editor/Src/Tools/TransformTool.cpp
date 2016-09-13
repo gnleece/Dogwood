@@ -12,8 +12,8 @@ void TransformTool::Init(SceneViewWidget* parent)
     m_transform = NULL;
     
     // Init gnomon
-    m_arrowBase = 0.1f;
-    m_arrowHeight = 0.2f;
+    m_arrowBase = 0.25f;
+    m_arrowHeight = 0.5f;
     m_gnomon.Init(m_arrowBase, m_arrowHeight);
 
     // Calculate & store the transforms for each arrow on the gnomon

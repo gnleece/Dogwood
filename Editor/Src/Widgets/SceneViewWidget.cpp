@@ -171,7 +171,7 @@ void SceneViewWidget::focusOutEvent(QFocusEvent* /*event*/)
     }
 }
 
-void SceneViewWidget::TranslateSelectedObject(Vector3 offset)
+void SceneViewWidget::TranslateSelectedObject(Vector3& offset)
 {
     Vector3 position = m_window->GetSelectedObject()->GetTransform().GetLocalPosition();
     position = position + offset;
@@ -198,7 +198,7 @@ void SceneViewWidget::SetTransformToolMode(TransformTool::eMode mode)
 }
 
 // TODO fix this to manipulate camera transform instead of view transform
-void SceneViewWidget::TranslateCamera(Vector3 localSpaceOffset)
+void SceneViewWidget::TranslateCamera(Vector3& localSpaceOffset)
 {
     Matrix4x4 cameraRotation = Rotation(m_cameraPitch, eAXIS::AXIS_X)*Rotation(m_cameraYaw, eAXIS::AXIS_Y);
     Vector3 offset = (Vector4(localSpaceOffset, 0)*cameraRotation).xyz();
@@ -284,7 +284,7 @@ void SceneViewWidget::HandleSelectionClick(const QPointF clickPosition)
     }
 }
 
-bool SceneViewWidget::PickTool(const QPointF clickPosition, Vector3 rayOrigin, Vector3 rayDirection)
+bool SceneViewWidget::PickTool(const QPointF clickPosition, Vector3& rayOrigin, Vector3& rayDirection)
 {
     if (m_transformTool.OnMouseDown(clickPosition.x(), clickPosition.y(), rayOrigin, rayDirection))
     {
@@ -294,7 +294,7 @@ bool SceneViewWidget::PickTool(const QPointF clickPosition, Vector3 rayOrigin, V
     return false;
 }
 
-bool SceneViewWidget::PickObject(Vector3 rayOrigin, Vector3 rayDirection)
+bool SceneViewWidget::PickObject(Vector3& rayOrigin, Vector3& rayDirection)
 {
     // Raycast against the scene root to see if we have hit any objects in the scene
     GameObjectBase* rootObject = m_scene->GetToolsideRootObject();
@@ -310,7 +310,7 @@ bool SceneViewWidget::PickObject(Vector3 rayOrigin, Vector3 rayDirection)
     return false;
 }
 
-void SceneViewWidget::ExecuteModifyTransform(Vector3 vector, TransformVectorType type)
+void SceneViewWidget::ExecuteModifyTransform(Vector3& vector, TransformVectorType type)
 {
     ToolsideGameObject* selectedObject = m_window->GetSelectedObject();
     ModifyTransformCommand* command = new ModifyTransformCommand(selectedObject, vector, type);

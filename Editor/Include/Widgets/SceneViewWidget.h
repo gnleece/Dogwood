@@ -45,7 +45,7 @@ public:
     void focusInEvent(QFocusEvent * event);
     void focusOutEvent(QFocusEvent * event);
 
-    void TranslateSelectedObject(Vector3 offset);
+    void TranslateSelectedObject(Vector3& offset);
     void RotateSelectedObject(float offset, eAXIS axis);
     void ScaleSelectedObject(float offset, eAXIS axis);
 
@@ -64,16 +64,16 @@ private:
     const eMouseButton CAMERA_PAN_BUTTON = MOUSE_BUTTON_MIDDLE;
 
     enum CameraRotationType { DEBUG_CAMERA_PITCH, DEBUG_CAMERA_YAW }; // no roll
-    void TranslateCamera(Vector3 localSpaceOffset);
+    void TranslateCamera(Vector3& localSpaceOffset);
     void RotateCamera(CameraRotationType type, float degrees);
     void SetViewMatrix();
 
     void ClearMouseButtonState();
 
     void HandleSelectionClick(const QPointF clickPosition);
-    bool PickTool(const QPointF clickPosition, Vector3 rayOrigin, Vector3 rayDirection);
-    bool PickObject(Vector3 rayOrigin, Vector3 rayDirection);
-    void ExecuteModifyTransform(Vector3 vector, TransformVectorType type);
+    bool PickTool(const QPointF clickPosition, Vector3& rayOrigin, Vector3& rayDirection);
+    bool PickObject(Vector3& rayOrigin, Vector3& rayDirection);
+    void ExecuteModifyTransform(Vector3& vector, TransformVectorType type);
 
     static eMouseButton QtMouseButtonConvert(Qt::MouseButton qtButton);
 
