@@ -98,6 +98,7 @@ EDITOR
         - Keep constant gnomon size
         - Rotation tool behaviour is non-intuitive
         - Saving project should write asset list in consistent order
+            - Done for all except default resources
         - Fix GameObject child removal
         - Refresh widgets on schema rebuild
 
@@ -195,6 +196,7 @@ DESIGN DECISIONS
     - Serialization (raw XML -> HierarchicalSerializer)
     - TODO wrap all OpenGL
     - TODO quaternions
+    - TODO C#/XAML for Editor?
 
 References
 

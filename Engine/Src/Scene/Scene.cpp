@@ -17,6 +17,8 @@
 #include "Rendering\Texture.h"
 #include "Serialization\HierarchicalSerializer.h"
 
+#include <algorithm>
+
 Scene::Scene()
 : m_loaded(false)
 { }
@@ -356,8 +358,12 @@ void Scene::SaveResourceList(HierarchicalSerializer* serializer, unordered_set<u
 {
     serializer->PushScope("Resources");
 
-    unordered_set<unsigned int>::iterator iter;
-    for (iter = guids.begin(); iter != guids.end(); iter++)
+    // Copy the guids to a vector and sort, so that they are serialized in a consistent order
+    vector<unsigned int> guidList = vector<unsigned int>(guids.begin(), guids.end());
+    std::sort(guidList.begin(), guidList.end());
+
+    vector<unsigned int>::iterator iter;
+    for (iter = guidList.begin(); iter != guidList.end(); iter++)
     {
         serializer->InsertLeaf("Resource", "guid", *iter);
     }

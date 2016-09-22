@@ -38,6 +38,8 @@ public:
     virtual void        AddToGameObject(ToolsideGameObject* gameObject) = 0;
     virtual void        RemoveFromGameObject(ToolsideGameObject* gameObject) = 0;
 
+    bool                operator<(const ResourceInfo& other) const;
+
     unsigned int        guid;
     string              path;
 };

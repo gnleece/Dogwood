@@ -17,3 +17,8 @@ string                  WriteVector3ToString(Vector3 str);
 void                    FileCopy(string source, string destination);
 
 string                  GetFriendlyAssetNameFromPath(string path);
+
+template <typename T> bool PComp(const T * const & a, const T * const & b)
+{
+    return *a < *b;
+}

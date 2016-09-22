@@ -11,6 +11,13 @@
 #include "ToolsideGameObject.h"
 #include "ToolsideShaderSchema.h"
 
+#include <algorithm>
+
+bool ResourceInfo::operator<(const ResourceInfo& other) const
+{
+    return guid < other.guid;
+}
+
 struct TextureResourceInfo : ResourceInfo
 { 
     virtual Resource* Load()
@@ -317,7 +324,7 @@ void ResourceManager::SerializeResourceMap(HierarchicalSerializer* serializer)
     SerializeResourceList(serializer, "Shaders",    shaderList);
     SerializeResourceList(serializer, "Scripts",    scriptList);
 
-    // Serialize default resource lookup
+    // Serialize default resource lookup  // TODO sort based on guid
     serializer->PushScope("DefaultResources");
     unordered_map<string, unsigned int>::iterator defIter;
     for (defIter = m_defaultResources.begin(); defIter != m_defaultResources.end(); defIter++)
@@ -336,6 +343,7 @@ void ResourceManager::SerializeResourceList(HierarchicalSerializer* serializer, 
 {
     serializer->PushScope(name);
 
+    std::sort(resources.begin(), resources.end(), PComp<ResourceInfo>);
     vector<ResourceInfo*>::iterator iter;
     for (iter = resources.begin(); iter != resources.end(); iter++)
     {

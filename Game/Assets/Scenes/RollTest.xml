@@ -378,7 +378,7 @@
         <GameObject guid="3232391516" name="Origin">
             <Transform>
                 <Position x="0" y="0" z="0"/>
-                <Rotation x="0" y="0" z="0"/>
+                <Rotation x="0" y="-0" z="0"/>
                 <Scale x="0.2" y="0.2" z="0.2"/>
             </Transform>
             <Mesh guid="396944253">
@@ -394,20 +394,20 @@
         </GameObject>
     </GameObject>
     <Resources>
-        <Resource guid="3378413933"/>
+        <Resource guid="33727872"/>
+        <Resource guid="156145593"/>
+        <Resource guid="396944253"/>
+        <Resource guid="536475533"/>
+        <Resource guid="870516493"/>
+        <Resource guid="1863496264"/>
         <Resource guid="2152164934"/>
         <Resource guid="2234616278"/>
-        <Resource guid="33727872"/>
-        <Resource guid="3746892247"/>
-        <Resource guid="870516493"/>
-        <Resource guid="156145593"/>
-        <Resource guid="3303202035"/>
         <Resource guid="3125582585"/>
         <Resource guid="3205911089"/>
-        <Resource guid="536475533"/>
+        <Resource guid="3303202035"/>
+        <Resource guid="3378413933"/>
+        <Resource guid="3746892247"/>
         <Resource guid="3780387270"/>
-        <Resource guid="1863496264"/>
         <Resource guid="3936014360"/>
-        <Resource guid="396944253"/>
     </Resources>
 </Scene>
