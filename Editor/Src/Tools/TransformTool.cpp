@@ -32,7 +32,7 @@ void TransformTool::Draw()
 {
     if (m_transform != NULL)
     {
-        m_gnomon.Draw(m_transform->GetWorldMatrix());
+        m_gnomon.Draw(*m_transform);
     }
 }
 
@@ -51,6 +51,7 @@ bool TransformTool::OnMouseDown(int screenX, int screenY, Vector3 rayOrigin, Vec
     if (m_transform == NULL)
         return false;
 
+    Transform gnomonTransform = m_gnomon.GetScaledTransform(*m_transform);
     float arrowRadius = m_arrowHeight/2;
 
     // Raycast against each arrow of the gnomon to determine if one was clicked
@@ -59,7 +60,7 @@ bool TransformTool::OnMouseDown(int screenX, int screenY, Vector3 rayOrigin, Vec
     for (int i = 0; i < 3; i++)
     {
         Raycast::HitInfo hitInfo;
-        Vector3 arrowCenter = ((*m_transform)*m_arrowTransforms[i]).GetWorldPosition();
+        Vector3 arrowCenter = ((gnomonTransform)*m_arrowTransforms[i]).GetWorldPosition();
         bool hit = Raycast::RaycastSphere(rayOrigin, rayDirection, arrowRadius, arrowCenter, hitInfo);
         if (hit && hitInfo.distance < minDistance)
         {
@@ -74,8 +75,8 @@ bool TransformTool::OnMouseDown(int screenX, int screenY, Vector3 rayOrigin, Vec
         m_activeAxis = (eAXIS)arrowIndex;
 
         // Calculate the equation of the line for the active axis, in screen space
-        m_activeAxisPoint0 = RenderManager::Singleton().ToScreenSpace(m_transform->GetWorldPosition());
-        m_activeAxisPoint1 = RenderManager::Singleton().ToScreenSpace(((*m_transform)*m_arrowTransforms[m_activeAxis]).GetWorldPosition());
+        m_activeAxisPoint0 = RenderManager::Singleton().ToScreenSpace(gnomonTransform.GetWorldPosition());
+        m_activeAxisPoint1 = RenderManager::Singleton().ToScreenSpace(((gnomonTransform)*m_arrowTransforms[m_activeAxis]).GetWorldPosition());
         m_vertical = true;
         if (m_activeAxisPoint1.x() - m_activeAxisPoint0.x() != 0)
         {

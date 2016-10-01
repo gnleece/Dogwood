@@ -1,7 +1,8 @@
 #pragma once
 
-#include "..\Math\Algebra.h"
-#include "..\Rendering\Color.h"
+#include "Math\Algebra.h"
+#include "Math\Transform.h"
+#include "Rendering\Color.h"
 
 #define GLEW_STATIC
 #include <GL/glew.h>
@@ -74,7 +75,8 @@ struct Gnomon
 {
 public:
     void            Init(float arrowBase = 0.1f, float arrowHeight = 0.2f);
-    void            Draw(Matrix4x4& transform);
+    void            Draw(Transform& transform);
+    Transform       GetScaledTransform(Transform& transform);       // TODO ugh, hacks
 
 private:
     GLuint          m_positionBufferID;

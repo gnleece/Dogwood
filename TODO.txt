@@ -101,9 +101,12 @@ EDITOR
             - Done for all except default resources
         - Fix GameObject child removal
         - Refresh widgets on schema rebuild
+        - Zoom/rotate camera in editor to show gnomon if it's out of view on object select
 
         Hi pri
-        - fix translation tool interactions
+        - Fix translation tool interactions
+            - Local vs. global
+            - Proper hit detection on actual arrows
         - Undo/redo broken with delete/undo create. Need to avoid use of QModelIndex
         - Move processing scripts out of Editor and into Engine
         - Engine component setup for new projects

@@ -180,7 +180,7 @@ void Gnomon::Init(float arrowBase, float arrowHeight)
     m_shader = RenderManager::Singleton().GetCommonShader(RenderManager::eCommonShader::SHADER_UNLIT);
 }
 
-void Gnomon::Draw(Matrix4x4& transform)
+void Gnomon::Draw(Transform& transform)
 {
     // Disable depth so that gnomon renders on top of everything
     glDisable(GL_DEPTH_TEST);
@@ -191,17 +191,11 @@ void Gnomon::Draw(Matrix4x4& transform)
     // Bind arrays/buffers
     glBindVertexArray(m_vertexArrayID);
 
-    // Scale the gnomon to be a (roughly) constant size in screen space
-    Transform gnomonTransform(transform);
-    Vector3 cameraPosition = RenderManager::Singleton().GetCameraTransform().GetWorldPosition();
-    Vector3 gnomonPosition = gnomonTransform.GetWorldPosition();
-    float distance = Vector3::Distance(cameraPosition, gnomonPosition);
-    Vector3 normalizedScale = 0.1f * distance * Vector3::One;
-    gnomonTransform.SetLocalScale(normalizedScale);
+    Transform scaledTransform = GetScaledTransform(transform);
 
     // Set model matrix
     GLint uniModel = m_shader->GetUniformLocation("model");
-    glUniformMatrix4fv(uniModel, 1, GL_FALSE, gnomonTransform.GetWorldMatrix().Transpose().Start());
+    glUniformMatrix4fv(uniModel, 1, GL_FALSE, scaledTransform.GetWorldMatrix().Transpose().Start());
 
     // Bind position data
     GLint posParamLocation = m_shader->GetAttributeLocation("position");
@@ -223,12 +217,24 @@ void Gnomon::Draw(Matrix4x4& transform)
     glDisableVertexAttribArray(colParamLocation);
 
     // Draw arrows!
-    m_arrow.Draw(gnomonTransform.GetWorldMatrix()*(m_arrowTransforms[0]), ColorRGB::Red);
-    m_arrow.Draw(gnomonTransform.GetWorldMatrix()*(m_arrowTransforms[1]), ColorRGB::Green);
-    m_arrow.Draw(gnomonTransform.GetWorldMatrix()*(m_arrowTransforms[2]), ColorRGB::Blue);
+    m_arrow.Draw(scaledTransform.GetWorldMatrix()*(m_arrowTransforms[0]), ColorRGB::Red);
+    m_arrow.Draw(scaledTransform.GetWorldMatrix()*(m_arrowTransforms[1]), ColorRGB::Green);
+    m_arrow.Draw(scaledTransform.GetWorldMatrix()*(m_arrowTransforms[2]), ColorRGB::Blue);
 
     // Re-enable depth
     glEnable(GL_DEPTH_TEST);
+}
+
+Transform Gnomon::GetScaledTransform(Transform& transform)
+{
+    // Scale the gnomon to be a (roughly) constant size in screen space
+    Transform gnomonTransform(transform);
+    Vector3 cameraPosition = RenderManager::Singleton().GetCameraTransform().GetWorldPosition();
+    Vector3 gnomonPosition = gnomonTransform.GetWorldPosition();
+    float distance = Vector3::Distance(cameraPosition, gnomonPosition);
+    Vector3 normalizedScale = 0.1f * distance * Vector3::One;
+    gnomonTransform.SetLocalScale(normalizedScale);
+    return gnomonTransform;
 }
 
 void DebugPrimitive::Draw(Matrix4x4& transform, ColorRGB& color, bool useDepth)
