@@ -50,6 +50,7 @@ public:
     void ScaleSelectedObject(float offset, eAXIS axis);
 
     void SetTransformToolMode(TransformTool::eMode mode);
+    void SetTransformToolSpace(TransformTool::eSpace space);
 
 private:
     const float CAMERA_ROTATE_AMOUNT = 0.1f;

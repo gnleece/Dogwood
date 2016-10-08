@@ -197,6 +197,11 @@ void SceneViewWidget::SetTransformToolMode(TransformTool::eMode mode)
     m_transformTool.SetMode(mode);
 }
 
+void SceneViewWidget::SetTransformToolSpace(TransformTool::eSpace space)
+{
+    m_transformTool.SetSpace(space);
+}
+
 // TODO fix this to manipulate camera transform instead of view transform
 void SceneViewWidget::TranslateCamera(Vector3& localSpaceOffset)
 {

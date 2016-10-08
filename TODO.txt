@@ -24,6 +24,7 @@ ENGINE
     * Shading
         * Multiple light sources?
     * Transform math helpers
+        * Transform worldspace setters
 
     * Debugging
         * Debug logging (with streams)
@@ -85,7 +86,7 @@ EDITOR
         * Use cones instead of pyramids for gnomon arrows
 
     * Object manipulation
-        * Local vs. Global option
+        * Better rotation widget (and fix global vs local)
     
     * Window resizing
 

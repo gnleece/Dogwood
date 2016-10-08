@@ -95,6 +95,8 @@ void MainEditorWindow::SetupMenuCommands()
     connect(m_ui->transformButton_Translate,    SIGNAL(clicked()),   this, SLOT(TransformTranslateButton()));
     connect(m_ui->transformButton_Rotate,       SIGNAL(clicked()),   this, SLOT(TransformRotateButton()));
     connect(m_ui->transformButton_Scale,        SIGNAL(clicked()),   this, SLOT(TransformScaleButton()));
+    connect(m_ui->spaceButton_Local,            SIGNAL(clicked()),   this, SLOT(TransformLocalButton()));
+    connect(m_ui->spaceButton_Global,           SIGNAL(clicked()),   this, SLOT(TransformGlobalButton()));
 
     // Component menu
     connect(m_ui->actionRebuild_Script_Info,    SIGNAL(triggered()), this, SLOT(RebuildComponentSchema()));
@@ -531,6 +533,20 @@ void MainEditorWindow::TransformScaleButton()
     m_ui->transformButton_Translate->setChecked(false);
     m_ui->transformButton_Rotate->setChecked(false);
     m_ui->transformButton_Scale->setChecked(true);
+}
+
+void MainEditorWindow::TransformLocalButton()
+{
+    m_sceneViewWidget->SetTransformToolSpace(TransformTool::TOOL_SPACE_LOCAL);
+    m_ui->spaceButton_Local->setChecked(true);
+    m_ui->spaceButton_Global->setChecked(false);
+}
+
+void MainEditorWindow::TransformGlobalButton()
+{
+    m_sceneViewWidget->SetTransformToolSpace(TransformTool::TOOL_SPACE_GLOBAL);
+    m_ui->spaceButton_Local->setChecked(false);
+    m_ui->spaceButton_Global->setChecked(true);
 }
 
 void MainEditorWindow::AddMeshPrimitive(const QString& meshName)

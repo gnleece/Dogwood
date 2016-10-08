@@ -109,6 +109,8 @@ private slots:
     void TransformTranslateButton();
     void TransformRotateButton();
     void TransformScaleButton();
+    void TransformLocalButton();
+    void TransformGlobalButton();
 
     void AddMeshPrimitive(const QString& meshName);
     void AddCollider(int type);

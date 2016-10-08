@@ -9,6 +9,7 @@ void TransformTool::Init(SceneViewWidget* parent)
 {
     BaseSceneTool::Init(parent);
     m_mode = TOOL_MODE_TRANSLATE;
+    m_space = TOOL_SPACE_LOCAL;
     m_transform = NULL;
     
     // Init gnomon
@@ -32,7 +33,14 @@ void TransformTool::Draw()
 {
     if (m_transform != NULL)
     {
-        m_gnomon.Draw(*m_transform);
+        if (m_space == TOOL_SPACE_LOCAL)
+        {
+            m_gnomon.Draw(*m_transform);
+        }
+        else
+        {
+            m_gnomon.Draw(UnrotatedTransform(m_transform));
+        }
     }
 }
 
@@ -46,12 +54,30 @@ TransformTool::eMode TransformTool::GetMode()
     return m_mode;
 }
 
+void TransformTool::SetSpace(eSpace space)
+{
+    m_space = space;
+}
+
+TransformTool::eSpace TransformTool::GetSpace()
+{
+    return m_space;
+}
+
 bool TransformTool::OnMouseDown(int screenX, int screenY, Vector3 rayOrigin, Vector3 rayDirection)
 {
     if (m_transform == NULL)
         return false;
 
-    Transform gnomonTransform = m_gnomon.GetScaledTransform(*m_transform);
+    Transform gnomonTransform;
+    if (m_space == TOOL_SPACE_LOCAL)
+    {
+        gnomonTransform = m_gnomon.GetScaledTransform(*m_transform);
+    }
+    else
+    {
+        gnomonTransform = m_gnomon.GetScaledTransform(UnrotatedTransform(m_transform));
+    }
     float arrowRadius = m_arrowHeight/2;
 
     // Raycast against each arrow of the gnomon to determine if one was clicked
@@ -154,8 +180,11 @@ void TransformTool::ApplyTranslation(float direction, float scale)
     // Use active axis to determine direction of motion
     Vector3 offset = direction*scale*m_arrowTransforms[m_activeAxis].GetWorldPosition();
 
-    // Convert offset into object's local space
-    //offset = (m_localTransform.GetMatrix()*Vector4(offset, 0)).xyz();
+    if (m_space == TOOL_SPACE_LOCAL)
+    {
+        // Convert offset into object's local space
+        offset = (m_transform->GetLocalMatrix()*Vector4(offset, 0)).xyz();
+    }
 
     // Apply the offset
     m_parent->TranslateSelectedObject(offset);
@@ -171,4 +200,13 @@ void TransformTool::ApplyScale(float direction, float scale)
 {
     float offset = direction*scale;
     m_parent->ScaleSelectedObject(offset, m_activeAxis);
+}
+
+Transform TransformTool::UnrotatedTransform(Transform* transform)
+{
+    // TODO there should be worldspace setters on Transform
+    Transform unrotated;
+    unrotated.SetLocalPosition(transform->GetWorldPosition());
+    unrotated.SetLocalScale(transform->GetWorldScale());
+    return unrotated;
 }
