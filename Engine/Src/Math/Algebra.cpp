@@ -399,6 +399,54 @@ void Vector4::SetW(float w)
     m_values[3] = w;
 }
 
+float Vector4::MagnitudeSqrd() const
+{
+    return m_values[0] * m_values[0] +
+           m_values[1] * m_values[1] +
+           m_values[2] * m_values[2] +
+           m_values[3] * m_values[3];
+}
+
+float Vector4::Magnitude() const
+{
+    return sqrtf(MagnitudeSqrd());
+}
+
+// TODO make this more robust against floating point weirdness
+Vector4 Vector4::Normalized() const
+{
+    Vector4 ret = *this;
+    float mag = ret.Magnitude();
+    if (mag == 0)
+        return ret;
+
+    ret[0] /= mag;
+    ret[1] /= mag;
+    ret[2] /= mag;
+    ret[3] /= mag;
+
+    return ret;
+}
+
+void Vector4::Normalize()
+{
+    Vector4 n = Normalized();
+    m_values[0] = n[0];
+    m_values[1] = n[1];
+    m_values[2] = n[2];
+    m_values[3] = n[3];
+}
+
+float Vector4::MaxElement()
+{
+    return fmax(m_values[0], fmax(m_values[1], fmax(m_values[2], m_values[3])));
+}
+
+float Vector4::MinElement()
+{
+    return fmin(m_values[0], fmin(m_values[1], fmin(m_values[2], m_values[3])));
+}
+
 Vector4 operator +(const Vector4& a, const Vector4& b)
 {
   return Vector4(a[0]+b[0], a[1]+b[1], a[2]+b[2], a[3]+b[3]);

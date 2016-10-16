@@ -124,6 +124,15 @@ public:
     void        SetZ(float z);
     void        SetW(float w);
 
+    float       MagnitudeSqrd() const;
+    float       Magnitude() const;
+
+    Vector4     Normalized() const;
+    void        Normalize();
+
+    float       MaxElement();
+    float       MinElement();
+
     void        DebugPrint();
 
 private:
