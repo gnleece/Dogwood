@@ -235,7 +235,7 @@ void SceneViewWidget::SetViewMatrix()
     Matrix4x4 view = Rotation(m_cameraPitch, eAXIS::AXIS_X)*Rotation(m_cameraYaw, eAXIS::AXIS_Y);
     
     view = view*Translation(m_cameraOffset);
-    RenderManager::Singleton().SetViewTransform(Transform(view));
+    RenderManager::Singleton().GetCamera().SetViewTransform(Transform(view));
 }
 
 void SceneViewWidget::ClearMouseButtonState()
@@ -252,15 +252,15 @@ void SceneViewWidget::HandleSelectionClick(const QPointF clickPosition)
     if (m_scene == NULL || m_scene->GetRootObject() == NULL)
         return;
 
-    // TODO move this code into a Util function somewhere
+    // TODO move this code into Camera class
 
     // Viewport coords: x in [0, width], y in [0, height]
     int screenX = clickPosition.x();
     int screenY = clickPosition.y();
 
     // Normalized coords: x in [-1, 1], y in [-1, 1]
-    int width = RenderManager::Singleton().GetConfig().width;
-    int height = RenderManager::Singleton().GetConfig().height;
+    int width = RenderManager::Singleton().GetViewportWidth();
+    int height = RenderManager::Singleton().GetViewportHeight();
     float normalizedX = (2.0f * screenX) / width - 1.0f;
     float normalizedY = 1.0f - (2.0f * screenY) / height;
 
@@ -268,16 +268,16 @@ void SceneViewWidget::HandleSelectionClick(const QPointF clickPosition)
     Vector4 rayDirectionClipSpace = Vector4(normalizedX, normalizedY, -1.0, 1.0);
 
     // Ray direction: clip space -> camera space
-    Vector4 rayDirectionCameraSpace = RenderManager::Singleton().GetProjectionTransform().GetWorldMatrix().Inverse() * rayDirectionClipSpace;
+    Vector4 rayDirectionCameraSpace = RenderManager::Singleton().GetCamera().GetProjectionTransform().GetWorldMatrix().Inverse() * rayDirectionClipSpace;
     rayDirectionCameraSpace[2] = -1;     // we only need to unproject x and y, not z and w
     rayDirectionCameraSpace[3] = 0;
 
     // Ray direction: camera space -> world space
-    Vector3 rayDirectionWorldSpace = (RenderManager::Singleton().GetCameraTransform() * rayDirectionCameraSpace).xyz();
+    Vector3 rayDirectionWorldSpace = (RenderManager::Singleton().GetCamera().GetCameraTransform() * rayDirectionCameraSpace).xyz();
     rayDirectionWorldSpace = rayDirectionWorldSpace.Normalized();
 
     // Ray origin: camera position (world space)
-    Vector3 rayOriginWorldSpace = RenderManager::Singleton().GetCameraTransform().GetWorldPosition();
+    Vector3 rayOriginWorldSpace = RenderManager::Singleton().GetCamera().GetCameraTransform().GetWorldPosition();
 
     // First, check whether the click hit any of the tools
     bool hitTool = PickTool(clickPosition, rayOriginWorldSpace, rayDirectionWorldSpace);

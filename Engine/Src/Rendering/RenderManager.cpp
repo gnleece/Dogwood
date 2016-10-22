@@ -4,19 +4,15 @@
 #include "Debugging\DebugDraw.h"
 #include "Physics\CollisionEngine.h"
 
-void RenderManager::Startup(RenderConfig& config)
+void RenderManager::Startup(int viewportWidth, int viewportHeight)
 {
     m_dirty = true;
     m_rootObject = NULL;
-    m_config = config;
-
-    // Prepare projection matrix
-    float aspect = (float)m_config.width / m_config.height;
-    Matrix4x4 projMatrix = PerspectiveProjection(m_config.FOV, aspect, m_config.nearPlane, m_config.farPlane);
-    m_projectionTransform.SetLocalMatrix(projMatrix);
-    glViewport(0, 0, m_config.width, m_config.height);
+    m_viewportWidth = viewportWidth;
+    m_viewportHeight = viewportHeight;
 
     // OpenGL setup
+    glViewport(0, 0, m_viewportWidth, m_viewportHeight);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
     glDepthFunc(GL_LESS);
@@ -27,8 +23,6 @@ void RenderManager::Startup(RenderConfig& config)
     {
         printf("Error in glewInit! Abort.\n");
     }
-
-    m_clearColor = m_config.clearColor;
 
     // Common asset setup
     LoadCommonShaders();
@@ -54,61 +48,23 @@ void RenderManager::SetLight(Light light)
     m_dirty = true;
 }
 
-void RenderManager::SetClearColor(ColorRGB Color)
+Camera& RenderManager::GetCamera()
 {
-    m_clearColor = Color;
+    return m_camera;
 }
 
-void RenderManager::SetCamera(Camera camera)
+void RenderManager::SetCamera(Camera& camera)
 {
-    m_viewTransform.SetLocalMatrix(LookAt(camera));
-    m_cameraTransform.SetLocalMatrix(m_viewTransform.GetInverseWorldMatrix());
-    m_dirty = true;
-}
-
-void RenderManager::SetCameraTransform(Transform& transform)
-{
-    SetCameraTransform(transform.GetWorldMatrix());
-}
-
-void RenderManager::SetCameraTransform(Matrix4x4& worldMatrix)
-{
-    m_cameraTransform.SetLocalMatrix(worldMatrix);
-    m_viewTransform.SetLocalMatrix(m_cameraTransform.GetInverseWorldMatrix());
-    m_dirty = true;
-}
-
-Transform& RenderManager::GetCameraTransform()
-{
-    return m_cameraTransform;
-}
-
-void RenderManager::SetViewTransform(Transform& transform)
-{
-    m_viewTransform.SetLocalMatrix(transform.GetWorldMatrix());
-    m_cameraTransform.SetLocalMatrix(m_viewTransform.GetInverseWorldMatrix());
-    m_dirty = true;
-}
-
-Transform& RenderManager::GetViewTransform()
-{
-    return m_viewTransform;
-}
-
-Transform& RenderManager::GetProjectionTransform()
-{
-    return m_projectionTransform;
-}
-
-RenderConfig& RenderManager::GetConfig()
-{
-    return m_config;
+    m_camera = camera;
+    m_camera.SetPixelWidth(m_viewportWidth);
+    m_camera.SetPixelHeight(m_viewportHeight);
 }
 
 void RenderManager::RenderScene()
 {
     // Clear the screen to black
-    glClearColor(m_clearColor.r, m_clearColor.g, m_clearColor.b, 1.0f);
+    ColorRGB clearColor = m_camera.GetClearColor();
+    glClearColor(clearColor.r, clearColor.g, clearColor.b, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // Render game objects
@@ -126,20 +82,35 @@ void RenderManager::ApplyGlobalParams(ShaderProgram* shader)
     // Light
     m_light.ApplyLight(shader);
 
+    Vector3 position = m_camera.GetPosition();
+    Vector3 direction = m_camera.GetDirection();
+    Vector3 up = m_camera.GetUp();
+
     // View matrix
     GLint viewLocation = shader->GetUniformLocation("view");
-    glUniformMatrix4fv(viewLocation, 1, GL_FALSE, m_viewTransform.GetLocalMatrix().Transpose().Start());
+    glUniformMatrix4fv(viewLocation, 1, GL_FALSE, m_camera.GetViewTransform().GetLocalMatrix().Transpose().Start());
 
     // Projection matrix
     GLint projLocation = shader->GetUniformLocation("proj");
-    glUniformMatrix4fv(projLocation, 1, GL_FALSE, m_projectionTransform.GetLocalMatrix().Transpose().Start());
+    glUniformMatrix4fv(projLocation, 1, GL_FALSE, m_camera.GetProjectionTransform().GetLocalMatrix().Transpose().Start());
 
     m_dirty = false;
+    m_camera.ClearDirtyFlag();
+}
+
+int RenderManager::GetViewportWidth()
+{
+    return m_viewportWidth;
+}
+
+int RenderManager::GetViewportHeight()
+{
+    return m_viewportHeight;
 }
 
 bool RenderManager::SettingsDirty()
 {
-    return m_dirty;
+    return m_dirty || m_camera.IsDirty();
 }
 
 ShaderProgram* RenderManager::GetCommonShader(eCommonShader name)
@@ -147,19 +118,6 @@ ShaderProgram* RenderManager::GetCommonShader(eCommonShader name)
     if (name >= 0 && name < NUM_COMMON_SHADERS)
         return m_commonShaders[name];
     return NULL;
-}
-
-Vector2 RenderManager::ToScreenSpace(Vector3 worldPosition)
-{
-    // TODO the math for this doesn't seem quite right, debug it
-    Vector2 screenPos;
-    Vector4 pos = (Vector4(worldPosition, 1));
-    Vector3 normalizedPosition = ((m_projectionTransform.GetWorldMatrix()*m_viewTransform.GetWorldMatrix())*pos).xyz();
-    float x = Clamp(normalizedPosition[0] / normalizedPosition[2], -1.f, 1.f);
-    float y = Clamp(normalizedPosition[1] / normalizedPosition[2], -1.f, 1.f);
-    screenPos[0] = (x + 1.0f) * m_config.width / 2.0f;
-    screenPos[1] = (1.0f - y) * m_config.height / 2.0f;
-    return screenPos;
 }
 
 void RenderManager::LoadCommonShaders()

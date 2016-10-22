@@ -6,6 +6,7 @@
 #include "Math\Algebra.h"
 #include "Math\Transform.h"
 #include "Math\Transformations.h"
+#include "Camera.h"
 #include "Light.h"
 #include "ShaderProgram.h"
 
@@ -13,17 +14,6 @@
 #include <GLFW/glfw3.h>
 
 class GameObjectBase;
-
-struct RenderConfig
-{
-public:
-    int width = 640;
-    int height = 480;
-    float FOV = 45.0f;
-    float nearPlane = 0.1f;
-    float farPlane = 1000.0f;
-    ColorRGB clearColor = ColorRGB::Black;
-};
 
 class RenderManager
 {
@@ -44,31 +34,24 @@ public:
         NUM_COMMON_SHADERS
     };
 
-    void            Startup(RenderConfig& config);
+    void            Startup(int viewportWidth, int viewportHeight);
     void            Shutdown();
 
     void            SetRootObject(GameObjectBase* rootObject);
     void            SetLight(Light light);
-    void            SetClearColor(ColorRGB Color);
 
-    void            SetCamera(Camera camera);
-    void            SetCameraTransform(Transform& transform);
-    void            SetCameraTransform(Matrix4x4& worldMatrix);
-    Transform&      GetCameraTransform();
-
-    void            SetViewTransform(Transform& transform);
-    Transform&      GetViewTransform();
-    Transform&      GetProjectionTransform();
-    RenderConfig&   GetConfig();
+    Camera&         GetCamera();
+    void            SetCamera(Camera& camera);
 
     void            RenderScene();
     void            ApplyGlobalParams(ShaderProgram* shader);
 
+    int             GetViewportWidth();
+    int             GetViewportHeight();
+
     bool            SettingsDirty();
 
     ShaderProgram*  GetCommonShader(eCommonShader name);
-
-    Vector2         ToScreenSpace(Vector3 worldPosition);
 
 private:
     RenderManager(RenderManager const&);
@@ -76,15 +59,11 @@ private:
 
     void            LoadCommonShaders();
 
-    RenderConfig    m_config;
-
+    int             m_viewportWidth;
+    int             m_viewportHeight;
+    Camera          m_camera;                   // TODO support multiple cameras
+    Light           m_light;                    // TODO support multiple light sources
     GameObjectBase* m_rootObject;
-    Light           m_light;        // TODO support multiple light sources
-    ColorRGB        m_clearColor;
-
-    Transform       m_viewTransform;
-    Transform       m_cameraTransform;          // Always the inverse of m_viewTransform
-    Transform       m_projectionTransform;
 
     bool            m_dirty;
 

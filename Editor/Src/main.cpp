@@ -22,11 +22,10 @@ int main(int argc, char *argv[])
     window.show();
 
     // Render setup. Must be done AFTER window (QT) setup
-    RenderConfig renderConfig;
-    renderConfig.width = 990;           // TODO set this properly
-    renderConfig.height = 610;
-    renderConfig.clearColor = ColorRGB(0.4f, 0.4f, 0.4f);
-    RenderManager::Singleton().Startup(renderConfig);
+    int renderWidth = 990;           // TODO set this properly
+    int renderHeight = 610;
+    ColorRGB clearColor = ColorRGB(0.4f, 0.4f, 0.4f);   // TODO fixme
+    RenderManager::Singleton().Startup(renderWidth, renderHeight);
     
     // Other manager setup
     ResourceManager::Singleton().Startup();

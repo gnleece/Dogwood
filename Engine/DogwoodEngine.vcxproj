@@ -169,6 +169,7 @@
     <ClCompile Include="Src\Physics\PhysicsEngine.cpp" />
     <ClCompile Include="Src\Physics\RigidBody.cpp" />
     <ClCompile Include="Src\Physics\RigidBodyContact.cpp" />
+    <ClCompile Include="Src\Rendering\Camera.cpp" />
     <ClCompile Include="Src\Rendering\Color.cpp" />
     <ClCompile Include="Src\Rendering\Image.cpp" />
     <ClCompile Include="Src\Rendering\Light.cpp" />

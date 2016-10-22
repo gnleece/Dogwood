@@ -177,9 +177,9 @@ void Scene::SaveGlobalSettings(HierarchicalSerializer* serializer)
 {
     // Camera
     serializer->PushScope("Camera");
-    serializer->InsertLeafVector3("Position",   m_mainCamera.position);
-    serializer->InsertLeafVector3("Direction",  m_mainCamera.direction);
-    serializer->InsertLeafVector3("Up",         m_mainCamera.up);
+    serializer->InsertLeafVector3("Position",   m_mainCamera.GetPosition());
+    serializer->InsertLeafVector3("Direction",  m_mainCamera.GetDirection());
+    serializer->InsertLeafVector3("Up",         m_mainCamera.GetUp());
     serializer->PopScope();
 
     // Light
@@ -377,9 +377,12 @@ void Scene::LoadGlobalSettings(HierarchicalDeserializer* deserializer)
 
     if (deserializer->PushScope("Camera"))
     {
-        deserializer->ReadLeafVector3("Position",   m_mainCamera.position);
-        deserializer->ReadLeafVector3("Direction",  m_mainCamera.direction);
-        deserializer->ReadLeafVector3("Up",         m_mainCamera.up);
+        Vector3 position, direction, up;
+        deserializer->ReadLeafVector3("Position",   position);
+        deserializer->ReadLeafVector3("Direction",  direction);
+        deserializer->ReadLeafVector3("Up",         up);
+        m_mainCamera.SetCameraPositionDirectionUp(position, direction, up);
+        // TOOD save/load additional camera settings
 
         RenderManager::Singleton().SetCamera(m_mainCamera);
         deserializer->PopScope();

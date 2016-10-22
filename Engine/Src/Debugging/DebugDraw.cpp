@@ -229,7 +229,7 @@ Transform Gnomon::GetScaledTransform(Transform& transform)
 {
     // Scale the gnomon to be a (roughly) constant size in screen space
     Transform gnomonTransform(transform);
-    Vector3 cameraPosition = RenderManager::Singleton().GetCameraTransform().GetWorldPosition();
+    Vector3 cameraPosition = RenderManager::Singleton().GetCamera().GetPosition();
     Vector3 gnomonPosition = gnomonTransform.GetWorldPosition();
     float distance = Vector3::Distance(cameraPosition, gnomonPosition);
     Vector3 normalizedScale = 0.1f * distance * Vector3::One;

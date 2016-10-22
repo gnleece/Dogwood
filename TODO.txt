@@ -21,8 +21,11 @@ ENGINE
     * Memory allocators
     * Prefabs
 
-    * Shading
-        * Multiple light sources?
+    * Rendering
+        * DirectX support
+        * Multiple cameras
+        * Multiple lights
+
     * Transform math helpers
         * Transform worldspace setters
 
@@ -45,6 +48,8 @@ ENGINE
 ---------------------------------------------------------------------------
 
 EDITOR
+
+    * Port to C#/XAML ?
 
     * Project
         * Project settings window
@@ -96,7 +101,6 @@ EDITOR
         Lo pri
         - Items don't auto expand when reparented
         - Scene view resolution isn't set nicely
-        - Keep constant gnomon size
         - Rotation tool behaviour is non-intuitive
         - Saving project should write asset list in consistent order
             - Done for all except default resources
@@ -137,7 +141,7 @@ SCENE/EDITOR REQUIREMENTS
     - Set the values of user defined (C++) components of game objects
     - Instance/duplicate game objects
 
-    - Position the camera
+    - Position the camera(s)
     - Position the light source(s), set parameters
 
 
@@ -198,7 +202,7 @@ DESIGN DECISIONS
     Refactors
     - Shaders (2 files per shader -> single file format)
     - Serialization (raw XML -> HierarchicalSerializer)
-    - TODO wrap all OpenGL
+    - TODO wrap all OpenGL (to allow DirectX support as alternate option)
     - TODO quaternions
     - TODO C#/XAML for Editor?
 

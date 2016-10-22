@@ -151,11 +151,6 @@ Matrix4x4 LookAt(const Vector3 & eye, const Vector3 & direction, const Vector3 &
     return m.Transpose();
 }
 
-Matrix4x4 LookAt(const Camera & camera)
-{
-    return LookAt(camera.position, camera.direction, camera.up);
-}
-
 Matrix4x4 PerspectiveProjection(float FOV, float aspect, float near, float far)
 {
     float f = 1/tan(DegreesToRadians(FOV/2));

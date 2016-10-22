@@ -47,10 +47,7 @@ void Game::Init(string projectPath, GameComponentFactory* componentFactory)
     CollisionEngine::Singleton().Startup();
 
     // Rendering setup
-    RenderConfig renderConfig;
-    renderConfig.width = windowWidth;
-    renderConfig.height = windowHeight;
-    RenderManager::Singleton().Startup(renderConfig);
+    RenderManager::Singleton().Startup(windowWidth, windowHeight);
 
     // Input setup
     InputManager::Singleton().Startup(&m_gameWindow);

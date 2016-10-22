@@ -101,8 +101,8 @@ bool TransformTool::OnMouseDown(int screenX, int screenY, Vector3 rayOrigin, Vec
         m_activeAxis = (eAXIS)arrowIndex;
 
         // Calculate the equation of the line for the active axis, in screen space
-        m_activeAxisPoint0 = RenderManager::Singleton().ToScreenSpace(gnomonTransform.GetWorldPosition());
-        m_activeAxisPoint1 = RenderManager::Singleton().ToScreenSpace(((gnomonTransform)*m_arrowTransforms[m_activeAxis]).GetWorldPosition());
+        m_activeAxisPoint0 = RenderManager::Singleton().GetCamera().WorldToScreenSpace(gnomonTransform.GetWorldPosition());
+        m_activeAxisPoint1 = RenderManager::Singleton().GetCamera().WorldToScreenSpace(((gnomonTransform)*m_arrowTransforms[m_activeAxis]).GetWorldPosition());
         m_vertical = true;
         if (m_activeAxisPoint1.x() - m_activeAxisPoint0.x() != 0)
         {
