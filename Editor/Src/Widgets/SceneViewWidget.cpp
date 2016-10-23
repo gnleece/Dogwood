@@ -4,6 +4,7 @@
 #include "MainEditorWindow.h"
 #include "ToolsideGameObject.h"
 #include "Debugging\DebugDraw.h"
+#include "Rendering\MeshInstance.h"
 #include "Rendering\RenderManager.h"
 #include "Scene\Scene.h"
 #include <QtWidgets>
@@ -51,8 +52,7 @@ void SceneViewWidget::SetScene(Scene* scene)
 {
     m_scene = scene;
 
-    // TODO fix these ugly hacks
-    m_cameraOffset = Vector3(0, -1, 5);
+    // TODO determine startup camera position / rotation
     m_cameraYaw = 180;
 }
 
@@ -147,6 +147,15 @@ void SceneViewWidget::keyPressEvent(QKeyEvent* event)
 {
     int key = event->key();
     m_keyStates[key] = true;
+
+    // TODO temp hack, remove
+    switch(key)
+    {
+    case 16777234: TranslateCamera(Vector3(CAMERA_PAN_AMOUNT * -5, 0, 0)); break;  // Left
+    case 16777236: TranslateCamera(Vector3(CAMERA_PAN_AMOUNT * 5, 0, 0));  break;  // Right
+    case 16777235: TranslateCamera(Vector3(0, CAMERA_PAN_AMOUNT * 5, 0));  break;  // Up
+    case 16777237: TranslateCamera(Vector3(0, CAMERA_PAN_AMOUNT * -5, 0)); break;  // Down
+    }
 }
 
 void SceneViewWidget::keyReleaseEvent(QKeyEvent* event)
@@ -202,20 +211,19 @@ void SceneViewWidget::SetTransformToolSpace(TransformTool::eSpace space)
     m_transformTool.SetSpace(space);
 }
 
-// TODO fix this to manipulate camera transform instead of view transform
 void SceneViewWidget::TranslateCamera(Vector3& localSpaceOffset)
 {
     Matrix4x4 cameraRotation = Rotation(m_cameraPitch, eAXIS::AXIS_X)*Rotation(m_cameraYaw, eAXIS::AXIS_Y);
     Vector3 offset = (Vector4(localSpaceOffset, 0)*cameraRotation).xyz();
 
-    // Add new offset to total offset and re-set view matrix
-    m_cameraOffset = m_cameraOffset + offset;
-    SetViewMatrix();
+    Vector3 newCameraPosition = RenderManager::Singleton().GetCamera().GetPosition() + offset;
+    RenderManager::Singleton().GetCamera().GetCameraTransform().SetLocalPosition(newCameraPosition);
 }
 
-// Camera only rotates in world X and world Y (i.e. only pitch and yaw, no roll)
 void SceneViewWidget::RotateCamera(CameraRotationType type, float degrees)
 {
+    // We accumulate pitch and yaw separately because we want to rotate the camera in
+    // world coords and never rotate in z (roll)
     if (type == DEBUG_CAMERA_PITCH)
     {
         m_cameraPitch += degrees;
@@ -225,17 +233,36 @@ void SceneViewWidget::RotateCamera(CameraRotationType type, float degrees)
         m_cameraYaw += degrees;
     }
 
-    SetViewMatrix();
+    Matrix4x4 view = Rotation(m_cameraPitch, eAXIS::AXIS_X)*Rotation(m_cameraYaw, eAXIS::AXIS_Y);
+    view = view*Translation(RenderManager::Singleton().GetCamera().GetPosition());
+    RenderManager::Singleton().GetCamera().SetViewTransform(Transform(view));
 }
 
-void SceneViewWidget::SetViewMatrix()
+void SceneViewWidget::CenterCameraOnSelectedObject()
 {
-    // We accumulate pitch and yaw separately because we want to rotate the camera in
-    // world coords and never rotate in z (roll)
-    Matrix4x4 view = Rotation(m_cameraPitch, eAXIS::AXIS_X)*Rotation(m_cameraYaw, eAXIS::AXIS_Y);
+    ToolsideGameObject* selectedObject = m_window->GetSelectedObject();
     
-    view = view*Translation(m_cameraOffset);
-    RenderManager::Singleton().GetCamera().SetViewTransform(Transform(view));
+    if (selectedObject == NULL)
+        return;
+
+    // Calculate how far away from the selected object to place the camera
+    float distance = 4.0f;
+    if (selectedObject->GetMeshInstance())
+    {
+        float size = selectedObject->GetMeshInstance()->GetBoundingRadius();
+        distance = distance * size;
+    }
+
+    // Position the camera so that the selected object is in the center of the view.
+    Vector3 objectPosition = selectedObject->GetTransform().GetWorldPosition();
+    Vector3 cameraForward = RenderManager::Singleton().GetCamera().GetCameraTransform().GetForward();
+    Vector3 newCameraPosition = objectPosition + distance*cameraForward;
+
+    RenderManager::Singleton().GetCamera().GetCameraTransform().SetLocalPosition(newCameraPosition);
+
+    // TODO this doesn't account for other objects that might be in the way in the line of sight
+    // TODO lerp to new camera position instead of jumping instantly
+    // TODO camera distance is weird for some objects, debug it
 }
 
 void SceneViewWidget::ClearMouseButtonState()
@@ -309,6 +336,11 @@ bool SceneViewWidget::PickObject(Vector3& rayOrigin, Vector3& rayDirection)
     if (hitObject != NULL)
     {
         m_window->SelectObject((ToolsideGameObject*)hitObject);
+        bool isInView = RenderManager::Singleton().GetCamera().IsInView(hitObject->GetTransform().GetWorldPosition());
+        if (!isInView)
+        {
+            CenterCameraOnSelectedObject();
+        }
         return true;
     }
     m_window->SelectObject(NULL);

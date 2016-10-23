@@ -143,6 +143,15 @@ Vector2 Camera::WorldToScreenSpace(Vector3 worldPosition)
     return screenPos;
 }
 
+bool Camera::IsInView(Vector3 worldPosition)
+{
+    Vector4 pos = (Vector4(worldPosition, 1));
+    Vector3 normalizedPosition = ((m_projectionTransform.GetWorldMatrix()*m_viewTransform.GetWorldMatrix())*pos).xyz();
+    float x = normalizedPosition[0] / normalizedPosition[2];
+    float y = normalizedPosition[1] / normalizedPosition[2];
+    return (x >= -1 && x <= 1 && y >= -1 && y <= 1);
+}
+
 bool Camera::IsDirty()
 {
     return m_dirty;

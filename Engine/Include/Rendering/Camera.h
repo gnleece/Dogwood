@@ -34,6 +34,7 @@ public:
     void        SetClearColor(ColorRGB clearColor);
 
     Vector2     WorldToScreenSpace(Vector3 worldPosition);
+    bool        IsInView(Vector3 worldPosition);
 
     bool        IsDirty();
     void        ClearDirtyFlag();

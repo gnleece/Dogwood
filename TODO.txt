@@ -106,7 +106,9 @@ EDITOR
             - Done for all except default resources
         - Fix GameObject child removal
         - Refresh widgets on schema rebuild
-        - Zoom/rotate camera in editor to show gnomon if it's out of view on object select
+        - Move camera in editor to show gnomon if it's out of view on object select
+            - Fixed for scene select but not hierarchy select
+            - Force on double click
 
         Hi pri
         - Fix translation tool interactions

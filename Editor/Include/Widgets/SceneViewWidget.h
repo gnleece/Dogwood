@@ -67,7 +67,7 @@ private:
     enum CameraRotationType { DEBUG_CAMERA_PITCH, DEBUG_CAMERA_YAW }; // no roll
     void TranslateCamera(Vector3& localSpaceOffset);
     void RotateCamera(CameraRotationType type, float degrees);
-    void SetViewMatrix();
+    void CenterCameraOnSelectedObject();
 
     void ClearMouseButtonState();
 
@@ -90,7 +90,6 @@ private:
     // Camera state
     float                       m_cameraPitch;
     float                       m_cameraYaw;
-    Vector3                     m_cameraOffset;
 
     // Tools
     TransformTool               m_transformTool;
