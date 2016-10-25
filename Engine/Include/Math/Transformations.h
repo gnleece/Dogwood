@@ -17,4 +17,5 @@ Matrix4x4 UniformScaling(float scale);
 Matrix4x4 LookAt(const Vector3& eye, const Vector3& direction, const Vector3& up);
 Matrix4x4 PerspectiveProjection(float FOV, float aspect, float near, float far);
 
-void DecomposeMatrix(const Matrix4x4& matrix, Vector3& position, Vector3& rotation, Vector3& scale);
+void DecomposeTRSMatrix(const Matrix4x4& matrix, Vector3& position, Vector3& rotation, Vector3& scale);
+void CalculateTRSMatrix(const Vector3& position, const Vector3& rotation, const Vector3& scale, Matrix4x4& matrix);

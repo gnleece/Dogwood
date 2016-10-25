@@ -161,7 +161,7 @@ Matrix4x4 PerspectiveProjection(float FOV, float aspect, float near, float far)
 }
 
 // rotation decomposition formula from http://nghiaho.com/?page_id=846
-void DecomposeMatrix(const Matrix4x4& matrix, Vector3& position, Vector3& rotation, Vector3& scale)
+void DecomposeTRSMatrix(const Matrix4x4& matrix, Vector3& position, Vector3& rotation, Vector3& scale)
 {
     // extract position (4th column)
     position = Vector3(matrix[0][3], matrix[1][3], matrix[2][3]);
@@ -183,4 +183,11 @@ void DecomposeMatrix(const Matrix4x4& matrix, Vector3& position, Vector3& rotati
     float rotY = RadiansToDegrees(atan2(-x[2], sqrtf(pow(y[2], 2) + pow(z[2], 2))));
     float rotZ = RadiansToDegrees(atan2(x[1], x[0]));
     rotation = Vector3(rotX, rotY, rotZ);
+}
+
+void CalculateTRSMatrix(const Vector3& position, const Vector3& rotation, const Vector3& scale, Matrix4x4& matrix)
+{
+    matrix = Translation(position);
+    matrix = matrix*RotationEulerAngles(rotation);
+    matrix = matrix*Scaling(scale);
 }

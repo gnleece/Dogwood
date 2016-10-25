@@ -24,6 +24,12 @@ public:
     void        SetLocalScale(Vector3& scale);
     void        SetLocalVector(Vector3& vector, TransformVectorType type);
 
+    void        SetWorldMatrix(Matrix4x4& m);
+    void        SetWorldPosition(Vector3& position);
+    void        SetWorldRotation(Vector3& rotation);
+    void        SetWorldScale(Vector3& scale);
+    void        SetWorldVector(Vector3& vector, TransformVectorType type);
+
     Matrix4x4&  GetLocalMatrix();
     Vector3&    GetLocalPosition();
     Vector3&    GetLocalRotation();

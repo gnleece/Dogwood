@@ -27,7 +27,7 @@ ENGINE
         * Multiple lights
 
     * Transform math helpers
-        * Transform worldspace setters
+        * Transform worldspace setters - need to test and replace
 
     * Debugging
         * Debug logging (with streams)
@@ -119,6 +119,7 @@ EDITOR
         - Engine component setup for new projects
         - Don't hardcode engine component guids
         - Fix light power loading - remove GLint from Light
+        - Camera controls got inverted
 
 ---------------------------------------------------------------------------
 

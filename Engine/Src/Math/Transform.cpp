@@ -49,7 +49,7 @@ void Transform::SetParent(Transform* parent)
 void Transform::SetLocalMatrix(Matrix4x4& m)
 {
     m_localMatrix = m;
-    DecomposeMatrix(m_localMatrix, m_localPosition, m_localRotation, m_localScale);
+    DecomposeTRSMatrix(m_localMatrix, m_localPosition, m_localRotation, m_localScale);
     m_recomputeLocal = false;
     SetRecomputeWorldFlag();
 }
@@ -82,6 +82,54 @@ void Transform::SetLocalVector(Vector3& vector, TransformVectorType type)
     case eVector_Position:  SetLocalPosition(vector);    break;
     case eVector_Rotation:  SetLocalRotation(vector);    break;
     case eVector_Scale:     SetLocalScale(vector);       break;
+    }
+}
+
+void Transform::SetWorldMatrix(Matrix4x4& m)
+{
+    m_localMatrix = m_parent != NULL ? m_parent->GetInverseWorldMatrix() * m : m;
+    DecomposeTRSMatrix(m_localMatrix, m_localPosition, m_localRotation, m_localScale);
+    m_recomputeLocal = false;
+    SetRecomputeWorldFlag();
+}
+
+void Transform::SetWorldPosition(Vector3& position)
+{
+    RecomputeWorldIfDirty();
+    CalculateTRSMatrix(position, m_worldRotation, m_worldScale, m_worldMatrix);
+    m_localMatrix = m_parent != NULL ? m_parent->GetInverseWorldMatrix() * m_worldMatrix : m_worldMatrix;
+    DecomposeTRSMatrix(m_localMatrix, m_localPosition, m_localRotation, m_localScale);
+    m_recomputeLocal = false;
+    SetRecomputeWorldFlag();
+}
+
+void Transform::SetWorldRotation(Vector3& rotation)
+{
+    RecomputeWorldIfDirty();
+    CalculateTRSMatrix(m_worldPosition, rotation, m_worldScale, m_worldMatrix);
+    m_localMatrix = m_parent != NULL ? m_parent->GetInverseWorldMatrix() * m_worldMatrix : m_worldMatrix;
+    DecomposeTRSMatrix(m_localMatrix, m_localPosition, m_localRotation, m_localScale);
+    m_recomputeLocal = false;
+    SetRecomputeWorldFlag();
+}
+
+void Transform::SetWorldScale(Vector3& scale)
+{
+    RecomputeWorldIfDirty();
+    CalculateTRSMatrix(m_worldPosition, m_worldRotation, scale, m_worldMatrix);
+    m_localMatrix = m_parent != NULL ? m_parent->GetInverseWorldMatrix() * m_worldMatrix : m_worldMatrix;
+    DecomposeTRSMatrix(m_localMatrix, m_localPosition, m_localRotation, m_localScale);
+    m_recomputeLocal = false;
+    SetRecomputeWorldFlag();
+}
+
+void Transform::SetWorldVector(Vector3& vector, TransformVectorType type)
+{
+    switch (type)
+    {
+    case eVector_Position:  SetWorldPosition(vector);    break;
+    case eVector_Rotation:  SetWorldRotation(vector);    break;
+    case eVector_Scale:     SetWorldScale(vector);       break;
     }
 }
 
@@ -247,11 +295,7 @@ void Transform::RecomputeLocalIfDirty()
 {
     if (m_recomputeLocal)
     {
-        // Combine: T*R*S
-        m_localMatrix = Translation(m_localPosition);
-        m_localMatrix = m_localMatrix*RotationEulerAngles(m_localRotation);
-        m_localMatrix = m_localMatrix*Scaling(m_localScale);
-
+        CalculateTRSMatrix(m_localPosition, m_localRotation, m_localScale, m_localMatrix);
         m_recomputeLocal = false;
     }
 }
@@ -263,7 +307,7 @@ void Transform::RecomputeWorldIfDirty()
         RecomputeLocalIfDirty();
         Matrix4x4 parentTransform = m_parent ? m_parent->GetWorldMatrix() : Matrix4x4::Identity;
         m_worldMatrix = parentTransform * m_localMatrix;
-        DecomposeMatrix(m_worldMatrix, m_worldPosition, m_worldRotation, m_worldScale);
+        DecomposeTRSMatrix(m_worldMatrix, m_worldPosition, m_worldRotation, m_worldScale);
         CalculateDirectionVectors();
         ClearRecomputeWorldFlag();
     }
