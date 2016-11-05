@@ -105,8 +105,8 @@ void SceneViewWidget::mouseMoveEvent(QMouseEvent* event)
     {
         float deltaX = pos.x() - m_prevMousePos.x();
         float deltaY = pos.y() - m_prevMousePos.y();
-        TranslateCamera(Vector3(deltaX*CAMERA_PAN_AMOUNT, 0, 0));
-        TranslateCamera(Vector3(0, -1 * deltaY*CAMERA_PAN_AMOUNT, 0));
+        TranslateCamera(Vector3(-deltaX*CAMERA_PAN_AMOUNT, 0, 0));
+        TranslateCamera(Vector3(0, deltaY*CAMERA_PAN_AMOUNT, 0));
     }
 
     m_prevMousePos = pos;
@@ -139,7 +139,7 @@ void SceneViewWidget::wheelEvent(QWheelEvent* event)
     int delta = event->delta();
     if (m_hasFocus)
     {
-        TranslateCamera(Vector3(0, 0, delta*CAMERA_ZOOM_AMOUNT));
+        TranslateCamera(Vector3(0, 0, -delta*CAMERA_ZOOM_AMOUNT));
     }
 }
 
