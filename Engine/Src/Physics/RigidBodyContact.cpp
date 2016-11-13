@@ -1,6 +1,11 @@
 #include "Physics/RigidBodyContact.h"
 #include "Physics/RigidBody.h"
 
+void RigidBodyContact::CalculateInternals(float deltaTime)
+{
+    // TODO implement me
+}
+
 RigidBodyContact::ResolutionResult RigidBodyContact::Resolve(float deltaTime)
 {
     ResolveVelocity(deltaTime);
@@ -65,6 +70,36 @@ void RigidBodyContact::CalculateContactBasis()
     }
 
     m_contactToWorld.SetColumns(ContactNormal, contactTangents[0], contactTangents[1]);
+}
+
+void RigidBodyContact::CalculateFrictionlessImpulse(Matrix3x3* inverseInertiaTensor)
+{
+    // Calculate a vector that shows the change in velocity in world space for a unit impulse
+    // in the direction of the contact normal
+    Vector3 deltaVelocityWorldspace = m_relativeContactPosition[0].Cross(ContactNormal);
+    deltaVelocityWorldspace = inverseInertiaTensor[0] * deltaVelocityWorldspace;
+    deltaVelocityWorldspace = deltaVelocityWorldspace.Cross(m_relativeContactPosition[0]);
+
+    // Calculate the change in velocity in contact coordinates
+    float deltaVelocity = deltaVelocityWorldspace.Dot(ContactNormal);
+
+    // Add the linear component of velocity change
+    deltaVelocity += BodyA->GetInverseMass();
+
+    if (BodyB)
+    {
+        // Calculate a vector that shows the change in velocity in world space for a unit impulse
+        // in the direction of the contact normal
+        Vector3 deltaVelocityWorldspace = m_relativeContactPosition[1].Cross(ContactNormal);
+        deltaVelocityWorldspace = inverseInertiaTensor[1] * deltaVelocityWorldspace;
+        deltaVelocityWorldspace = deltaVelocityWorldspace.Cross(m_relativeContactPosition[1]);
+
+        // Calculate the change in velocity in contact coordinates
+        deltaVelocity += deltaVelocityWorldspace.Dot(ContactNormal);
+
+        // Add the linear component of velocity change
+        deltaVelocity += BodyB->GetInverseMass();
+    }
 }
 
 void RigidBodyContact::ResolveVelocity(float deltaTime)

@@ -31,22 +31,24 @@ public:
     };
 
     RigidBody*          BodyA;
-    RigidBody*          BodyB;                                       // May be NULL, for contact between object and immovable geometry (e.g. ground)
+    RigidBody*          BodyB;                                      // May be NULL, for contact between object and immovable geometry (e.g. ground)
 
     float               Restitution;                                // The normal restitution coefficient at the contact
     float               Penetration;                                // The depth of penetration at the contact
     Vector3             ContactNormal;                              // The direction of the contact, from BodyA's perspective, in world space
 
 protected:
+    void                CalculateInternals(float deltaTime);        // Calculate internal values from state values, called before resolution starts
     ResolutionResult    Resolve(float deltaTime);                   // Resolves this contact for both velocity and interpenetration
     float               CalculateSeparatingVelocity();              // Calculate the separating velocity at this contact
     void                CalculateContactBasis();                    // Calculate an orthonormal basis for the contact point
+    void                CalculateFrictionlessImpulse(Matrix3x3* inverseInertiaTensor);
 
-private:
     void                ResolveVelocity(float deltaTime);           // Handles the impulse calculations for this collision
     ResolutionResult    ResolveInterpenetration(float deltaTime);   // Handles the interpenetration resolution for this contact
 
     Matrix3x3           m_contactToWorld;
+    Vector3             m_relativeContactPosition[2];               // Worldspace position of contact point relative to center of each body. Set by calculateInternals
 };
 
 class ContactResolver
