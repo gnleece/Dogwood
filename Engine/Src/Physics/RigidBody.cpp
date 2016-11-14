@@ -14,6 +14,16 @@ Vector3 RigidBody::GetPosition()
     return m_position;
 }
 
+void RigidBody::SetRotation(Quaternion& rotation)
+{
+    m_rotation = rotation;
+}
+
+Quaternion& RigidBody::GetRotation()
+{
+    return m_rotation;
+}
+
 void RigidBody::SetVelocity(Vector3 velocity)
 {
     m_velocity = velocity;
@@ -22,6 +32,16 @@ void RigidBody::SetVelocity(Vector3 velocity)
 Vector3 RigidBody::GetVelocity()
 {
     return m_velocity;
+}
+
+void RigidBody::SetAngularVelocity(Vector3 angularVelocity)
+{
+    m_angularVelocity = angularVelocity;
+}
+
+Vector3 RigidBody::GetAngularVelocity()
+{
+    return m_angularVelocity;
 }
 
 void RigidBody::SetAcceleration(Vector3 acceleration)
@@ -93,6 +113,11 @@ Vector3 RigidBody::GetDirectionInLocalSpace(const Vector3 &direction)
 Vector3 RigidBody::GetDirectionInWorldSpace(const Vector3 &direction)
 {
     return m_transform.TransformVector(direction);
+}
+
+Matrix3x3& RigidBody::GetInverseIntertiaTensorWorld()
+{
+    return m_inverseInertiaTensorWorld;
 }
 
 void RigidBody::Integrate(float deltaTime)

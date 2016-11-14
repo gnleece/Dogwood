@@ -13,8 +13,14 @@ public:
     void        SetPosition(Vector3 position);
     Vector3     GetPosition();
 
+    void        SetRotation(Quaternion& rotation);
+    Quaternion& GetRotation();
+
     void        SetVelocity(Vector3 velocity);
     Vector3     GetVelocity();
+
+    void        SetAngularVelocity(Vector3 angularVelocity);
+    Vector3     GetAngularVelocity();
 
     void        SetAcceleration(Vector3 acceleration);
     Vector3     GetAcceleration();
@@ -31,6 +37,7 @@ public:
     Vector3     GetPointInWorldSpace(const Vector3 &point);
     Vector3     GetDirectionInLocalSpace(const Vector3 &direction);
     Vector3     GetDirectionInWorldSpace(const Vector3 &direction);
+    Matrix3x3&  GetInverseIntertiaTensorWorld();
 
     // Integrates the particle forward in time (i.e. updates position and velocity)
     void        Integrate(float deltaTime);
