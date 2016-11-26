@@ -1,7 +1,93 @@
 #include "Physics/RigidBodyContact.h"
 #include "Physics/RigidBody.h"
+#include <assert.h>
 
 void RigidBodyContact::CalculateInternals(float deltaTime)
+{
+    // Check if the first body is NULL, and swap it with the second if it is
+    if (BodyA == NULL)
+    {
+        SwapBodies();
+    }
+    assert(BodyA != NULL);
+
+    // Calculate a set of axes at the contact point
+    CalculateContactBasis();
+
+    // Calculate the relative position of the contact relative to each body
+    m_relativeContactPosition[0] = ContactPoint - BodyA->GetPosition();
+    if (BodyB)
+    {
+        m_relativeContactPosition[1] = ContactPoint - BodyB->GetPosition();
+    }
+
+    // Find the relative velocity of the bodies at the contact point
+    m_contactVelocity = CalculateLocalVelocity(BodyA, deltaTime);
+    if (BodyB)
+    {
+        m_contactVelocity -= CalculateLocalVelocity(BodyB, deltaTime);
+    }
+
+    // Calculate the desired change in velocity for resolution
+    CalculateDesiredDeltaVelocity(deltaTime);
+}
+
+void RigidBodyContact::CalculateContactBasis()
+{
+    // Calculate an orthonormal basis for the contact space. Choose the contact normal as the
+    // x direction, then choose an arbitrary (temp) second direction (either the world x-axis or
+    // world y-axis, whichever is further from the contact normal). The cross these two to get the
+    // third direction, then cross the third and the first to generate the actual second direction.
+    // Code is simplified/optimized (instead of using actual Vector3 cross function).
+
+    Vector3 contactTangents[2];
+
+    if (abs(ContactNormal.x()) > abs(ContactNormal.y()))
+    {
+        // Scaling factor used for normalization
+        float s = 1.0f / sqrtf(ContactNormal.z()*ContactNormal.z() +
+            ContactNormal.x()*ContactNormal.x());
+
+        // The new x-axis is at right angles to the world y-axis
+        contactTangents[0].SetX(ContactNormal.z()*s);
+        contactTangents[0].SetY(0);
+        contactTangents[0].SetZ(-ContactNormal.x()*s);
+
+        // The new y-axis is at right angles to the new x and z-axes
+        contactTangents[1].SetX(ContactNormal.y()*contactTangents[0].x());
+        contactTangents[1].SetY(ContactNormal.z()*contactTangents[0].x() -
+            ContactNormal.x()*contactTangents[0].z());
+        contactTangents[1].SetZ(-ContactNormal.y()*contactTangents[0].x());
+    }
+    else
+    {
+        // Scaling factor used for normalization
+        float s = 1.0f / sqrtf(ContactNormal.z()*ContactNormal.z() +
+            ContactNormal.y()*ContactNormal.y());
+
+        // The new x-axis is at right angles to the world x-axis
+        contactTangents[0].SetX(0);
+        contactTangents[0].SetY(-ContactNormal.z()*s);
+        contactTangents[0].SetZ(ContactNormal.y()*s);
+
+        // The new y-axis is at right angles to the new x and z-axes
+        contactTangents[1].SetX(ContactNormal.y()*contactTangents[0].z() -
+            ContactNormal.z()*contactTangents[0].y());
+        contactTangents[1].SetY(-ContactNormal.x()*contactTangents[0].z());
+        contactTangents[1].SetZ(ContactNormal.x()*contactTangents[0].y());
+    }
+
+    m_contactToWorld.SetColumns(ContactNormal, contactTangents[0], contactTangents[1]);
+}
+
+Vector3 RigidBodyContact::CalculateLocalVelocity(RigidBody* body, float deltaTime)
+{
+    // Calculate velocity of the contact point
+    //Vector3 velocity = body->Get
+    return Vector3::Zero;
+}
+
+void RigidBodyContact::CalculateDesiredDeltaVelocity(float deltaTime)
 {
     // TODO implement me
 }
@@ -22,54 +108,6 @@ float RigidBodyContact::CalculateSeparatingVelocity()
         relativeVelocity -= BodyB->GetVelocity();
     }
     return relativeVelocity.Dot(ContactNormal);
-}
-
-void RigidBodyContact::CalculateContactBasis()
-{
-    // Calculate an orthonormal basis for the contact space. Choose the contact normal as the
-    // x direction, then choose an arbitrary (temp) second direction (either the world x-axis or
-    // world y-axis, whichever is further from the contact normal). The cross these two to get the
-    // third direction, then cross the third and the first to generate the actual second direction.
-    // Code is simplified/optimized (instead of using actual Vector3 cross function).
-
-    Vector3 contactTangents[2];
-
-    if (abs(ContactNormal.x()) > abs(ContactNormal.y()))
-    {
-        // Scaling factor used for normalization
-        float s = 1.0f / sqrtf(ContactNormal.z()*ContactNormal.z() +
-                               ContactNormal.x()*ContactNormal.x());
-
-        // The new x-axis is at right angles to the world y-axis
-        contactTangents[0].SetX(ContactNormal.z()*s);
-        contactTangents[0].SetY(0);
-        contactTangents[0].SetZ(-ContactNormal.x()*s);
-
-        // The new y-axis is at right angles to the new x and z-axes
-        contactTangents[1].SetX(ContactNormal.y()*contactTangents[0].x());
-        contactTangents[1].SetY(ContactNormal.z()*contactTangents[0].x() -
-                                ContactNormal.x()*contactTangents[0].z());
-        contactTangents[1].SetZ(-ContactNormal.y()*contactTangents[0].x());
-    }
-    else
-    {
-        // Scaling factor used for normalization
-        float s = 1.0f / sqrtf(ContactNormal.z()*ContactNormal.z() +
-            ContactNormal.y()*ContactNormal.y());
-
-        // The new x-axis is at right angles to the world x-axis
-        contactTangents[0].SetX(0);
-        contactTangents[0].SetY(-ContactNormal.z()*s);
-        contactTangents[0].SetZ(ContactNormal.y()*s);
-
-        // The new y-axis is at right angles to the new x and z-axes
-        contactTangents[1].SetX(ContactNormal.y()*contactTangents[0].z() -
-                                ContactNormal.z()*contactTangents[0].y());
-        contactTangents[1].SetY(-ContactNormal.x()*contactTangents[0].z());
-        contactTangents[1].SetZ(ContactNormal.x()*contactTangents[0].y());
-    }
-
-    m_contactToWorld.SetColumns(ContactNormal, contactTangents[0], contactTangents[1]);
 }
 
 void RigidBodyContact::CalculateFrictionlessImpulse(Matrix3x3* inverseInertiaTensor)
@@ -209,6 +247,54 @@ RigidBodyContact::ResolutionResult RigidBodyContact::ResolveInterpenetration(flo
     return result;
 }
 
+void RigidBodyContact::ApplyPositionChange(Vector3* linearChange, Vector3* angularChange, float penetration)
+{
+    // Calculate inertia of each object in the direction of the contact normal due to angular inertia only
+    float linearInertia[2];
+    float angularInteria[2];
+    float totalInertia;
+
+    Matrix3x3 inverseInertiaTensor = BodyA->GetInverseIntertiaTensorWorld();
+
+    // Calculate the angular inertia using the same process as for calculating frictionless velocity change
+    Vector3 angularInertiaWorld = m_relativeContactPosition[0].Cross(ContactNormal);
+    angularInertiaWorld = inverseInertiaTensor*angularInertiaWorld;
+    angularInertiaWorld = angularInertiaWorld.Cross(m_relativeContactPosition[0]);
+    angularInteria[0] = angularInertiaWorld.Dot(ContactNormal);
+    if (BodyB != NULL)
+    {
+        angularInertiaWorld = m_relativeContactPosition[1].Cross(ContactNormal);
+        angularInertiaWorld = inverseInertiaTensor*angularInertiaWorld;
+        angularInertiaWorld = angularInertiaWorld.Cross(m_relativeContactPosition[1]);
+        angularInteria[1] = angularInertiaWorld.Dot(ContactNormal);
+    }
+
+    // The linear inertia component is just the inverse mass
+    linearInertia[0] = BodyA->GetInverseMass();
+    if (BodyB != NULL)
+    {
+        linearInertia[1] = BodyB->GetInverseMass();
+    }
+
+    // Combine angular and linear to calculate total
+    totalInertia = linearInertia[0] + angularInteria[0];
+    if (BodyB != NULL)
+    {
+        totalInertia += linearInertia[1] + angularInteria[1];
+    }
+
+    // TODO finish implementation from textbook
+}
+
+void RigidBodyContact::SwapBodies()
+{
+    ContactNormal *= -1;
+
+    RigidBody* temp = BodyA;
+    BodyA = BodyB;
+    BodyB = temp;
+}
+
 ContactResolver::ContactResolver(unsigned int iterations)
 {
     SetIterations(iterations);
@@ -219,12 +305,48 @@ void ContactResolver::SetIterations(unsigned int iterations)
     m_iterations = iterations;
 }
 
-/* Resolve contacts one by one, starting with the one with the largest closing velocity. This first resolution
-may change the closing velocity for other contacts, so check all contacts again after each resolution. 
-Since resolving one contact could create another contact, we could end up with an infinite loop of endless contacts.
-So, limit the total number of iterations (in practice this should be enough to resolve most contact sets in a 
-believable way)*/
+
 void ContactResolver::ResolveContacts(RigidBodyContact* contacts, unsigned int numContacts, float deltaTime)
+{
+    if (numContacts == 0)
+        return;
+
+    PrepareContacts(contacts, numContacts, deltaTime);
+    AdjustPositions(contacts, numContacts, deltaTime);
+    AdjustVelocities(contacts, numContacts, deltaTime);
+}
+
+void ContactResolver::PrepareContacts(RigidBodyContact* contacts, unsigned int numContacts, float deltaTime)
+{
+    // Set up contacts to be ready for processing. This ensures that their internal data is configured
+    // correctly and the correct set of bodies is made alive
+
+    // Generate contact velocity and axis information
+    RigidBodyContact* lastContact = contacts + numContacts;
+    for (RigidBodyContact* contact = contacts; contact < lastContact; contact++)
+    {
+        contact->CalculateInternals(deltaTime);
+    }
+}
+
+void ContactResolver::AdjustPositions(RigidBodyContact* contacts, unsigned int numContacts, float deltaTime)
+{
+    // TODO implement me
+}
+
+void ContactResolver::AdjustVelocities(RigidBodyContact* contacts, unsigned int numContacts, float deltaTime)
+{
+    // TODO implement me
+}
+
+// Old particle resolution code - TODO remove?
+/*
+// Resolve contacts one by one, starting with the one with the largest closing velocity. This first resolution
+// may change the closing velocity for other contacts, so check all contacts again after each resolution.
+// Since resolving one contact could create another contact, we could end up with an infinite loop of endless contacts.
+// So, limit the total number of iterations (in practice this should be enough to resolve most contact sets in a
+// believable way)
+
 {
     unsigned int iterationsUsed = 0;
     while(iterationsUsed < m_iterations)
@@ -277,3 +399,4 @@ void ContactResolver::ResolveContacts(RigidBodyContact* contacts, unsigned int n
         iterationsUsed++;
     }
 }
+*/
