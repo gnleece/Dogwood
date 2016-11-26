@@ -54,6 +54,11 @@ Vector3 RigidBody::GetAcceleration()
     return m_acceleration;
 }
 
+Vector3 RigidBody::GetPreviousAcceleration()
+{
+    return m_previousAcceleration;
+}
+
 void RigidBody::SetMass(float mass)
 {
     if (mass < 0 || Approximately(mass, 0.f))

@@ -25,6 +25,8 @@ public:
     void        SetAcceleration(Vector3 acceleration);
     Vector3     GetAcceleration();
 
+    Vector3     GetPreviousAcceleration();
+
     void        SetMass(float mass);
     void        SetInverseMass(float inverseMass);
     float       GetMass();
@@ -39,12 +41,12 @@ public:
     Vector3     GetDirectionInWorldSpace(const Vector3 &direction);
     Matrix3x3&  GetInverseIntertiaTensorWorld();
 
-    // Integrates the particle forward in time (i.e. updates position and velocity)
+    // Integrates the body forward in time (i.e. updates position and velocity)
     void        Integrate(float deltaTime);
 
     // "AddForce" functions apply and next integration only
 
-    // Adds the given force to the particle, applied at the center of mass
+    // Adds the given force to the body, applied at the center of mass
     void        AddForce(Vector3& force);
 
     // Adds the given force to the given point on the rigid body. Both values given in world space.
@@ -71,7 +73,7 @@ protected:
     Vector3         m_velocity;
     Vector3         m_angularVelocity;
     Vector3         m_acceleration;
-    Vector3         m_previousAcceleration;
+    Vector3         m_previousAcceleration;        // Tracks only linear acceleration - using angular as well would be more accurate but is unnecessary
 
     Transform       m_transform;      // TODO reconcile with go transform
 

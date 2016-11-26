@@ -102,13 +102,21 @@ Vector3 RigidBodyContact::CalculateLocalVelocity(RigidBody* body, float deltaTim
     Vector3 velocityContactSpace = m_contactToWorld.Transpose() * velocity;
 
     // Calculate the amount of velocity that is due to forces without reactions
-    //Vector3 accVelocity = body->GetLastFrameAcceleration() * deltaTime;
+    //Vector3 accVelocity = body->GetLastFrameAcceleration() * deltaTime;       // TODO fixme
 
     return velocityContactSpace;
 }
 
 void RigidBodyContact::CalculateDesiredDeltaVelocity(float deltaTime)
 {
+    // Calculate velocity from acceleration from previous frame. Removing this reduces jitter (pg 394)
+    Vector3 scaledContact = deltaTime * ContactNormal;
+    float velocityFromAcceleration = Body[0]->GetPreviousAcceleration().Dot(scaledContact);
+    if (Body[1])
+    {
+        velocityFromAcceleration -= Body[1]->GetPreviousAcceleration().Dot(scaledContact);
+    }
+
     // If the velocity is very low, limit the restitution
     float actualRestituion = Restitution;
     if (abs(m_contactVelocity.x()) < MIN_VELOCITY_LIMIT)
@@ -116,8 +124,9 @@ void RigidBodyContact::CalculateDesiredDeltaVelocity(float deltaTime)
         actualRestituion = 0;
     }
 
-    // Combine the bounce velocity with the removed acceleration velocity   // TODO what?
-    m_desiredDeltaVelocity = -m_contactVelocity.x() - actualRestituion*m_contactVelocity.x();
+    // Combine the bounce velocity with the removed acceleration velocity
+    m_desiredDeltaVelocity = -m_contactVelocity.x() -
+        actualRestituion*(m_contactVelocity.x() - velocityFromAcceleration);
 }
 
 // Separating velocity (v_s) = (relative velocity) dot (contact normal) = (v_a - v_b) dot (norm(p_a - p_b))

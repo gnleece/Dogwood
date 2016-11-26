@@ -54,7 +54,7 @@ protected:
 
     Matrix3x3           m_contactToWorld;                           // Transform matrix to convert from contact coords to world space
     Vector3             m_contactVelocity;                          // Closing velocity at point of contact. Set by calculateInternals
-    float               m_desiredDeltaVelocity;                     // Holds required change in velocity required to resolve this contact.
+    float               m_desiredDeltaVelocity;                     // Holds required change in velocity required to resolve this contact
     Vector3             m_relativeContactPosition[2];               // Worldspace position of contact point relative to center of each body. Set by calculateInternals
 };
 
