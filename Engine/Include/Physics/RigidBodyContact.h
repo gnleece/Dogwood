@@ -29,8 +29,7 @@ public:
         Vector3 MovementB;
     };
 
-    RigidBody*          BodyA;
-    RigidBody*          BodyB;                                      // May be NULL, for contact between object and immovable geometry (e.g. ground)
+    RigidBody*          Body[2];                                    // Body[1] may be NULL, for contact between an object and immovable geometry (e.g. ground)
 
     Vector3             ContactPoint;                               // The position of the contact in world space
     Vector3             ContactNormal;                              // The direction of the contact, from BodyA's perspective, in world space
@@ -41,7 +40,7 @@ public:
 protected:
     void                CalculateInternals(float deltaTime);        // Calculate internal values from state values, called before resolution starts
     void                CalculateContactBasis();                    // Calculate an orthonormal basis for the contact point
-    Vector3             CalculateLocalVelocity(RigidBody* body, float deltaTime);
+    Vector3             CalculateLocalVelocity(RigidBody* body, float deltaTime, Vector3 relativeContactPosition);
     void                CalculateDesiredDeltaVelocity(float deltaTime);
 
     ResolutionResult    Resolve(float deltaTime);                   // Resolves this contact for both velocity and interpenetration
@@ -64,9 +63,9 @@ protected:
 class ContactResolver
 {
 public:
-    ContactResolver(unsigned int iterations);
+    ContactResolver(unsigned int maxIterations);
 
-    void                SetIterations(unsigned int iterations);
+    void                SetMaxIterations(unsigned int maxIterations);
     void                ResolveContacts(RigidBodyContact* contacts, unsigned int numContacts, float deltaTime);
 
 protected:
@@ -74,5 +73,5 @@ protected:
     void                AdjustPositions(RigidBodyContact* contacts, unsigned int numContacts, float deltaTime);
     void                AdjustVelocities(RigidBodyContact* contacts, unsigned int numContacts, float deltaTime);
 
-    unsigned int        m_iterations;
+    unsigned int        m_maxIterations;
 };

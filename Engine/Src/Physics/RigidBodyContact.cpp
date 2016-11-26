@@ -5,27 +5,27 @@
 void RigidBodyContact::CalculateInternals(float deltaTime)
 {
     // Check if the first body is NULL, and swap it with the second if it is
-    if (BodyA == NULL)
+    if (Body[0] == NULL)
     {
         SwapBodies();
     }
-    assert(BodyA != NULL);
+    assert(Body[0] != NULL);
 
     // Calculate a set of axes at the contact point
     CalculateContactBasis();
 
     // Calculate the relative position of the contact relative to each body
-    m_relativeContactPosition[0] = ContactPoint - BodyA->GetPosition();
-    if (BodyB)
+    m_relativeContactPosition[0] = ContactPoint - Body[0]->GetPosition();
+    if (Body[1])
     {
-        m_relativeContactPosition[1] = ContactPoint - BodyB->GetPosition();
+        m_relativeContactPosition[1] = ContactPoint - Body[1]->GetPosition();
     }
 
     // Find the relative velocity of the bodies at the contact point
-    m_contactVelocity = CalculateLocalVelocity(BodyA, deltaTime);
-    if (BodyB)
+    m_contactVelocity = CalculateLocalVelocity(Body[0], deltaTime, m_relativeContactPosition[0]);
+    if (Body[1])
     {
-        m_contactVelocity -= CalculateLocalVelocity(BodyB, deltaTime);
+        m_contactVelocity -= CalculateLocalVelocity(Body[1], deltaTime, m_relativeContactPosition[1]);
     }
 
     // Calculate the desired change in velocity for resolution
@@ -80,11 +80,20 @@ void RigidBodyContact::CalculateContactBasis()
     m_contactToWorld.SetColumns(ContactNormal, contactTangents[0], contactTangents[1]);
 }
 
-Vector3 RigidBodyContact::CalculateLocalVelocity(RigidBody* body, float deltaTime)
+Vector3 RigidBodyContact::CalculateLocalVelocity(RigidBody* body, float deltaTime, Vector3 relativeContactPosition)
 {
     // Calculate velocity of the contact point
-    //Vector3 velocity = body->Get
-    return Vector3::Zero;
+    Vector3 velocity = body->GetAngularVelocity().Cross(relativeContactPosition);
+    velocity += body->GetVelocity();
+
+    // Convert velocity into contact coordinates
+    // Contact-to-world is rotation-only, so transpose is its inverse (world-to-contact)
+    Vector3 velocityContactSpace = m_contactToWorld.Transpose() * velocity;
+
+    // Calculate the amount of velocity that is due to forces without reactions
+    //Vector3 accVelocity = body->GetLastFrameAcceleration() * deltaTime;
+
+    return velocityContactSpace;
 }
 
 void RigidBodyContact::CalculateDesiredDeltaVelocity(float deltaTime)
@@ -102,41 +111,33 @@ RigidBodyContact::ResolutionResult RigidBodyContact::Resolve(float deltaTime)
 // Separating velocity (v_s) = (relative velocity) dot (contact normal) = (v_a - v_b) dot (norm(p_a - p_b))
 float RigidBodyContact::CalculateSeparatingVelocity()
 {
-    Vector3 relativeVelocity = BodyA->GetVelocity();
-    if (BodyB != NULL)
+    Vector3 relativeVelocity = Body[0]->GetVelocity();
+    if (Body[1] != NULL)
     {
-        relativeVelocity -= BodyB->GetVelocity();
+        relativeVelocity -= Body[1]->GetVelocity();
     }
     return relativeVelocity.Dot(ContactNormal);
 }
 
 void RigidBodyContact::CalculateFrictionlessImpulse(Matrix3x3* inverseInertiaTensor)
 {
-    // Calculate a vector that shows the change in velocity in world space for a unit impulse
-    // in the direction of the contact normal
-    Vector3 deltaVelocityWorldspace = m_relativeContactPosition[0].Cross(ContactNormal);
-    deltaVelocityWorldspace = inverseInertiaTensor[0] * deltaVelocityWorldspace;
-    deltaVelocityWorldspace = deltaVelocityWorldspace.Cross(m_relativeContactPosition[0]);
-
-    // Calculate the change in velocity in contact coordinates
-    float deltaVelocity = deltaVelocityWorldspace.Dot(ContactNormal);
-
-    // Add the linear component of velocity change
-    deltaVelocity += BodyA->GetInverseMass();
-
-    if (BodyB)
+    float deltaVelocity = 0;
+    for (int i = 0; i < 2; i ++)
     {
-        // Calculate a vector that shows the change in velocity in world space for a unit impulse
-        // in the direction of the contact normal
-        Vector3 deltaVelocityWorldspace = m_relativeContactPosition[1].Cross(ContactNormal);
-        deltaVelocityWorldspace = inverseInertiaTensor[1] * deltaVelocityWorldspace;
-        deltaVelocityWorldspace = deltaVelocityWorldspace.Cross(m_relativeContactPosition[1]);
+        if (Body[i] != NULL)
+        {
+            // Calculate a vector that shows the change in velocity in world space for a unit impulse
+            // in the direction of the contact normal
+            Vector3 deltaVelocityWorldspace = m_relativeContactPosition[i].Cross(ContactNormal);
+            deltaVelocityWorldspace = inverseInertiaTensor[i] * deltaVelocityWorldspace;
+            deltaVelocityWorldspace = deltaVelocityWorldspace.Cross(m_relativeContactPosition[i]);
 
-        // Calculate the change in velocity in contact coordinates
-        deltaVelocity += deltaVelocityWorldspace.Dot(ContactNormal);
+            // Calculate the change in velocity in contact coordinates
+            deltaVelocity += deltaVelocityWorldspace.Dot(ContactNormal);
 
-        // Add the linear component of velocity change
-        deltaVelocity += BodyB->GetInverseMass();
+            // Add the linear component of velocity change
+            deltaVelocity += Body[i]->GetInverseMass();
+        }
     }
 }
 
@@ -155,10 +156,10 @@ void RigidBodyContact::ResolveVelocity(float deltaTime)
     float newSeparatingVelocity = -Restitution * separatingVelocity;
 
     // Check the velocity buildup due only to acceleration. This is to prevent issues with resting contacts.
-    Vector3 accCausedVelocity = BodyA->GetAcceleration();
-    if (BodyB != NULL)
+    Vector3 accCausedVelocity = Body[0]->GetAcceleration();
+    if (Body[1] != NULL)
     {
-        accCausedVelocity -= BodyB->GetAcceleration();
+        accCausedVelocity -= Body[1]->GetAcceleration();
     }
     float accCausedSeparatingVelocity = accCausedVelocity.Dot(ContactNormal) * deltaTime;
 
@@ -175,15 +176,15 @@ void RigidBodyContact::ResolveVelocity(float deltaTime)
     float deltaVelocity = newSeparatingVelocity - separatingVelocity;
 
     // Calculate the total inverse mass
-    float totalInverseMass = BodyA->GetInverseMass();
-    if (BodyB != NULL)
+    float totalInverseMass = Body[0]->GetInverseMass();
+    if (Body[1] != NULL)
     {
-        totalInverseMass += BodyB->GetInverseMass();
+        totalInverseMass += Body[1]->GetInverseMass();
     }
 
     if (totalInverseMass <= 0)
     {
-        // Both particles has zero inverse mass == infinite mass => impulse has no effect
+        // Both bodies have zero inverse mass (i.e. infinite mass) => impulse has no effect
         return;
     }
 
@@ -194,13 +195,13 @@ void RigidBodyContact::ResolveVelocity(float deltaTime)
     Vector3 impulsePerInverseMass = ContactNormal * impulse;
 
     // Apply impulses, in the direction of the contact
-    Vector3 velocityA = BodyA->GetVelocity() + impulsePerInverseMass * BodyA->GetInverseMass();
-    BodyA->SetVelocity(velocityA);
-    if (BodyB != NULL)
+    Vector3 velocityA = Body[0]->GetVelocity() + impulsePerInverseMass * Body[0]->GetInverseMass();
+    Body[0]->SetVelocity(velocityA);
+    if (Body[1] != NULL)
     {
-        // BodyB has motion in the opposite direction from BodyA
-        Vector3 velocityB = BodyB->GetVelocity() - impulsePerInverseMass * BodyB->GetInverseMass();
-        BodyB->SetVelocity(velocityB);
+        // Body[1] has motion in the opposite direction from Body[0]
+        Vector3 velocityB = Body[1]->GetVelocity() - impulsePerInverseMass * Body[1]->GetInverseMass();
+        Body[1]->SetVelocity(velocityB);
     }
 }
 
@@ -213,35 +214,35 @@ RigidBodyContact::ResolutionResult RigidBodyContact::ResolveInterpenetration(flo
     }
 
     // Calculate the total inverse mass
-    float totalInverseMass = BodyA->GetInverseMass();
-    if (BodyB != NULL)
+    float totalInverseMass = Body[0]->GetInverseMass();
+    if (Body[1] != NULL)
     {
-        totalInverseMass += BodyB->GetInverseMass();
+        totalInverseMass += Body[1]->GetInverseMass();
     }
 
     if (totalInverseMass <= 0)
     {
-        // Both particles has zero inverse mass == infinite mass => no resolution required
+        // Both bodies have zero inverse mass (i.e. infinite mass) => no resolution required
         return ResolutionResult();
     }
 
     // Calculate the movement amounts
     Vector3 movePerInverseMass = ContactNormal * (Penetration / totalInverseMass);
     ResolutionResult result;
-    result.MovementA = movePerInverseMass * BodyA->GetInverseMass();
+    result.MovementA = movePerInverseMass * Body[0]->GetInverseMass();
     result.MovementB = Vector3::Zero;
-    if (BodyB != NULL)
+    if (Body[1] != NULL)
     {
-        result.MovementB = movePerInverseMass * -BodyB->GetInverseMass();
+        result.MovementB = movePerInverseMass * -Body[1]->GetInverseMass();
     }
 
     // Apply penetration resolution
-    Vector3 positionA = BodyA->GetPosition() + result.MovementA;
-    BodyA->SetPosition(positionA);
-    if (BodyB != NULL)
+    Vector3 positionA = Body[0]->GetPosition() + result.MovementA;
+    Body[0]->SetPosition(positionA);
+    if (Body[1] != NULL)
     {
-        Vector3 positionB = BodyB->GetPosition() + result.MovementB;
-        BodyB->SetPosition(positionB);
+        Vector3 positionB = Body[1]->GetPosition() + result.MovementB;
+        Body[1]->SetPosition(positionB);
     }
 
     return result;
@@ -254,31 +255,30 @@ void RigidBodyContact::ApplyPositionChange(Vector3* linearChange, Vector3* angul
     float angularInteria[2];
     float totalInertia;
 
-    Matrix3x3 inverseInertiaTensor = BodyA->GetInverseIntertiaTensorWorld();
+    Matrix3x3 inverseInertiaTensor = Body[0]->GetInverseIntertiaTensorWorld();
 
     // Calculate the angular inertia using the same process as for calculating frictionless velocity change
-    Vector3 angularInertiaWorld = m_relativeContactPosition[0].Cross(ContactNormal);
-    angularInertiaWorld = inverseInertiaTensor*angularInertiaWorld;
-    angularInertiaWorld = angularInertiaWorld.Cross(m_relativeContactPosition[0]);
-    angularInteria[0] = angularInertiaWorld.Dot(ContactNormal);
-    if (BodyB != NULL)
+    for (int i = 0; i < 2; i ++)
     {
-        angularInertiaWorld = m_relativeContactPosition[1].Cross(ContactNormal);
-        angularInertiaWorld = inverseInertiaTensor*angularInertiaWorld;
-        angularInertiaWorld = angularInertiaWorld.Cross(m_relativeContactPosition[1]);
-        angularInteria[1] = angularInertiaWorld.Dot(ContactNormal);
+        if (Body[i] != NULL)
+        {
+            Vector3 angularInertiaWorld = m_relativeContactPosition[i].Cross(ContactNormal);
+            angularInertiaWorld = inverseInertiaTensor*angularInertiaWorld;
+            angularInertiaWorld = angularInertiaWorld.Cross(m_relativeContactPosition[i]);
+            angularInteria[i] = angularInertiaWorld.Dot(ContactNormal);
+        }
     }
 
     // The linear inertia component is just the inverse mass
-    linearInertia[0] = BodyA->GetInverseMass();
-    if (BodyB != NULL)
+    linearInertia[0] = Body[0]->GetInverseMass();
+    if (Body[1] != NULL)
     {
-        linearInertia[1] = BodyB->GetInverseMass();
+        linearInertia[1] = Body[1]->GetInverseMass();
     }
 
     // Combine angular and linear to calculate total
     totalInertia = linearInertia[0] + angularInteria[0];
-    if (BodyB != NULL)
+    if (Body[1] != NULL)
     {
         totalInertia += linearInertia[1] + angularInteria[1];
     }
@@ -290,19 +290,19 @@ void RigidBodyContact::SwapBodies()
 {
     ContactNormal *= -1;
 
-    RigidBody* temp = BodyA;
-    BodyA = BodyB;
-    BodyB = temp;
+    RigidBody* temp = Body[0];
+    Body[0] = Body[1];
+    Body[1] = temp;
 }
 
-ContactResolver::ContactResolver(unsigned int iterations)
+ContactResolver::ContactResolver(unsigned int maxIterations)
 {
-    SetIterations(iterations);
+    SetMaxIterations(maxIterations);
 }
 
-void ContactResolver::SetIterations(unsigned int iterations)
+void ContactResolver::SetMaxIterations(unsigned int maxIterations)
 {
-    m_iterations = iterations;
+    m_maxIterations = maxIterations;
 }
 
 
@@ -331,72 +331,69 @@ void ContactResolver::PrepareContacts(RigidBodyContact* contacts, unsigned int n
 
 void ContactResolver::AdjustPositions(RigidBodyContact* contacts, unsigned int numContacts, float deltaTime)
 {
-    // TODO implement me
-}
+    Vector3 linearChange[2], angularChange[2];
+    Vector3 deltaPosition;
 
-void ContactResolver::AdjustVelocities(RigidBodyContact* contacts, unsigned int numContacts, float deltaTime)
-{
-    // TODO implement me
-}
+    // Iteratively resolve interpenetrations in order of severity.
+    // The first resolution might change the position of other contacts, so check all contacts again after
+    // each iteration. This could end up creating an infinite loop, so stop after m_maxIterations.
+    // NOTE / TODO: If objects appear to gradually sink into surfaces and then suddenly jump out after
+    // reaching a certain depth, we may need an additional first pass here that considers *all* 
+    // interpenetrations (so that shallow ones are skipped by only considering deep ones and then
+    // running out of iterations before the shallow ones are reached)
 
-// Old particle resolution code - TODO remove?
-/*
-// Resolve contacts one by one, starting with the one with the largest closing velocity. This first resolution
-// may change the closing velocity for other contacts, so check all contacts again after each resolution.
-// Since resolving one contact could create another contact, we could end up with an infinite loop of endless contacts.
-// So, limit the total number of iterations (in practice this should be enough to resolve most contact sets in a
-// believable way)
-
-{
     unsigned int iterationsUsed = 0;
-    while(iterationsUsed < m_iterations)
+    while (iterationsUsed < m_maxIterations)
     {
-        // Find the contact with the largest closing velocity (i.e. the smallest separating velocity)
-        float max = FLT_MAX;
+        // Find the maximum penetration
+        float maxPenetration = FLT_MIN;
         unsigned int maxIndex = numContacts;
         for (unsigned int i = 0; i < numContacts; i++)
         {
-            float separatingVelocity = contacts[i].CalculateSeparatingVelocity();
-            if (separatingVelocity < max && (separatingVelocity < 0 || contacts[i].Penetration > 0))
+            if (contacts[i].Penetration > maxPenetration)
             {
-                max = separatingVelocity;
+                maxPenetration = contacts[i].Penetration;
                 maxIndex = i;
             }
         }
+        if (maxIndex == numContacts) break;
 
-        // If we didn't find an index worth resolving, we're done
-        if (maxIndex == numContacts)
-            break;
+        // Match the awake state at the contact     // TODO missing some implementation here
+        //contacts[maxIndex].matchAwakeState();
 
-        // Resolve the contact we chose
-        RigidBodyContact::ResolutionResult result = contacts[maxIndex].Resolve(deltaTime);
+        // Resolve the penetration
+        contacts[maxIndex].ApplyPositionChange(linearChange, angularChange, maxPenetration);
 
-        // Update the interpenetration for each particle
+        // The resolution may have changed the penetration of other bodies, so update all contacts
         for (unsigned int i = 0; i < numContacts; i++)
         {
-            if (contacts[i].BodyA == contacts[maxIndex].BodyA)
+            // Check each body in the contact
+            for (unsigned int a = 0; a < 2; a++)
             {
-                contacts[i].Penetration -= result.MovementA.Dot(contacts[i].ContactNormal);
-            }
-            else if (contacts[i].BodyA == contacts[maxIndex].BodyB)
-            {
-                contacts[i].Penetration -= result.MovementB.Dot(contacts[i].ContactNormal);
-            }
+                if (contacts[i].Body[a])
+                {
+                    // Check for a match with each body in the contact that was just resolved
+                    for (unsigned int b = 0; b < 2; b++)
+                    {
+                        if (contacts[i].Body[a] == contacts[maxIndex].Body[b])
+                        {
+                            Vector3 deltaPosition = linearChange[b] +
+                                angularChange[b].Cross(contacts[i].m_relativeContactPosition[a]);
 
-            if (contacts[i].BodyB == NULL)
-                continue;
-
-            if (contacts[i].BodyB == contacts[maxIndex].BodyA)
-            {
-                contacts[i].Penetration += result.MovementA.Dot(contacts[i].ContactNormal);
-            }
-            else if (contacts[i].BodyB == contacts[maxIndex].BodyB)
-            {
-                contacts[i].Penetration += result.MovementB.Dot(contacts[i].ContactNormal);
+                            // The sign of the change is positive if we're dealing with the
+                            // second body in a contact, and negative otherwise
+                            contacts[i].Penetration += deltaPosition.Dot(contacts[i].ContactNormal) * (a ? 1 : -1);
+                        }
+                    }
+                }
             }
         }
 
         iterationsUsed++;
     }
 }
-*/
+
+void ContactResolver::AdjustVelocities(RigidBodyContact* contacts, unsigned int numContacts, float deltaTime)
+{
+    // TODO implement me
+}
