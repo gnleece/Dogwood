@@ -38,21 +38,19 @@ public:
     float               Penetration;                                // The depth of penetration at the contact
 
 protected:
+    const static float  MIN_VELOCITY_LIMIT;
+
+    void                SwapBodies();
+
     void                CalculateInternals(float deltaTime);        // Calculate internal values from state values, called before resolution starts
     void                CalculateContactBasis();                    // Calculate an orthonormal basis for the contact point
     Vector3             CalculateLocalVelocity(RigidBody* body, float deltaTime, Vector3 relativeContactPosition);
     void                CalculateDesiredDeltaVelocity(float deltaTime);
-
-    ResolutionResult    Resolve(float deltaTime);                   // Resolves this contact for both velocity and interpenetration
     float               CalculateSeparatingVelocity();              // Calculate the separating velocity at this contact
-
     void                CalculateFrictionlessImpulse(Matrix3x3* inverseInertiaTensor);
 
-    void                ResolveVelocity(float deltaTime);           // Handles the impulse calculations for this collision
-    ResolutionResult    ResolveInterpenetration(float deltaTime);   // Handles the interpenetration resolution for this contact
-
     void                ApplyPositionChange(Vector3* linearChange, Vector3* angularChange, float penetration);
-    void                SwapBodies();
+    void                ApplyVelocityChange(Vector3* velocityChange, Vector3* angularVelocityChange);
 
     Matrix3x3           m_contactToWorld;                           // Transform matrix to convert from contact coords to world space
     Vector3             m_contactVelocity;                          // Closing velocity at point of contact. Set by calculateInternals

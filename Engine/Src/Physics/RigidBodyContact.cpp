@@ -2,6 +2,17 @@
 #include "Physics/RigidBody.h"
 #include <assert.h>
 
+const float RigidBodyContact::MIN_VELOCITY_LIMIT = 0.25f;
+
+void RigidBodyContact::SwapBodies()
+{
+    ContactNormal *= -1;
+
+    RigidBody* temp = Body[0];
+    Body[0] = Body[1];
+    Body[1] = temp;
+}
+
 void RigidBodyContact::CalculateInternals(float deltaTime)
 {
     // Check if the first body is NULL, and swap it with the second if it is
@@ -98,14 +109,15 @@ Vector3 RigidBodyContact::CalculateLocalVelocity(RigidBody* body, float deltaTim
 
 void RigidBodyContact::CalculateDesiredDeltaVelocity(float deltaTime)
 {
-    // TODO implement me
-}
+    // If the velocity is very low, limit the restitution
+    float actualRestituion = Restitution;
+    if (abs(m_contactVelocity.x()) < MIN_VELOCITY_LIMIT)
+    {
+        actualRestituion = 0;
+    }
 
-RigidBodyContact::ResolutionResult RigidBodyContact::Resolve(float deltaTime)
-{
-    ResolveVelocity(deltaTime);
-    ResolutionResult result = ResolveInterpenetration(deltaTime);
-    return result;
+    // Combine the bounce velocity with the removed acceleration velocity   // TODO what?
+    m_desiredDeltaVelocity = -m_contactVelocity.x() - actualRestituion*m_contactVelocity.x();
 }
 
 // Separating velocity (v_s) = (relative velocity) dot (contact normal) = (v_a - v_b) dot (norm(p_a - p_b))
@@ -139,113 +151,6 @@ void RigidBodyContact::CalculateFrictionlessImpulse(Matrix3x3* inverseInertiaTen
             deltaVelocity += Body[i]->GetInverseMass();
         }
     }
-}
-
-void RigidBodyContact::ResolveVelocity(float deltaTime)
-{
-    // Calculate the velocity in the direction of the contact
-    float separatingVelocity = CalculateSeparatingVelocity();
-
-    if (separatingVelocity > 0)
-    {
-        // The contact is either separating or stationary, so no impulse is required
-        return;
-    }
-
-    // Use restitution to calculate the change in velocity
-    float newSeparatingVelocity = -Restitution * separatingVelocity;
-
-    // Check the velocity buildup due only to acceleration. This is to prevent issues with resting contacts.
-    Vector3 accCausedVelocity = Body[0]->GetAcceleration();
-    if (Body[1] != NULL)
-    {
-        accCausedVelocity -= Body[1]->GetAcceleration();
-    }
-    float accCausedSeparatingVelocity = accCausedVelocity.Dot(ContactNormal) * deltaTime;
-
-    // If we have a closing velocity due to acceleration buildup, remove it from the new separating velocity
-    if (accCausedSeparatingVelocity < 0)
-    {
-        newSeparatingVelocity += Restitution * accCausedSeparatingVelocity;
-        if (newSeparatingVelocity < 0)
-        {
-            newSeparatingVelocity = 0;
-        }
-    }
-
-    float deltaVelocity = newSeparatingVelocity - separatingVelocity;
-
-    // Calculate the total inverse mass
-    float totalInverseMass = Body[0]->GetInverseMass();
-    if (Body[1] != NULL)
-    {
-        totalInverseMass += Body[1]->GetInverseMass();
-    }
-
-    if (totalInverseMass <= 0)
-    {
-        // Both bodies have zero inverse mass (i.e. infinite mass) => impulse has no effect
-        return;
-    }
-
-    // Calculate the amount of impulse per unit of inverse mass
-    // We apply the change in velocity in proportion to the inverse mass of each object
-    // (Lower inverse mass == higher mass => lower change in velocity)
-    float impulse = deltaVelocity / totalInverseMass;
-    Vector3 impulsePerInverseMass = ContactNormal * impulse;
-
-    // Apply impulses, in the direction of the contact
-    Vector3 velocityA = Body[0]->GetVelocity() + impulsePerInverseMass * Body[0]->GetInverseMass();
-    Body[0]->SetVelocity(velocityA);
-    if (Body[1] != NULL)
-    {
-        // Body[1] has motion in the opposite direction from Body[0]
-        Vector3 velocityB = Body[1]->GetVelocity() - impulsePerInverseMass * Body[1]->GetInverseMass();
-        Body[1]->SetVelocity(velocityB);
-    }
-}
-
-RigidBodyContact::ResolutionResult RigidBodyContact::ResolveInterpenetration(float deltaTime)
-{
-    if (Penetration <= 0)
-    {
-        // There's no interpenetration, so no resolution is required
-        return ResolutionResult();
-    }
-
-    // Calculate the total inverse mass
-    float totalInverseMass = Body[0]->GetInverseMass();
-    if (Body[1] != NULL)
-    {
-        totalInverseMass += Body[1]->GetInverseMass();
-    }
-
-    if (totalInverseMass <= 0)
-    {
-        // Both bodies have zero inverse mass (i.e. infinite mass) => no resolution required
-        return ResolutionResult();
-    }
-
-    // Calculate the movement amounts
-    Vector3 movePerInverseMass = ContactNormal * (Penetration / totalInverseMass);
-    ResolutionResult result;
-    result.MovementA = movePerInverseMass * Body[0]->GetInverseMass();
-    result.MovementB = Vector3::Zero;
-    if (Body[1] != NULL)
-    {
-        result.MovementB = movePerInverseMass * -Body[1]->GetInverseMass();
-    }
-
-    // Apply penetration resolution
-    Vector3 positionA = Body[0]->GetPosition() + result.MovementA;
-    Body[0]->SetPosition(positionA);
-    if (Body[1] != NULL)
-    {
-        Vector3 positionB = Body[1]->GetPosition() + result.MovementB;
-        Body[1]->SetPosition(positionB);
-    }
-
-    return result;
 }
 
 void RigidBodyContact::ApplyPositionChange(Vector3* linearChange, Vector3* angularChange, float penetration)
@@ -286,13 +191,9 @@ void RigidBodyContact::ApplyPositionChange(Vector3* linearChange, Vector3* angul
     // TODO finish implementation from textbook
 }
 
-void RigidBodyContact::SwapBodies()
+void RigidBodyContact::ApplyVelocityChange(Vector3* velocityChange, Vector3* angularVelocityChange)
 {
-    ContactNormal *= -1;
-
-    RigidBody* temp = Body[0];
-    Body[0] = Body[1];
-    Body[1] = temp;
+    // TODO implement me
 }
 
 ContactResolver::ContactResolver(unsigned int maxIterations)
@@ -304,7 +205,6 @@ void ContactResolver::SetMaxIterations(unsigned int maxIterations)
 {
     m_maxIterations = maxIterations;
 }
-
 
 void ContactResolver::ResolveContacts(RigidBodyContact* contacts, unsigned int numContacts, float deltaTime)
 {
@@ -395,5 +295,59 @@ void ContactResolver::AdjustPositions(RigidBodyContact* contacts, unsigned int n
 
 void ContactResolver::AdjustVelocities(RigidBodyContact* contacts, unsigned int numContacts, float deltaTime)
 {
-    // TODO implement me
+    Vector3 velocityChange[2], angularVelocityChange[2];
+    Vector3 deltaVelocity;
+
+    // Iteratively resolve impacts in order of severity.
+    unsigned int iterationsUsed = 0;
+    while (iterationsUsed < m_maxIterations)
+    {
+        // Find the maximum probable velocity change
+        float maxVelocity = FLT_MIN;
+        unsigned int maxIndex = numContacts;
+        for (unsigned int i = 0; i < numContacts; i++)
+        {
+            if (contacts[i].m_desiredDeltaVelocity > maxVelocity)
+            {
+                maxVelocity = contacts[i].m_desiredDeltaVelocity;
+                maxIndex = i;
+            }
+        }
+        if (maxIndex == numContacts) break;
+
+        // Match the awake state at the contact     // TODO missing some implementation here
+        //contacts[maxIndex].matchAwakeState();
+
+        // Apply resolution on selected contact
+        contacts[maxIndex].ApplyVelocityChange(velocityChange, angularVelocityChange);
+
+        // The resolution may have changed the velocity of other bodies, so update all contacts
+        for (unsigned int i = 0; i < numContacts; i++)
+        {
+            // Check each body in the contact
+            for (unsigned int a = 0; a < 2; a++)
+            {
+                if (contacts[i].Body[a])
+                {
+                    // Check for a match with each body in the contact that was just resolved
+                    for (unsigned int b = 0; b < 2; b++)
+                    {
+                        if (contacts[i].Body[a] == contacts[maxIndex].Body[b])
+                        {
+                            Vector3 deltaVelocity = velocityChange[b] +
+                                angularVelocityChange[b].Cross(contacts[i].m_relativeContactPosition[a]);
+
+                            // The sign of the change is positive if we're dealing with the
+                            // second body in a contact, and negative otherwise
+                            contacts[i].m_contactVelocity +=
+                                contacts[i].m_contactToWorld.Transpose()*deltaVelocity  * (a ? -1 : 1);
+                            contacts[i].CalculateDesiredDeltaVelocity(deltaTime);
+                        }
+                    }
+                }
+            }
+        }
+
+        iterationsUsed++;
+    }
 }
