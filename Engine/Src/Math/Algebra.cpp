@@ -556,6 +556,22 @@ void Matrix3x3::SetColumns(Vector3& col0, Vector3& col1, Vector3& col2)
     m_values[8] = col2[2];
 }
 
+void Matrix3x3::SetSkewSymmetric(Vector3& v)
+{
+    // A 3x3 skew symmetric matrix can be used to represent cross products as matrix multiplications.
+    m_values[0] = 0;
+    m_values[1] = -v.z();
+    m_values[2] = v.y();
+
+    m_values[3] = v.z();
+    m_values[4] = 0;
+    m_values[5] = -v.x();
+
+    m_values[6] = -v.y();
+    m_values[7] = v.x();
+    m_values[8] = 0;
+}
+
 Matrix3x3 Matrix3x3::Transpose() const
 {
     return Matrix3x3(Column(0), Column(1), Column(2));

@@ -163,6 +163,7 @@ public:
     Vector3     Column(int col) const;
 
     void        SetColumns(Vector3& col0, Vector3& col1, Vector3& col2);
+    void        SetSkewSymmetric(Vector3& v);
 
     Matrix3x3   Transpose() const;
     Matrix3x3   Inverse() const;
