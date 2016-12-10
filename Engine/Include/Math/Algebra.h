@@ -178,6 +178,7 @@ private:
     float       m_values[m_size];
 };
 
+Matrix3x3 operator *(const Matrix3x3& a, const Matrix3x3& b);
 Vector3 operator *(const Matrix3x3& m, const Vector3& v);
 Vector3 operator *(const Vector3& v, const Matrix3x3& m);
 

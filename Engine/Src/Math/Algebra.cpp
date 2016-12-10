@@ -472,7 +472,6 @@ void Vector4::DebugPrint()
     printf("%f\t%f\t%f\t%f\n", m_values[0], m_values[1], m_values[2], m_values[3]);
 }
 
-
 Matrix3x3::Matrix3x3()
 {
     // default is identity matrix
@@ -672,6 +671,23 @@ Matrix3x3 Matrix3x3::Inverse() const
                 submultrow3x3(ret, i, j, a[i][j]);
                 submultrow3x3(a, i, j, a[i][j]);
             }
+        }
+    }
+
+    return ret;
+}
+
+Matrix3x3 operator *(const Matrix3x3& a, const Matrix3x3& b)
+{
+    Matrix3x3 ret;
+
+    for (int i = 0; i < 3; ++i)
+    {
+        for (int j = 0; j < 3; ++j)
+        {
+            ret[i][j] = a[i][0] * b[0][j] +
+                        a[i][1] * b[1][j] +
+                        a[i][2] * b[2][j];
         }
     }
 
