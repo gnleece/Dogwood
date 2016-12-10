@@ -516,6 +516,14 @@ float* Matrix3x3::operator[](int row)
     return Row(row);
 }
 
+void Matrix3x3::operator*=(float s)
+{
+    for (int i = 0; i < m_size; i++)
+    {
+        m_values[i] *= s;
+    }
+}
+
 const float* Matrix3x3::Start() const
 {
     return (float*)m_values;
@@ -694,6 +702,21 @@ Matrix3x3 operator *(const Matrix3x3& a, const Matrix3x3& b)
     return ret;
 }
 
+Matrix3x3 operator *(const Matrix3x3& a, float s)
+{
+    Matrix3x3 ret;
+
+    for (int i = 0; i < 3; i++)
+    {
+        for (int j = 0; j < 3; j++)
+        {
+            ret[i][j] = a[i][j] * s;
+        }
+    }
+
+    return ret;
+}
+
 Vector3 operator *(const Matrix3x3& m, const Vector3& v)
 {
     Vector3 ret;
@@ -774,6 +797,14 @@ Vector4 Matrix4x4::operator[](int row) const
 float* Matrix4x4::operator[](int row)
 {
     return Row(row);
+}
+
+void Matrix4x4::operator*=(float s)
+{
+    for (int i = 0; i < m_size; i++)
+    {
+        m_values[i] *= s;
+    }
 }
 
 const float* Matrix4x4::Start() const
@@ -944,6 +975,21 @@ Matrix4x4 operator *(const Matrix4x4& a, const Matrix4x4& b)
                         a[i][1] * b[1][j] +
                         a[i][2] * b[2][j] +
                         a[i][3] * b[3][j];
+        }
+    }
+
+    return ret;
+}
+
+Matrix4x4 operator *(const Matrix4x4& a, float s)
+{
+    Matrix4x4 ret;
+
+    for (int i = 0; i < 4; i++)
+    {
+        for (int j = 0; j < 4; j++)
+        {
+            ret[i][j] = a[i][j] * s;
         }
     }
 
