@@ -48,6 +48,7 @@ protected:
     void                CalculateDesiredDeltaVelocity(float deltaTime);
     float               CalculateSeparatingVelocity();              // Calculate the separating velocity at this contact
     void                CalculateFrictionlessImpulse(Matrix3x3* inverseInertiaTensor);
+    void                CalculateFrictionImpulse(Matrix3x3* inverseInertiaTensor);
 
     void                ApplyPositionChange(Vector3* linearChange, Vector3* angularChange, float penetration);
     void                ApplyVelocityChange(Vector3* velocityChange, Vector3* angularVelocityChange);

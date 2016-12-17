@@ -162,6 +162,22 @@ void RigidBodyContact::CalculateFrictionlessImpulse(Matrix3x3* inverseInertiaTen
     }
 }
 
+void RigidBodyContact::CalculateFrictionImpulse(Matrix3x3* inverseInertiaTensor)
+{
+    float inverseMass = Body[0]->GetInverseMass();
+
+    // The equivalent of a cross-product in matrices is multiplication by a skew-symmetric matrix.
+    // We calculate the matrix for converting between linear and angular quantities.
+    Matrix3x3 impulseToTorque;
+    impulseToTorque.SetSkewSymmetric(m_relativeContactPosition[0]);
+
+    // Calculate the matrix to convert contact impulse to change in velocity in world coordinates
+    Matrix3x3 deltaVelocityWorldspace = impulseToTorque;
+    deltaVelocityWorldspace = deltaVelocityWorldspace * inverseInertiaTensor[0];
+    deltaVelocityWorldspace = deltaVelocityWorldspace * impulseToTorque;
+    deltaVelocityWorldspace *= -1;
+}
+
 void RigidBodyContact::ApplyPositionChange(Vector3* linearChange, Vector3* angularChange, float penetration)
 {
     // Calculate inertia of each object in the direction of the contact normal due to angular inertia only
