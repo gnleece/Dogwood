@@ -183,6 +183,7 @@ Matrix3x3 operator *(const Matrix3x3& a, const Matrix3x3& b);
 Matrix3x3 operator *(const Matrix3x3& a, float s);
 Vector3 operator *(const Matrix3x3& m, const Vector3& v);
 Vector3 operator *(const Vector3& v, const Matrix3x3& m);
+Matrix3x3 operator +(const Matrix3x3& a, const Matrix3x3& b);
 
 class Matrix4x4
 {
@@ -223,6 +224,7 @@ Matrix4x4 operator *(const Matrix4x4& a, const Matrix4x4& b);
 Matrix4x4 operator *(const Matrix4x4& a, float s);
 Vector4 operator *(const Matrix4x4& m, const Vector4& v);
 Vector4 operator *(const Vector4& v, const Matrix4x4& m);
+Matrix4x4 operator +(const Matrix4x4& a, const Matrix4x4& b);
 
 class Quaternion
 {

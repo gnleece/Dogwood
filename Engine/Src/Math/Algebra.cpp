@@ -745,6 +745,19 @@ Vector3 operator *(const Vector3& v, const Matrix3x3& m)
     return ret;
 }
 
+Matrix3x3 operator +(const Matrix3x3& a, const Matrix3x3& b)
+{
+    Matrix3x3 ret;
+    for (int i = 0; i < 3; i++)
+    {
+        for (int j = 0; j < 3; j++)
+        {
+            ret[i][j] = a[i][j] + b[i][j];
+        }
+    }
+    return ret;
+}
+
 Matrix4x4::Matrix4x4()
 {
     // default is identity matrix
@@ -1023,6 +1036,19 @@ Vector4 operator *(const Vector4& v, const Matrix4x4& m)
                  m[3][i] * v[3];
     }
 
+    return ret;
+}
+
+Matrix4x4 operator +(const Matrix4x4& a, const Matrix4x4& b)
+{
+    Matrix4x4 ret;
+    for (int i = 0; i < 4; i++)
+    {
+        for (int j = 0; j < 4; j++)
+        {
+            ret[i][j] = a[i][j] + b[i][j];
+        }
+    }
     return ret;
 }
 
