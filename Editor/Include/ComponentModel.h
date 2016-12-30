@@ -45,6 +45,7 @@ private:
     void            AddTransformData();
     void            AddMeshData();
     void            AddColliderData();
+    void            AddRigidBodyData();
     void            AddComponentData();
 
     ComponentModelItem*             m_rootItem;

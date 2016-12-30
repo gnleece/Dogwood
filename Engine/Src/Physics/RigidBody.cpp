@@ -4,7 +4,7 @@
 #include "Serialization/HierarchicalSerializer.h"
 #include <math.h>
 
-RigidBody::RigidBody(GameObjectBase* gameObject) : m_gameObject(gameObject)
+RigidBody::RigidBody(GameObjectBase* gameObject) : m_gameObject(gameObject), m_isEnabled(true)
 { }
 
 void RigidBody::SetPosition(Vector3 position)

@@ -25,6 +25,7 @@ void ComponentModel::BuildModel()
     AddTransformData();
     AddMeshData();
     AddColliderData();
+    AddRigidBodyData();
     AddComponentData();
 
     emit layoutChanged();
@@ -200,6 +201,16 @@ void ComponentModel::AddColliderData()
         ComponentModelColliderItem* headerItem = new ComponentModelColliderItem(collider);
         m_rootItem->AddChild(headerItem);
     }
+}
+
+void ComponentModel::AddRigidBodyData()
+{
+    RigidBody* rigidBody = m_gameObject->GetRigidBody();
+    if (rigidBody == NULL)
+        return;
+
+    ComponentModelRigidBodyItem* rigidBodyItem = new ComponentModelRigidBodyItem(rigidBody);
+    m_rootItem->AddChild(rigidBodyItem);
 }
 
 void ComponentModel::AddComponentData()

@@ -8,6 +8,7 @@
 #include "GameObjectReference.h"
 #include "ToolsideGameObject.h"
 #include "Physics/Collider.h"
+#include "Physics/RigidBody.h"
 #include "Rendering/Material.h"
 #include "Rendering/Mesh.h"
 #include "Rendering/MeshInstance.h"
@@ -684,6 +685,19 @@ ComponentModelColliderItem::ComponentModelColliderItem(Collider* collider, bool 
         break;
     }
     }
+}
+
+//--------------------------------------------------------------------------------
+
+ComponentModelRigidBodyItem::ComponentModelRigidBodyItem(RigidBody* rigidBody, bool header)
+    : ComponentModelItem("RigidBody"), m_rigidBody(rigidBody)
+{
+    m_isHeader = header;
+
+    // Enabled parameter
+    ComponentValue staticValue = ComponentValue(ComponentParameter::TYPE_BOOL, m_rigidBody->IsEnabled());
+    std::function<void(ComponentValue)> staticCallback = [&](ComponentValue v) { m_rigidBody->SetEnabled(v.b); };
+    AddGenericParam("IsEnabled", ComponentParameter::TYPE_BOOL, staticValue, staticCallback);
 }
 
 //--------------------------------------------------------------------------------

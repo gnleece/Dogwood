@@ -12,6 +12,7 @@ using std::vector;
 
 class Collider;
 class MeshInstance;
+class RigidBody;
 class ToolsideGameObject;
 class QMimeData;
 
@@ -174,6 +175,16 @@ public:
 private:
     Collider*           m_collider;
 };
+
+class ComponentModelRigidBodyItem : public ComponentModelItem
+{
+public:
+    ComponentModelRigidBodyItem(RigidBody* rigidBody, bool header = true);
+
+private:
+    RigidBody*           m_rigidBody;
+};
+
 
 class ComponentModelScriptItem : public ComponentModelItem
 {
