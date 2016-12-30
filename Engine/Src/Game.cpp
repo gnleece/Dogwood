@@ -82,9 +82,10 @@ void Game::Run(Scene* scene)
         GameObjectManager::Singleton().Update(m_deltaTime);
 
         // Physics update
-        PhysicsEngine::Singleton().StartFrame();
-        CollisionEngine::Singleton().Update(m_deltaTime);       // TODO fixed physics timestep?
-        PhysicsEngine::Singleton().Update(m_deltaTime);
+        //PhysicsEngine::Singleton().StartFrame();
+        PhysicsEngine::Singleton().UpdateBodies(m_deltaTime);
+        CollisionEngine::Singleton().CalculateCollisionData(m_deltaTime);       // TODO fixed physics timestep?
+        PhysicsEngine::Singleton().ResolveCollisions(m_deltaTime);
 
         // Rendering update
         RenderManager::Singleton().RenderScene();

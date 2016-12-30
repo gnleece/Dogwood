@@ -2,6 +2,9 @@
 
 #include <vector>
 #include "Physics/ForceGenerator.h"
+#include "Physics/RigidBodyContact.h"
+
+#define MAX_RESOLUTION_ITERATIONS 25
 
 using std::vector;
 
@@ -16,15 +19,17 @@ public:
         static PhysicsEngine singleton;
         return singleton;
     }
-    PhysicsEngine() {}
+    PhysicsEngine();
 
     void    Startup();
     void    Shutdown();
 
-    void    StartFrame();
-    void    Update(float deltaTime);
+    //void    StartFrame();
+    void    UpdateBodies(float deltaTime);
+    void    ResolveCollisions(float deltaTime);
 
 private:
     vector<RigidBody*>  m_rigidBodies;
     ForceRegistry       m_forceRegistry;
+    ContactResolver     m_contactResolver;
 };

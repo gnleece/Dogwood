@@ -4,7 +4,7 @@
 
 class Collider;
 class BoxCollider;
-class CapsuleCollider;
+class CapsuleCollider;      // TODO implement me
 class SphereCollider;
 
 struct CollisionContact
@@ -24,10 +24,12 @@ struct CollisionData
     ~CollisionData();
 
     CollisionContact*   ClaimNextContact();
+    void                Reset();
 
     CollisionContact*   Contacts;
     CollisionContact*   NextEmptyContact;
     int                 ContactsRemaining;
+    int                 MaxContacts;
 };
 
 class CollisionDetection

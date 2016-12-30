@@ -2,6 +2,7 @@
 
 #include "BoundingSphere.h"
 #include "BVHNode.h"
+#include "Physics/CollisionDetection.h"
 #include "Rendering/Color.h"
 #include <vector>
 
@@ -10,7 +11,6 @@
 using std::vector;
 
 class Collider;
-struct CollisionData;
 
 struct PotentialContact
 {
@@ -28,13 +28,14 @@ public:
         static CollisionEngine singleton;
         return singleton;
     }
-    CollisionEngine() : m_debugLog(false), m_debugDraw(false) {}
+    CollisionEngine();
 
     void    Startup();
     void    Shutdown();
 
-    void    Update(float deltaTime);
+    void    CalculateCollisionData(float deltaTime);
     void    DrawDebugInfo();
+    const CollisionData& GetCollisionData();
 
     void    RegisterCollider(Collider* collider);
     void    UnregisterCollider(Collider* collider);
@@ -55,6 +56,8 @@ private:
     BVHNode<BoundingSphere>*    m_staticCollisionHierarchy;
     vector<Collider*>           m_staticColliders;
     vector<Collider*>           m_dynamicColliders;
+
+    CollisionData               m_collisionData;
 
     bool                        m_debugLog;
     bool                        m_debugDraw;

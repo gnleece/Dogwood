@@ -9,6 +9,7 @@ CollisionData::CollisionData(int maxContacts)
     Contacts = new CollisionContact[maxContacts];
     NextEmptyContact = Contacts;
     ContactsRemaining = maxContacts;
+    MaxContacts = maxContacts;
 }
 
 CollisionData::~CollisionData()
@@ -28,6 +29,12 @@ CollisionContact* CollisionData::ClaimNextContact()
     NextEmptyContact++;
     return ret;
 
+}
+
+void CollisionData::Reset()
+{
+    NextEmptyContact = Contacts;
+    ContactsRemaining = MaxContacts;
 }
 
 unsigned int CollisionDetection::SphereAndSphere(SphereCollider* a, SphereCollider* b, CollisionData* data)

@@ -57,9 +57,8 @@ public:
     // Because the force is not applied at the center of mass, it may be split into force and torque.
     //void        AddForceAtPointLocalSpace(Vector3& force, Vector3& point);
 
-    void        ClearAccumulators();
-
 protected:
+    void        ClearAccumulators();
     void        CalculateCachedData();
     void        CalculateTransform(const Vector3& position, const Quaternion& rotation, Matrix4x4& transform);
     void        TransformInertiaTensor(const Quaternion& q, const Matrix3x3& iitLocal, const Matrix4x4 transformWorld, Matrix3x3& iitWorld);
