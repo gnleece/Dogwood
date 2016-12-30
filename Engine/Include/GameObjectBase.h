@@ -12,8 +12,9 @@
 using std::string;
 using std::vector;
 
-class MeshInstance;
 class Collider;
+class MeshInstance;
+class RigidBody;
 
 class GameObjectBase
 {
@@ -45,6 +46,9 @@ public:
     void            AddCollider(Collider* collider);
     void            RemoveCollider(Collider* collider);
 
+    RigidBody*      GetRigidBody();
+    void            SetRigidBody(RigidBody* rigidBody);
+
 protected:
     void            AddChild(GameObjectBase* child, int index = -1);
     void            RemoveChild(GameObjectBase* child);
@@ -58,5 +62,6 @@ protected:
     vector<GameObjectBase*> m_children;
 
     MeshInstance*           m_mesh;
-    vector<Collider*>       m_colliders; 
+    vector<Collider*>       m_colliders;
+    RigidBody*              m_rigidBody;
 };

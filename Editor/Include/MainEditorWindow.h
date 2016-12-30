@@ -11,6 +11,7 @@
 #include "EditorCommands.h"
 #include "Math\Algebra.h"
 #include "Physics\Collider.h"
+#include "Physics\RigidBody.h"
 
 class AssetWidget;
 class ComponentWidget;
@@ -114,6 +115,7 @@ private slots:
 
     void AddMeshPrimitive(const QString& meshName);
     void AddCollider(int type);
+    void AddRigidBody();
     void AddParticleSystem();
 
     void OnHierarchySelectionChanged(QModelIndex& newIndex);

@@ -1,4 +1,7 @@
 #include "Physics/RigidBody.h"
+
+#include "GameObjectBase.h"
+#include "Serialization/HierarchicalSerializer.h"
 #include <math.h>
 
 RigidBody::RigidBody(GameObjectBase* gameObject) : m_gameObject(gameObject)
@@ -179,6 +182,59 @@ void RigidBody::AddForceAtPoint(Vector3& force, Vector3& point)
 //{
 //     // TODO implement me
 //}
+
+RigidBody* RigidBody::Load(HierarchicalDeserializer* deserializer, GameObjectBase* gameObject)
+{
+    RigidBody* rigidBody = new RigidBody(gameObject);
+    if (rigidBody != NULL)
+    {
+        rigidBody->Load(deserializer);
+    }
+
+    return rigidBody;
+}
+
+void RigidBody::AddToGameObject(GameObjectBase* gameObject, bool replaceExisiting)
+{
+    if (gameObject == NULL)
+        return;
+
+    RigidBody* previousBody = gameObject->GetRigidBody();
+    if (previousBody == NULL || replaceExisiting)
+    {
+        RigidBody* rigidBody = new RigidBody(gameObject);
+        gameObject->SetRigidBody(rigidBody);
+
+        if (previousBody != NULL)
+        {
+            delete previousBody;
+        }
+    }
+}
+
+void RigidBody::Save(HierarchicalSerializer* serializer)
+{
+    serializer->PushScope("RigidBody");
+    serializer->SetAttribute("IsEnabled", m_isEnabled);
+    serializer->PopScope();
+}
+
+void RigidBody::Load(HierarchicalDeserializer* deserializer)
+{
+    bool isEnabled;
+    deserializer->GetAttribute("IsEnabled", isEnabled);
+    SetEnabled(isEnabled);
+}
+
+void RigidBody::SetEnabled(bool isEnabled)
+{
+    m_isEnabled = isEnabled;
+}
+
+bool RigidBody::IsEnabled()
+{
+    return m_isEnabled;
+}
 
 void RigidBody::ClearAccumulators()
 {

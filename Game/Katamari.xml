@@ -46,13 +46,13 @@
             <Script guid="3988628104" path="Scripts/Bouncer.h"/>
         </Scripts>
         <DefaultResources>
-            <Asset name="mesh_torus" guid="2282599710"/>
             <Asset name="mesh_cone" guid="489851566"/>
-            <Asset name="mesh_sphere" guid="3936014360"/>
+            <Asset name="mesh_torus" guid="2282599710"/>
             <Asset name="mesh_cube" guid="33727872"/>
+            <Asset name="mesh_sphere" guid="3936014360"/>
             <Asset name="mesh_cylinder" guid="4197557055"/>
-            <Asset name="shader_unlit_unicolor" guid="441267611"/>
             <Asset name="mesh_plane" guid="156145593"/>
+            <Asset name="shader_unlit_unicolor" guid="441267611"/>
             <Asset name="shader_unlit" guid="311191123"/>
             <Asset name="shader_gouraud" guid="3746892247"/>
         </DefaultResources>

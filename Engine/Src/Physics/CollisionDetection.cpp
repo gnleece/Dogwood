@@ -8,6 +8,7 @@ CollisionData::CollisionData(int maxContacts)
 {
     Contacts = new CollisionContact[maxContacts];
     NextEmptyContact = Contacts;
+    ContactsUsed = 0;
     ContactsRemaining = maxContacts;
     MaxContacts = maxContacts;
 }
@@ -26,6 +27,7 @@ CollisionContact* CollisionData::ClaimNextContact()
 
     CollisionContact* ret = NextEmptyContact;
     ContactsRemaining--;
+    ContactsUsed++;
     NextEmptyContact++;
     return ret;
 
@@ -34,6 +36,7 @@ CollisionContact* CollisionData::ClaimNextContact()
 void CollisionData::Reset()
 {
     NextEmptyContact = Contacts;
+    ContactsUsed = 0;
     ContactsRemaining = MaxContacts;
 }
 

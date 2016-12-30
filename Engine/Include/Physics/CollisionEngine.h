@@ -35,7 +35,7 @@ public:
 
     void    CalculateCollisionData(float deltaTime);
     void    DrawDebugInfo();
-    const CollisionData& GetCollisionData();
+    const CollisionData* GetCollisionData();
 
     void    RegisterCollider(Collider* collider);
     void    UnregisterCollider(Collider* collider);

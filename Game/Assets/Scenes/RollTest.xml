@@ -106,6 +106,7 @@
                     <Center x="0" y="0" z="0"/>
                 </Collider>
             </Colliders>
+            <RigidBody IsEnabled="0"/>
             <Components>
                 <Component guid="3055461197" engine="0">
                     <Param name="Speed" type="1" value="90"/>

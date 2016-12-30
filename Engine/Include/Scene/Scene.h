@@ -49,6 +49,7 @@ private:
     void                SaveMaterialColors(HierarchicalSerializer* serializer, Material* material);
     void                SaveMaterialTextures(HierarchicalSerializer* serializer, Material* material, unordered_set<unsigned int>& guids);
     void                SaveColliders(HierarchicalSerializer* serializer, ToolsideGameObject* gameObject);
+    void                SaveRigidBodies(HierarchicalSerializer* serializer, ToolsideGameObject* gameObject);
     void                SaveComponents(HierarchicalSerializer* serializer, ToolsideGameObject* gameObject, unordered_set<unsigned int>& guids);
     void                SaveResourceList(HierarchicalSerializer* serializer, unordered_set<unsigned int>& guids);
 
@@ -60,6 +61,7 @@ private:
     void                LoadMesh(HierarchicalDeserializer* deserializer, GameObjectBase* go);
     void                LoadMaterial(HierarchicalDeserializer* deserializer, MeshInstance* meshInstance);
     void                LoadColliders(HierarchicalDeserializer* deserializer, GameObjectBase* go);
+    void                LoadRigidBodies(HierarchicalDeserializer* deserializer, GameObjectBase* go);
     void                LoadGameComponents(HierarchicalDeserializer* deserializer, GameObjectBase* go);
     void                LoadMaterialColors(HierarchicalDeserializer* deserializer, Material* material);
     void                LoadMaterialTextures(HierarchicalDeserializer* deserializer, Material* material);

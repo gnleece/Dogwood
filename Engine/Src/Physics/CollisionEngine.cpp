@@ -84,9 +84,9 @@ void CollisionEngine::DrawDebugInfo()
     }
 }
 
-const CollisionData& CollisionEngine::GetCollisionData()
+const CollisionData* CollisionEngine::GetCollisionData()
 {
-    return m_collisionData;
+    return &m_collisionData;
 }
 
 void CollisionEngine::DrawColliders(vector<Collider*>& colliders, ColorRGB color)

@@ -332,6 +332,8 @@
      <addaction name="actionAdd_Sphere_Collider"/>
      <addaction name="actionAdd_Box_Collider"/>
      <addaction name="actionAdd_Capsule_Collider"/>
+     <addaction name="separator"/>
+     <addaction name="actionRigid_Body"/>
     </widget>
     <widget class="QMenu" name="menuAdd_Effect">
      <property name="title">
@@ -648,6 +650,11 @@
   <action name="actionParticle_System">
    <property name="text">
     <string>Particle System</string>
+   </property>
+  </action>
+  <action name="actionRigid_Body">
+   <property name="text">
+    <string>Rigid Body</string>
    </property>
   </action>
  </widget>

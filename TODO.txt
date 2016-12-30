@@ -208,9 +208,18 @@ DESIGN DECISIONS
     - TODO wrap all OpenGL (to allow DirectX support as alternate option)
     - TODO quaternions
     - TODO C#/XAML for Editor?
+    - TODO clean up engine interface for game code
 
 References
 
 http://seanmiddleditch.com/matrices-handedness-pre-and-post-multiplication-row-vs-column-major-and-notations/
 http://www.3dgep.com/understanding-the-view-matrix/
 https://en.wikibooks.org/wiki/GLSL_Programming/Unity/Toon_Shading
+
+Physics notes
+- Game objects can have multiple colliders (including multiple of the same type)
+- Game objects can NOT have multiple rigid bodies
+- Game objects can have collider(s) but no rigid body
+    - Used for "triggers" - object gets collision events, but is not moved by physics
+- Game objects can have a rigid body but no colliders
+    - Used for objects that move without colliding - e.g. falling from gravity

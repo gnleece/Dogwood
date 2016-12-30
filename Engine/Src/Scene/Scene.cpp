@@ -10,6 +10,8 @@
 #include "Util.h"
 #include "Physics\Collider.h"
 #include "Physics\CollisionEngine.h"
+#include "Physics\PhysicsEngine.h"
+#include "Physics\RigidBody.h"
 #include "Rendering\Camera.h"
 #include "Rendering\Mesh.h"
 #include "Rendering\MeshInstance.h"
@@ -204,6 +206,7 @@ void Scene::SaveHierarchy(HierarchicalSerializer* serializer, ToolsideGameObject
     SaveTransform(serializer, gameObject);
     SaveMesh(serializer, gameObject, guids);
     SaveColliders(serializer, gameObject);
+    SaveRigidBodies(serializer, gameObject);
     SaveComponents(serializer, gameObject, guids);
 
     // Serialize children
@@ -336,6 +339,17 @@ void Scene::SaveColliders(HierarchicalSerializer* serializer, ToolsideGameObject
     serializer->PopScope();
 }
 
+void Scene::SaveRigidBodies(HierarchicalSerializer* serializer, ToolsideGameObject* gameObject)
+{
+    if (gameObject == NULL)
+        return;
+
+    if (gameObject->GetRigidBody() != NULL)
+    {
+        gameObject->GetRigidBody()->Save(serializer);
+    }
+}
+
 void Scene::SaveComponents(HierarchicalSerializer* serializer, ToolsideGameObject* gameObject, unordered_set<unsigned int>& guids)
 {
     if (gameObject == NULL)
@@ -452,6 +466,7 @@ GameObjectBase* Scene::LoadHierarchySubtree(HierarchicalDeserializer* deserializ
     LoadTransform(deserializer, go);
     LoadMesh(deserializer, go);
     LoadColliders(deserializer, go);
+    LoadRigidBodies(deserializer, go);
     LoadGameComponents(deserializer, go);
 
     // Recursively process child game objects
@@ -607,6 +622,21 @@ void Scene::LoadColliders(HierarchicalDeserializer* deserializer, GameObjectBase
             collidersToProcess = deserializer->NextSiblingScope("Collider");
         }
 
+        deserializer->PopScope();
+    }
+}
+
+void Scene::LoadRigidBodies(HierarchicalDeserializer* deserializer, GameObjectBase* go)
+{
+    if (deserializer->PushScope("RigidBody"))
+    {
+        RigidBody* rigidBody = RigidBody::Load(deserializer, go);
+        go->SetRigidBody(rigidBody);
+
+        if (!GameProject::Singleton().IsToolside())
+        {
+            PhysicsEngine::Singleton().RegisterRigidBody(rigidBody);
+        }
         deserializer->PopScope();
     }
 }

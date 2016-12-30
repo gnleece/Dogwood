@@ -146,6 +146,16 @@ void GameObjectBase::RemoveCollider(Collider* collider)
         m_colliders.end());
 }
 
+RigidBody* GameObjectBase::GetRigidBody()
+{
+    return m_rigidBody;
+}
+
+void GameObjectBase::SetRigidBody(RigidBody* rigidBody)
+{
+    m_rigidBody = rigidBody;
+}
+
 void GameObjectBase::AddChild(GameObjectBase* child, int index)
 {
     if (index >= 0 && index < (int)m_children.size())

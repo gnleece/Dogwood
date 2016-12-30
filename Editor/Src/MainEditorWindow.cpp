@@ -118,6 +118,7 @@ void MainEditorWindow::SetupMenuCommands()
     SignalMapHookup(m_addPhysicsSignalMapper, m_ui->actionAdd_Sphere_Collider,  (int)Collider::SPHERE_COLLIDER);
     SignalMapHookup(m_addPhysicsSignalMapper, m_ui->actionAdd_Box_Collider,     (int)Collider::BOX_COLLIDER);
     SignalMapHookup(m_addPhysicsSignalMapper, m_ui->actionAdd_Capsule_Collider, (int)Collider::CAPSULE_COLLIDER);
+    connect(m_ui->actionRigid_Body,             SIGNAL(triggered()),    this, SLOT(AddRigidBody()));
 
     // Effect menu
     connect(m_ui->actionParticle_System, SIGNAL(triggered()), this, SLOT(AddParticleSystem()));
@@ -569,6 +570,14 @@ void MainEditorWindow::AddCollider(int type)
     if (m_selectedGameObject != NULL)
     {
         Collider::AddToGameObject(m_selectedGameObject, (Collider::ColliderType)type);
+    }
+}
+
+void MainEditorWindow::AddRigidBody()
+{
+    if (m_selectedGameObject != NULL)
+    {
+        RigidBody::AddToGameObject(m_selectedGameObject, false);
     }
 }
 

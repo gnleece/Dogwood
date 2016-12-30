@@ -4,6 +4,8 @@
 #include "Math/Transform.h"
 
 class GameObjectBase;
+class HierarchicalDeserializer;
+class HierarchicalSerializer;
 
 class RigidBody
 {
@@ -57,6 +59,15 @@ public:
     // Because the force is not applied at the center of mass, it may be split into force and torque.
     //void        AddForceAtPointLocalSpace(Vector3& force, Vector3& point);
 
+    static RigidBody*   Load(HierarchicalDeserializer* deserializer, GameObjectBase* gameObject);
+    static void         AddToGameObject(GameObjectBase* gameObject, bool replaceExisiting = true);
+
+    void        Save(HierarchicalSerializer* serializer);
+    void        Load(HierarchicalDeserializer* deserializer);
+
+    void        SetEnabled(bool isEnabled);
+    bool        IsEnabled();
+
 protected:
     void        ClearAccumulators();
     void        CalculateCachedData();
@@ -64,7 +75,8 @@ protected:
     void        TransformInertiaTensor(const Quaternion& q, const Matrix3x3& iitLocal, const Matrix4x4 transformWorld, Matrix3x3& iitWorld);
 
     GameObjectBase* m_gameObject;
-    bool            m_isAwake;
+    bool            m_isAwake;                      // Determined by physics code (TODO: implement me)
+    bool            m_isEnabled;                    // Set by game code (default is true)
 
     // Transform values are in world space
     Vector3         m_position;
@@ -72,9 +84,9 @@ protected:
     Vector3         m_velocity;
     Vector3         m_angularVelocity;
     Vector3         m_acceleration;
-    Vector3         m_previousAcceleration;        // Tracks only linear acceleration - using angular as well would be more accurate but is unnecessary
+    Vector3         m_previousAcceleration;         // Tracks only linear acceleration - using angular as well would be more accurate but is unnecessary
 
-    Transform       m_transform;      // TODO reconcile with go transform
+    Transform       m_transform;                    // TODO reconcile with go transform
 
     // Inverse mass is used here instead of simply mass, so that we can represent "infinite" mass (with an
     // inverse mass of 0), and *cannot* represent zero mass (which we don't want to allow).
