@@ -162,7 +162,7 @@ void RigidBodyContact::CalculateFrictionlessImpulse(Matrix3x3* inverseInertiaTen
     }
 }
 
-void RigidBodyContact::CalculateFrictionImpulse(Matrix3x3* inverseInertiaTensor)
+Vector3 RigidBodyContact::CalculateFrictionImpulse(Matrix3x3* inverseInertiaTensor)
 {
     float inverseMass = Body[0]->GetInverseMass();
 
@@ -176,6 +176,56 @@ void RigidBodyContact::CalculateFrictionImpulse(Matrix3x3* inverseInertiaTensor)
     deltaVelocityWorldspace = deltaVelocityWorldspace * inverseInertiaTensor[0];
     deltaVelocityWorldspace = deltaVelocityWorldspace * impulseToTorque;
     deltaVelocityWorldspace *= -1;
+
+    if (Body[1] != NULL)
+    {
+        impulseToTorque.SetSkewSymmetric(m_relativeContactPosition[1]);
+
+        // Calculate the matrix to convert contact impulse to change in velocity in world coordinates
+        Matrix3x3 deltaVelocityWorldspace2 = impulseToTorque;
+        deltaVelocityWorldspace2 = deltaVelocityWorldspace2 * inverseInertiaTensor[1];
+        deltaVelocityWorldspace2 = deltaVelocityWorldspace2 * impulseToTorque;
+        deltaVelocityWorldspace2 *= -1;
+
+        // Add to the total delta velocity and inverse mass
+        deltaVelocityWorldspace = deltaVelocityWorldspace + deltaVelocityWorldspace2;
+        inverseMass += Body[1]->GetInverseMass();
+    }
+
+    // Perform a change of basis to convert into contact coordinates
+    Matrix3x3 deltaVelocity = m_contactToWorld.Transpose();
+    deltaVelocity = deltaVelocity * deltaVelocityWorldspace;        // TODO multiplication order?
+    deltaVelocity = deltaVelocity * m_contactToWorld;
+
+    // Add in the linear velocity change
+    deltaVelocity[0][0] += inverseMass;
+    deltaVelocity[1][1] += inverseMass;
+    deltaVelocity[2][2] += inverseMass;
+
+    // Invert to get the impulse needed per unit velocity
+    Matrix3x3 impulseMatrix = deltaVelocity.Inverse();
+
+    // Find the target velocities to kill
+    Vector3 velKill(m_desiredDeltaVelocity, -m_contactVelocity.y(), -m_contactVelocity.z());
+
+    // Find the impulse to kill target velocities
+    Vector3 impulseContact = impulseMatrix * velKill;
+
+    // Check for exceeding friction
+    float planarImpulse = sqrtf(impulseContact.y()*impulseContact.y() + impulseContact.z()*impulseContact.z());
+    if (planarImpulse > impulseContact.x() * Friction)
+    {
+        // We need to use dynamic friction
+        impulseContact.SetY(impulseContact.y() / planarImpulse);
+        impulseContact.SetZ(impulseContact.z() / planarImpulse);
+        impulseContact.SetX(deltaVelocity[0][0] +
+            deltaVelocity[0][1] * Friction*impulseContact.y() +
+            deltaVelocity[0][2] * Friction*impulseContact.z());
+        impulseContact.SetX(m_desiredDeltaVelocity / impulseContact.x());
+        impulseContact.SetY(impulseContact.y()*Friction*impulseContact.x());
+        impulseContact.SetZ(impulseContact.z()*Friction*impulseContact.x());
+    }
+    return impulseContact;
 }
 
 void RigidBodyContact::ApplyPositionChange(Vector3* linearChange, Vector3* angularChange, float penetration)

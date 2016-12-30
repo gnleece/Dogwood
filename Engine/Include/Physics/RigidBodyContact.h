@@ -36,6 +36,7 @@ public:
 
     float               Restitution;                                // The normal restitution coefficient at the contact
     float               Penetration;                                // The depth of penetration at the contact
+    float               Friction;                                   // The lateral friction coefficient at the contact
 
 protected:
     const static float  MIN_VELOCITY_LIMIT;
@@ -48,7 +49,7 @@ protected:
     void                CalculateDesiredDeltaVelocity(float deltaTime);
     float               CalculateSeparatingVelocity();              // Calculate the separating velocity at this contact
     void                CalculateFrictionlessImpulse(Matrix3x3* inverseInertiaTensor);
-    void                CalculateFrictionImpulse(Matrix3x3* inverseInertiaTensor);
+    Vector3             CalculateFrictionImpulse(Matrix3x3* inverseInertiaTensor);
 
     void                ApplyPositionChange(Vector3* linearChange, Vector3* angularChange, float penetration);
     void                ApplyVelocityChange(Vector3* velocityChange, Vector3* angularVelocityChange);
