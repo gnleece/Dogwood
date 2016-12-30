@@ -31,14 +31,17 @@ void CollisionEngine::Update(float deltaTime)
     PotentialContact potentialContacts[MAX_POTENTIAL_CONTACTS];
     int numPotentialContacts = BroadPhaseCollision(potentialContacts);
 
-    if (numPotentialContacts > 0)
+    if (m_debugLog)
     {
-        //printf("\n\nPotential Contacts\n");
-        for (int i = 0; i < numPotentialContacts; i++)
+        if (numPotentialContacts > 0)
         {
-            //printf("\t%s\n", potentialContacts[i].colliders[0]->GetGameObject()->GetName().c_str());
-            //printf("\t%s\n", potentialContacts[i].colliders[1]->GetGameObject()->GetName().c_str());
-            //printf("\t---\n");
+            printf("\n\nPotential Contacts\n");
+            for (int i = 0; i < numPotentialContacts; i++)
+            {
+                printf("\t%s\n", potentialContacts[i].colliders[0]->GetGameObject()->GetName().c_str());
+                printf("\t%s\n", potentialContacts[i].colliders[1]->GetGameObject()->GetName().c_str());
+                printf("\t---\n");
+            }
         }
     }
 
@@ -48,7 +51,7 @@ void CollisionEngine::Update(float deltaTime)
 
     if (numContacts > 0)
     {
-        //printf("\nActual Contacts\n");
+        if (m_debugLog) printf("\nActual Contacts\n");
         for (int i = 0; i < numContacts; i++)
         {
             // TODO track enter/exit
@@ -56,19 +59,25 @@ void CollisionEngine::Update(float deltaTime)
             ((GameObject*)(collisionData.Contacts[i].ColliderA->GetGameObject()))->OnCollisionHold();
             ((GameObject*)(collisionData.Contacts[i].ColliderB->GetGameObject()))->OnCollisionHold();
 
-            //printf("\t%s\n", collisionData.Contacts[i].ColliderA->GetGameObject()->GetName().c_str());
-            //printf("\t%s\n", collisionData.Contacts[i].ColliderB->GetGameObject()->GetName().c_str());
-            //printf("\t---\n");
+            if (m_debugLog)
+            {
+                printf("\t%s\n", collisionData.Contacts[i].ColliderA->GetGameObject()->GetName().c_str());
+                printf("\t%s\n", collisionData.Contacts[i].ColliderB->GetGameObject()->GetName().c_str());
+                printf("\t---\n");
+            }
         }
     }
 }
 
 void CollisionEngine::DrawDebugInfo()
 {
-    //DrawBoundingSpheres(m_staticCollisionHierarchy, ColorRGB::White);
-    //
-    //DrawColliders(m_staticColliders, ColorRGB(0.f, 1.f, 0.5f));
-    //DrawColliders(m_dynamicColliders, ColorRGB::Yellow);
+    if (m_debugDraw)
+    {
+        DrawBoundingSpheres(m_staticCollisionHierarchy, ColorRGB::White);
+
+        DrawColliders(m_staticColliders, ColorRGB(0.f, 1.f, 0.5f));
+        DrawColliders(m_dynamicColliders, ColorRGB::Yellow);
+    }
 }
 
 void CollisionEngine::DrawColliders(vector<Collider*>& colliders, ColorRGB color)
@@ -135,6 +144,16 @@ void CollisionEngine::UnregisterCollider(Collider* collider)
             std::remove(m_dynamicColliders.begin(), m_dynamicColliders.end(), collider),
             m_dynamicColliders.end());
     }
+}
+
+void CollisionEngine::EnableDebugLog(bool enable)
+{
+    m_debugLog = enable;
+}
+
+void CollisionEngine::EnableDebugDraw(bool enable)
+{
+    m_debugDraw = enable;
 }
 
 void CollisionEngine::AddColliderToHierarchy(Collider* collider)

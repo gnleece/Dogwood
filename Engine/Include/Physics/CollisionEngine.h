@@ -28,7 +28,7 @@ public:
         static CollisionEngine singleton;
         return singleton;
     }
-    CollisionEngine() {}
+    CollisionEngine() : m_debugLog(false), m_debugDraw(false) {}
 
     void    Startup();
     void    Shutdown();
@@ -38,6 +38,9 @@ public:
 
     void    RegisterCollider(Collider* collider);
     void    UnregisterCollider(Collider* collider);
+
+    void    EnableDebugLog(bool enable);
+    void    EnableDebugDraw(bool enable);
 
 private:
     void    AddColliderToHierarchy(Collider* collider);
@@ -52,4 +55,7 @@ private:
     BVHNode<BoundingSphere>*    m_staticCollisionHierarchy;
     vector<Collider*>           m_staticColliders;
     vector<Collider*>           m_dynamicColliders;
+
+    bool                        m_debugLog;
+    bool                        m_debugDraw;
 };
