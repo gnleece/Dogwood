@@ -160,6 +160,25 @@ Matrix4x4 PerspectiveProjection(float FOV, float aspect, float near, float far)
                      Vector4(0,0,-1,0));
 }
 
+Matrix3x3 InertiaTensorCuboid(const Vector3& halfsizes, float mass)
+{
+    Matrix3x3 m;
+    Vector3 squares = halfsizes.ComponentwiseProduct(halfsizes);
+    float s = 0.08333f * mass;      // 1/12 = 0.08333...
+    m.SetDiagonal(Vector3(s*(squares.y() + squares.z()),
+                          s*(squares.x() + squares.z()),
+                          s*(squares.x() + squares.y())));
+    return m;
+}
+
+Matrix3x3 InertiaTensorSphere(float radius, float mass)
+{
+    Matrix3x3 m;
+    float d = 0.4f*mass*radius*radius;       // 2/5 = 0.4
+    m.SetDiagonal(Vector3(d, d, d));
+    return m;
+}
+
 // rotation decomposition formula from http://nghiaho.com/?page_id=846
 void DecomposeTRSMatrix(const Matrix4x4& matrix, Vector3& position, Vector3& rotation, Vector3& scale)
 {
