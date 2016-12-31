@@ -76,6 +76,7 @@ public:
     float       MinElement();
 
     Vector3     ComponentwiseInverse() const;
+    Vector3     ComponentwiseProduct(const Vector3& other) const;
     bool        HasZeroComponent() const;
 
     void        DebugPrint();
@@ -132,6 +133,9 @@ public:
 
     float       MaxElement();
     float       MinElement();
+
+    Vector4     ComponentwiseInverse() const;
+    Vector4     ComponentwiseProduct(const Vector4& other) const;
 
     void        DebugPrint();
 

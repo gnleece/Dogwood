@@ -253,6 +253,13 @@ Vector3 Vector3::ComponentwiseInverse() const
     return Vector3(x, y, z);
 }
 
+Vector3 Vector3::ComponentwiseProduct(const Vector3& other) const
+{
+    return Vector3(m_values[0] * other.m_values[0],
+                   m_values[1] * other.m_values[1],
+                   m_values[2] * other.m_values[2]);
+}
+
 bool Vector3::HasZeroComponent() const
 {
     return (m_values[0] == 0 || m_values[1] == 0 || m_values[2] == 0);
@@ -445,6 +452,23 @@ float Vector4::MaxElement()
 float Vector4::MinElement()
 {
     return fmin(m_values[0], fmin(m_values[1], fmin(m_values[2], m_values[3])));
+}
+
+Vector4 Vector4::ComponentwiseInverse() const
+{
+    float x = m_values[0] == 0 ? 0 : 1 / m_values[0];
+    float y = m_values[1] == 0 ? 0 : 1 / m_values[1];
+    float z = m_values[2] == 0 ? 0 : 1 / m_values[2];
+    float w = m_values[3] == 0 ? 0 : 1 / m_values[3];
+    return Vector4(x, y, z, w);
+}
+
+Vector4 Vector4::ComponentwiseProduct(const Vector4& other) const
+{
+    return Vector4(m_values[0] * other.m_values[0],
+                   m_values[1] * other.m_values[1],
+                   m_values[2] * other.m_values[2],
+                   m_values[3] * other.m_values[3]);
 }
 
 Vector4 operator +(const Vector4& a, const Vector4& b)
