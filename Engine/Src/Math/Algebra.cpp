@@ -563,6 +563,21 @@ void Matrix3x3::SetColumns(Vector3& col0, Vector3& col1, Vector3& col2)
     m_values[8] = col2[2];
 }
 
+void Matrix3x3::SetDiagonal(Vector3& v)
+{
+    m_values[0] = v[0];
+    m_values[1] = 0;
+    m_values[2] = 0;
+
+    m_values[3] = 0;
+    m_values[4] = v[1];
+    m_values[5] = 0;
+
+    m_values[6] = 0;
+    m_values[7] = 0;
+    m_values[8] = v[2];
+}
+
 void Matrix3x3::SetSkewSymmetric(Vector3& v)
 {
     // A 3x3 skew symmetric matrix can be used to represent cross products as matrix multiplications.
@@ -865,6 +880,29 @@ void Matrix4x4::SetColumns(Vector4& col0, Vector4& col1, Vector4& col2, Vector4&
     m_values[13] = col1[3];
     m_values[14] = col2[3];
     m_values[15] = col3[3];
+}
+
+void Matrix4x4::SetDiagonal(Vector4& v)
+{
+    m_values[0] = v[0];
+    m_values[1] = 0;
+    m_values[2] = 0;
+    m_values[3] = 0;
+
+    m_values[4] = 0;
+    m_values[5] = v[1];
+    m_values[6] = 0;
+    m_values[7] = 0;
+
+    m_values[8] = 0;
+    m_values[9] = 0;
+    m_values[10] = v[2];
+    m_values[11] = 0;
+
+    m_values[12] = 0;
+    m_values[13] = 0;
+    m_values[14] = 0;
+    m_values[15] = v[3];
 }
 
 Matrix4x4 Matrix4x4::Transpose() const

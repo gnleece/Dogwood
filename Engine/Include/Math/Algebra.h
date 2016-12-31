@@ -164,6 +164,7 @@ public:
     Vector3     Column(int col) const;
 
     void        SetColumns(Vector3& col0, Vector3& col1, Vector3& col2);
+    void        SetDiagonal(Vector3& v);
     void        SetSkewSymmetric(Vector3& v);
 
     Matrix3x3   Transpose() const;
@@ -206,6 +207,7 @@ public:
     Vector4     Column(int col) const;
 
     void        SetColumns(Vector4& col0, Vector4& col1, Vector4& col2, Vector4& col3);
+    void        SetDiagonal(Vector4& v);
 
     Matrix4x4   Transpose() const;
     Matrix4x4   Inverse() const;
