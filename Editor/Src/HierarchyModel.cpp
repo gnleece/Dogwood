@@ -34,6 +34,8 @@ QModelIndex HierarchyModel::index(int row, int column, const QModelIndex &parent
         return QModelIndex();
 
     ToolsideGameObject* parentItem = getItem(parent);
+    if (parentItem == NULL)
+        return QModelIndex();
 
     ToolsideGameObject* childItem = parentItem->GetChild(row);
     if (childItem)

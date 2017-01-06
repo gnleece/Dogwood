@@ -5,6 +5,7 @@
 #include "GameObjectReference.h"
 
 #include "Rendering/MeshInstance.h"
+#include "Physics/RigidBody.h"      // TODO make an actual rigidbody game component to fix this dependency
 
 GameObject::GameObject(unsigned int guid, string name, GameObjectBase* parent)
  : GameObjectBase(guid, name, parent), m_active(true)
@@ -50,6 +51,12 @@ void GameObject::OnCreate()
     {
         GameComponent* component = *compIter;
         component->OnCreate();
+    }
+
+    // TODO this shouldn't be here - make a real rigidbody game component
+    if (m_rigidBody != NULL)
+    {
+        m_rigidBody->OnCreate();
     }
 
     printf("\n");

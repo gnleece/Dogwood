@@ -25,6 +25,7 @@ public:
 
     virtual ColliderType    GetType() = 0;
     virtual float           GetWorldspaceBoundingRadius() = 0;
+    virtual Matrix3x3       GetInertiaTensor(float mass) = 0;
     virtual void            DebugDraw(ColorRGB color, bool useDepth = true);
 
     Vector3                 GetWorldPosition();
@@ -54,6 +55,7 @@ public:
 
     virtual ColliderType    GetType();
     virtual float           GetWorldspaceBoundingRadius();
+    virtual Matrix3x3       GetInertiaTensor(float mass);
     virtual void            DebugDraw(ColorRGB color, bool useDepth = true);
 
     float                   GetLocalRadius();
@@ -73,6 +75,7 @@ public:
 
     virtual ColliderType    GetType();
     virtual float           GetWorldspaceBoundingRadius();
+    virtual Matrix3x3       GetInertiaTensor(float mass);
     virtual void            DebugDraw(ColorRGB color, bool useDepth = true);
 
     Vector3                 GetLocalSize();
@@ -95,6 +98,7 @@ public:
 
     virtual ColliderType    GetType();
     virtual float           GetWorldspaceBoundingRadius();
+    virtual Matrix3x3       GetInertiaTensor(float mass);
     virtual void            DebugDraw(ColorRGB color, bool useDepth = true);
 
     float                   GetLocalRadius();

@@ -109,8 +109,11 @@ EDITOR
         - Move camera in editor to show gnomon if it's out of view on object select
             - Fixed for scene select but not hierarchy select
             - Force on double click
+        - Function parity for algebra classes
 
         Hi pri
+        - "New Scene" is broken
+        - "Save Scene As" should force xml file extension
         - Fix translation tool interactions
             - Local vs. global
             - Proper hit detection on actual arrows

@@ -614,6 +614,7 @@ void Scene::LoadColliders(HierarchicalDeserializer* deserializer, GameObjectBase
             Collider* collider = Collider::Load(deserializer, go);
             go->AddCollider(collider);
 
+            // TODO: don't do this here
             if (!GameProject::Singleton().IsToolside())
             {
                 CollisionEngine::Singleton().RegisterCollider(collider);
@@ -633,10 +634,9 @@ void Scene::LoadRigidBodies(HierarchicalDeserializer* deserializer, GameObjectBa
         RigidBody* rigidBody = RigidBody::Load(deserializer, go);
         go->SetRigidBody(rigidBody);
 
-        if (!GameProject::Singleton().IsToolside())
-        {
-            PhysicsEngine::Singleton().RegisterRigidBody(rigidBody);
-        }
+        // We intentionally don't register to rigid body with the physics engine 
+        // here - registration happens in GameObject::OnCreate()
+
         deserializer->PopScope();
     }
 }

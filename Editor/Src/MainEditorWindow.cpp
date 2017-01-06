@@ -376,7 +376,7 @@ void MainEditorWindow::OpenTestProject()
     }
     
     UnloadScene();
-    m_scene = Scene::Load("..\\Game\\Assets\\Scenes\\RollTest.xml");
+    m_scene = Scene::Load("..\\Game\\Assets\\Scenes\\PhysicsTest.xml");
 
     if (m_scene != NULL)
     {

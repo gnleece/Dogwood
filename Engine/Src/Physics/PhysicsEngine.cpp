@@ -82,7 +82,10 @@ void PhysicsEngine::ResolveCollisions(float deltaTime)
     }
 
     // Resolve the collisions involving rigid bodies
-    m_contactResolver.ResolveContacts(m_rigiBodyContacts, contactCount, deltaTime);
+    if (contactCount > 0)
+    {
+        m_contactResolver.ResolveContacts(m_rigiBodyContacts, contactCount, deltaTime);
+    }
 }
 
 void PhysicsEngine::RegisterRigidBody(RigidBody* rigidBody)

@@ -141,6 +141,11 @@ float SphereCollider::GetWorldspaceBoundingRadius()
     return m_radius * scale;
 }
 
+Matrix3x3 SphereCollider::GetInertiaTensor(float mass)
+{
+    return InertiaTensorSphere(m_radius, mass);
+}
+
 void SphereCollider::DebugDraw(ColorRGB color, bool useDepth)
 {
     Matrix4x4 m = Translation(GetWorldPosition());
@@ -199,6 +204,11 @@ float BoxCollider::GetWorldspaceBoundingRadius()
 {
     Vector3 worldScale = m_transform.TransformVector(m_size);
     return worldScale.Magnitude();
+}
+
+Matrix3x3 BoxCollider::GetInertiaTensor(float mass)
+{
+    return InertiaTensorCuboid(m_size, mass);       // TODO not sure if this is correct
 }
 
 void BoxCollider::DebugDraw(ColorRGB color, bool useDepth)
@@ -282,6 +292,12 @@ float CapsuleCollider::GetWorldspaceBoundingRadius()
     float worldHeight = CalculateWorldHeight();
     float worldRadius = CalculateWorldRadius();
     return worldHeight/2 + worldRadius;
+}
+
+Matrix3x3 CapsuleCollider::GetInertiaTensor(float mass)
+{
+    // TODO implement for real
+    return Matrix3x3::Identity;
 }
 
 void CapsuleCollider::DebugDraw(ColorRGB color, bool useDepth)

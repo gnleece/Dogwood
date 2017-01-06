@@ -15,7 +15,7 @@ PotentialContact::PotentialContact()
 }
 
 CollisionEngine::CollisionEngine()
-    : m_debugLog(true), m_debugDraw(false), m_collisionData(MAX_POTENTIAL_CONTACTS)
+    : m_debugLog(false), m_debugDraw(true), m_collisionData(MAX_POTENTIAL_CONTACTS)
 {}
 
 void CollisionEngine::Startup()
@@ -28,7 +28,7 @@ void CollisionEngine::Shutdown()
     // TODO clean up the collision hierarchy
 }
 
-void CollisionEngine::CalculateCollisionData(float deltaTime)
+void CollisionEngine::CalculateCollisions(float deltaTime)
 {
     m_collisionData.Reset();
 

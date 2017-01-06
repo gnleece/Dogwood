@@ -68,6 +68,8 @@ public:
     void        SetEnabled(bool isEnabled);
     bool        IsEnabled();
 
+    void        OnCreate();     // TODO there should be a separate rigidbody game component that has this instead
+
 protected:
     void        ClearAccumulators();
     void        CalculateCachedData();

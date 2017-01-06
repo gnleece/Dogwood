@@ -33,7 +33,7 @@ public:
     void    Startup();
     void    Shutdown();
 
-    void    CalculateCollisionData(float deltaTime);
+    void    CalculateCollisions(float deltaTime);
     void    DrawDebugInfo();
     const CollisionData* GetCollisionData();
 
