@@ -230,40 +230,97 @@ Vector3 RigidBodyContact::CalculateFrictionImpulse(Matrix3x3* inverseInertiaTens
 
 void RigidBodyContact::ApplyPositionChange(Vector3* linearChange, Vector3* angularChange, float penetration)
 {
-    // Calculate inertia of each object in the direction of the contact normal due to angular inertia only
+    float angularLimit = 2.0f;
+    float angularMove[2];
+    float linearMove[2];
     float linearInertia[2];
     float angularInteria[2];
-    float totalInertia;
-
-    Matrix3x3 inverseInertiaTensor = Body[0]->GetInverseIntertiaTensorWorld();
+    float totalInertia = 0.0f;
 
     // Calculate the angular inertia using the same process as for calculating frictionless velocity change
-    for (int i = 0; i < 2; i ++)
+    for (int i = 0; i < 2; i++)
     {
         if (Body[i] != NULL)
         {
+            Matrix3x3 inverseInertiaTensor = Body[0]->GetInverseIntertiaTensorWorld();
             Vector3 angularInertiaWorld = m_relativeContactPosition[i].Cross(ContactNormal);
             angularInertiaWorld = inverseInertiaTensor*angularInertiaWorld;
             angularInertiaWorld = angularInertiaWorld.Cross(m_relativeContactPosition[i]);
             angularInteria[i] = angularInertiaWorld.Dot(ContactNormal);
+
+            // The linear inertia component is just the inverse mass
+            linearInertia[i] = Body[i]->GetInverseMass();
+
+            // Combine angular and linear to calculate total
+            totalInertia += linearInertia[i] + angularInteria[i];
         }
     }
 
-    // The linear inertia component is just the inverse mass
-    linearInertia[0] = Body[0]->GetInverseMass();
-    if (Body[1] != NULL)
+    // Calculate and apply changes
+    for (int i = 0; i < 2; i++)
     {
-        linearInertia[1] = Body[1]->GetInverseMass();
-    }
+        if (Body[i] != NULL)
+        {
+            // The linear and angular movements required are in proportion to the two inverse inertias
+            float sign = (i == 0) ? 1.f : -1.f;
+            angularMove[i] = sign * penetration * (angularInteria[i] / totalInertia);
+            linearMove[i] = sign * penetration * (linearInertia[i] / totalInertia);
 
-    // Combine angular and linear to calculate total
-    totalInertia = linearInertia[0] + angularInteria[0];
-    if (Body[1] != NULL)
-    {
-        totalInertia += linearInertia[1] + angularInteria[1];
-    }
+            // To avoid angular projections that are too great (when mass is large but inertia
+            // tensor is small), limit the angular move
+            Vector3 projection = m_relativeContactPosition[i];
+            projection += ContactNormal * -m_relativeContactPosition[i].Dot(ContactNormal);
 
-    // TODO finish implementation from textbook
+            // Use the small angle approximation for the sine of the angle (i.e. the magnitude would be
+            // sin(angularLimit) * projection.magnitude, but we approximate sin(angularLimit) to angularLimit.
+            float maxMagnitude = angularLimit * projection.Magnitude();
+
+            if (angularMove[i] < -maxMagnitude)
+            {
+                float totalMove = angularMove[i] + linearMove[i];
+                angularMove[i] = -maxMagnitude;
+                linearMove[i] = totalMove - angularMove[i];
+            }
+            else if (angularMove[i] > maxMagnitude)
+            {
+                float totalMove = angularMove[i] + linearMove[i];
+                angularMove[i] = maxMagnitude;
+                linearMove[i] = totalMove - angularMove[i];
+            }
+
+            // We have the linear amount of movement required by turning the rigid body (angularMove[i]).
+            // We now need to calculate the desired rotation to achieve that.
+            if (Approximately(angularMove[i], 0.f))
+            {
+                // Easy case - no angular movement means no rotation.
+                angularChange[i] = Vector3::Zero;
+            }
+            else
+            {
+                // Work out the direction we'd like to rotate in
+                Vector3 targetAngularDirection = m_relativeContactPosition[i].Cross(ContactNormal);
+
+                // Work out the direction we'd need to rotate to achieve that
+                Matrix3x3 inverseInertiaTensor = Body[i]->GetInverseIntertiaTensorWorld();
+                angularChange[i] = (inverseInertiaTensor * targetAngularDirection) * (angularMove[i] / angularInteria[i]);
+            }
+
+            // Velocity change is just the linear movement along the contact normal
+            linearChange[i] = ContactNormal * linearMove[i];
+
+            // Apply the linear movement
+            Vector3 pos = Body[i]->GetPosition();
+            pos += linearMove[i] * ContactNormal;
+            Body[i]->SetPosition(pos);
+
+            // Apply the change in orientation
+            Quaternion rot = Body[i]->GetRotation();
+            rot.AddScaledVector(angularChange[i], 1.0);
+            Body[i]->SetRotation(rot);
+
+            // TODO calculate derived data for bodies that are not awake
+        }
+    }
 }
 
 void RigidBodyContact::ApplyVelocityChange(Vector3* velocityChange, Vector3* angularVelocityChange)
