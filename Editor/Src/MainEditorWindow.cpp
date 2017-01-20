@@ -407,9 +407,14 @@ void MainEditorWindow::SaveSceneAs()
     if (m_scene != NULL)
     {
         // Open file dialog
-        QString fileName = QFileDialog::getSaveFileName(this, "Save Scene As", "", "*.xml");
+        string defaultPath = GameProject::Singleton().GetResourceBasePath();
+        QString fileName = QFileDialog::getSaveFileName(this, "Save Scene As", defaultPath.c_str(), "*.xml");
         if (!fileName.isNull())
         {
+            if (!fileName.endsWith(".xml"))
+            {
+                fileName = fileName + ".xml";
+            }
             m_scene->Save(fileName.toStdString());
         }
     }
