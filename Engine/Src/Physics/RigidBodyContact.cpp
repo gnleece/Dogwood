@@ -140,8 +140,9 @@ float RigidBodyContact::CalculateSeparatingVelocity()
     return relativeVelocity.Dot(ContactNormal);
 }
 
-void RigidBodyContact::CalculateFrictionlessImpulse(Matrix3x3* inverseInertiaTensor)
+Vector3 RigidBodyContact::CalculateFrictionlessImpulse(Matrix3x3* inverseInertiaTensor)
 {
+    Vector3 impulseContact;
     float deltaVelocity = 0;
     for (int i = 0; i < 2; i ++)
     {
@@ -160,6 +161,10 @@ void RigidBodyContact::CalculateFrictionlessImpulse(Matrix3x3* inverseInertiaTen
             deltaVelocity += Body[i]->GetInverseMass();
         }
     }
+    impulseContact.SetX(m_desiredDeltaVelocity / deltaVelocity);
+    impulseContact.SetY(0.0f);
+    impulseContact.SetZ(0.0f);
+    return impulseContact;
 }
 
 Vector3 RigidBodyContact::CalculateFrictionImpulse(Matrix3x3* inverseInertiaTensor)
@@ -325,7 +330,49 @@ void RigidBodyContact::ApplyPositionChange(Vector3* linearChange, Vector3* angul
 
 void RigidBodyContact::ApplyVelocityChange(Vector3* velocityChange, Vector3* angularVelocityChange)
 {
-    // TODO implement me
+    // Get inverse mass and inverse inertia tensor, in world coords
+    Matrix3x3 inverseInertiaTensor[2];
+    inverseInertiaTensor[0] = Body[0]->GetInverseIntertiaTensorWorld();
+    if (Body[1] != NULL)
+    {
+        inverseInertiaTensor[1] = Body[1]->GetInverseIntertiaTensorWorld();
+    }
+
+    // We'll need to calculate the impulse for each contact axis
+    Vector3 impulseContactCoords;
+
+    if (Approximately(Friction, 0.0f))
+    {
+        // Friction is effectively zero, so do (simpler) frictionless calculation
+        impulseContactCoords = CalculateFrictionlessImpulse(inverseInertiaTensor);
+    }
+    else
+    {
+        impulseContactCoords = CalculateFrictionImpulse(inverseInertiaTensor);
+    }
+
+    // Convert impulse to world coords
+    Vector3 impulseWorldCoords = m_contactToWorld * impulseContactCoords;
+
+    // Split the impulse into linear and angular components
+    Vector3 impulsiveTorque = m_relativeContactPosition[0].Cross(impulseWorldCoords);
+    angularVelocityChange[0] = inverseInertiaTensor[0] * impulsiveTorque;
+    velocityChange[0] = impulseWorldCoords * Body[0]->GetInverseMass();
+
+    // Apply the changes - TODO implement me
+    //Body[0]->AddVelocity(velocityChange[0]);
+    //Body[0]->AddAngularVelocity(angularVelocityChange[0]);
+
+    if (Body[1] != NULL)
+    {
+        impulsiveTorque = impulseWorldCoords.Cross(m_relativeContactPosition[1]);
+        angularVelocityChange[1] = inverseInertiaTensor[1] * impulsiveTorque;
+        velocityChange[1] = impulseWorldCoords * (-1) * Body[1]->GetInverseMass();
+
+        // TODO implement me
+        //Body[1]->AddVeloctiy(velocityChange[1]);
+        //Body[1]->AddAngularVelocity(angularVelocityChange[1]);
+    }
 }
 
 ContactResolver::ContactResolver(unsigned int maxIterations)
