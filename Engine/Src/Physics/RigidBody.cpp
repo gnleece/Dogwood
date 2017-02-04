@@ -11,19 +11,14 @@ RigidBody::RigidBody(GameObjectBase* gameObject)
     : m_gameObject(gameObject), m_isEnabled(true), m_mass(1.0f)
 { }
 
-void RigidBody::SetPosition(Vector3 position)
-{
-    m_position = position;
-}
-
 Vector3 RigidBody::GetPosition()
 {
     return m_position;
 }
 
-void RigidBody::SetRotation(Quaternion& rotation)
+void RigidBody::SetPosition(Vector3& position)
 {
-    m_rotation = rotation;
+    m_position = position;
 }
 
 Quaternion& RigidBody::GetRotation()
@@ -31,9 +26,9 @@ Quaternion& RigidBody::GetRotation()
     return m_rotation;
 }
 
-void RigidBody::SetVelocity(Vector3 velocity)
+void RigidBody::SetRotation(Quaternion& rotation)
 {
-    m_velocity = velocity;
+    m_rotation = rotation;
 }
 
 Vector3 RigidBody::GetVelocity()
@@ -41,9 +36,14 @@ Vector3 RigidBody::GetVelocity()
     return m_velocity;
 }
 
-void RigidBody::SetAngularVelocity(Vector3 angularVelocity)
+void RigidBody::SetVelocity(Vector3& velocity)
 {
-    m_angularVelocity = angularVelocity;
+    m_velocity = velocity;
+}
+
+void RigidBody::AddVelocity(Vector3& deltaVelocity)
+{
+    m_velocity += deltaVelocity;
 }
 
 Vector3 RigidBody::GetAngularVelocity()
@@ -51,9 +51,14 @@ Vector3 RigidBody::GetAngularVelocity()
     return m_angularVelocity;
 }
 
-void RigidBody::SetAcceleration(Vector3 acceleration)
+void RigidBody::SetAngularVelocity(Vector3& angularVelocity)
 {
-    m_acceleration = acceleration;
+    m_angularVelocity = angularVelocity;
+}
+
+void RigidBody::AddAngularVelocity(Vector3& deltaAngularVelocity)
+{
+    m_angularVelocity += deltaAngularVelocity;
 }
 
 Vector3 RigidBody::GetAcceleration()
@@ -61,9 +66,22 @@ Vector3 RigidBody::GetAcceleration()
     return m_acceleration;
 }
 
+void RigidBody::SetAcceleration(Vector3& acceleration)
+{
+    m_acceleration = acceleration;
+}
+
 Vector3 RigidBody::GetPreviousAcceleration()
 {
     return m_previousAcceleration;
+}
+
+float RigidBody::GetMass()
+{
+    if (!HasFiniteMass())
+        return 0;
+
+    return 1 / m_inverseMass;
 }
 
 void RigidBody::SetMass(float mass)
@@ -76,25 +94,17 @@ void RigidBody::SetMass(float mass)
     m_mass = mass;
 }
 
+float RigidBody::GetInverseMass()
+{
+    return m_inverseMass;
+}
+
 void RigidBody::SetInverseMass(float inverseMass)
 {
     if (inverseMass < 0)
         return;
     m_inverseMass = inverseMass;
     m_mass = Approximately(inverseMass, 0.f) ? 0.f : 1 / inverseMass;
-}
-
-float RigidBody::GetMass()
-{
-    if (!HasFiniteMass())
-        return 0;
-
-    return 1 / m_inverseMass;
-}
-
-float RigidBody::GetInverseMass()
-{
-    return m_inverseMass;
 }
 
 bool RigidBody::HasFiniteMass()
@@ -105,6 +115,11 @@ bool RigidBody::HasFiniteMass()
 void RigidBody::SetInertiaTensor(Matrix3x3& inertiaTensor)
 {
     m_inverseInertiaTensor = inertiaTensor.Inverse();
+}
+
+Matrix3x3& RigidBody::GetInverseIntertiaTensorWorld()
+{
+    return m_inverseInertiaTensorWorld;
 }
 
 Vector3 RigidBody::GetPointInLocalSpace(const Vector3 &point)
@@ -125,11 +140,6 @@ Vector3 RigidBody::GetDirectionInLocalSpace(const Vector3 &direction)
 Vector3 RigidBody::GetDirectionInWorldSpace(const Vector3 &direction)
 {
     return m_transform.TransformVector(direction);
-}
-
-Matrix3x3& RigidBody::GetInverseIntertiaTensorWorld()
-{
-    return m_inverseInertiaTensorWorld;
 }
 
 void RigidBody::Integrate(float deltaTime)

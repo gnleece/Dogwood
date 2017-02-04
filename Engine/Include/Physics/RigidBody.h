@@ -12,36 +12,41 @@ class RigidBody
 public:
     RigidBody(GameObjectBase* gameObject);
 
-    void        SetPosition(Vector3 position);
     Vector3     GetPosition();
+    void        SetPosition(Vector3& position);
 
-    void        SetRotation(Quaternion& rotation);
     Quaternion& GetRotation();
+    void        SetRotation(Quaternion& rotation);
 
-    void        SetVelocity(Vector3 velocity);
     Vector3     GetVelocity();
+    void        SetVelocity(Vector3& velocity);
+    void        AddVelocity(Vector3& deltaVelocity);
 
-    void        SetAngularVelocity(Vector3 angularVelocity);
     Vector3     GetAngularVelocity();
+    void        SetAngularVelocity(Vector3& angularVelocity);
+    void        AddAngularVelocity(Vector3& deltaAngularVelocity);
 
-    void        SetAcceleration(Vector3 acceleration);
     Vector3     GetAcceleration();
+    void        SetAcceleration(Vector3& acceleration);
 
     Vector3     GetPreviousAcceleration();
 
-    void        SetMass(float mass);
-    void        SetInverseMass(float inverseMass);
     float       GetMass();
+    void        SetMass(float mass);
+
     float       GetInverseMass();
+    void        SetInverseMass(float inverseMass);
+
     bool        HasFiniteMass();
 
     void        SetInertiaTensor(Matrix3x3& inertiaTensor);
 
-    Vector3     GetPointInLocalSpace(const Vector3 &point);
-    Vector3     GetPointInWorldSpace(const Vector3 &point);
-    Vector3     GetDirectionInLocalSpace(const Vector3 &direction);
-    Vector3     GetDirectionInWorldSpace(const Vector3 &direction);
     Matrix3x3&  GetInverseIntertiaTensorWorld();
+
+    Vector3     GetPointInLocalSpace(const Vector3& point);
+    Vector3     GetPointInWorldSpace(const Vector3& point);
+    Vector3     GetDirectionInLocalSpace(const Vector3& direction);
+    Vector3     GetDirectionInWorldSpace(const Vector3& direction);
 
     // Integrates the body forward in time (i.e. updates position and velocity)
     void        Integrate(float deltaTime);

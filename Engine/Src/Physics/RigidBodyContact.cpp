@@ -359,9 +359,8 @@ void RigidBodyContact::ApplyVelocityChange(Vector3* velocityChange, Vector3* ang
     angularVelocityChange[0] = inverseInertiaTensor[0] * impulsiveTorque;
     velocityChange[0] = impulseWorldCoords * Body[0]->GetInverseMass();
 
-    // Apply the changes - TODO implement me
-    //Body[0]->AddVelocity(velocityChange[0]);
-    //Body[0]->AddAngularVelocity(angularVelocityChange[0]);
+    Body[0]->AddVelocity(velocityChange[0]);
+    Body[0]->AddAngularVelocity(angularVelocityChange[0]);
 
     if (Body[1] != NULL)
     {
@@ -369,9 +368,8 @@ void RigidBodyContact::ApplyVelocityChange(Vector3* velocityChange, Vector3* ang
         angularVelocityChange[1] = inverseInertiaTensor[1] * impulsiveTorque;
         velocityChange[1] = impulseWorldCoords * (-1) * Body[1]->GetInverseMass();
 
-        // TODO implement me
-        //Body[1]->AddVeloctiy(velocityChange[1]);
-        //Body[1]->AddAngularVelocity(angularVelocityChange[1]);
+        Body[1]->AddVelocity(velocityChange[1]);
+        Body[1]->AddAngularVelocity(angularVelocityChange[1]);
     }
 }
 
