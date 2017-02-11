@@ -102,7 +102,18 @@ Vector3 RigidBodyContact::CalculateLocalVelocity(RigidBody* body, float deltaTim
     Vector3 velocityContactSpace = m_contactToWorld.Transpose() * velocity;
 
     // Calculate the amount of velocity that is due to forces without reactions
-    //Vector3 accVelocity = body->GetLastFrameAcceleration() * deltaTime;       // TODO fixme
+    Vector3 accVelocity = body->GetPreviousAcceleration() * deltaTime;
+
+    // Calculate the velocity in contact coordinates
+    accVelocity = m_contactToWorld * accVelocity;
+
+    // Ignore any component of acceleration in the contact normal direction -
+    // we are only interested in planar acceleration
+    accVelocity.SetX(0);
+
+    // Add the planar velocities - if there's enough friction they will be removed
+    // during velocity resolution
+    velocityContactSpace += accVelocity;
 
     return velocityContactSpace;
 }
