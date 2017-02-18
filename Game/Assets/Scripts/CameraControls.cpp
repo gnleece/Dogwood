@@ -41,8 +41,8 @@ void CameraControls::Update(float deltaTime)
     if (targetGO == NULL || cameraGO == NULL)
         return;
 
-    float rstickX = InputManager::Singleton().GetGamePad(0)->GetAxisValue(GAMEPAD_RSTICK_X);// +0.1f;
-    float rstickY = InputManager::Singleton().GetGamePad(0)->GetAxisValue(GAMEPAD_RSTICK_Y);
+    float rstickX, rstickY;
+    GetInputAxisValues(rstickX, rstickY);
 
     Transform targetTransform = targetGO->GetTransform();
     Transform cameraTransform = cameraGO->GetTransform();
@@ -74,4 +74,35 @@ void CameraControls::ApplyCameraSettings(Transform& cameraTransform)
     Vector3 newCameraDirection = renderCameraTransform.GetForward();
 
     Vector3 x;
+}
+
+void CameraControls::GetInputAxisValues(float& x, float& y)
+{
+    x = 0.0f;
+    y = 0.0f;
+    if (InputManager::Singleton().GetGamePad(0)->Connected())
+    {
+        x = InputManager::Singleton().GetGamePad(0)->GetAxisValue(GAMEPAD_RSTICK_X);
+        y = InputManager::Singleton().GetGamePad(0)->GetAxisValue(GAMEPAD_RSTICK_Y);
+    }
+    else
+    {
+        // No gamepad is connected, so use keyboard controls
+        if (InputManager::Singleton().GetKeyPressed(GLFW_KEY_LEFT))
+        {
+            x -= 1.0f;
+        }
+        if (InputManager::Singleton().GetKeyPressed(GLFW_KEY_RIGHT))
+        {
+            x += 1.0f;
+        }
+        if (InputManager::Singleton().GetKeyPressed(GLFW_KEY_UP))
+        {
+            y += 1.0f;
+        }
+        if (InputManager::Singleton().GetKeyPressed(GLFW_KEY_DOWN))
+        {
+            y-= 1.0f;
+        }
+    }
 }

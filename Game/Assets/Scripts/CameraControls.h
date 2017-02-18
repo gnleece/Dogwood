@@ -29,6 +29,7 @@ public:
 
 private:
     void ApplyCameraSettings(Transform& cameraTransform);
+    void GetInputAxisValues(float& x, float& y);
 
     float               m_horizRotation;
     float               m_vertRotation;
