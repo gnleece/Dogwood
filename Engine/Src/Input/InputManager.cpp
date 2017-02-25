@@ -31,9 +31,10 @@ void InputManager::PollEvents(float deltaTime)
     }
 }
 
-eKeyState InputManager::GetKey(int key)
+eKeyState InputManager::GetKey(eKeyValue key)
 {
-    int ret = glfwGetKey(m_gameWindow->GetGLFWWindow(), key);
+    int glfwKey = DGWDKeyToGLFWKey(key);
+    int ret = glfwGetKey(m_gameWindow->GetGLFWWindow(), glfwKey);
     if (ret == GLFW_PRESS)
     {
         return KEY_PRESS;
@@ -41,7 +42,7 @@ eKeyState InputManager::GetKey(int key)
     return KEY_RELEASE;
 }
 
-bool InputManager::GetKeyPressed(int key)
+bool InputManager::GetKeyPressed(eKeyValue key)
 {
     return GetKey(key) == KEY_PRESS;
 }
@@ -96,4 +97,12 @@ bool InputManager::EnableGamePad(GamePad* pad, unsigned int id, bool enable)
         m_gamePads.erase(id);
     }
     return true;
+}
+
+int InputManager::DGWDKeyToGLFWKey(eKeyValue dgwdKey)
+{
+    // The conversion is simple because the eKeyValue enum was defined to match
+    // the GLFW values. If this every changes then this function will need to be updated.
+    int glfwKey = (int)dgwdKey;
+    return glfwKey;
 }

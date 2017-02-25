@@ -12,35 +12,35 @@ void DebugCameraControls::Update(float deltaTime)
 
 void DebugCameraControls::CheckKeys(float deltaTime)
 {
-    if (InputManager::Singleton().GetKeyPressed(GLFW_KEY_UP))
+    if (InputManager::Singleton().GetKeyPressed(DGWD_KEY_UP))
     {
         RotateCamera(AXIS_X, -KEY_ROT_AMOUNT*deltaTime);
     }
-    if (InputManager::Singleton().GetKeyPressed(GLFW_KEY_DOWN))
+    if (InputManager::Singleton().GetKeyPressed(DGWD_KEY_DOWN))
     {
         RotateCamera(AXIS_X, KEY_ROT_AMOUNT*deltaTime);
     }
-    if (InputManager::Singleton().GetKeyPressed(GLFW_KEY_LEFT))
+    if (InputManager::Singleton().GetKeyPressed(DGWD_KEY_LEFT))
     {
         RotateCamera(AXIS_Y, -KEY_ROT_AMOUNT*deltaTime);
     }
-    if (InputManager::Singleton().GetKeyPressed(GLFW_KEY_RIGHT))
+    if (InputManager::Singleton().GetKeyPressed(DGWD_KEY_RIGHT))
     {
         RotateCamera(AXIS_Y, KEY_ROT_AMOUNT*deltaTime);
     }
-    if (InputManager::Singleton().GetKeyPressed(GLFW_KEY_W))
+    if (InputManager::Singleton().GetKeyPressed(DGWD_KEY_W))
     {
         MoveCamera(Vector3(0, 0, KEY_TRANS_AMOUNT*deltaTime));
     }
-    if (InputManager::Singleton().GetKeyPressed(GLFW_KEY_S))
+    if (InputManager::Singleton().GetKeyPressed(DGWD_KEY_S))
     {
         MoveCamera(Vector3(0, 0, -KEY_TRANS_AMOUNT*deltaTime));
     }
-    if (InputManager::Singleton().GetKeyPressed(GLFW_KEY_A))
+    if (InputManager::Singleton().GetKeyPressed(DGWD_KEY_A))
     {
         MoveCamera(Vector3(KEY_TRANS_AMOUNT*deltaTime, 0, 0));
     }
-    if (InputManager::Singleton().GetKeyPressed(GLFW_KEY_D))
+    if (InputManager::Singleton().GetKeyPressed(DGWD_KEY_D))
     {
         MoveCamera(Vector3(-KEY_TRANS_AMOUNT*deltaTime, 0, 0));
     }

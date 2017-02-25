@@ -33,19 +33,19 @@ void Roller::Update(float deltaTime)
         // No gamepad is connected, so use keyboard controls
         // Use "A" and "D as left stick horizontal and "W" and "S" as left stick vertical
 
-        if (InputManager::Singleton().GetKeyPressed(GLFW_KEY_A))
+        if (InputManager::Singleton().GetKeyPressed(DGWD_KEY_A))
         {
             lstickX -= 1.0f;
         }
-        if (InputManager::Singleton().GetKeyPressed(GLFW_KEY_D))
+        if (InputManager::Singleton().GetKeyPressed(DGWD_KEY_D))
         {
             lstickX += 1.0f;
         }
-        if (InputManager::Singleton().GetKeyPressed(GLFW_KEY_W))
+        if (InputManager::Singleton().GetKeyPressed(DGWD_KEY_W))
         {
             lstickY += 1.0f;
         }
-        if (InputManager::Singleton().GetKeyPressed(GLFW_KEY_S))
+        if (InputManager::Singleton().GetKeyPressed(DGWD_KEY_S))
         {
             lstickY -= 1.0f;
         }
