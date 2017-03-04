@@ -37,29 +37,30 @@ eKeyState InputManager::GetKey(eKeyValue key)
     int ret = glfwGetKey(m_gameWindow->GetGLFWWindow(), glfwKey);
     if (ret == GLFW_PRESS)
     {
-        return KEY_PRESS;
+        return DGWD_KEY_PRESS;
     }
-    return KEY_RELEASE;
+    return DGWD_KEY_RELEASE;
 }
 
 bool InputManager::GetKeyPressed(eKeyValue key)
 {
-    return GetKey(key) == KEY_PRESS;
+    return GetKey(key) == DGWD_KEY_PRESS;
 }
 
-eMouseButtonState InputManager::GetMouseButton(int button)
+eMouseButtonState InputManager::GetMouseButton(eMouseButtonValue button)
 {
-    int ret = glfwGetMouseButton(m_gameWindow->GetGLFWWindow(), button);
+    int glfwButton = DGWDMouseButtonToGLFWMouseButton(button);
+    int ret = glfwGetMouseButton(m_gameWindow->GetGLFWWindow(), glfwButton);
     if (ret == GLFW_PRESS)
     {
-        return MOUSE_BUTTON_PRESS;
+        return DGWD_MOUSE_BUTTON_PRESS;
     }
-    return MOUSE_BUTTON_RELEASE;
+    return DGWD_MOUSE_BUTTON_RELEASE;
 }
 
-bool InputManager::GetMouseButtonPressed(int button)
+bool InputManager::GetMouseButtonPressed(eMouseButtonValue button)
 {
-    return GetMouseButton(button) == MOUSE_BUTTON_PRESS;
+    return GetMouseButton(button) == DGWD_MOUSE_BUTTON_PRESS;
 }
 
 CursorPos InputManager::GetCursorPos()
@@ -102,7 +103,15 @@ bool InputManager::EnableGamePad(GamePad* pad, unsigned int id, bool enable)
 int InputManager::DGWDKeyToGLFWKey(eKeyValue dgwdKey)
 {
     // The conversion is simple because the eKeyValue enum was defined to match
-    // the GLFW values. If this every changes then this function will need to be updated.
+    // the GLFW values. If this ever changes then this function will need to be updated.
     int glfwKey = (int)dgwdKey;
     return glfwKey;
+}
+
+int InputManager::DGWDMouseButtonToGLFWMouseButton(eMouseButtonValue dgwdButton)
+{
+    // The conversion is simple because the eButtonValue enum was defined to match
+    // the GLFW values. If this ever changes then this function will need to be updated.
+    int glfwButton = (int)dgwdButton;
+    return glfwButton;
 }

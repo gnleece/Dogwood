@@ -19,14 +19,14 @@ typedef pair<float, float> CursorPos;
 
 enum eKeyState
 {
-    KEY_PRESS,
-    KEY_RELEASE
+    DGWD_KEY_PRESS,
+    DGWD_KEY_RELEASE
 };
 
 enum eMouseButtonState
 {
-    MOUSE_BUTTON_PRESS,
-    MOUSE_BUTTON_RELEASE
+    DGWD_MOUSE_BUTTON_PRESS,
+    DGWD_MOUSE_BUTTON_RELEASE
 };
 
 // These are defined to match the key values in GLFW (see glfw3.h)
@@ -153,6 +153,14 @@ enum eKeyValue
     DGWD_KEY_MENU            = 348,
 };
 
+// These are defined the match the mouse button values in GLFW (see glfw3.h)
+enum eMouseButtonValue
+{
+    DGWD_MOUSE_BUTTON_LEFT      = 0,
+    DGWD_MOUSE_BUTTON_RIGHT     = 1,
+    DGWD_MOUSE_BUTTON_MIDDLE    = 2
+};
+
 class InputManager
 {
 public:
@@ -171,9 +179,8 @@ public:
 
     eKeyState           GetKey(eKeyValue key);
     bool                GetKeyPressed(eKeyValue key);
-    // TODO: define own button enum so client code doesn't touch GLFW
-    eMouseButtonState   GetMouseButton(int button);
-    bool                GetMouseButtonPressed(int button);
+    eMouseButtonState   GetMouseButton(eMouseButtonValue button);
+    bool                GetMouseButtonPressed(eMouseButtonValue button);
     CursorPos           GetCursorPos();
 
     GamePad*            GetGamePad(unsigned int id);
@@ -184,6 +191,7 @@ public:
 
 private:
     int                 DGWDKeyToGLFWKey(eKeyValue dgwdKey);
+    int                 DGWDMouseButtonToGLFWMouseButton(eMouseButtonValue dgwdButton);
 
     GameWindow*                             m_gameWindow;
     unordered_map<unsigned int, GamePad*>   m_gamePads;

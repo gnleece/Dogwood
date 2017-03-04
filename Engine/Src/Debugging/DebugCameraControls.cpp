@@ -48,7 +48,7 @@ void DebugCameraControls::CheckKeys(float deltaTime)
 
 void DebugCameraControls::CheckMouse(float deltaTime)
 {
-    if (InputManager::Singleton().GetMouseButtonPressed(GLFW_MOUSE_BUTTON_RIGHT))
+    if (InputManager::Singleton().GetMouseButtonPressed(DGWD_MOUSE_BUTTON_RIGHT))
     {
         CursorPos pos = InputManager::Singleton().GetCursorPos();
         if (m_mouseDragging)
