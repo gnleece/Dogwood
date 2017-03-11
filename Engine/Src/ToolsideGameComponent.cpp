@@ -229,16 +229,16 @@ RuntimeParamList ComponentValue::ParseRuntimeParams(HierarchicalDeserializer* de
 
 void ToolsideGameComponent::Create(unsigned int guid, bool isEngine)
 {
-    m_guid = guid;
+    m_resourceGuid = guid;
     m_isEngine = isEngine;
-    m_paramList = *(ResourceManager::Singleton().GetComponentParamList(m_guid, m_isEngine));
+    m_paramList = *(ResourceManager::Singleton().GetComponentParamList(m_resourceGuid, m_isEngine));
     SetDisplayName();
 }
 
 void ToolsideGameComponent::Save(HierarchicalSerializer* serializer, unordered_set<unsigned int>& guids)
 {
     serializer->PushScope("Component");
-    serializer->SetAttribute("guid", m_guid);
+    serializer->SetAttribute("guid", m_resourceGuid);
     serializer->SetAttribute("engine", m_isEngine);
 
     ParamList::iterator iter = m_paramList.begin();
@@ -265,7 +265,7 @@ void ToolsideGameComponent::Save(HierarchicalSerializer* serializer, unordered_s
 
 void ToolsideGameComponent::Load(HierarchicalDeserializer* deserializer)
 {
-    deserializer->GetAttribute("guid", m_guid);
+    deserializer->GetAttribute("guid", m_resourceGuid);
     deserializer->GetAttribute("engine", m_isEngine);
 
     // Build parameter list
@@ -291,7 +291,7 @@ void ToolsideGameComponent::SetGameObject(ToolsideGameObject* go)
 
 unsigned int ToolsideGameComponent::GetGuid()
 {
-    return m_guid;
+    return m_resourceGuid;
 }
 
 string ToolsideGameComponent::GetDisplayName()
@@ -323,7 +323,7 @@ void ToolsideGameComponent::ValidateParameters()
     // Validate parameter list by removing any parameters that no longer exist in the schema, and adding
     // any new values that did not exist before (while preserving non-default values for params that remain)
 
-    ParamList currentParams = *(ResourceManager::Singleton().GetComponentParamList(m_guid, m_isEngine));
+    ParamList currentParams = *(ResourceManager::Singleton().GetComponentParamList(m_resourceGuid, m_isEngine));
 
     // This is pretty inefficient, but the list of parameters will typically be small
     ParamList::iterator oldIter = m_paramList.begin();
@@ -345,6 +345,25 @@ void ToolsideGameComponent::ValidateParameters()
     m_paramList = currentParams;
 }
 
+ToolsideGameComponent* ToolsideGameComponent::DeepCopy(ToolsideGameObject* go)
+{
+    ToolsideGameComponent* newComp = new ToolsideGameComponent();
+    newComp->SetGameObject(go);
+
+    newComp->m_resourceGuid = m_resourceGuid;
+    newComp->m_isEngine = m_isEngine;
+    newComp->m_displayName = m_displayName;
+
+    ParamList::iterator iter = m_paramList.begin();
+    for (; iter != m_paramList.end(); iter++)
+    {
+        ParamPair pair = *iter;
+        newComp->m_paramList.push_back(pair);
+    }
+
+    return newComp;
+}
+
 void ToolsideGameComponent::AddParameterToList(HierarchicalDeserializer* deserializer)
 {
     string name;
@@ -363,7 +382,7 @@ void ToolsideGameComponent::AddParameterToList(HierarchicalDeserializer* deseria
 
 void ToolsideGameComponent::SetDisplayName()
 {
-    ResourceInfo* info = ResourceManager::Singleton().GetResourceInfo(m_guid);
+    ResourceInfo* info = ResourceManager::Singleton().GetResourceInfo(m_resourceGuid);
     if (info == NULL)
     {
         // TODO this happens for Engine components, needs a workaround

@@ -111,7 +111,12 @@ ToolsideGameObject* ToolsideGameObject::DeepCopy(ToolsideGameObject* parent)
         newGO->SetMeshInstance(m_mesh->DeepCopy());
     }
 
-    // TODO copy other components
+    std::vector<ToolsideGameComponent*>::iterator compIter;
+    for (compIter = m_components.begin(); compIter != m_components.end(); compIter++)
+    {
+        ToolsideGameComponent* newComp = (*compIter)->DeepCopy(newGO);
+        newGO->m_components.push_back(newComp);
+    }
 
     std::vector<GameObjectBase*>::iterator childIter;
     for (childIter = m_children.begin(); childIter != m_children.end(); childIter++)
@@ -119,6 +124,8 @@ ToolsideGameObject* ToolsideGameObject::DeepCopy(ToolsideGameObject* parent)
         ToolsideGameObject* child = (ToolsideGameObject*)*childIter;
         child->DeepCopy(newGO);
     }
+
+    // TODO Copy GameObjectBase values - e.g. colliders, rigidbody
 
     return newGO;
 }

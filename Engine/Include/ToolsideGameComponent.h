@@ -98,12 +98,14 @@ public:
 
     void            ValidateParameters();
 
+    ToolsideGameComponent* DeepCopy(ToolsideGameObject* go);
+
 private:
     void            AddParameterToList(HierarchicalDeserializer* deserializer);
     void            SetDisplayName();
 
     ToolsideGameObject* m_gameObject;
-    unsigned int    m_guid;
+    unsigned int    m_resourceGuid;     // Guid of the script resource for the component
     bool            m_isEngine;
     string          m_displayName;
     ParamList       m_paramList;
