@@ -216,6 +216,8 @@ void CalculateTRSMatrix(const Vector3& position, const Vector3& rotation, const 
 // From https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles
 Quaternion EulerToQuaternion(Vector3& euler)
 {
+    // TODO needs testing
+
     Quaternion q;
 
     float t0 = std::cos(euler.y() * 0.5f);
@@ -237,5 +239,23 @@ Quaternion EulerToQuaternion(Vector3& euler)
 // From https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles
 Vector3 QuaternionToEuler(Quaternion& q)
 {
-    return Vector3::Zero;
+    // TODO needs testing
+
+    Vector3 euler;
+
+    float k_sqr = q.k() * q.k();
+
+    float t0 = 2 * (q.i() * q.j() + q.k() * q.r());
+    float t1 = 1 - 2 * (q.j() * q.j() + k_sqr);
+    euler.SetZ(std::atan2(t0, t1));
+
+    float t2 = 2 * (q.i() * q.k() - q.r() * q.j());
+    Clamp(t2, -1.0f, 1.0f);
+    euler.SetX(std::asin(t2));
+
+    float t3 = 2 * (q.i() * q.r() + q.j() * q.k());
+    float t4 = 1 - 2 * (k_sqr + q.r() * q.r());
+    euler.SetY(std::atan2(t3, t4));
+
+    return euler;
 }
