@@ -1,5 +1,7 @@
 #include "Math\Transformations.h"
 
+#include <math.h>
+
 // Return a matrix to represent a displacement of the given vector.
 Matrix4x4 Translation(const Vector3& displacement)
 {
@@ -209,4 +211,31 @@ void CalculateTRSMatrix(const Vector3& position, const Vector3& rotation, const 
     matrix = Translation(position);
     matrix = matrix*RotationEulerAngles(rotation);
     matrix = matrix*Scaling(scale);
+}
+
+// From https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles
+Quaternion EulerToQuaternion(Vector3& euler)
+{
+    Quaternion q;
+
+    float t0 = std::cos(euler.y() * 0.5f);
+    float t1 = std::sin(euler.y() * 0.5f);
+    float t2 = std::cos(euler.z() * 0.5f);
+    float t3 = std::sin(euler.z() * 0.5f);
+    float t4 = std::cos(euler.x() * 0.5f);
+    float t5 = std::sin(euler.x() * 0.5f);
+
+    // TODO w x y z -> i j k r?
+    q.SetI(t0 * t2 * t4 + t1 * t3 * t5);
+    q.SetJ(t0 * t3 * t4 - t1 * t2 * t5);
+    q.SetK(t0 * t2 * t5 + t1 * t3 * t4);
+    q.SetR(t1 * t2 * t4 - t0 * t3 * t5);
+
+    return q;
+}
+
+// From https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles
+Vector3 QuaternionToEuler(Quaternion& q)
+{
+    return Vector3::Zero;
 }
