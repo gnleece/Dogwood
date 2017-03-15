@@ -281,6 +281,7 @@ void RigidBodyContact::ApplyPositionChange(Vector3* linearChange, Vector3* angul
             float sign = (i == 0) ? 1.f : -1.f;
             angularMove[i] = sign * penetration * (angularInteria[i] / totalInertia);
             linearMove[i] = sign * penetration * (linearInertia[i] / totalInertia);
+            //linearMove[i] = sign * penetration;   // TODO this temp hack didn't work, but need to look at why angular inertia is so high
 
             // To avoid angular projections that are too great (when mass is large but inertia
             // tensor is small), limit the angular move

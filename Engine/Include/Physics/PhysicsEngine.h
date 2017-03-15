@@ -32,6 +32,9 @@ public:
     void    RegisterRigidBody(RigidBody* rigidBody);
     void    UnregisterRigidBody(RigidBody* rigidBody);
 
+    void    RegisterForce(RigidBody* rigidBody, ForceGenerator* forceGenerator);
+    void    UnregisterForce(RigidBody* rigidBody, ForceGenerator* forceGenerator);
+
 private:
     vector<RigidBody*>  m_rigidBodies;
     ForceRegistry       m_forceRegistry;

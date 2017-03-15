@@ -75,6 +75,8 @@ public:
 
     void        OnCreate();     // TODO there should be a separate rigidbody game component that has this instead
 
+    void        UpdateGameObject();
+
 protected:
     void        ClearAccumulators();
     void        CalculateCachedData();

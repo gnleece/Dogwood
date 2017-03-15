@@ -86,6 +86,14 @@ void PhysicsEngine::ResolveCollisions(float deltaTime)
     {
         m_contactResolver.ResolveContacts(m_rigiBodyContacts, contactCount, deltaTime);
     }
+
+    // TODO this shouldn't go here
+    // Update gameobject transforms to match rigidbody positions/rotations
+    vector<RigidBody*>::iterator iter;
+    for (iter = m_rigidBodies.begin(); iter != m_rigidBodies.end(); iter++)
+    {
+        (*iter)->UpdateGameObject();
+    }
 }
 
 void PhysicsEngine::RegisterRigidBody(RigidBody* rigidBody)
@@ -102,4 +110,14 @@ void PhysicsEngine::UnregisterRigidBody(RigidBody* rigidBody)
     m_rigidBodies.erase(
         std::remove(m_rigidBodies.begin(), m_rigidBodies.end(), rigidBody),
         m_rigidBodies.end());
+}
+
+void PhysicsEngine::RegisterForce(RigidBody* rigidBody, ForceGenerator* forceGenerator)
+{
+    m_forceRegistry.Register(rigidBody, forceGenerator);
+}
+
+void PhysicsEngine::UnregisterForce(RigidBody* rigidBody, ForceGenerator* forceGenerator)
+{
+    m_forceRegistry.Unregister(rigidBody, forceGenerator);
 }

@@ -131,6 +131,8 @@ unsigned int CollisionDetection::SphereAndBox(SphereCollider* s, BoxCollider* b,
     CollisionContact* contact = data->ClaimNextContact();
     contact->ContactPoint = closestPointWorldspace;
     contact->ContactNormal = (closestPointWorldspace - sphereWorldPos).Normalized();
+    // TODO tried this fix as a temp hack, not sure if it's right
+    //contact->ContactNormal = (sphereWorldPos - closestPointWorldspace).Normalized();
     contact->Penetration = sphereWorldRadius - sqrtf(distanceSqrd);
     contact->ColliderA = s;
     contact->ColliderB = b;

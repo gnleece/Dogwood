@@ -3,6 +3,7 @@
 #include "GameObjectBase.h"
 #include "Math/Transformations.h"
 #include "Physics/Collider.h"
+#include "Physics/ForceGenerator.h"
 #include "Physics/PhysicsEngine.h"
 #include "Serialization/HierarchicalSerializer.h"
 #include <math.h>
@@ -254,6 +255,17 @@ void RigidBody::OnCreate()
 {
     PhysicsEngine::Singleton().RegisterRigidBody(this);
 
+    // TODO temp hack
+    if (strcmp(m_gameObject->GetName().c_str(), "Katamari") == 0)
+    {
+        SetMass(1.0f);
+
+        // TODO allow custom gravity values
+        // TODO re-use a single gravity generator?
+        GravityGenerator* gravity = new GravityGenerator(Vector3(0.0f, -0.98f, 0.0f));
+        PhysicsEngine::Singleton().RegisterForce(this, gravity);
+    }
+
     // Calculate the inertia tensor     // TODO this should happen any time the colliders on the game object change
     Matrix3x3 inertiaTensor = Matrix3x3::Identity;
     std::vector<Collider*> colliders = m_gameObject->GetColliders();
@@ -264,6 +276,27 @@ void RigidBody::OnCreate()
         inertiaTensor = collider->GetInertiaTensor(m_mass);
     }
     SetInertiaTensor(inertiaTensor);
+
+    // Get position/rotation from gameobject transform
+    m_position = m_gameObject->GetTransform().GetWorldPosition();
+    m_rotation = EulerToQuaternion(m_gameObject->GetTransform().GetWorldRotation());
+}
+
+void RigidBody::UpdateGameObject()
+{
+    if (strcmp(m_gameObject->GetName().c_str(), "Katamari") == 0)
+    {
+        printf("Before: ");
+        m_gameObject->GetTransform().GetWorldPosition().DebugPrint();
+    }
+    m_gameObject->GetTransform().SetWorldPosition(m_position);
+    m_gameObject->GetTransform().SetWorldRotation(QuaternionToEuler(m_rotation));
+    if (strcmp(m_gameObject->GetName().c_str(), "Katamari") == 0)
+    {
+        printf("After: ");
+        m_position.DebugPrint();
+        printf("-------\n");
+    }
 }
 
 void RigidBody::ClearAccumulators()
