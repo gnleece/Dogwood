@@ -130,9 +130,8 @@ unsigned int CollisionDetection::SphereAndBox(SphereCollider* s, BoxCollider* b,
     // The point is close enough and therefore there is a contact. Set contact data
     CollisionContact* contact = data->ClaimNextContact();
     contact->ContactPoint = closestPointWorldspace;
-    contact->ContactNormal = (closestPointWorldspace - sphereWorldPos).Normalized();
-    // TODO tried this fix as a temp hack, not sure if it's right
-    //contact->ContactNormal = (sphereWorldPos - closestPointWorldspace).Normalized();
+    // TODO ontact normal sign has been flipped - not sure if this is correct
+    contact->ContactNormal = (sphereWorldPos - closestPointWorldspace).Normalized();
     contact->Penetration = sphereWorldRadius - sqrtf(distanceSqrd);
     contact->ColliderA = s;
     contact->ColliderB = b;
