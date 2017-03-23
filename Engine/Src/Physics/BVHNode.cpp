@@ -39,6 +39,14 @@ BVHNode<BoundingVolumeType>::~BVHNode()
         m_parent->m_collider = sibling->m_collider;
         m_parent->m_children[0] = sibling->m_children[0];
         m_parent->m_children[1] = sibling->m_children[1];
+        if (m_parent->m_children[0])
+        {
+            m_parent->m_children[0]->m_parent = m_parent;
+        }
+        if (m_parent->m_children[1])
+        {
+            m_parent->m_children[1]->m_parent = m_parent;
+        }
 
         // Delete the sibling (reset its parent and children first to avoid processing their siblings in the delete)
         sibling->m_parent = NULL;
