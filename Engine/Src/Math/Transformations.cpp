@@ -216,22 +216,28 @@ void CalculateTRSMatrix(const Vector3& position, const Vector3& rotation, const 
 // From https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles
 Quaternion EulerToQuaternion(Vector3& euler)
 {
-    // TODO needs testing
+    float yaw = DegreesToRadians(euler.x());
+    float pitch = DegreesToRadians(euler.y());
+    float roll = DegreesToRadians(euler.z());
 
     Quaternion q;
 
-    float t0 = std::cos(euler.y() * 0.5f);
-    float t1 = std::sin(euler.y() * 0.5f);
-    float t2 = std::cos(euler.z() * 0.5f);
-    float t3 = std::sin(euler.z() * 0.5f);
-    float t4 = std::cos(euler.x() * 0.5f);
-    float t5 = std::sin(euler.x() * 0.5f);
+    float t0 = std::cos(yaw * 0.5f);
+    float t1 = std::sin(yaw * 0.5f);
+    float t2 = std::cos(roll * 0.5f);
+    float t3 = std::sin(roll * 0.5f);
+    float t4 = std::cos(pitch * 0.5f);
+    float t5 = std::sin(pitch * 0.5f);
 
-    // TODO w x y z -> i j k r?
-    q.SetI(t0 * t2 * t4 + t1 * t3 * t5);
-    q.SetJ(t0 * t3 * t4 - t1 * t2 * t5);
-    q.SetK(t0 * t2 * t5 + t1 * t3 * t4);
-    q.SetR(t1 * t2 * t4 - t0 * t3 * t5);
+    float w = t0 * t2 * t4 + t1 * t3 * t5;
+    float x = t0 * t3 * t4 - t1 * t2 * t5;
+    float y = t0 * t2 * t5 + t1 * t3 * t4;
+    float z = t1 * t2 * t4 - t0 * t3 * t5;
+
+    q.SetI(w);
+    q.SetJ(x);
+    q.SetK(y);
+    q.SetR(z);
 
     return q;
 }
@@ -239,23 +245,21 @@ Quaternion EulerToQuaternion(Vector3& euler)
 // From https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles
 Vector3 QuaternionToEuler(Quaternion& q)
 {
-    // TODO needs testing
-
     Vector3 euler;
 
     float k_sqr = q.k() * q.k();
 
     float t0 = 2 * (q.i() * q.j() + q.k() * q.r());
     float t1 = 1 - 2 * (q.j() * q.j() + k_sqr);
-    euler.SetZ(std::atan2(t0, t1));
+    euler.SetZ(RadiansToDegrees(std::atan2(t0, t1)));
 
     float t2 = 2 * (q.i() * q.k() - q.r() * q.j());
     Clamp(t2, -1.0f, 1.0f);
-    euler.SetX(std::asin(t2));
+    euler.SetX(RadiansToDegrees(std::asin(t2)));
 
     float t3 = 2 * (q.i() * q.r() + q.j() * q.k());
     float t4 = 1 - 2 * (k_sqr + q.r() * q.r());
-    euler.SetY(std::atan2(t3, t4));
+    euler.SetY(RadiansToDegrees(std::atan2(t3, t4)));
 
     return euler;
 }
