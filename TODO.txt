@@ -210,7 +210,7 @@ DESIGN DECISIONS
     - TODO wrap all OpenGL (to allow DirectX support as alternate option)
     - TODO quaternions
     - TODO C#/XAML for Editor?
-    - TODO clean up engine interface for game code
+    - TODO clean up engine interface for game code / separate internal vs. external components
 
 References
 
@@ -225,3 +225,5 @@ Physics notes
     - Used for "triggers" - object gets collision events, but is not moved by physics
 - Game objects can have a rigid body but no colliders
     - Used for objects that move without colliding - e.g. falling from gravity
+
+    https://www.gamedev.net/resources/_/technical/math-and-physics/capsule-inertia-tensor-r3856

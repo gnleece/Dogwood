@@ -89,10 +89,15 @@ void RigidBody::SetMass(float mass)
 {
     if (mass < 0 || Approximately(mass, 0.f))
     {
-        return;
+        // Treat 0 mass as infinite mass
+        m_inverseMass = 0.0f;
+        m_mass = 0.0f;
     }
-    m_inverseMass = 1.0f / mass;
-    m_mass = mass;
+    else
+    {
+        m_inverseMass = 1.0f / mass;
+        m_mass = mass;
+    }
 }
 
 float RigidBody::GetInverseMass()
@@ -231,6 +236,8 @@ void RigidBody::Save(HierarchicalSerializer* serializer)
 {
     serializer->PushScope("RigidBody");
     serializer->SetAttribute("IsEnabled", m_isEnabled);
+    serializer->SetAttribute("UsesGravity", m_usesGravity);
+    serializer->SetAttribute("Mass", m_mass);
     serializer->PopScope();
 }
 
@@ -239,6 +246,12 @@ void RigidBody::Load(HierarchicalDeserializer* deserializer)
     bool isEnabled;
     deserializer->GetAttribute("IsEnabled", isEnabled);
     SetEnabled(isEnabled);
+    bool usesGravity;
+    deserializer->GetAttribute("UsesGravity", usesGravity);
+    SetUsesGravity(usesGravity);
+    float mass;
+    deserializer->GetAttribute("Mass", mass);
+    SetMass(mass);
 }
 
 void RigidBody::SetEnabled(bool isEnabled)
@@ -251,18 +264,25 @@ bool RigidBody::IsEnabled()
     return m_isEnabled;
 }
 
+void RigidBody::SetUsesGravity(bool usesGravity)
+{
+    m_usesGravity = usesGravity;
+}
+
+bool RigidBody::UsesGravity()
+{
+    return m_usesGravity;
+}
+
 void RigidBody::OnCreate()
 {
     PhysicsEngine::Singleton().RegisterRigidBody(this);
 
-    // TODO temp hack
-    if (strcmp(m_gameObject->GetName().c_str(), "Katamari") == 0)
+    if (UsesGravity())
     {
-        SetMass(1.0f);
-
         // TODO allow custom gravity values
         // TODO re-use a single gravity generator?
-        GravityGenerator* gravity = new GravityGenerator(Vector3(0.0f, -0.98f, 0.0f));
+        GravityGenerator* gravity = new GravityGenerator(Vector3(0.0f, -2.0f, 0.0f));
         PhysicsEngine::Singleton().RegisterForce(this, gravity);
     }
 
@@ -284,18 +304,18 @@ void RigidBody::OnCreate()
 
 void RigidBody::UpdateGameObject()
 {
-    if (strcmp(m_gameObject->GetName().c_str(), "Katamari") == 0)
+    if (strcmp(m_gameObject->GetName().c_str(), "Plank") == 0)
     {
-        printf("Before: ");
-        m_gameObject->GetTransform().GetWorldPosition().DebugPrint();
+        //printf("Before: ");
+        //m_gameObject->GetTransform().GetWorldRotation().DebugPrint();
     }
     m_gameObject->GetTransform().SetWorldPosition(m_position);
     m_gameObject->GetTransform().SetWorldRotation(QuaternionToEuler(m_rotation));
-    if (strcmp(m_gameObject->GetName().c_str(), "Katamari") == 0)
+    if (strcmp(m_gameObject->GetName().c_str(), "Plank") == 0)
     {
-        printf("After: ");
-        m_position.DebugPrint();
-        printf("-------\n");
+        //printf("After: ");
+        //m_gameObject->GetTransform().GetWorldRotation().DebugPrint();
+        //printf("-------\n");
     }
 }
 

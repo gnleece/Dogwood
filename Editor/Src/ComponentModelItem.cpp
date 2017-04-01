@@ -695,9 +695,19 @@ ComponentModelRigidBodyItem::ComponentModelRigidBodyItem(RigidBody* rigidBody, b
     m_isHeader = header;
 
     // Enabled parameter
-    ComponentValue staticValue = ComponentValue(ComponentParameter::TYPE_BOOL, m_rigidBody->IsEnabled());
-    std::function<void(ComponentValue)> staticCallback = [&](ComponentValue v) { m_rigidBody->SetEnabled(v.b); };
-    AddGenericParam("IsEnabled", ComponentParameter::TYPE_BOOL, staticValue, staticCallback);
+    ComponentValue enabledValue = ComponentValue(ComponentParameter::TYPE_BOOL, m_rigidBody->IsEnabled());
+    std::function<void(ComponentValue)> enabledCallback = [&](ComponentValue v) { m_rigidBody->SetEnabled(v.b); };
+    AddGenericParam("IsEnabled", ComponentParameter::TYPE_BOOL, enabledValue, enabledCallback);
+
+    // Gravity parameter
+    ComponentValue gravityValue = ComponentValue(ComponentParameter::TYPE_BOOL, m_rigidBody->UsesGravity());
+    std::function<void(ComponentValue)> gravityCallback = [&](ComponentValue v) { m_rigidBody->SetUsesGravity(v.b); };
+    AddGenericParam("UsesGravity", ComponentParameter::TYPE_BOOL, gravityValue, gravityCallback);
+
+    // Mass parameter
+    ComponentValue massValue = ComponentValue(ComponentParameter::TYPE_FLOAT, m_rigidBody->GetMass());
+    std::function<void(ComponentValue)> massCallback = [&](ComponentValue v) { m_rigidBody->SetMass(v.f); };
+    AddGenericParam("Mass", ComponentParameter::TYPE_FLOAT, massValue, massCallback);
 }
 
 //--------------------------------------------------------------------------------

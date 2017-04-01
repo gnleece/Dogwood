@@ -72,6 +72,8 @@ public:
 
     void        SetEnabled(bool isEnabled);
     bool        IsEnabled();
+    void        SetUsesGravity(bool usesGravity);
+    bool        UsesGravity();
 
     void        OnCreate();     // TODO there should be a separate rigidbody game component that has this instead
 
@@ -86,6 +88,7 @@ protected:
     GameObjectBase* m_gameObject;
     bool            m_isAwake;                      // Determined by physics code (TODO: implement me)
     bool            m_isEnabled;                    // Set by game code (default is true)
+    bool            m_usesGravity;                  // Set by game code (default is true)
 
     // Transform values are in world space
     Vector3         m_position;
