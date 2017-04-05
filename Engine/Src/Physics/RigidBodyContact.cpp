@@ -2,6 +2,8 @@
 #include "Physics/RigidBody.h"
 #include <assert.h>
 
+#include "Math/Transformations.h"
+
 const float RigidBodyContact::MIN_VELOCITY_LIMIT = 0.25f;
 
 void RigidBodyContact::SwapBodies()
@@ -258,9 +260,9 @@ void RigidBodyContact::ApplyPositionChange(Vector3* linearChange, Vector3* angul
     {
         if (Body[i] != NULL)
         {
-            Matrix3x3 inverseInertiaTensor = Body[0]->GetInverseIntertiaTensorWorld();
+            Matrix3x3 inverseInertiaTensor = Body[i]->GetInverseIntertiaTensorWorld();
             Vector3 angularInertiaWorld = m_relativeContactPosition[i].Cross(ContactNormal);
-            angularInertiaWorld = inverseInertiaTensor*angularInertiaWorld;
+            angularInertiaWorld = inverseInertiaTensor*angularInertiaWorld; // TODO physics: is order correct here?
             angularInertiaWorld = angularInertiaWorld.Cross(m_relativeContactPosition[i]);
             angularInteria[i] = angularInertiaWorld.Dot(ContactNormal);
 
@@ -319,7 +321,7 @@ void RigidBodyContact::ApplyPositionChange(Vector3* linearChange, Vector3* angul
 
                 // Work out the direction we'd need to rotate to achieve that
                 Matrix3x3 inverseInertiaTensor = Body[i]->GetInverseIntertiaTensorWorld();
-                angularChange[i] = (inverseInertiaTensor * targetAngularDirection) * (angularMove[i] / angularInteria[i]);
+                angularChange[i] = (inverseInertiaTensor * targetAngularDirection) * (angularMove[i] / angularInteria[i]);      // TODO physics: is order correct here?
             }
 
             // Velocity change is just the linear movement along the contact normal
@@ -334,7 +336,6 @@ void RigidBodyContact::ApplyPositionChange(Vector3* linearChange, Vector3* angul
             Quaternion rot = Body[i]->GetRotation();
             rot.AddScaledVector(angularChange[i], 1.0);
             Body[i]->SetRotation(rot);
-
             // TODO calculate derived data for bodies that are not awake
         }
     }
@@ -480,6 +481,10 @@ void ContactResolver::AdjustPositions(RigidBodyContact* contacts, unsigned int n
 
         iterationsUsed++;
     }
+    if (iterationsUsed >= m_maxIterations)
+    {
+        printf("Hit max iterations in RigidBodyContact::AdjustPositions\n");
+    }
 }
 
 void ContactResolver::AdjustVelocities(RigidBodyContact* contacts, unsigned int numContacts, float deltaTime)
@@ -529,7 +534,7 @@ void ContactResolver::AdjustVelocities(RigidBodyContact* contacts, unsigned int 
                             // The sign of the change is positive if we're dealing with the
                             // second body in a contact, and negative otherwise
                             contacts[i].m_contactVelocity +=
-                                contacts[i].m_contactToWorld.Transpose()*deltaVelocity  * (a ? -1 : 1);
+                                contacts[i].m_contactToWorld.Transpose()*deltaVelocity  * (a ? -1.0f : 1.0f);
                             contacts[i].CalculateDesiredDeltaVelocity(deltaTime);
                         }
                     }
