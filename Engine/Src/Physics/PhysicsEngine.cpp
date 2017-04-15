@@ -21,17 +21,6 @@ void PhysicsEngine::Shutdown()
 {
 }
 
-// TODO remove?
-//void PhysicsEngine::StartFrame()
-//{
-//    // Reset accumulators for all rigid bodies
-//    vector<RigidBody*>::iterator iter;
-//    for (iter = m_rigidBodies.begin(); iter != m_rigidBodies.end(); iter++)
-//    {
-//        (*iter)->ClearAccumulators();
-//    }
-//}
-
 void PhysicsEngine::UpdateBodies(float deltaTime)
 {
     // First, apply force generators

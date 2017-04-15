@@ -72,20 +72,28 @@ void Game::Run(Scene* scene)
     m_timeSinceFPSSnapshot = 0;
     m_framesSinceFPSSnapshot = 0;
 
+    int framesSinceLastPhysicsUpdate = 0;
+    int physicsUpdateInterval = 3;          // Set > 1 to slow down physics for easier debugging
+
     // Game loop!
     while (!m_gameWindow.ShouldClose())
     {
+        framesSinceLastPhysicsUpdate++;
+
         // Input update
         InputManager::Singleton().PollEvents(m_deltaTime);
 
         // Game Object update
         GameObjectManager::Singleton().Update(m_deltaTime);
 
-        // Physics update
-        //PhysicsEngine::Singleton().StartFrame();
-        PhysicsEngine::Singleton().UpdateBodies(m_deltaTime);
-        CollisionEngine::Singleton().CalculateCollisions(m_deltaTime);       // TODO fixed physics timestep?
-        PhysicsEngine::Singleton().ResolveCollisions(m_deltaTime);
+        if (framesSinceLastPhysicsUpdate > physicsUpdateInterval)
+        {
+            // Physics update
+            PhysicsEngine::Singleton().UpdateBodies(m_deltaTime);
+            CollisionEngine::Singleton().CalculateCollisions(m_deltaTime);       // TODO fixed physics timestep?
+            PhysicsEngine::Singleton().ResolveCollisions(m_deltaTime);
+            framesSinceLastPhysicsUpdate = 0;
+        }
 
         // Rendering update
         RenderManager::Singleton().RenderScene();

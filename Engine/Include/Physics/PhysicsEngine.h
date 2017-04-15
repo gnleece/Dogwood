@@ -25,7 +25,6 @@ public:
     void    Startup();
     void    Shutdown();
 
-    //void    StartFrame();
     void    UpdateBodies(float deltaTime);
     void    ResolveCollisions(float deltaTime);
 
