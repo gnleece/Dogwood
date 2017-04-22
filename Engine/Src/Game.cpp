@@ -43,8 +43,11 @@ void Game::Init(string projectPath, GameComponentFactory* componentFactory)
     m_gameWindow.Setup(GameProject::Singleton().GetName(), windowWidth, windowHeight);
 
     // Physics setup
-    PhysicsEngine::Singleton().Startup();
-    CollisionEngine::Singleton().Startup();
+    if (GameProject::Singleton().GetPhysicsSettings().Enabled)
+    {
+        PhysicsEngine::Singleton().Startup();
+        CollisionEngine::Singleton().Startup();
+    }
 
     // Rendering setup
     RenderManager::Singleton().Startup(windowWidth, windowHeight);
@@ -73,7 +76,8 @@ void Game::Run(Scene* scene)
     m_framesSinceFPSSnapshot = 0;
 
     int framesSinceLastPhysicsUpdate = 0;
-    int physicsUpdateInterval = 3;          // Set > 1 to slow down physics for easier debugging
+    int physicsUpdateInterval = 0;          // Set > 1 to slow down physics for easier debugging
+    bool physicsEnabled = GameProject::Singleton().GetPhysicsSettings().Enabled;
 
     // Game loop!
     while (!m_gameWindow.ShouldClose())
@@ -86,7 +90,7 @@ void Game::Run(Scene* scene)
         // Game Object update
         GameObjectManager::Singleton().Update(m_deltaTime);
 
-        if (framesSinceLastPhysicsUpdate > physicsUpdateInterval)
+        if (physicsEnabled && framesSinceLastPhysicsUpdate > physicsUpdateInterval)
         {
             // Physics update
             PhysicsEngine::Singleton().UpdateBodies(m_deltaTime);

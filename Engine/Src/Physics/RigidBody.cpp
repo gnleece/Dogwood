@@ -1,6 +1,7 @@
 #include "Physics/RigidBody.h"
 
 #include "GameObjectBase.h"
+#include "GameProject.h"
 #include "Math/Transformations.h"
 #include "Physics/Collider.h"
 #include "Physics/ForceGenerator.h"
@@ -280,9 +281,9 @@ void RigidBody::OnCreate()
 
     if (UsesGravity())
     {
-        // TODO allow custom gravity values
         // TODO re-use a single gravity generator?
-        GravityGenerator* gravity = new GravityGenerator(Vector3(0.0f, -2.0f, 0.0f));
+        float gravityAmt = GameProject::Singleton().GetPhysicsSettings().Gravity;
+        GravityGenerator* gravity = new GravityGenerator(Vector3(0.0f, gravityAmt, 0.0f));
         PhysicsEngine::Singleton().RegisterForce(this, gravity);
     }
 

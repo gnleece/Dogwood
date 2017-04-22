@@ -83,6 +83,7 @@ EDITOR
         * Live preview of engine components (e.g. particle systems)
 
     * Physics
+        * Expose physics settings in Editor
         * Refresh capsule draw on object scale
         * "Collider editing"
 

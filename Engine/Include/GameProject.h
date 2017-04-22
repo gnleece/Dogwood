@@ -12,6 +12,15 @@ class Scene;
 class GameProject
 {
 public:
+    struct PhysicsSettings
+    {
+        bool    Enabled;
+        float   Gravity;
+
+        PhysicsSettings();
+        PhysicsSettings(bool enabled, float gravity);
+    };
+
     static GameProject& Singleton()
     {
         static GameProject singleton;
@@ -46,6 +55,9 @@ public:
     void    AddScene(Scene* scene);
     void    RemoveScene(Scene* scene);
 
+    PhysicsSettings& GetPhysicsSettings();
+    void    SetPhysicsSettings(PhysicsSettings& settings);
+
 private:
     void    LoadSettings(HierarchicalDeserializer* deserializer);
     void    LoadSceneList();
@@ -63,6 +75,8 @@ private:
     int     m_height;
 
     string  m_resourceDir;
+
+    PhysicsSettings m_physicsSettings;
 
     GameComponentFactory* m_gameComponentFactory;
     GameComponentFactory* m_engineComponentFactory;

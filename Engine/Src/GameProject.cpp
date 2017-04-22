@@ -2,6 +2,18 @@
 #include "Scene\ResourceManager.h"
 #include "Serialization\HierarchicalSerializer.h"
 
+GameProject::PhysicsSettings::PhysicsSettings()
+{
+    Enabled = true;
+    Gravity = -2.0f;
+}
+
+GameProject::PhysicsSettings::PhysicsSettings(bool enabled, float gravity)
+{
+    Enabled = enabled;
+    Gravity = gravity;
+}
+
 void GameProject::Startup(bool toolside)
 {
     m_toolside = toolside;
@@ -201,6 +213,16 @@ void GameProject::RemoveScene(Scene* scene)
     // TODO implement me
 }
 
+GameProject::PhysicsSettings& GameProject::GetPhysicsSettings()
+{
+    return m_physicsSettings;
+}
+
+void GameProject::SetPhysicsSettings(PhysicsSettings& settings)
+{
+    m_physicsSettings = settings;
+}
+
 void GameProject::LoadSettings(HierarchicalDeserializer* deserializer)
 {
     if (deserializer->PushScope("Settings"))
@@ -215,6 +237,13 @@ void GameProject::LoadSettings(HierarchicalDeserializer* deserializer)
         if (deserializer->PushScope("Resource-Root-Path"))
         {
             deserializer->GetAttribute("path", m_resourceDir);
+            deserializer->PopScope();
+        }
+
+        if (deserializer->PushScope("Physics-Settings"))
+        {
+            deserializer->GetAttribute("enabled", m_physicsSettings.Enabled);
+            deserializer->GetAttribute("gravity", m_physicsSettings.Gravity);
             deserializer->PopScope();
         }
 
@@ -238,6 +267,11 @@ void GameProject::SerializeSettings(HierarchicalSerializer* serializer)
 
     serializer->PushScope("Resource-Root-Path");
     serializer->SetAttribute("path", m_resourceDir);
+    serializer->PopScope();
+
+    serializer->PushScope("Physics-Settings");
+    serializer->SetAttribute("enabled", m_physicsSettings.Enabled);
+    serializer->SetAttribute("gravity", m_physicsSettings.Gravity);
     serializer->PopScope();
 
     serializer->PopScope();
