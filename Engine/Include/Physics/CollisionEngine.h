@@ -4,19 +4,27 @@
 #include "BVHNode.h"
 #include "Physics/CollisionDetection.h"
 #include "Rendering/Color.h"
+#include <set>
 #include <vector>
 
 #define MAX_POTENTIAL_CONTACTS 25
 
+using std::set;
 using std::vector;
 
 class Collider;
+class GameObject;
 
 struct PotentialContact
 {
     PotentialContact();
 
     Collider* colliders[2];
+};
+
+struct CollisionPair
+{
+    GameObject* gameObjects[2];
 };
 
 class CollisionEngine
@@ -35,7 +43,7 @@ public:
 
     void    CalculateCollisions(float deltaTime);
     void    DrawDebugInfo();
-    const CollisionData* GetCollisionData();
+    const   CollisionData* GetCollisionData();
 
     void    RegisterCollider(Collider* collider);
     void    UnregisterCollider(Collider* collider);
@@ -58,6 +66,7 @@ private:
     vector<Collider*>           m_dynamicColliders;
 
     CollisionData               m_collisionData;
+    set<CollisionPair>          m_prevCollisionPairs;
 
     bool                        m_debugLog;
     bool                        m_debugDraw;

@@ -8,6 +8,37 @@
 
 #include <algorithm>
 
+struct Comparator
+{
+    bool operator() (CollisionPair& lhs, CollisionPair& rhs) const
+    {
+        unsigned int l_0 = lhs.gameObjects[0] ? lhs.gameObjects[0]->GetID() : 0;
+        unsigned int l_1 = lhs.gameObjects[1] ? lhs.gameObjects[1]->GetID() : 0;
+        unsigned int r_0 = rhs.gameObjects[0] ? rhs.gameObjects[0]->GetID() : 0;
+        unsigned int r_1 = rhs.gameObjects[1] ? rhs.gameObjects[1]->GetID() : 0;
+
+        // TODO make a swap util function
+        if (l_1 > l_0)
+        {
+            unsigned int temp = l_0;
+            l_0 = l_1;
+            l_1 = temp;
+        }
+        if (r_1 > r_0)
+        {
+            unsigned int temp = r_0;
+            r_0 = r_1;
+            r_1 = temp;
+        }
+
+        if (l_0 == r_0)
+        {
+            return l_1 < r_1;
+        }
+        return l_0 < r_0;
+    }
+};
+
 PotentialContact::PotentialContact()
 {
     colliders[0] = NULL;
@@ -58,7 +89,8 @@ void CollisionEngine::CalculateCollisions(float deltaTime)
         if (m_debugLog) printf("\nActual Contacts\n");
         for (int i = 0; i < numContacts; i++)
         {
-            // TODO track enter/exit
+            // TODO track enter/exit - using CollisionPair to track previous game object collision pairs
+
             // TODO pass collision info
             ((GameObject*)(m_collisionData.Contacts[i].ColliderA->GetGameObject()))->OnCollisionHold();
             ((GameObject*)(m_collisionData.Contacts[i].ColliderB->GetGameObject()))->OnCollisionHold();
