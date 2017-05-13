@@ -18,6 +18,13 @@ void                    FileCopy(string source, string destination);
 
 string                  GetFriendlyAssetNameFromPath(string path);
 
+template <typename T> void Swap(T& a, T& b)
+{
+    T temp = a;
+    a = b;
+    b = temp;
+}
+
 template <typename T> bool PComp(const T * const & a, const T * const & b)
 {
     return *a < *b;

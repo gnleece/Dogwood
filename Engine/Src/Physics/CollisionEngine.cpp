@@ -5,10 +5,11 @@
 #include "Debugging/DebugDraw.h"
 #include "Math/Transformations.h"
 #include "Physics/Collider.h"
+#include "Util.h"
 
 #include <algorithm>
 
-struct Comparator
+struct CollisionPairComparator
 {
     bool operator() (CollisionPair& lhs, CollisionPair& rhs) const
     {
@@ -17,18 +18,13 @@ struct Comparator
         unsigned int r_0 = rhs.gameObjects[0] ? rhs.gameObjects[0]->GetID() : 0;
         unsigned int r_1 = rhs.gameObjects[1] ? rhs.gameObjects[1]->GetID() : 0;
 
-        // TODO make a swap util function
         if (l_1 > l_0)
         {
-            unsigned int temp = l_0;
-            l_0 = l_1;
-            l_1 = temp;
+            Swap(l_0, l_1);
         }
         if (r_1 > r_0)
         {
-            unsigned int temp = r_0;
-            r_0 = r_1;
-            r_1 = temp;
+            Swap(r_0, r_1);
         }
 
         if (l_0 == r_0)
