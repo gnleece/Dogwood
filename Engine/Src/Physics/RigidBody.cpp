@@ -281,9 +281,7 @@ void RigidBody::OnCreate()
 
     if (UsesGravity())
     {
-        // TODO re-use a single gravity generator?
-        float gravityAmt = GameProject::Singleton().GetPhysicsSettings().Gravity;
-        GravityGenerator* gravity = new GravityGenerator(Vector3(0.0f, gravityAmt, 0.0f));
+        GravityGenerator* gravity = PhysicsEngine::Singleton().GetGravityGenerator();
         PhysicsEngine::Singleton().RegisterForce(this, gravity);
     }
 

@@ -1,6 +1,7 @@
 #include "Physics/PhysicsEngine.h"
 
 #include "GameObjectBase.h"
+#include "GameProject.h"
 #include "Physics/Collider.h"
 #include "Physics/CollisionDetection.h"
 #include "Physics/CollisionEngine.h"
@@ -15,10 +16,13 @@ PhysicsEngine::PhysicsEngine() : m_contactResolver(MAX_RESOLUTION_ITERATIONS)
 
 void PhysicsEngine::Startup()
 {
+    float gravityAmt = GameProject::Singleton().GetPhysicsSettings().Gravity;
+    m_gravityGenerator = new GravityGenerator(Vector3(0.0f, gravityAmt, 0.0f));
 }
 
 void PhysicsEngine::Shutdown()
 {
+    delete m_gravityGenerator;
 }
 
 void PhysicsEngine::UpdateBodies(float deltaTime)
@@ -109,4 +113,9 @@ void PhysicsEngine::RegisterForce(RigidBody* rigidBody, ForceGenerator* forceGen
 void PhysicsEngine::UnregisterForce(RigidBody* rigidBody, ForceGenerator* forceGenerator)
 {
     m_forceRegistry.Unregister(rigidBody, forceGenerator);
+}
+
+GravityGenerator* PhysicsEngine::GetGravityGenerator()
+{
+    return m_gravityGenerator;
 }

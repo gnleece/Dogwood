@@ -34,9 +34,13 @@ public:
     void    RegisterForce(RigidBody* rigidBody, ForceGenerator* forceGenerator);
     void    UnregisterForce(RigidBody* rigidBody, ForceGenerator* forceGenerator);
 
+    GravityGenerator*   GetGravityGenerator();
+
 private:
     vector<RigidBody*>  m_rigidBodies;
-    ForceRegistry       m_forceRegistry;
     ContactResolver     m_contactResolver;
     RigidBodyContact    m_rigiBodyContacts[MAX_RIGID_BODY_CONTACTS];
+
+    ForceRegistry       m_forceRegistry;
+    GravityGenerator*   m_gravityGenerator;
 };
