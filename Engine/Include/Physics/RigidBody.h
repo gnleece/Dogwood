@@ -82,7 +82,6 @@ public:
 protected:
     void        ClearAccumulators();
     void        CalculateCachedData();
-    void        CalculateTransform(const Vector3& position, const Quaternion& rotation, Matrix4x4& transform);
     void        TransformInertiaTensor(const Quaternion& q, const Matrix3x3& iitLocal, const Matrix4x4 transformWorld, Matrix3x3& iitWorld);
 
     GameObjectBase* m_gameObject;

@@ -213,6 +213,25 @@ void CalculateTRSMatrix(const Vector3& position, const Vector3& rotation, const 
     matrix = matrix*Scaling(scale);
 }
 
+// Formulas from Game Physics Engine Development pg. 210
+void CalculateTRMatrix(const Vector3& position, const Quaternion& rotation, Matrix4x4& matrix)
+{
+    matrix[0][0] = 1 - 2 * rotation.j()*rotation.j() - 2 * rotation.k()*rotation.k();
+    matrix[0][1] = 2 * rotation.i()*rotation.j() - 2 * rotation.r()*rotation.k();
+    matrix[0][2] = 2 * rotation.i()*rotation.k() + 2 * rotation.r()*rotation.j();
+    matrix[0][3] = position.x();
+
+    matrix[1][0] = 2 * rotation.i()*rotation.j() + 2 * rotation.r()*rotation.k();
+    matrix[1][1] = 1 - 2 * rotation.i()*rotation.i() - 2 * rotation.k()*rotation.k();
+    matrix[1][2] = 2 * rotation.k()*rotation.k() - 2 * rotation.r()*rotation.i();
+    matrix[1][3] = position.y();
+
+    matrix[2][0] = 2 * rotation.i()*rotation.k() - 2 * rotation.r()*rotation.j();
+    matrix[2][1] = 2 * rotation.j()*rotation.k() + 2 * rotation.r()*rotation.i();
+    matrix[2][2] = 1 - 2 * rotation.i()*rotation.i() - 2 * rotation.j()*rotation.j();
+    matrix[2][3] = position.z();
+}
+
 // From https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles
 Quaternion EulerToQuaternion(Vector3& euler)
 {

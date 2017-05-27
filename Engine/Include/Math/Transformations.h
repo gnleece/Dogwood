@@ -24,6 +24,7 @@ Matrix3x3 InertiaTensorSphere(float radius, float mass);
 
 void DecomposeTRSMatrix(const Matrix4x4& matrix, Vector3& position, Vector3& rotation, Vector3& scale);
 void CalculateTRSMatrix(const Vector3& position, const Vector3& rotation, const Vector3& scale, Matrix4x4& matrix);
+void CalculateTRMatrix(const Vector3& position, const Quaternion& rotation, Matrix4x4& matrix);
 
 Quaternion EulerToQuaternion(Vector3& euler);
 Vector3 QuaternionToEuler(Quaternion& q);

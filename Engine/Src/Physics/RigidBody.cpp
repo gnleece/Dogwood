@@ -331,33 +331,13 @@ void RigidBody::CalculateCachedData()
     m_rotation.Normalize();
 
     // Calculate the world transform
-    CalculateTransform(m_position, m_rotation, m_transform.GetWorldMatrix());
+    CalculateTRMatrix(m_position, m_rotation, m_transform.GetWorldMatrix());
 
     // Convert the inertia tensor from local space to world space
     TransformInertiaTensor(m_rotation,
                            m_inverseInertiaTensor,
                            m_transform.GetWorldMatrix(),
                            m_inverseInertiaTensorWorld);
-}
-
-// TODO move into math util?
-// Formulas taken from Game Physics Engine Development pg. 210
-void RigidBody::CalculateTransform(const Vector3& position, const Quaternion& rotation, Matrix4x4& transform)
-{
-    transform[0][0] = 1 - 2 * rotation.j()*rotation.j() - 2 * rotation.k()*rotation.k();
-    transform[0][1] = 2 * rotation.i()*rotation.j() - 2 * rotation.r()*rotation.k();
-    transform[0][2] = 2 * rotation.i()*rotation.k() + 2 * rotation.r()*rotation.j();
-    transform[0][3] = position.x();
-
-    transform[1][0] = 2 * rotation.i()*rotation.j() + 2 * rotation.r()*rotation.k();
-    transform[1][1] = 1 - 2 * rotation.i()*rotation.i() - 2 * rotation.k()*rotation.k();
-    transform[1][2] = 2 * rotation.k()*rotation.k() - 2 * rotation.r()*rotation.i();
-    transform[1][3] = position.y();
-
-    transform[2][0] = 2 * rotation.i()*rotation.k() - 2 * rotation.r()*rotation.j();
-    transform[2][1] = 2 * rotation.j()*rotation.k() + 2 * rotation.r()*rotation.i();
-    transform[2][2] = 1 - 2 * rotation.i()*rotation.i() - 2 * rotation.j()*rotation.j();
-    transform[2][3] = position.z();
 }
 
 // Apply change of basis to convert (inverse) inertia tensor from local space to world space.
