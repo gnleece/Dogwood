@@ -2,6 +2,8 @@
 #include "Scene\ResourceManager.h"
 #include "Serialization\HierarchicalSerializer.h"
 
+#include <algorithm>
+
 GameProject::PhysicsSettings::PhysicsSettings()
 {
     Enabled = true;
@@ -205,12 +207,15 @@ void GameProject::SetResourceBasePath(string path)
 
 void GameProject::AddScene(Scene* scene)
 {
-    // TODO implement me
+    // TODO check for dupes
+    m_sceneList.push_back(scene);
 }
 
 void GameProject::RemoveScene(Scene* scene)
 {
-    // TODO implement me
+    m_sceneList.erase(
+        std::remove(m_sceneList.begin(), m_sceneList.end(), scene),
+        m_sceneList.end());
 }
 
 GameProject::PhysicsSettings& GameProject::GetPhysicsSettings()

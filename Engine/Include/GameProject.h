@@ -1,8 +1,10 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 using std::string;
+using std::vector;
 
 class GameComponentFactory;
 class HierarchicalDeserializer;
@@ -68,6 +70,8 @@ private:
     bool    m_loaded;
     string  m_filename;
     string  m_name;
+
+    vector<Scene*>  m_sceneList;
 
     bool    m_toolside;
 
