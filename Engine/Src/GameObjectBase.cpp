@@ -15,6 +15,7 @@ GameObjectBase::GameObjectBase(unsigned int guid, string name, GameObjectBase* p
     }
 
     m_mesh = NULL;
+    m_rigidBody = NULL;
 
     GameObjectReference::AddToMap(guid, this);
 }
