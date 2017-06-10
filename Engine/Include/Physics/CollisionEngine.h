@@ -9,7 +9,6 @@
 
 #define MAX_POTENTIAL_CONTACTS 25
 
-using std::set;
 using std::vector;
 
 class Collider;
@@ -24,6 +23,8 @@ struct PotentialContact
 
 struct CollisionPair
 {
+    CollisionPair();
+    CollisionPair(GameObject* a, GameObject* b);
     GameObject* gameObjects[2];
 };
 
@@ -66,7 +67,7 @@ private:
     vector<Collider*>           m_dynamicColliders;
 
     CollisionData               m_collisionData;
-    set<CollisionPair>          m_prevCollisionPairs;
+    vector<CollisionPair>       m_prevCollisionPairs;
 
     bool                        m_debugLog;
     bool                        m_debugDraw;
