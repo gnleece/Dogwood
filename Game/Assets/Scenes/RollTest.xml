@@ -269,11 +269,6 @@
                     <Color name="colorSpecular" r="1" g="1" b="1"/>
                 </Material>
             </Mesh>
-            <Colliders>
-                <Collider Type="2" IsStatic="1" Radius="1" Height="2" Axis="1">
-                    <Center x="0" y="0" z="0"/>
-                </Collider>
-            </Colliders>
             <Components/>
         </GameObject>
         <GameObject guid="1532105108" name="PurpleSphere">

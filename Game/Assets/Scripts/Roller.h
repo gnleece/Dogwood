@@ -19,5 +19,7 @@ public:
     void OnStart();
     void Update(float deltaTime);
 
+    void OnCollisionEnter();
+    void OnCollisionExit();
     void OnCollisionHold();
 };

@@ -89,7 +89,10 @@ void CollisionEngine::CalculateCollisions(float deltaTime)
     vector<CollisionPair> collisionPairs;
     if (numContacts > 0)
     {
-        if (m_debugLog) printf("\nActual Contacts\n");
+        if (m_debugLog)
+        {
+            printf("\nActual Contacts\n");
+        }
         for (int i = 0; i < numContacts; i++)
         {
             // TODO pass collision info
@@ -108,30 +111,29 @@ void CollisionEngine::CalculateCollisions(float deltaTime)
         }
     }
 
-    // TODO WIP - fixme
     // Determine which collision pairs are newly started, newly ended, or still holding from last frame
-    //vector<CollisionPair> enterList, exitList, holdList;
-    //std::sort(collisionPairs.begin(), collisionPairs.end(), CollisionPairComparator);
-    //std::set_intersection(collisionPairs.begin(), collisionPairs.end(), m_prevCollisionPairs.begin(), m_prevCollisionPairs.end(), holdList);
-    //std::set_difference(collisionPairs.begin(), collisionPairs.end(), m_prevCollisionPairs.begin(), m_prevCollisionPairs.end(), enterList);
-    //std::set_difference(m_prevCollisionPairs.begin(), m_prevCollisionPairs.end(), collisionPairs.begin(), collisionPairs.end(), exitList);
+    vector<CollisionPair> enterList, exitList, holdList;
+    std::sort(collisionPairs.begin(), collisionPairs.end(), CollisionPairComparator);
+    std::set_intersection(collisionPairs.begin(), collisionPairs.end(), m_prevCollisionPairs.begin(), m_prevCollisionPairs.end(), back_inserter(holdList), CollisionPairComparator);
+    std::set_difference(collisionPairs.begin(), collisionPairs.end(), m_prevCollisionPairs.begin(), m_prevCollisionPairs.end(), back_inserter(enterList), CollisionPairComparator);
+    std::set_difference(m_prevCollisionPairs.begin(), m_prevCollisionPairs.end(), collisionPairs.begin(), collisionPairs.end(), back_inserter(exitList), CollisionPairComparator);
 
     // Notify game objects of enter/exit/hold events
-    //for (vector<CollisionPair>::iterator iter = enterList.begin(); iter != enterList.end(); iter++)
-    //{
-    //    iter->gameObjects[0]->OnCollisionEnter();
-    //    iter->gameObjects[1]->OnCollisionEnter();
-    //}
-    //for (vector<CollisionPair>::iterator iter = exitList.begin(); iter != exitList.end(); iter++)
-    //{
-    //    iter->gameObjects[0]->OnCollisionExit();
-    //    iter->gameObjects[1]->OnCollisionExit();
-    //}
-    //for (vector<CollisionPair>::iterator iter = holdList.begin(); iter != holdList.end(); iter++)
-    //{
-    //    iter->gameObjects[0]->OnCollisionHold();
-    //    iter->gameObjects[1]->OnCollisionHold();
-    //}
+    for (vector<CollisionPair>::iterator iter = enterList.begin(); iter != enterList.end(); iter++)
+    {
+        iter->gameObjects[0]->OnCollisionEnter();
+        iter->gameObjects[1]->OnCollisionEnter();
+    }
+    for (vector<CollisionPair>::iterator iter = exitList.begin(); iter != exitList.end(); iter++)
+    {
+        iter->gameObjects[0]->OnCollisionExit();
+        iter->gameObjects[1]->OnCollisionExit();
+    }
+    for (vector<CollisionPair>::iterator iter = holdList.begin(); iter != holdList.end(); iter++)
+    {
+        iter->gameObjects[0]->OnCollisionHold();
+        iter->gameObjects[1]->OnCollisionHold();
+    }
 
     m_prevCollisionPairs.clear();
     m_prevCollisionPairs = collisionPairs;

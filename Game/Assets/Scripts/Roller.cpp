@@ -77,7 +77,17 @@ void Roller::Update(float deltaTime)
     }
 }
 
+void Roller::OnCollisionEnter()
+{
+    printf("\t\tRoller: collision enter\n");
+}
+
+void Roller::OnCollisionExit()
+{
+    printf("\t\tRoller: collision exit\n");
+}
+
 void Roller::OnCollisionHold()
 {
-    printf("\t\tRoller collision!\n");
+    printf("\t\tRoller: collision hold\n");
 }
