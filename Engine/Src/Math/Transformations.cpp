@@ -235,9 +235,9 @@ void CalculateTRMatrix(const Vector3& position, const Quaternion& rotation, Matr
 // From https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles
 Quaternion EulerToQuaternion(Vector3& euler)
 {
-    float yaw = DegreesToRadians(euler.x());
+    float roll = DegreesToRadians(euler.x());
     float pitch = DegreesToRadians(euler.y());
-    float roll = DegreesToRadians(euler.z());
+    float yaw = DegreesToRadians(euler.z());
 
     Quaternion q;
 
@@ -264,21 +264,25 @@ Quaternion EulerToQuaternion(Vector3& euler)
 // From https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles
 Vector3 QuaternionToEuler(Quaternion& q)
 {
-    Vector3 euler;
+    float w = q.i();
+    float x = q.j();
+    float y = q.k();
+    float z = q.r();
 
-    float k_sqr = q.k() * q.k();
+    float y_sqr = y * y;
 
-    float t0 = 2 * (q.i() * q.j() + q.k() * q.r());
-    float t1 = 1 - 2 * (q.j() * q.j() + k_sqr);
-    euler.SetZ(RadiansToDegrees(std::atan2(t0, t1)));
+    float t0 = 2 * (w * x + y * z);
+    float t1 = 1 - 2 * (x * x + y_sqr);
+    float roll = RadiansToDegrees(std::atan2(t0, t1));
 
-    float t2 = 2 * (q.i() * q.k() - q.r() * q.j());
+    float t2 = 2 * (w * y - z * x);
     Clamp(t2, -1.0f, 1.0f);
-    euler.SetX(RadiansToDegrees(std::asin(t2)));
+    float pitch = RadiansToDegrees(std::asin(t2));
 
-    float t3 = 2 * (q.i() * q.r() + q.j() * q.k());
-    float t4 = 1 - 2 * (k_sqr + q.r() * q.r());
-    euler.SetY(RadiansToDegrees(std::atan2(t3, t4)));
+    float t3 = 2 * (w * z + x * y);
+    float t4 = 1 - 2 * (y_sqr + z * z);
+    float yaw = RadiansToDegrees(std::atan2(t3, t4));
 
+    Vector3 euler = Vector3(roll, pitch, yaw);
     return euler;
 }
