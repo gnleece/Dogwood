@@ -167,6 +167,7 @@ public:
     Vector3     Row(int row) const;
     Vector3     Column(int col) const;
 
+    void        SetRows(Vector3& row0, Vector3& row1, Vector3& row2);
     void        SetColumns(Vector3& col0, Vector3& col1, Vector3& col2);
     void        SetDiagonal(Vector3& v);
     void        SetSkewSymmetric(Vector3& v);
@@ -210,6 +211,7 @@ public:
     Vector4     Row(int row) const;
     Vector4     Column(int col) const;
 
+    void        SetRows(Vector4& row0, Vector4& row1, Vector4& row2, Vector4& row3);
     void        SetColumns(Vector4& col0, Vector4& col1, Vector4& col2, Vector4& col3);
     void        SetDiagonal(Vector4& v);
 

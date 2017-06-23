@@ -572,6 +572,21 @@ Vector3 Matrix3x3::Column(int col) const
     return Vector3(m_values[col], m_values[3 + col], m_values[6 + col]);
 }
 
+void Matrix3x3::SetRows(Vector3& row0, Vector3& row1, Vector3& row2)
+{
+    m_values[0] = row0[0];
+    m_values[1] = row0[1];
+    m_values[2] = row0[2];
+
+    m_values[3] = row1[0];
+    m_values[4] = row1[1];
+    m_values[5] = row1[2];
+
+    m_values[6] = row2[0];
+    m_values[7] = row2[1];
+    m_values[8] = row2[2];
+}
+
 void Matrix3x3::SetColumns(Vector3& col0, Vector3& col1, Vector3& col2)
 {
     m_values[0] = col0[0];
@@ -881,6 +896,29 @@ Vector4 Matrix4x4::Row(int row) const
 Vector4 Matrix4x4::Column(int col) const
 {
     return Vector4(m_values[col], m_values[4+col], m_values[8+col], m_values[12+col]);
+}
+
+void Matrix4x4::SetRows(Vector4& row0, Vector4& row1, Vector4& row2, Vector4& row3)
+{
+    m_values[0] = row0[0];
+    m_values[1] = row0[1];
+    m_values[2] = row0[2];
+    m_values[3] = row0[3];
+
+    m_values[4] = row1[0];
+    m_values[5] = row1[1];
+    m_values[6] = row1[2];
+    m_values[7] = row1[3];
+
+    m_values[8] = row2[0];
+    m_values[9] = row2[1];
+    m_values[10] = row2[2];
+    m_values[11] = row2[3];
+
+    m_values[12] = row3[0];
+    m_values[13] = row3[1];
+    m_values[14] = row3[2];
+    m_values[15] = row3[3];
 }
 
 void Matrix4x4::SetColumns(Vector4& col0, Vector4& col1, Vector4& col2, Vector4& col3)
