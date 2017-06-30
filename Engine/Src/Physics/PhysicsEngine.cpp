@@ -94,7 +94,15 @@ void PhysicsEngine::RegisterRigidBody(RigidBody* rigidBody)
     if (rigidBody == NULL)
         return;
 
-    // TODO make sure this rigidbody isn't already in the list
+    vector<RigidBody*>::iterator iter;
+    iter = std::find(m_rigidBodies.begin(), m_rigidBodies.end(), rigidBody);
+    if (iter != m_rigidBodies.end())
+    {
+        // This rigid body is already registered
+        // TODO assert or log a warning
+        return;
+    }
+
     m_rigidBodies.push_back(rigidBody);
 }
 
