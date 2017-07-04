@@ -262,15 +262,15 @@ void CollisionDetection::SetFaceVertexContactData(BoxCollider* faceBox, BoxColli
     Vector3 vertex = vertexBox->GetWorldScaleHalfsize();
     if (vertexBox->GetTransform().GetRight().Dot(axis) < 0)
     {
-        vertex.SetX(vertex.x());
+        vertex.SetX(-vertex.x());
     }
     if (vertexBox->GetTransform().GetUp().Dot(axis) < 0)
     {
-        vertex.SetY(vertex.y());
+        vertex.SetY(-vertex.y());
     }
     if (vertexBox->GetTransform().GetForward().Dot(axis) < 0)
     {
-        vertex.SetZ(vertex.z());
+        vertex.SetZ(-vertex.z());
     }
 
     // Set the contact data
