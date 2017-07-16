@@ -253,10 +253,10 @@ Quaternion EulerToQuaternion(Vector3& euler)
     float y = t0 * t2 * t5 + t1 * t3 * t4;
     float z = t1 * t2 * t4 - t0 * t3 * t5;
 
-    q.SetI(w);
-    q.SetJ(x);
-    q.SetK(y);
-    q.SetR(z);
+    q.SetI(x);
+    q.SetJ(y);
+    q.SetK(z);
+    q.SetR(w);
 
     return q;
 }
@@ -264,10 +264,10 @@ Quaternion EulerToQuaternion(Vector3& euler)
 // From https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles
 Vector3 QuaternionToEuler(Quaternion& q)
 {
-    float w = q.i();
-    float x = q.j();
-    float y = q.k();
-    float z = q.r();
+    float x = q.i();
+    float y = q.j();
+    float z = q.k();
+    float w = q.r();
 
     float y_sqr = y * y;
 
