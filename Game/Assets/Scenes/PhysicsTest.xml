@@ -19,7 +19,7 @@
         <Components/>
         <GameObject guid="2032717194" name="Katamari">
             <Transform>
-                <Position x="1.7875082" y="1.5824924" z="-0.44999996"/>
+                <Position x="2.9249985" y="0.44999999" z="0"/>
                 <Rotation x="0" y="-0" z="0"/>
                 <Scale x="0.30000001" y="0.30000001" z="0.30000001"/>
             </Transform>
@@ -59,33 +59,11 @@
             <Colliders/>
             <Components/>
         </GameObject>
-        <GameObject guid="2300954628" name="RedCube">
-            <Transform>
-                <Position x="7.75" y="1.625" z="0"/>
-                <Rotation x="0" y="-0" z="0"/>
-                <Scale x="1" y="1" z="1"/>
-            </Transform>
-            <Mesh guid="33727872">
-                <Material>
-                    <Shader guid="3746892247"/>
-                    <Color name="colorDiffuse" r="1" g="0" b="0"/>
-                    <Color name="colorAmbient" r="0.52941" g="0" b="0"/>
-                    <Color name="colorSpecular" r="1" g="1" b="1"/>
-                </Material>
-            </Mesh>
-            <Colliders>
-                <Collider Type="1" IsStatic="1">
-                    <Center x="0" y="0" z="0"/>
-                    <Size x="1" y="1" z="1"/>
-                </Collider>
-            </Colliders>
-            <Components/>
-        </GameObject>
         <GameObject guid="642973481" name="Ground">
             <Transform>
-                <Position x="0" y="-3" z="0"/>
+                <Position x="0" y="-1" z="0"/>
                 <Rotation x="0" y="-0" z="0"/>
-                <Scale x="10" y="3.5" z="10"/>
+                <Scale x="10" y="1" z="10"/>
             </Transform>
             <Mesh guid="33727872">
                 <Material>
@@ -132,10 +110,10 @@
                 <Components/>
             </GameObject>
         </GameObject>
-        <GameObject guid="2064095551" name="Plank">
+        <GameObject guid="2064095551" name="Box">
             <Transform>
-                <Position x="0" y="3" z="0"/>
-                <Rotation x="0" y="-0" z="0"/>
+                <Position x="0" y="15" z="0"/>
+                <Rotation x="20" y="5" z="35.000008"/>
                 <Scale x="1" y="1" z="1"/>
             </Transform>
             <Mesh guid="33727872">
@@ -152,8 +130,188 @@
                     <Size x="1" y="1" z="1"/>
                 </Collider>
             </Colliders>
-            <RigidBody IsEnabled="1" UsesGravity="1" Mass="123"/>
+            <RigidBody IsEnabled="1" UsesGravity="1" Mass="800"/>
             <Components/>
+        </GameObject>
+        <GameObject guid="829003491" name="Box1">
+          <Transform>
+            <Position x="5" y="15" z="0"/>
+            <Rotation x="20" y="5" z="35.000008"/>
+            <Scale x="1" y="1" z="1"/>
+          </Transform>
+          <Mesh guid="33727872">
+            <Material>
+              <Shader guid="3746892247"/>
+              <Color name="colorDiffuse" r="0.66666669" g="0.33333334" b="0"/>
+              <Color name="colorAmbient" r="1" g="1" b="1"/>
+              <Color name="colorSpecular" r="1" g="1" b="1"/>
+            </Material>
+          </Mesh>
+          <Colliders>
+            <Collider Type="1" IsStatic="0">
+              <Center x="0" y="0" z="0"/>
+              <Size x="1" y="1" z="1"/>
+            </Collider>
+          </Colliders>
+          <RigidBody IsEnabled="1" UsesGravity="1" Mass="800"/>
+          <Components/>
+        </GameObject>
+        <GameObject guid="425724004" name="Box2">
+          <Transform>
+            <Position x="0" y="22" z="5"/>
+            <Rotation x="20" y="5" z="35.000008"/>
+            <Scale x="1" y="1" z="1"/>
+          </Transform>
+          <Mesh guid="2234616278">
+            <Material>
+              <Shader guid="3746892247"/>
+              <Color name="colorDiffuse" r="0.66666669" g="0.33333334" b="0"/>
+              <Color name="colorAmbient" r="1" g="1" b="1"/>
+              <Color name="colorSpecular" r="1" g="1" b="1"/>
+            </Material>
+          </Mesh>
+          <Colliders>
+            <Collider Type="0" IsStatic="0" Radius="1">
+              <Center x="0" y="0" z="0"/>
+            </Collider>
+          </Colliders>
+          <RigidBody IsEnabled="1" UsesGravity="1" Mass="800"/>
+          <Components/>
+        </GameObject>
+        <GameObject guid="2592698082" name="Box3">
+          <Transform>
+            <Position x="4" y="20" z="0"/>
+            <Rotation x="20" y="5" z="35.000008"/>
+            <Scale x="1" y="1" z="1"/>
+          </Transform>
+          <Mesh guid="33727872">
+            <Material>
+              <Shader guid="3746892247"/>
+              <Color name="colorDiffuse" r="0.66666669" g="0.33333334" b="0"/>
+              <Color name="colorAmbient" r="1" g="1" b="1"/>
+              <Color name="colorSpecular" r="1" g="1" b="1"/>
+            </Material>
+          </Mesh>
+          <Colliders>
+            <Collider Type="1" IsStatic="0">
+              <Center x="0" y="0" z="0"/>
+              <Size x="1" y="1" z="1"/>
+            </Collider>
+          </Colliders>
+          <RigidBody IsEnabled="1" UsesGravity="1" Mass="800"/>
+          <Components/>
+        </GameObject>
+        <GameObject guid="3729807106" name="Box4">
+          <Transform>
+            <Position x="0.5" y="28" z="0"/>
+            <Rotation x="20" y="5" z="35.000008"/>
+            <Scale x="1" y="1" z="1"/>
+          </Transform>
+          <Mesh guid="2234616278">
+            <Material>
+              <Shader guid="3746892247"/>
+              <Color name="colorDiffuse" r="0.66666669" g="0.33333334" b="0"/>
+              <Color name="colorAmbient" r="1" g="1" b="1"/>
+              <Color name="colorSpecular" r="1" g="1" b="1"/>
+            </Material>
+          </Mesh>
+          <Colliders>
+            <Collider Type="0" IsStatic="0" Radius="1">
+              <Center x="0" y="0" z="0"/>
+            </Collider>
+          </Colliders>
+          <RigidBody IsEnabled="1" UsesGravity="1" Mass="800"/>
+          <Components/>
+        </GameObject>
+        <GameObject guid="1853594745" name="Box5">
+          <Transform>
+            <Position x="0" y="10" z="2"/>
+            <Rotation x="0" y="0" z="0"/>
+            <Scale x="1" y="1" z="1"/>
+          </Transform>
+          <Mesh guid="33727872">
+            <Material>
+              <Shader guid="3746892247"/>
+              <Color name="colorDiffuse" r="0.66666669" g="0.33333334" b="0"/>
+              <Color name="colorAmbient" r="1" g="1" b="1"/>
+              <Color name="colorSpecular" r="1" g="1" b="1"/>
+            </Material>
+          </Mesh>
+          <Colliders>
+            <Collider Type="1" IsStatic="0">
+              <Center x="0" y="0" z="0"/>
+              <Size x="1" y="1" z="1"/>
+            </Collider>
+          </Colliders>
+          <RigidBody IsEnabled="1" UsesGravity="1" Mass="800"/>
+          <Components/>
+        </GameObject>
+        <GameObject guid="2888398828" name="Box6">
+          <Transform>
+            <Position x="0" y="15" z="3"/>
+            <Rotation x="0" y="0" z="30"/>
+            <Scale x="1" y="1" z="1"/>
+          </Transform>
+          <Mesh guid="2234616278">
+            <Material>
+              <Shader guid="3746892247"/>
+              <Color name="colorDiffuse" r="0.66666669" g="0.33333334" b="0"/>
+              <Color name="colorAmbient" r="1" g="1" b="1"/>
+              <Color name="colorSpecular" r="1" g="1" b="1"/>
+            </Material>
+          </Mesh>
+          <Colliders>
+            <Collider Type="0" IsStatic="0" Radius="1">
+              <Center x="0" y="0" z="0"/>
+            </Collider>
+          </Colliders>
+          <RigidBody IsEnabled="1" UsesGravity="1" Mass="800"/>
+          <Components/>
+        </GameObject>
+        <GameObject guid="392625128" name="Box7">
+          <Transform>
+            <Position x="0" y="16" z="1"/>
+            <Rotation x="0" y="5" z="35.000008"/>
+            <Scale x="1" y="1" z="1"/>
+          </Transform>
+          <Mesh guid="33727872">
+            <Material>
+              <Shader guid="3746892247"/>
+              <Color name="colorDiffuse" r="0.66666669" g="0.33333334" b="0"/>
+              <Color name="colorAmbient" r="1" g="1" b="1"/>
+              <Color name="colorSpecular" r="1" g="1" b="1"/>
+            </Material>
+          </Mesh>
+          <Colliders>
+            <Collider Type="1" IsStatic="0">
+              <Center x="0" y="0" z="0"/>
+              <Size x="1" y="1" z="1"/>
+            </Collider>
+          </Colliders>
+          <RigidBody IsEnabled="1" UsesGravity="1" Mass="800"/>
+          <Components/>
+        </GameObject>
+        <GameObject guid="1744098835" name="Box8">
+          <Transform>
+            <Position x="2" y="18" z="2"/>
+            <Rotation x="0" y="45" z="0"/>
+            <Scale x="1" y="1" z="1"/>
+          </Transform>
+          <Mesh guid="2234616278">
+            <Material>
+              <Shader guid="3746892247"/>
+              <Color name="colorDiffuse" r="0.66666669" g="0.33333334" b="0"/>
+              <Color name="colorAmbient" r="1" g="1" b="1"/>
+              <Color name="colorSpecular" r="1" g="1" b="1"/>
+            </Material>
+          </Mesh>
+          <Colliders>
+            <Collider Type="0" IsStatic="0" Radius="1">
+              <Center x="0" y="0" z="0"/>
+            </Collider>
+          </Colliders>
+          <RigidBody IsEnabled="1" UsesGravity="1" Mass="800"/>
+          <Components/>
         </GameObject>
     </GameObject>
     <Resources>
@@ -164,5 +322,6 @@
         <Resource guid="3205911089"/>
         <Resource guid="3378413933"/>
         <Resource guid="3746892247"/>
+        <Resource guid="3936014360"/>
     </Resources>
 </Scene>
