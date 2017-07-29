@@ -303,19 +303,8 @@ void RigidBody::OnCreate()
 
 void RigidBody::UpdateGameObject()
 {
-    if (strcmp(m_gameObject->GetName().c_str(), "Plank") == 0)
-    {
-        //printf("Before: ");
-        //m_gameObject->GetTransform().GetWorldRotation().DebugPrint();
-    }
     m_gameObject->GetTransform().SetWorldPosition(m_position);
     m_gameObject->GetTransform().SetWorldRotation(QuaternionToEuler(m_rotation));
-    if (strcmp(m_gameObject->GetName().c_str(), "Plank") == 0)
-    {
-        //printf("After: ");
-        //m_gameObject->GetTransform().GetWorldRotation().DebugPrint();
-        //printf("-------\n");
-    }
 }
 
 void RigidBody::ClearAccumulators()

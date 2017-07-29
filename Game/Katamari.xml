@@ -2,7 +2,7 @@
     <Settings>
         <Resolution width="1024" height="576"/>
         <Resource-Root-Path path="C:/Users/Gwynneth/Coding/Dogwood/Game/Assets/"/>
-        <Physics-Settings enabled="1" gravity="-2.5"/>
+        <Physics-Settings enabled="1" gravity="-2.8100004"/>
     </Settings>
     <Resources>
         <Textures>
