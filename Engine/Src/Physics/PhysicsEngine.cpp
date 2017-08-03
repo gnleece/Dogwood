@@ -70,10 +70,11 @@ void PhysicsEngine::ResolveCollisions(float deltaTime)
         m_rigiBodyContacts[contactCount].ContactNormal = collisionContact.ContactNormal;
         m_rigiBodyContacts[contactCount].Penetration = collisionContact.Penetration;
         m_rigiBodyContacts[contactCount].Friction = 0.9f;       // TODO custom friction values
-        m_rigiBodyContacts[contactCount].Restitution = 0.1f;    // TODO custom restitution values
+        m_rigiBodyContacts[contactCount].Restitution = 0.01f;    // TODO custom restitution values
         contactCount++;
     }
 
+    printf("Contact count: %d\n", contactCount);
     // Resolve the collisions involving rigid bodies
     if (contactCount > 0)
     {

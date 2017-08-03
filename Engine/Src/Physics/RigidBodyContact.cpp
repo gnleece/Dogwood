@@ -107,7 +107,7 @@ Vector3 RigidBodyContact::CalculateLocalVelocity(RigidBody* body, float deltaTim
     Vector3 accVelocity = body->GetPreviousAcceleration() * deltaTime;
 
     // Calculate the velocity in contact coordinates
-    accVelocity = m_contactToWorld * accVelocity;
+    accVelocity = m_contactToWorld.Transpose() * accVelocity;
 
     // Ignore any component of acceleration in the contact normal direction -
     // we are only interested in planar acceleration
@@ -262,7 +262,7 @@ void RigidBodyContact::ApplyPositionChange(Vector3* linearChange, Vector3* angul
         {
             Matrix3x3 inverseInertiaTensor = Body[i]->GetInverseIntertiaTensorWorld();
             Vector3 angularInertiaWorld = m_relativeContactPosition[i].Cross(ContactNormal);
-            angularInertiaWorld = inverseInertiaTensor*angularInertiaWorld; // TODO physics: is order correct here?
+            angularInertiaWorld = angularInertiaWorld*inverseInertiaTensor; // TODO physics: is order correct here?
             angularInertiaWorld = angularInertiaWorld.Cross(m_relativeContactPosition[i]);
             angularInteria[i] = angularInertiaWorld.Dot(ContactNormal);
 
@@ -283,7 +283,6 @@ void RigidBodyContact::ApplyPositionChange(Vector3* linearChange, Vector3* angul
             float sign = (i == 0) ? 1.f : -1.f;
             angularMove[i] = sign * penetration * (angularInteria[i] / totalInertia);
             linearMove[i] = sign * penetration * (linearInertia[i] / totalInertia);
-            //linearMove[i] = sign * penetration;   // TODO this temp hack didn't work, but need to look at why angular inertia is so high
 
             // To avoid angular projections that are too great (when mass is large but inertia
             // tensor is small), limit the angular move
@@ -317,11 +316,11 @@ void RigidBodyContact::ApplyPositionChange(Vector3* linearChange, Vector3* angul
             else
             {
                 // Work out the direction we'd like to rotate in
-                Vector3 targetAngularDirection = m_relativeContactPosition[i].Cross(ContactNormal);
+                Vector3 targetAngularDirection = m_relativeContactPosition[i].Cross(ContactNormal);     // TODO physics: should this get normalized?
 
                 // Work out the direction we'd need to rotate to achieve that
                 Matrix3x3 inverseInertiaTensor = Body[i]->GetInverseIntertiaTensorWorld();
-                angularChange[i] = (inverseInertiaTensor * targetAngularDirection) * (angularMove[i] / angularInteria[i]);      // TODO physics: is order correct here?
+                angularChange[i] = (targetAngularDirection*inverseInertiaTensor)* (angularMove[i] / angularInteria[i]);      // TODO physics: is order correct here?
             }
 
             // Velocity change is just the linear movement along the contact normal
@@ -336,6 +335,7 @@ void RigidBodyContact::ApplyPositionChange(Vector3* linearChange, Vector3* angul
             Quaternion rot = Body[i]->GetRotation();
             rot.AddScaledVector(angularChange[i], 1.0);
             Body[i]->SetRotation(rot);
+
             // TODO calculate derived data for bodies that are not awake
         }
     }
@@ -483,7 +483,7 @@ void ContactResolver::AdjustPositions(RigidBodyContact* contacts, unsigned int n
     }
     if (iterationsUsed >= m_maxIterations)
     {
-        printf("Hit max iterations in RigidBodyContact::AdjustPositions\n");
+        printf("\tHit max iterations!!!\n");
     }
 }
 
@@ -543,5 +543,9 @@ void ContactResolver::AdjustVelocities(RigidBodyContact* contacts, unsigned int 
         }
 
         iterationsUsed++;
+    }
+    if (iterationsUsed >= m_maxIterations)
+    {
+        printf("\tHit max iterations!!!\n");
     }
 }
