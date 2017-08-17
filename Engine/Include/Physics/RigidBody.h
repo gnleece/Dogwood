@@ -72,6 +72,8 @@ public:
 
     void        SetEnabled(bool isEnabled);
     bool        IsEnabled();
+    void        SetAwake(bool isAwake);
+    bool        IsAwake();
     void        SetUsesGravity(bool usesGravity);
     bool        UsesGravity();
 
@@ -86,6 +88,7 @@ protected:
 
     GameObjectBase* m_gameObject;
     bool            m_isAwake;                      // Determined by physics code (TODO: implement me)
+    bool            m_canSleep;                     // Indicates whether object is allowed to sleep (e.g. user controlled objects probably shouldn't sleep ever)
     bool            m_isEnabled;                    // Set by game code (default is true)
     bool            m_usesGravity;                  // Set by game code (default is true)
 
@@ -116,7 +119,12 @@ protected:
     Vector3         m_accumulatedForce;
     Vector3         m_accumulatedTorque;
 
+    // Recency-weighted mean that's used to determine when an object should sleep
+    float           m_motion;
+
     // Damping is required to remove energy added from numerical instability in physics integration step.
     const float     LINEAR_DAMPING = 0.999f;
     const float     ANGULAR_DAMPING = 0.999f;
+
+    const float     SLEEP_EPSILON = 0.3f;
 };

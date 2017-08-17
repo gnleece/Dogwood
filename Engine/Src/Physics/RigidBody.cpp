@@ -151,6 +151,9 @@ Vector3 RigidBody::GetDirectionInWorldSpace(const Vector3 &direction)
 
 void RigidBody::Integrate(float deltaTime)
 {
+    if (!m_isAwake)
+        return;
+
     // Calculate linear acceleration from force inputs
     m_previousAcceleration = m_acceleration;
     m_previousAcceleration += m_accumulatedForce * m_inverseMass;
@@ -263,6 +266,28 @@ void RigidBody::SetEnabled(bool isEnabled)
 bool RigidBody::IsEnabled()
 {
     return m_isEnabled;
+}
+
+void RigidBody::SetAwake(bool isAwake)
+{
+    if (isAwake)
+    {
+        m_isAwake = true;
+
+        // Add a bit of motion to avoid falling asleep again immediately
+        m_motion = 2.0f * SLEEP_EPSILON;
+    }
+    else
+    {
+        m_isAwake = false;
+        m_velocity = Vector3::Zero;
+        m_angularVelocity = Vector3::Zero;
+    }
+}
+
+bool RigidBody::IsAwake()
+{
+    return m_isAwake;
 }
 
 void RigidBody::SetUsesGravity(bool usesGravity)
