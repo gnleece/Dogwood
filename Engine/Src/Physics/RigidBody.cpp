@@ -10,7 +10,7 @@
 #include <math.h>
 
 RigidBody::RigidBody(GameObjectBase* gameObject)
-    : m_gameObject(gameObject), m_isEnabled(true), m_mass(1.0f)
+    : m_gameObject(gameObject), m_isEnabled(true), m_mass(1.0f), m_motion(0)
 { }
 
 Vector3 RigidBody::GetPosition()
@@ -182,6 +182,22 @@ void RigidBody::Integrate(float deltaTime)
 
     // Reset for next frame
     ClearAccumulators();
+
+    // Determine whether this object should be put to sleep
+    if (m_canSleep)
+    {
+        float currentMotion = m_velocity.MagnitudeSqrd() + m_angularVelocity.MagnitudeSqrd();
+        float bias = pow(MOTION_RWA_BIAS, deltaTime);
+        m_motion = bias * m_motion + (1 - bias)*currentMotion;
+        if (m_motion < SLEEP_EPSILON)
+        {
+            SetAwake(false);
+        }
+        else if (m_motion > 10 * SLEEP_EPSILON)
+        {
+            m_motion = 10 * SLEEP_EPSILON;
+        }
+    }
 }
 
 void RigidBody::AddForce(Vector3& force)
@@ -270,8 +286,12 @@ bool RigidBody::IsEnabled()
 
 void RigidBody::SetAwake(bool isAwake)
 {
+    if (isAwake == m_isAwake)
+        return;
+    
     if (isAwake)
     {
+        printf("AWAKE: %s\n", m_gameObject->GetName().c_str());
         m_isAwake = true;
 
         // Add a bit of motion to avoid falling asleep again immediately
@@ -279,6 +299,7 @@ void RigidBody::SetAwake(bool isAwake)
     }
     else
     {
+        printf("SLEEP: %s\n", m_gameObject->GetName().c_str());
         m_isAwake = false;
         m_velocity = Vector3::Zero;
         m_angularVelocity = Vector3::Zero;

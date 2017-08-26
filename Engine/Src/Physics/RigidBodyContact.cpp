@@ -248,7 +248,7 @@ Vector3 RigidBodyContact::CalculateFrictionImpulse(Matrix3x3* inverseInertiaTens
 
 void RigidBodyContact::ApplyPositionChange(Vector3* linearChange, Vector3* angularChange, float penetration)
 {
-    float angularLimit = 2.0f;
+    float angularLimit = 5.0f;
     float angularMove[2];
     float linearMove[2];
     float linearInertia[2];
@@ -386,6 +386,20 @@ void RigidBodyContact::ApplyVelocityChange(Vector3* velocityChange, Vector3* ang
     }
 }
 
+void RigidBodyContact::MatchAwakeState()
+{
+    if (Body[1] == NULL)
+        return;
+
+    bool body0awake = Body[0]->IsAwake();
+    bool body1awake = Body[1]->IsAwake();
+
+    if (body0awake != body1awake)
+    {
+        body0awake ? Body[1]->SetAwake(true) : Body[0]->SetAwake(true);
+    }
+}
+
 ContactResolver::ContactResolver(unsigned int maxIterations)
 {
     SetMaxIterations(maxIterations);
@@ -448,8 +462,8 @@ void ContactResolver::AdjustPositions(RigidBodyContact* contacts, unsigned int n
         }
         if (maxIndex == numContacts) break;
 
-        // Match the awake state at the contact     // TODO missing some implementation here
-        //contacts[maxIndex].matchAwakeState();
+        // Match the awake state at the contact
+        contacts[maxIndex].MatchAwakeState();
 
         // Resolve the penetration
         contacts[maxIndex].ApplyPositionChange(linearChange, angularChange, maxPenetration);
@@ -509,8 +523,8 @@ void ContactResolver::AdjustVelocities(RigidBodyContact* contacts, unsigned int 
         }
         if (maxIndex == numContacts) break;
 
-        // Match the awake state at the contact     // TODO missing some implementation here
-        //contacts[maxIndex].matchAwakeState();
+        // Match the awake state at the contact
+        contacts[maxIndex].MatchAwakeState();
 
         // Apply resolution on selected contact
         contacts[maxIndex].ApplyVelocityChange(velocityChange, angularVelocityChange);

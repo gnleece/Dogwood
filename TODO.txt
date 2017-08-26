@@ -213,6 +213,15 @@ DESIGN DECISIONS
     - TODO C#/XAML for Editor?
     - TODO clean up engine interface for game code / separate internal vs. external components
 
+Bugs/Problems solved
+    Physics
+        - Rotation problems on box collisions
+            - Bug on contact point calculation - took a while to find because I thought collision detection code
+            was correct, but that value was never used in any of my testing
+            - Quaternion <-> Euler angle bug - component mapping bug (Rendering engine uses rotation matrices,
+            physics textbook uses quaternion ijkr Wikipedia uses xyzw)
+        - Box on box - constant jitter on resting contacts
+
 References
 
 http://seanmiddleditch.com/matrices-handedness-pre-and-post-multiplication-row-vs-column-major-and-notations/

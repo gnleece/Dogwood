@@ -54,6 +54,8 @@ protected:
     void                ApplyPositionChange(Vector3* linearChange, Vector3* angularChange, float penetration);
     void                ApplyVelocityChange(Vector3* velocityChange, Vector3* angularVelocityChange);
 
+    void                MatchAwakeState();                          // A sleeping body will be made awake if it is in contact with another body that is awake
+
     Matrix3x3           m_contactToWorld;                           // Transform matrix to convert from contact coords to world space
     Vector3             m_contactVelocity;                          // Closing velocity at point of contact. Set by calculateInternals
     float               m_desiredDeltaVelocity;                     // Holds required change in velocity required to resolve this contact
