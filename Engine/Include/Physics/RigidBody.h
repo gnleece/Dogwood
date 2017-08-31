@@ -126,6 +126,6 @@ protected:
     const float     LINEAR_DAMPING = 0.999f;
     const float     ANGULAR_DAMPING = 0.999f;
 
-    const float     SLEEP_EPSILON = 0.0003f;    // TODO physics: this needs tuning
-    const float     MOTION_RWA_BIAS = 0.5f;     // TODO physics: this needs tuning
+    const float     SLEEP_EPSILON = 0.6f;    // TODO physics: this needs tuning
+    const float     MOTION_RWA_BIAS = 0.1f;     // TODO physics: this needs tuning
 };

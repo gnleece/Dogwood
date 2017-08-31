@@ -78,7 +78,7 @@ void PhysicsEngine::ResolveCollisions(float deltaTime)
     // Resolve the collisions involving rigid bodies
     if (contactCount > 0)
     {
-        printf("Contact count: %d\n", contactCount);
+        //printf("Contact count: %d\n", contactCount);
         m_contactResolver.ResolveContacts(m_rigiBodyContacts, contactCount, deltaTime);
     }
 
