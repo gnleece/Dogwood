@@ -494,11 +494,8 @@ void Scene::LoadTransform(HierarchicalDeserializer* deserializer, GameObjectBase
         Vector3 scale;
         deserializer->ReadLeafVector3("Scale", scale);
 
-        // TODO cleanup with transform functions
-        Matrix4x4 matrix = Translation(position);
-        matrix = matrix*RotationEulerAngles(rotation);
-        matrix = matrix*Scaling(scale);
-
+        Matrix4x4 matrix;
+        CalculateTRSMatrix(position, rotation, scale, matrix);
         go->GetTransform().SetLocalMatrix(matrix);
 
         deserializer->PopScope();
