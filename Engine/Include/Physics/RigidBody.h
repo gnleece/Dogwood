@@ -74,6 +74,8 @@ public:
     bool        IsEnabled();
     void        SetAwake(bool isAwake);
     bool        IsAwake();
+    void        SetCanSleep(bool canSleep);
+    bool        CanSleep();
     void        SetUsesGravity(bool usesGravity);
     bool        UsesGravity();
 
@@ -87,7 +89,7 @@ protected:
     void        TransformInertiaTensor(const Quaternion& q, const Matrix3x3& iitLocal, const Matrix4x4 transformWorld, Matrix3x3& iitWorld);
 
     GameObjectBase* m_gameObject;
-    bool            m_isAwake;                      // Determined by physics code (TODO: implement me)
+    bool            m_isAwake;
     bool            m_canSleep;                     // Indicates whether object is allowed to sleep (e.g. user controlled objects probably shouldn't sleep ever)
     bool            m_isEnabled;                    // Set by game code (default is true)
     bool            m_usesGravity;                  // Set by game code (default is true)

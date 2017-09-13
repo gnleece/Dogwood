@@ -257,6 +257,7 @@ void RigidBody::Save(HierarchicalSerializer* serializer)
 {
     serializer->PushScope("RigidBody");
     serializer->SetAttribute("IsEnabled", m_isEnabled);
+    serializer->SetAttribute("CanSleep", m_canSleep);
     serializer->SetAttribute("UsesGravity", m_usesGravity);
     serializer->SetAttribute("Mass", m_mass);
     serializer->PopScope();
@@ -267,6 +268,9 @@ void RigidBody::Load(HierarchicalDeserializer* deserializer)
     bool isEnabled;
     deserializer->GetAttribute("IsEnabled", isEnabled);
     SetEnabled(isEnabled);
+    bool canSleep;
+    deserializer->GetAttribute("CanSleep", canSleep);
+    SetCanSleep(canSleep);
     bool usesGravity;
     deserializer->GetAttribute("UsesGravity", usesGravity);
     SetUsesGravity(usesGravity);
@@ -310,6 +314,16 @@ void RigidBody::SetAwake(bool isAwake)
 bool RigidBody::IsAwake()
 {
     return m_isAwake;
+}
+
+void RigidBody::SetCanSleep(bool canSleep)
+{
+    m_canSleep = canSleep;
+}
+
+bool RigidBody::CanSleep()
+{
+    return m_canSleep;
 }
 
 void RigidBody::SetUsesGravity(bool usesGravity)
