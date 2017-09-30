@@ -124,6 +124,12 @@ EDITOR
         - Fix light power loading - remove GLint from Light
         - Camera controls got inverted
 
+        Physics
+        - Box-box collisions don't stabilize. e.g. cube falling on ground (box) lands, resolves,
+        and jitters forever. Physics tries to sleep the cube, but the gravity force generator wakes
+        it up again every frame. Tried to look at source code from textbook for solution, but example
+        I'd been using for reference doesn't actually use force generators for gravity. Need to investigate
+
 ---------------------------------------------------------------------------
 
 GAME (Katamari?)
