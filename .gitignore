@@ -26,3 +26,7 @@
 *__pycache__
 
 *.tmp
+
+*.opendb
+*.pro.user.-1
+

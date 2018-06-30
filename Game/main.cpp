@@ -12,6 +12,6 @@ int main(void)
     Game::Singleton().Init("Katamari.xml", factory);
 
     // TODO startup scene should be specified in the project file
-    Scene* scene = Scene::Load("Assets\\Scenes\\PhysicsTest2.xml");
+    Scene* scene = Scene::Load("Assets\\Scenes\\RollTest.xml");
     Game::Singleton().Run(scene);
 }

@@ -8,6 +8,7 @@
 #include "Util.h"
 
 #include <algorithm>
+#include <iterator>
 
 bool CollisionPairComparator(CollisionPair& lhs, CollisionPair& rhs)
 {
