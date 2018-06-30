@@ -5,6 +5,7 @@
 /Engine/Debug
 /Game/Debug
 /ipch
+/.vs
 
 *.swp
 *~
