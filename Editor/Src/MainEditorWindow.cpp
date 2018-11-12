@@ -376,7 +376,7 @@ void MainEditorWindow::OpenTestProject()
     }
     
     UnloadScene();
-    m_scene = Scene::Load("..\\Game\\Assets\\Scenes\\PhysicsTest.xml");
+    m_scene = Scene::Load("..\\Game\\Assets\\Scenes\\PhysicsTest3.xml");
 
     if (m_scene != NULL)
     {
