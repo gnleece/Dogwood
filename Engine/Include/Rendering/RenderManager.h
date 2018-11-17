@@ -55,7 +55,6 @@ public:
 
 private:
     RenderManager(RenderManager const&);
-    void operator=(RenderManager const&);
 
     void            LoadCommonShaders();
 

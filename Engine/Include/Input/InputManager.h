@@ -1,11 +1,5 @@
 #pragma once
 
-#define GLEW_STATIC
-#include <GL/glew.h>
-
-#define GLFW_INCLUDE_GLU
-#include <GLFW/glfw3.h>
-
 #include <utility>
 #include <unordered_map>
 #include "..\Debugging\DebugCameraControls.h"
