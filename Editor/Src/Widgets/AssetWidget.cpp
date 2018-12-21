@@ -9,7 +9,7 @@
 #include "Scene\ResourceManager.h"
 //#include "EditorCommands.h"
 
-#include "..\GeneratedFiles\ui_assetwidget.h"
+#include "GeneratedFiles\ui_assetwidget.h"
 
 #include <qfileinfo.h>
 

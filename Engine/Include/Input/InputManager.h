@@ -2,7 +2,7 @@
 
 #include <utility>
 #include <unordered_map>
-#include "..\Debugging\DebugCameraControls.h"
+#include "Debugging\DebugCameraControls.h"
 
 class GamePad;
 class GameWindow;

@@ -8,7 +8,7 @@
 #include "ToolsideGameComponent.h"
 #include "ToolsideGameObject.h"
 
-#include "..\GeneratedFiles\ui_componentwidget.h"
+#include "GeneratedFiles\ui_componentwidget.h"
 
 #include <vector>
 

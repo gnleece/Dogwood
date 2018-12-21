@@ -1,6 +1,6 @@
 #pragma once
 
-#include "..\Math\Algebra.h"
+#include "Math\Algebra.h"
 
 #define GLEW_STATIC
 #include <GL/glew.h>

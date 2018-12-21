@@ -1,5 +1,5 @@
 #include "SettingsDialog.h"
-#include "..\GeneratedFiles\ui_settingsdialog.h"
+#include "GeneratedFiles\ui_settingsdialog.h"
 
 #include <QPlainTextEdit>
 #include "GameProject.h"

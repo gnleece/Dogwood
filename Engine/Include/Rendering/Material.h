@@ -1,6 +1,6 @@
 #pragma once
 
-#include "..\Math\Transform.h"
+#include "Math\Transform.h"
 #include "Color.h"
 #include "GameComponent.h"
 #include "ShaderProgram.h"

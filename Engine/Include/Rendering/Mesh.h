@@ -1,7 +1,7 @@
 #pragma once
 
-#include "..\Math\Transform.h"
-#include "..\Scene\Resource.h"
+#include "Math\Transform.h"
+#include "Scene\Resource.h"
 #include "ShaderProgram.h"
 
 #define GLEW_STATIC

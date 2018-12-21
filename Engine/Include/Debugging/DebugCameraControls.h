@@ -1,6 +1,6 @@
 #pragma once
 
-#include "..\Math\Algebra.h"
+#include "Math\Algebra.h"
 
 class DebugCameraControls
 {

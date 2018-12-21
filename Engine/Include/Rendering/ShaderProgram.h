@@ -6,7 +6,7 @@
 #include <fstream>
 #include <unordered_map>
 
-#include "..\Scene\Resource.h"
+#include "Scene\Resource.h"
 
 class ResourceInfo;
 

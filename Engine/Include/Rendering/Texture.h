@@ -5,7 +5,7 @@
 
 #include <fstream>
 
-#include "..\Scene\Resource.h"
+#include "Scene\Resource.h"
 
 class ResourceInfo;
 

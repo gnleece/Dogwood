@@ -1,7 +1,7 @@
 #pragma once
 
-#include "..\GameComponent.h"
-#include "..\Math\Transform.h"
+#include "GameComponent.h"
+#include "Math\Transform.h"
 
 class GameObjectBase;
 class Material;
