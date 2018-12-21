@@ -4,12 +4,16 @@
 #include "Debugging\DebugDraw.h"
 #include "Physics\CollisionEngine.h"
 
+#include "Rendering/OpenGL/GLRenderer.h"			// TODO [GL+DX] ifdef
+
 void RenderManager::Startup(int viewportWidth, int viewportHeight)
 {
     m_dirty = true;
     m_rootObject = NULL;
     m_viewportWidth = viewportWidth;
     m_viewportHeight = viewportHeight;
+
+    m_platSpecificRenderer = new GLRenderer();		// TODO [GL+DX] ifdef
 
     // OpenGL setup
     glViewport(0, 0, m_viewportWidth, m_viewportHeight);
@@ -34,6 +38,7 @@ void RenderManager::Startup(int viewportWidth, int viewportHeight)
 void RenderManager::Shutdown()
 {
     DebugDraw::Singleton().Shutdown();
+    delete m_platSpecificRenderer;
 }
 
 void RenderManager::SetRootObject(GameObjectBase* rootObject)
@@ -80,7 +85,7 @@ void RenderManager::RenderScene()
 void RenderManager::ApplyGlobalParams(ShaderProgram* shader)
 {
     // Light
-    m_light.ApplyLight(shader);
+    m_platSpecificRenderer->ApplyLight(m_light, shader);
 
     Vector3 position = m_camera.GetPosition();
     Vector3 direction = m_camera.GetDirection();

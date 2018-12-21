@@ -15,6 +15,12 @@
 
 class GameObjectBase;
 
+class PlatSpecificRenderer
+{
+public:
+    virtual void ApplyLight(Light& light, ShaderProgram* shader) = 0;
+};
+
 class RenderManager
 {
 public:
@@ -57,6 +63,8 @@ private:
     RenderManager(RenderManager const&);
 
     void            LoadCommonShaders();
+
+    PlatSpecificRenderer* m_platSpecificRenderer;
 
     int             m_viewportWidth;
     int             m_viewportHeight;

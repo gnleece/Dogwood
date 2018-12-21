@@ -1,22 +1,15 @@
 #pragma once
 
-#define GLEW_STATIC
-#include <GL/glew.h>
-
 #include "Color.h"
-#include "..\Math\Algebra.h"
-
-class ShaderProgram;
+#include "Math\Algebra.h"
 
 struct Light
 {
-public: 
+public:
     Vector3     position;
     ColorRGB    color;
-    GLfloat     power;
+    float       power;
 
     Light();
-    Light(Vector3 p, ColorRGB c, GLfloat pow);
-
-    void ApplyLight(ShaderProgram* shader);
+    Light(Vector3 p, ColorRGB c, float pow);
 };

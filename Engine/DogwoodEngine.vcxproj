@@ -185,6 +185,7 @@
     <ClInclude Include="Include\Rendering\Mesh.h" />
     <ClInclude Include="Include\Rendering\MeshInstance.h" />
     <ClInclude Include="Include\Rendering\ModelLoading.h" />
+    <ClInclude Include="Include\Rendering\OpenGL\GLRenderer.h" />
     <ClInclude Include="Include\Rendering\RenderManager.h" />
     <ClInclude Include="Include\Rendering\ShaderProgram.h" />
     <ClInclude Include="Include\Rendering\Texture.h" />
@@ -241,6 +242,7 @@
     <ClCompile Include="Src\Rendering\Mesh.cpp" />
     <ClCompile Include="Src\Rendering\MeshInstance.cpp" />
     <ClCompile Include="Src\Rendering\ModelLoading.cpp" />
+    <ClCompile Include="Src\Rendering\OpenGL\GLRenderer.cpp" />
     <ClCompile Include="Src\Rendering\RenderManager.cpp" />
     <ClCompile Include="Src\Rendering\ShaderProgram.cpp" />
     <ClCompile Include="Src\Rendering\Texture.cpp" />
