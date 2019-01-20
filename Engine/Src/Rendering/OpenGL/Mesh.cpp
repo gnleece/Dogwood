@@ -11,10 +11,55 @@
 #define GLFW_INCLUDE_GLU
 #include <GLFW/glfw3.h>
 
+class MeshImpl : public Mesh
+{
+public:
+    friend class Mesh;
+
+    virtual void    Init(std::string filename, ResourceInfo* resourceInfo);
+
+    virtual void    Render(Transform& transform, Material* material, bool wireframe = false);
+    virtual void    Delete();
+
+    virtual float   GetBoundingRadius();
+
+    virtual int     GetTriangleCount();
+    virtual void    GetTriangle(int index, Vector3* triangle);
+
+private:
+    void    CalculateBoundingRadius(std::vector<Vector3>& vertices);
+
+    GLuint      m_vao;
+    GLuint      m_vboPosition;
+    GLuint      m_vboNormal;
+    GLuint      m_vboUV;
+    GLuint      m_ebo;
+
+    GLsizei     m_vertexCount;
+    GLsizei     m_indexedVertexCount;
+    bool        m_hasUVs;
+
+    std::vector<Vector3> m_positions;
+    std::vector<GLuint>  m_indices;
+
+    GLenum      m_drawMode;
+    float       m_boundingRadius;
+};
+
+Mesh* Mesh::Create()
+{
+    return new MeshImpl();
+}
+
+void Mesh::Destroy(Mesh* mesh)
+{
+    delete mesh;
+}
+
 // TODO For a given mesh, we should do the indexing and bounding sphere calculations once when
 // the mesh is imported to a project, instead of having to do it at load time every time
 
-Mesh::Mesh(std::string path, ResourceInfo* resourceInfo)
+void MeshImpl::Init(std::string path, ResourceInfo* resourceInfo)
 {
     m_drawMode = GL_TRIANGLES;
     m_resourceInfo = resourceInfo;
@@ -57,7 +102,7 @@ Mesh::Mesh(std::string path, ResourceInfo* resourceInfo)
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)*m_indexedVertexCount, m_indices.data(), GL_STATIC_DRAW);
 }
 
-void Mesh::Render(Transform& transform, Material* material, bool wireframe)
+void MeshImpl::Render(Transform& transform, Material* material, bool wireframe)
 {
     if (material)
     {
@@ -71,7 +116,7 @@ void Mesh::Render(Transform& transform, Material* material, bool wireframe)
         if (wireframe)
         {
             Material* debugMat = DebugDraw::Singleton().GetDebugMaterial();
-            debugMat->SetColor("color", ColorRGB(0.7f,0.7f,0.7f));
+            debugMat->SetColor("color", ColorRGB(0.7f, 0.7f, 0.7f));
             debugMat->ApplyMaterial(transform, m_vboPosition, m_vboNormal, m_vboUV, m_hasUVs);
             glDrawElements(GL_LINE_LOOP, m_indexedVertexCount, GL_UNSIGNED_INT, 0);
             debugMat->UnapplyMaterial();
@@ -79,7 +124,7 @@ void Mesh::Render(Transform& transform, Material* material, bool wireframe)
     }
 }
 
-void Mesh::Delete()
+void MeshImpl::Delete()
 {
     glDeleteVertexArrays(1, &m_vao);
     glDeleteBuffers(1, &m_vboPosition);
@@ -91,17 +136,17 @@ void Mesh::Delete()
     glDeleteBuffers(1, &m_ebo);
 }
 
-float Mesh::GetBoundingRadius()
+float MeshImpl::GetBoundingRadius()
 {
     return m_boundingRadius;
 }
 
-int Mesh::GetTriangleCount()
+int MeshImpl::GetTriangleCount()
 {
     return m_indexedVertexCount / 3;
 }
 
-void Mesh::GetTriangle(int index, Vector3* triangle)
+void MeshImpl::GetTriangle(int index, Vector3* triangle)
 {
     if (index < 0 || index >= m_indexedVertexCount / 3)
         return;
@@ -113,7 +158,7 @@ void Mesh::GetTriangle(int index, Vector3* triangle)
     }
 }
 
-void Mesh::CalculateBoundingRadius(std::vector<Vector3>& vertices)
+void MeshImpl::CalculateBoundingRadius(std::vector<Vector3>& vertices)
 {
     // Find the vertex with the max distance from the center of the object
     // This will be the radius of the bound sphere

@@ -44,7 +44,8 @@ struct MeshResourceInfo : ResourceInfo
     virtual Resource* Load()
     {
         string absolutePath = ResourceManager::Singleton().GetResourceBasePath() + path;
-        Mesh* mesh = new Mesh(absolutePath, this);
+        Mesh* mesh = Mesh::Create();
+        mesh->Init(absolutePath, this);
         return mesh;
     }
 

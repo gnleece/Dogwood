@@ -4,9 +4,6 @@
 #include "Scene\Resource.h"
 #include "ShaderProgram.h"
 
-#define GLEW_STATIC
-#include <GL/glew.h>
-
 #include <vector>
 
 class Material;
@@ -15,32 +12,18 @@ class ResourceInfo;
 class Mesh : public Resource
 {
 public:
-    Mesh(std::string filename, ResourceInfo* resourceInfo);
+    static Mesh* Create();
+    static void Destroy(Mesh* mesh);
 
-    void    Render(Transform& transform, Material* material, bool wireframe = false);
-    void    Delete();
+    virtual ~Mesh() {}
 
-    float   GetBoundingRadius();
+    virtual void    Init(std::string filename, ResourceInfo* resourceInfo) = 0;
 
-    int     GetTriangleCount();
-    void    GetTriangle(int index, Vector3* triangle);
+    virtual void    Render(Transform& transform, Material* material, bool wireframe = false) = 0;
+    virtual void    Delete() = 0;
 
-private:
-    void    CalculateBoundingRadius(std::vector<Vector3>& vertices);
+    virtual float   GetBoundingRadius() = 0;
 
-    GLuint      m_vao;
-    GLuint      m_vboPosition;
-    GLuint      m_vboNormal;
-    GLuint      m_vboUV;
-    GLuint      m_ebo;
-
-    GLsizei     m_vertexCount;
-    GLsizei     m_indexedVertexCount;
-    bool        m_hasUVs;
-
-    std::vector<Vector3> m_positions;
-    std::vector<GLuint>  m_indices;
-
-    GLenum      m_drawMode;
-    float       m_boundingRadius;
+    virtual int     GetTriangleCount() = 0;
+    virtual void    GetTriangle(int index, Vector3* triangle) = 0;
 };

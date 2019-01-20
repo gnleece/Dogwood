@@ -239,10 +239,10 @@
     <ClCompile Include="Src\Rendering\Image.cpp" />
     <ClCompile Include="Src\Rendering\Light.cpp" />
     <ClCompile Include="Src\Rendering\Material.cpp" />
-    <ClCompile Include="Src\Rendering\Mesh.cpp" />
     <ClCompile Include="Src\Rendering\MeshInstance.cpp" />
     <ClCompile Include="Src\Rendering\ModelLoading.cpp" />
     <ClCompile Include="Src\Rendering\OpenGL\GLRenderer.cpp" />
+    <ClCompile Include="Src\Rendering\OpenGL\Mesh.cpp" />
     <ClCompile Include="Src\Rendering\RenderManager.cpp" />
     <ClCompile Include="Src\Rendering\ShaderProgram.cpp" />
     <ClCompile Include="Src\Rendering\Texture.cpp" />

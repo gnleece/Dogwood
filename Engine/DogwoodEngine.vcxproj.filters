@@ -261,9 +261,6 @@
     <ClCompile Include="Src\Rendering\Material.cpp">
       <Filter>Source Files\Rendering</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Rendering\Mesh.cpp">
-      <Filter>Source Files\Rendering</Filter>
-    </ClCompile>
     <ClCompile Include="Src\Rendering\MeshInstance.cpp">
       <Filter>Source Files\Rendering</Filter>
     </ClCompile>
@@ -394,6 +391,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Src\Rendering\OpenGL\GLRenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rendering\OpenGL\Mesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
