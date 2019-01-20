@@ -1,27 +1,24 @@
 #pragma once
 
-#define GLEW_STATIC
-#include <GL/glew.h>
-
-#include <fstream>
-
 #include "Scene\Resource.h"
+#include <string>
 
 class ResourceInfo;
 
 class Texture : public Resource
 {
 public:
-    Texture(std::string filename, ResourceInfo* resourceInfo);
-
-    void BindTexture();
-    void FreeTexture();
-
+    static Texture* Create();
+    static void     Destroy(Texture* texture);
     static Texture* DefaultTexture();
 
-private:
-    GLuint          m_id;
-    std::string     m_filename;
+    virtual         ~Texture() {}
 
-    static Texture* m_defaultTexture;
+    virtual void    Init(std::string filename, ResourceInfo* resourceInfo) = 0;
+
+    virtual void    BindTexture() = 0;
+    virtual void    FreeTexture() = 0;
+
+private:
+    static Texture* m_defaultTexture;       // TODO this shouldn't live here
 };

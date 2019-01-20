@@ -243,9 +243,9 @@
     <ClCompile Include="Src\Rendering\ModelLoading.cpp" />
     <ClCompile Include="Src\Rendering\OpenGL\GLRenderer.cpp" />
     <ClCompile Include="Src\Rendering\OpenGL\Mesh.cpp" />
+    <ClCompile Include="Src\Rendering\OpenGL\Texture.cpp" />
     <ClCompile Include="Src\Rendering\RenderManager.cpp" />
     <ClCompile Include="Src\Rendering\ShaderProgram.cpp" />
-    <ClCompile Include="Src\Rendering\Texture.cpp" />
     <ClCompile Include="Src\Rendering\Vertex.cpp" />
     <ClCompile Include="Src\Scene\ResourceManager.cpp" />
     <ClCompile Include="Src\Scene\Scene.cpp" />

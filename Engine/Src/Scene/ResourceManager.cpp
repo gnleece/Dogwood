@@ -23,7 +23,8 @@ struct TextureResourceInfo : ResourceInfo
     virtual Resource* Load()
     {
         string absolutePath = ResourceManager::Singleton().GetResourceBasePath() + path;
-        Texture* texture = new Texture(absolutePath, this);
+        Texture* texture = Texture::Create();
+        texture->Init(absolutePath, this);
         return texture;
     }
 
