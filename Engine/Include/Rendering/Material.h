@@ -2,59 +2,38 @@
 
 #include "Math\Transform.h"
 #include "Color.h"
-#include "GameComponent.h"
-#include "ShaderProgram.h"
 
+#include <string>
 #include <unordered_map>
 
-#define GLEW_STATIC
-#include <GL/glew.h>
-
-#define GLFW_INCLUDE_GLU
-#include <GLFW/glfw3.h>
-
+using std::string;
 using std::unordered_map;
 using std::vector;
 
 class MeshInstance;
+class ShaderProgram;
 class Texture;
 
 class Material
 {
 public:
-    void            SetMesh(MeshInstance* mesh);
-    void            SetShader(ShaderProgram* shader);
-    void            SetColor(GLint paramID, ColorRGB color);
-    void            SetColor(string paramName, ColorRGB color);
-    void            SetTexture(GLint paramID, Texture* texture);
-    void            SetTexture(string paramName, Texture* texture);
+    static Material* Create();
+    static void Destroy(Material* material);
 
-    MeshInstance*   GetMesh();
-    ShaderProgram*  GetShader();
-    ColorRGB        GetColor(GLint paramID);
-    ColorRGB        GetColor(string paramName);
-    Texture*        GetTexture(GLint paramID);
-    Texture*        GetTexture(string paramName);
-    unordered_map<GLint, ColorRGB>& GetColorList();
-    unordered_map<GLint, Texture*>&  GetTextureList();
+    virtual ~Material() {}
 
-    void            ApplyMaterial(Transform& transform, GLint posVBO, GLint normVBO, GLint uvVBO, bool useUVs);
-    void            UnapplyMaterial();
+    virtual void    SetMesh(MeshInstance* mesh) = 0;
+    virtual void    SetShader(ShaderProgram* shader) = 0;
+    virtual void    SetColor(string paramName, ColorRGB color) = 0;
+    virtual void    SetTexture(string paramName, Texture* texture) = 0;
 
-    Material*       DeepCopy();
+    virtual MeshInstance*   GetMesh() = 0;
+    virtual ShaderProgram*  GetShader() = 0;
+    virtual ColorRGB        GetColor(string paramName) = 0;
+    virtual Texture*        GetTexture(string paramName) = 0;
 
-private:
-    void            SetUniformParam(GLint paramID, ColorRGB& color);
-    void            SetAttribParam(GLint paramID, GLint buffer, int size);
-    void            DisableAttribArray(GLint paramID);
+    virtual Material*       DeepCopy() = 0;
 
-    MeshInstance*                   m_mesh;
-    ShaderProgram*                  m_shader;
-    unordered_map<GLint, ColorRGB>  m_colors;
-    unordered_map<GLint, Texture*>  m_textures;
-
-    GLint                           m_positionParamID;
-    GLint                           m_normalParamID;
-    GLint                           m_uvParamID;
-    GLint                           m_modelID;
+    virtual unordered_map<string, ColorRGB>& GetColors() = 0;
+    virtual unordered_map<string, Texture*>& GetTextures() = 0;
 };

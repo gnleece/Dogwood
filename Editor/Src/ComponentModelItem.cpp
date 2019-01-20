@@ -433,24 +433,22 @@ void ComponentModelShaderItem::Refresh()
     m_isHeader = false;
 
     // Colors
-    unordered_map<GLint, ColorRGB> colorList = m_material->GetColorList();
-    unordered_map<GLint, ColorRGB>::iterator colorIter = colorList.begin();
+    unordered_map<string, ColorRGB> colorList = m_material->GetColors();
+    unordered_map<string, ColorRGB>::iterator colorIter = colorList.begin();
     for (; colorIter != colorList.end(); colorIter++)
     {
-        int colorID = colorIter->first;
-        string colorName = m_material->GetShader()->GetUniformName(colorID);
-        ComponentModelColorItem* colorItem = new ComponentModelColorItem(colorName, m_material, colorID);
+        string colorName = colorIter->first;
+        ComponentModelColorItem* colorItem = new ComponentModelColorItem(colorName, m_material);
         AddChild(colorItem);
     }
 
     // Textures
-    unordered_map<GLint, Texture*> textureList = m_material->GetTextureList();
-    unordered_map<GLint, Texture*>::iterator texIter = textureList.begin();
+    unordered_map<string, Texture*> textureList = m_material->GetTextures();
+    unordered_map<string, Texture*>::iterator texIter = textureList.begin();
     for (; texIter != textureList.end(); texIter++)
     {
-        int textureID = texIter->first;
-        string textureName = m_material->GetShader()->GetUniformName(textureID);
-        ComponentModelTextureItem* textureItem = new ComponentModelTextureItem(textureName, m_material, textureID);
+        string textureName = texIter->first;
+        ComponentModelTextureItem* textureItem = new ComponentModelTextureItem(textureName, m_material);
         AddChild(textureItem);
     }
 }
@@ -502,8 +500,8 @@ bool ComponentModelShaderItem::DropData(const QMimeData* data)
 
 //--------------------------------------------------------------------------------
 
-ComponentModelTextureItem::ComponentModelTextureItem(string name, Material* material, int paramID)
-    : ComponentModelItem(name), m_material(material), m_paramID(paramID)
+ComponentModelTextureItem::ComponentModelTextureItem(string name, Material* material)
+    : ComponentModelItem(name), m_material(material), m_name(name)
 {
     m_isHeader = false;
 }
@@ -517,10 +515,10 @@ QVariant ComponentModelTextureItem::GetValueData()
     }
     else
     {
-        Texture* texture = m_material->GetTexture(m_paramID);
-        if (texture != Texture::DefaultTexture())
+        Texture* texture = m_material->GetTexture(m_name);
+        if (texture != NULL && texture != Texture::DefaultTexture())
         {
-            ResourceInfo* info = m_material->GetTexture(m_paramID)->GetResourceInfo();
+            ResourceInfo* info = texture->GetResourceInfo();
             str = GetFriendlyAssetNameFromPath(info->path) + " (" + std::to_string(info->guid) + ")";
         }
         else
@@ -535,10 +533,10 @@ QVariant ComponentModelTextureItem::GetTooltip(ColumnType /*columnType*/)
 {
     if (!m_isHeader)
     {
-        Texture* texture = m_material->GetTexture(m_paramID);
-        if (texture != Texture::DefaultTexture())
+        Texture* texture = m_material->GetTexture(m_name);
+        if (texture != NULL && texture != Texture::DefaultTexture())
         {
-            ResourceInfo* info = m_material->GetTexture(m_paramID)->GetResourceInfo();
+            ResourceInfo* info = texture->GetResourceInfo();
             return QVariant(info->path.c_str());
         }
     }
@@ -559,7 +557,7 @@ bool ComponentModelTextureItem::DropData(const QMimeData* data)
         if (strcmp(info->TypeName().c_str(), "Texture") == 0)       // TODO use type enum to avoid strcmp
         {
             Texture* texture = ResourceManager::Singleton().GetTexture(info->guid);
-            m_material->SetTexture(m_paramID, texture);
+            m_material->SetTexture(m_name, texture);
             return true;
         }
     }
@@ -568,8 +566,8 @@ bool ComponentModelTextureItem::DropData(const QMimeData* data)
 
 //--------------------------------------------------------------------------------
 
-ComponentModelColorItem::ComponentModelColorItem(string name, Material* material, int paramID)
-    : ComponentModelItem(name), m_material(material), m_paramID(paramID)
+ComponentModelColorItem::ComponentModelColorItem(string name, Material* material)
+    : ComponentModelItem(name), m_material(material), m_name(name)
 {
     m_isHeader = false;
 }
@@ -592,7 +590,7 @@ QVariant ComponentModelColorItem::GetBackgroundData(ColumnType columnType)
         return QVariant();
         break;
     case ComponentModelItem::VALUE_COLUMN:
-        ColorRGB c = m_material->GetColor(m_paramID);
+        ColorRGB c = m_material->GetColor(m_name);
         QColor qcolor(c.r * 255, c.g * 255, c.b * 255);
         return QBrush(qcolor);
         break;
@@ -614,13 +612,13 @@ bool ComponentModelColorItem::DropData(const QMimeData* /*data*/)
 void ComponentModelColorItem::OnDoubleClick(ColumnType /*columnType*/)
 {
     // Open a ColorDialog to let the user pick a color
-    ColorRGB oldColor = m_material->GetColor(m_paramID);
+    ColorRGB oldColor = m_material->GetColor(m_name);
     QColor newColor = QColorDialog::getColor(ColorRGBToQColor(oldColor));
 
     if (newColor.isValid())                             // color will be invalid if user hits "cancel" on dialog
     {
         // TODO set data using Editor Commands
-        m_material->SetColor(m_paramID, QColorToColorRGB(newColor));
+        m_material->SetColor(m_name, QColorToColorRGB(newColor));
     }
 }
 

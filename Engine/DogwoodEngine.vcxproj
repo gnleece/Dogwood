@@ -186,6 +186,7 @@
     <ClInclude Include="Include\Rendering\MeshInstance.h" />
     <ClInclude Include="Include\Rendering\ModelLoading.h" />
     <ClInclude Include="Include\Rendering\OpenGL\GLRenderer.h" />
+    <ClInclude Include="Include\Rendering\OpenGL\MaterialImpl.h" />
     <ClInclude Include="Include\Rendering\RenderManager.h" />
     <ClInclude Include="Include\Rendering\ShaderProgram.h" />
     <ClInclude Include="Include\Rendering\Texture.h" />
@@ -238,10 +239,10 @@
     <ClCompile Include="Src\Rendering\Color.cpp" />
     <ClCompile Include="Src\Rendering\Image.cpp" />
     <ClCompile Include="Src\Rendering\Light.cpp" />
-    <ClCompile Include="Src\Rendering\Material.cpp" />
     <ClCompile Include="Src\Rendering\MeshInstance.cpp" />
     <ClCompile Include="Src\Rendering\ModelLoading.cpp" />
     <ClCompile Include="Src\Rendering\OpenGL\GLRenderer.cpp" />
+    <ClCompile Include="Src\Rendering\OpenGL\Material.cpp" />
     <ClCompile Include="Src\Rendering\OpenGL\Mesh.cpp" />
     <ClCompile Include="Src\Rendering\OpenGL\Texture.cpp" />
     <ClCompile Include="Src\Rendering\RenderManager.cpp" />

@@ -2,8 +2,9 @@
 
 #include "Debugging\DebugDraw.h"
 #include "Rendering\Image.h"
-#include "Rendering\Material.h"
 #include "Rendering\ModelLoading.h"
+
+#include "Rendering\OpenGL\MaterialImpl.h"
 
 #define GLEW_STATIC
 #include <GL/glew.h>
@@ -106,20 +107,27 @@ void MeshImpl::Render(Transform& transform, Material* material, bool wireframe)
 {
     if (material)
     {
-        glBindVertexArray(m_vao);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
-
-        material->ApplyMaterial(transform, m_vboPosition, m_vboNormal, m_vboUV, m_hasUVs);
-        glDrawElements(m_drawMode, m_indexedVertexCount, GL_UNSIGNED_INT, 0);
-        material->UnapplyMaterial();
-
-        if (wireframe)
+        MaterialImpl* matImpl = (MaterialImpl*)material;
+        if (matImpl != NULL)
         {
-            Material* debugMat = DebugDraw::Singleton().GetDebugMaterial();
-            debugMat->SetColor("color", ColorRGB(0.7f, 0.7f, 0.7f));
-            debugMat->ApplyMaterial(transform, m_vboPosition, m_vboNormal, m_vboUV, m_hasUVs);
-            glDrawElements(GL_LINE_LOOP, m_indexedVertexCount, GL_UNSIGNED_INT, 0);
-            debugMat->UnapplyMaterial();
+            glBindVertexArray(m_vao);
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
+
+            matImpl->ApplyMaterial(transform, m_vboPosition, m_vboNormal, m_vboUV, m_hasUVs);
+            glDrawElements(m_drawMode, m_indexedVertexCount, GL_UNSIGNED_INT, 0);
+            matImpl->UnapplyMaterial();
+
+            if (wireframe)
+            {
+                MaterialImpl* debugMat = (MaterialImpl*)(DebugDraw::Singleton().GetDebugMaterial());
+                if (debugMat != NULL)
+                {
+                    debugMat->SetColor("color", ColorRGB(0.7f, 0.7f, 0.7f));
+                    debugMat->ApplyMaterial(transform, m_vboPosition, m_vboNormal, m_vboUV, m_hasUVs);
+                    glDrawElements(GL_LINE_LOOP, m_indexedVertexCount, GL_UNSIGNED_INT, 0);
+                    debugMat->UnapplyMaterial();
+                }
+            }
         }
     }
 }

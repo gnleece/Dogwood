@@ -277,8 +277,8 @@ void Scene::SaveMaterial(HierarchicalSerializer* serializer, ToolsideGameObject*
 
 void Scene::SaveMaterialColors(HierarchicalSerializer* serializer, Material* material)
 {
-    unordered_map<GLint, ColorRGB> colors = material->GetColorList();
-    unordered_map<GLint, ColorRGB>::iterator iter = colors.begin();
+    unordered_map<string, ColorRGB> colors = material->GetColors();
+    unordered_map<string, ColorRGB>::iterator iter = colors.begin();
 
     ShaderProgram* shader = material->GetShader();
 
@@ -286,8 +286,7 @@ void Scene::SaveMaterialColors(HierarchicalSerializer* serializer, Material* mat
     {
         serializer->PushScope("Color");
 
-        string paramName = shader->GetUniformName(iter->first);
-        serializer->SetAttribute("name", paramName.c_str());
+        serializer->SetAttribute("name", iter->first.c_str());
         serializer->SetAttributeColorRGB(iter->second);
 
         serializer->PopScope();
@@ -296,8 +295,8 @@ void Scene::SaveMaterialColors(HierarchicalSerializer* serializer, Material* mat
 
 void Scene::SaveMaterialTextures(HierarchicalSerializer* serializer, Material* material, unordered_set<unsigned int>& guids)
 {
-    unordered_map<GLint, Texture*> textures = material->GetTextureList();
-    unordered_map<GLint, Texture*>::iterator iter = textures.begin();
+    unordered_map<string, Texture*> textures = material->GetTextures();
+    unordered_map<string, Texture*>::iterator iter = textures.begin();
 
     ShaderProgram* shader = material->GetShader();
 
@@ -314,8 +313,7 @@ void Scene::SaveMaterialTextures(HierarchicalSerializer* serializer, Material* m
         serializer->SetAttribute("guid", guid);
         guids.insert(guid);
 
-        string paramName = shader->GetUniformName(iter->first);
-        serializer->SetAttribute("name", paramName.c_str());
+        serializer->SetAttribute("name", iter->first.c_str());
 
         serializer->PopScope();
     }

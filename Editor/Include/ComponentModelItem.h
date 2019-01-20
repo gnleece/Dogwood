@@ -139,7 +139,7 @@ private:
 class ComponentModelColorItem : public ComponentModelItem
 {
 public:
-    ComponentModelColorItem(string name, Material* material, int paramID);
+    ComponentModelColorItem(string name, Material* material);
 
     QVariant            GetValueData();
     QVariant            GetBackgroundData(ColumnType columnType);
@@ -149,13 +149,13 @@ public:
 
 private:
     Material*           m_material;
-    int                 m_paramID;
+    string              m_name;
 };
 
 class ComponentModelTextureItem : public ComponentModelItem
 {
 public:
-    ComponentModelTextureItem(string name, Material* material, int paramID);
+    ComponentModelTextureItem(string name, Material* material);
 
     QVariant            GetValueData();
     virtual QVariant    GetTooltip(ColumnType columnType);
@@ -164,7 +164,7 @@ public:
 
 private:
     Material*           m_material;
-    int                 m_paramID;
+    string              m_name;
 };
 
 class ComponentModelColliderItem : public ComponentModelItem

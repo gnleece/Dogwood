@@ -7,7 +7,7 @@
 
 MeshInstance::MeshInstance()
 {
-    m_material = new Material();
+    m_material = Material::Create();
     m_material->SetMesh(this);
 }
 

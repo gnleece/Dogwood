@@ -136,7 +136,7 @@ void DebugDraw::SetupDebugMat()
 {
     m_shader = RenderManager::Singleton().GetCommonShader(RenderManager::eCommonShader::SHADER_UNLIT_UNI_COLOR);
 
-    m_material = new Material();
+    m_material = Material::Create();
     m_material->SetShader(m_shader);
 }
 
