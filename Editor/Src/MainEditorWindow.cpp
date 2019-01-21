@@ -324,7 +324,7 @@ void MainEditorWindow::NewScene()
     // Open the new scene
     HierarchyModel* model = new HierarchyModel(m_scene->GetToolsideRootObject());
     SetHierarchyModel(model);
-    RenderManager::Singleton().SetRootObject(m_scene->GetRootObject());
+    RenderManager::Singleton()->SetRootObject(m_scene->GetRootObject());
     m_sceneViewWidget->SetScene(m_scene);
 }
 
@@ -346,7 +346,7 @@ void MainEditorWindow::OpenScene()
     {
         HierarchyModel* model = new HierarchyModel(m_scene->GetToolsideRootObject());
         SetHierarchyModel(model);
-        RenderManager::Singleton().SetRootObject(m_scene->GetRootObject());
+        RenderManager::Singleton()->SetRootObject(m_scene->GetRootObject());
         m_sceneViewWidget->SetScene(m_scene);
     }
     else
@@ -382,7 +382,7 @@ void MainEditorWindow::OpenTestProject()
     {
         HierarchyModel* model = new HierarchyModel(m_scene->GetToolsideRootObject());
         SetHierarchyModel(model);
-        RenderManager::Singleton().SetRootObject(m_scene->GetRootObject());
+        RenderManager::Singleton()->SetRootObject(m_scene->GetRootObject());
         m_sceneViewWidget->SetScene(m_scene);
     }
 

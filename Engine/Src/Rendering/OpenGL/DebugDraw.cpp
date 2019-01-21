@@ -1,11 +1,25 @@
-#include "Debugging\DebugDraw.h"
+#include "Rendering\OpenGL\DebugDrawImpl.h"
+#include "Rendering\OpenGL\MaterialImpl.h"
+#include "Rendering\OpenGL\RenderManagerImpl.h"
+#include "Rendering\OpenGL\ShaderProgramImpl.h"
 #include "Rendering\Material.h"
 #include "Rendering\RenderManager.h"
-#include "Rendering\ShaderProgram.h"
 
-void DebugDraw::Startup()
+DebugDraw* DebugDraw::Create()
 {
-    SetupDebugMat();
+    return new DebugDrawImpl();
+}
+
+void DebugDraw::Destroy(DebugDraw* debugDraw)
+{
+    delete debugDraw;
+}
+
+void DebugDrawImpl::Startup(RenderManagerImpl* renderManager)
+{
+    m_renderManager = renderManager;
+
+    SetupDebugMat(renderManager);
 
     // Debug lines
     glGenBuffers(1, &m_vertexBufferID);
@@ -15,12 +29,12 @@ void DebugDraw::Startup()
     glGenVertexArrays(1, &m_vertexArrayID);
     glBindVertexArray(m_vertexArrayID);
 
-    m_debugSphere.Init(1, 12);
-    m_debugCube.Init();
-    m_debugCapsule.Init(1, 2, 12, AXIS_Y);
+    m_debugSphere.Init(renderManager, 1, 12);
+    m_debugCube.Init(renderManager);
+    m_debugCapsule.Init(renderManager, 1, 2, 12, AXIS_Y);
 }
 
-void DebugDraw::Shutdown()
+void DebugDrawImpl::Shutdown()
 {
     glDeleteBuffers(1, &m_vertexBufferID);
     glDeleteBuffers(1, &m_ColorBufferID);
@@ -29,7 +43,7 @@ void DebugDraw::Shutdown()
     //TODO clean up material/shader
 }
 
-void DebugDraw::DrawLine(Vector3& a, Vector3& b, ColorRGB& Color)
+void DebugDrawImpl::DrawLine(Vector3& a, Vector3& b, ColorRGB& Color)
 {
     if (m_numLines < MAX_LINES_PER_FRAME)
     {
@@ -41,45 +55,45 @@ void DebugDraw::DrawLine(Vector3& a, Vector3& b, ColorRGB& Color)
     }
 }
 
-void DebugDraw::PrepareLineBuffer(Vector3* buffer, int count, GLuint& vao, GLuint &vbo)
-{
-    glGenVertexArrays(1, &vao);
-    glBindVertexArray(vao);
+//void DebugDraw::PrepareLineBuffer(Vector3* buffer, int count, GLuint& vao, GLuint &vbo)
+//{
+//    glGenVertexArrays(1, &vao);
+//    glBindVertexArray(vao);
+//
+//    glGenBuffers(1, &vbo);
+//    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+//    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*count * 3, buffer, GL_STATIC_DRAW);
+//}
+//
+//void DebugDraw::DrawLineBuffer(GLuint vao, GLuint vbo, Vector3* buffer, int count, ColorRGB color)
+//{
+//    // Bind arrays/buffers
+//    glBindVertexArray(vao);
+//    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+//
+//    // Set the shader
+//    m_shader->ApplyShader();
+//
+//    // Set uniform color value
+//    GLint paramLocation = m_shader->GetUniformLocation("color");
+//    glUniform3fv(paramLocation, 1, color.Start());
+//
+//    // Set model matrix to identity (debug lines are given in world coords)
+//    GLint uniModel = m_shader->GetUniformLocation("model");
+//    glUniformMatrix4fv(uniModel, 1, GL_FALSE, Matrix4x4::Identity.Transpose().Start());
+//
+//    // Bind position data
+//    paramLocation = m_shader->GetAttributeLocation("position");
+//    glEnableVertexAttribArray(paramLocation);
+//    glVertexAttribPointer(paramLocation, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
+//
+//    // Draw the lines!
+//    glDrawArrays(GL_LINES, 0, count);
+//
+//    glDisableVertexAttribArray(0);
+//}
 
-    glGenBuffers(1, &vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*count * 3, buffer, GL_STATIC_DRAW);
-}
-
-void DebugDraw::DrawLineBuffer(GLuint vao, GLuint vbo, Vector3* buffer, int count, ColorRGB color)
-{
-    // Bind arrays/buffers
-    glBindVertexArray(vao);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-
-    // Set the shader
-    m_shader->ApplyShader();
-
-    // Set uniform color value
-    GLint paramLocation = m_shader->GetUniformLocation("color");
-    glUniform3fv(paramLocation, 1, color.Start());
-
-    // Set model matrix to identity (debug lines are given in world coords)
-    GLint uniModel = m_shader->GetUniformLocation("model");
-    glUniformMatrix4fv(uniModel, 1, GL_FALSE, Matrix4x4::Identity.Transpose().Start());
-
-    // Bind position data
-    paramLocation = m_shader->GetAttributeLocation("position");
-    glEnableVertexAttribArray(paramLocation);
-    glVertexAttribPointer(paramLocation, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
-
-    // Draw the lines!
-    glDrawArrays(GL_LINES, 0, count);
-
-    glDisableVertexAttribArray(0);
-}
-
-void DebugDraw::RenderLines()
+void DebugDrawImpl::RenderLines()
 {
     m_shader->ApplyShader();
 
@@ -112,35 +126,35 @@ void DebugDraw::RenderLines()
     m_numLines = 0;
 }
 
-void DebugDraw::DrawSphere(Matrix4x4& transform, ColorRGB color, bool useDepth)
+void DebugDrawImpl::DrawSphere(Matrix4x4& transform, ColorRGB color, bool useDepth)
 {
     m_debugSphere.Draw(transform, color, useDepth);
 }
 
-void DebugDraw::DrawCube(Matrix4x4& transform, ColorRGB color, bool useDepth)
+void DebugDrawImpl::DrawCube(Matrix4x4& transform, ColorRGB color, bool useDepth)
 {
     m_debugCube.Draw(transform, color, useDepth);
 }
 
-void DebugDraw::DrawCapsule(Matrix4x4& transform, ColorRGB color, bool useDepth)
+void DebugDrawImpl::DrawCapsule(Matrix4x4& transform, ColorRGB color, bool useDepth)
 {
     m_debugCapsule.Draw(transform, color, useDepth);
 }
 
-Material* DebugDraw::GetDebugMaterial()
+MaterialImpl* DebugDrawImpl::GetDebugMaterial()
 {
     return m_material;
 }
 
-void DebugDraw::SetupDebugMat()
+void DebugDrawImpl::SetupDebugMat(RenderManagerImpl* renderManager)
 {
-    m_shader = RenderManager::Singleton().GetCommonShader(RenderManager::eCommonShader::SHADER_UNLIT_UNI_COLOR);
+    m_shader = renderManager->GetCommonShader(RenderManager::eCommonShader::SHADER_UNLIT_UNI_COLOR);
 
-    m_material = Material::Create();
+    m_material = MaterialImpl::Create();
     m_material->SetShader(m_shader);
 }
 
-void Gnomon::Init(float arrowBase, float arrowHeight)
+void Gnomon::Init(RenderManagerImpl* renderManager, float arrowBase, float arrowHeight)
 {
     // Unit lines along x, y, z axes
     m_positionBufferData[0] = Vector3::Zero;
@@ -171,13 +185,13 @@ void Gnomon::Init(float arrowBase, float arrowHeight)
     glBindVertexArray(m_vertexArrayID);
 
     // Init arrows
-    m_arrow.Init(arrowBase, arrowHeight);
+    m_arrow.Init(renderManager, arrowBase, arrowHeight);
     m_arrowTransforms[0] = Rotation(90, eAXIS::AXIS_Y)*Translation(Vector3(0, 0, 1));
     m_arrowTransforms[1] = Rotation(-90, eAXIS::AXIS_X)*Translation(Vector3(0, 0, 1));
     m_arrowTransforms[2] = Rotation(-90, eAXIS::AXIS_Z)*Translation(Vector3(0, 0, 1))*Rotation(-30, eAXIS::AXIS_Z);
 
     // Get shader
-    m_shader = RenderManager::Singleton().GetCommonShader(RenderManager::eCommonShader::SHADER_UNLIT);
+    m_shader = renderManager->GetCommonShader(RenderManager::eCommonShader::SHADER_UNLIT);
 }
 
 void Gnomon::Draw(Transform& transform)
@@ -229,7 +243,7 @@ Transform Gnomon::GetScaledTransform(Transform& transform)
 {
     // Scale the gnomon to be a (roughly) constant size in screen space
     Transform gnomonTransform(transform);
-    Vector3 cameraPosition = RenderManager::Singleton().GetCamera().GetPosition();
+    Vector3 cameraPosition = RenderManager::Singleton()->GetCamera().GetPosition();
     Vector3 gnomonPosition = gnomonTransform.GetWorldPosition();
     float distance = Vector3::Distance(cameraPosition, gnomonPosition);
     Vector3 normalizedScale = 0.1f * distance * Vector3::One;
@@ -273,7 +287,7 @@ void DebugPrimitive::Draw(Matrix4x4& transform, ColorRGB& color, bool useDepth)
     }
 }
 
-void DebugSphere::Init(float radius, int divisions)
+void DebugSphere::Init(RenderManagerImpl* renderManager, float radius, int divisions)
 {
     // Calculate vertex positions
     int numPoints = divisions*divisions + 1;
@@ -337,7 +351,7 @@ void DebugSphere::Init(float radius, int divisions)
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)*m_numIndices, m_indices, GL_STATIC_DRAW);
 
-    m_shader = RenderManager::Singleton().GetCommonShader(RenderManager::eCommonShader::SHADER_UNLIT_UNI_COLOR);
+    m_shader = renderManager->GetCommonShader(RenderManager::eCommonShader::SHADER_UNLIT_UNI_COLOR);
 }
 
 DebugSphere::~DebugSphere()
@@ -346,7 +360,7 @@ DebugSphere::~DebugSphere()
     delete[] m_indices;
 }
 
-void DebugCube::Init()
+void DebugCube::Init(RenderManagerImpl* renderManager)
 {
     // Calculate vertex positions
     int numPoints = 8;
@@ -392,7 +406,7 @@ void DebugCube::Init()
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)*m_numIndices, m_indices, GL_STATIC_DRAW);
 
-    m_shader = RenderManager::Singleton().GetCommonShader(RenderManager::eCommonShader::SHADER_UNLIT_UNI_COLOR);
+    m_shader = renderManager->GetCommonShader(RenderManager::eCommonShader::SHADER_UNLIT_UNI_COLOR);
 }
 
 DebugCube::~DebugCube()
@@ -401,7 +415,7 @@ DebugCube::~DebugCube()
     delete[] m_indices;
 }
 
-void DebugCapsule::Init(float radius, float height, int divisions, eAXIS axis)
+void DebugCapsule::Init(RenderManagerImpl* renderManager, float radius, float height, int divisions, eAXIS axis)
 {
     // The points always define the capsule along the y-axis, but we'll rotate them
     // in Draw() if the given axis is different
@@ -471,7 +485,7 @@ void DebugCapsule::Init(float radius, float height, int divisions, eAXIS axis)
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)*m_numIndices, m_indices, GL_STATIC_DRAW);
 
-    m_shader = RenderManager::Singleton().GetCommonShader(RenderManager::eCommonShader::SHADER_UNLIT_UNI_COLOR);
+    m_shader = renderManager->GetCommonShader(RenderManager::eCommonShader::SHADER_UNLIT_UNI_COLOR);
 }
 
 void DebugCapsule::Draw(Matrix4x4& transform, ColorRGB& color, bool useDepth)
@@ -494,7 +508,7 @@ DebugCapsule::~DebugCapsule()
     delete[] m_indices;
 }
 
-void Pyramid::Init(float base, float height)
+void Pyramid::Init(RenderManagerImpl* renderManager, float base, float height)
 {
     // Calculate vertex positions
     float x = 0.866f*base;      // 0.866 = cos30
@@ -523,7 +537,7 @@ void Pyramid::Init(float base, float height)
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(m_indices), m_indices, GL_STATIC_DRAW);
 
-    m_shader = RenderManager::Singleton().GetCommonShader(RenderManager::eCommonShader::SHADER_UNLIT_UNI_COLOR);
+    m_shader = renderManager->GetCommonShader(RenderManager::eCommonShader::SHADER_UNLIT_UNI_COLOR);
 }
 
 void Pyramid::Draw(Matrix4x4& transform, ColorRGB& color)

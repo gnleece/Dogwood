@@ -1,18 +1,31 @@
 #include "Rendering\ShaderProgram.h"
+#include "Rendering\OpenGL\ShaderProgramImpl.h"
 
+#include <fstream>
 #include <iostream>
 #include <sstream>
 
 #include "Rendering\RenderManager.h"
 
-ShaderProgram::ShaderProgram(string path, ResourceInfo* resourceInfo)
+ShaderProgram* ShaderProgram::Create()
 {
-    m_resourceInfo = resourceInfo;
-    Load(path);
+    return ShaderProgramImpl::Create();
 }
 
-void ShaderProgram::Load(string path)
+void ShaderProgram::Destroy(ShaderProgram* shader)
 {
+    delete shader;
+}
+
+ShaderProgramImpl* ShaderProgramImpl::Create()
+{
+    return new ShaderProgramImpl();
+}
+
+void ShaderProgramImpl::Init(string path, ResourceInfo* resourceInfo)
+{
+    m_resourceInfo = resourceInfo;
+
     //TODO check if already loaded and delete
     bool success = LoadShaderFromFile(path);
     if (success)
@@ -21,7 +34,7 @@ void ShaderProgram::Load(string path)
     }
 }
 
-void ShaderProgram::ApplyShader()
+void ShaderProgramImpl::ApplyShader()
 {
     // Enable shader program if not already active
     bool changedProgram = false;
@@ -33,18 +46,18 @@ void ShaderProgram::ApplyShader()
         changedProgram = true;
     }
 
-    if (changedProgram || RenderManager::Singleton().SettingsDirty())
+    if (changedProgram || RenderManager::Singleton()->SettingsDirty())
     {
-        RenderManager::Singleton().ApplyGlobalParams(this);
+        RenderManager::Singleton()->ApplyGlobalParams(this);
     }
 }
 
-GLuint ShaderProgram::GetID() const
+GLuint ShaderProgramImpl::GetID() const
 {
     return m_programID;
 }
 
-GLint ShaderProgram::GetUniformLocation(string param)
+GLint ShaderProgramImpl::GetUniformLocation(string param)
 {
     if (m_cachedUniformLocations.count(param) == 0)
     {
@@ -53,7 +66,7 @@ GLint ShaderProgram::GetUniformLocation(string param)
     return m_cachedUniformLocations[param];
 }
 
-GLint ShaderProgram::GetAttributeLocation(string param)
+GLint ShaderProgramImpl::GetAttributeLocation(string param)
 {
     if (m_cachedAttributeLocations.count(param) == 0)
     {
@@ -62,7 +75,7 @@ GLint ShaderProgram::GetAttributeLocation(string param)
     return m_cachedAttributeLocations[param];
 }
 
-string ShaderProgram::GetUniformName(GLint paramID)
+string ShaderProgramImpl::GetUniformName(GLint paramID)
 {
     // This lookup is slow, but should only be needed during scene serialization
     unordered_map<string, GLint>::iterator iter = m_cachedUniformLocations.begin();
@@ -76,7 +89,7 @@ string ShaderProgram::GetUniformName(GLint paramID)
     return "";
 }
 
-string ShaderProgram::GetAttributeName(GLint paramID)
+string ShaderProgramImpl::GetAttributeName(GLint paramID)
 {
     // This lookup is slow, but should only be needed during scene serialization
     unordered_map<string, GLint>::iterator iter = m_cachedAttributeLocations.begin();
@@ -90,7 +103,7 @@ string ShaderProgram::GetAttributeName(GLint paramID)
     return "";
 }
 
-void ShaderProgram::Delete()
+void ShaderProgramImpl::Delete()
 {
     glDeleteProgram(m_programID);
 
@@ -98,8 +111,7 @@ void ShaderProgram::Delete()
     glDeleteShader(m_fragmentID);
 }
 
-
-bool ShaderProgram::LoadShaderFromFile(string path)
+bool ShaderProgramImpl::LoadShaderFromFile(string path)
 {
     std::string shaderString;
     std::ifstream sourceFile(path.c_str());
@@ -147,7 +159,7 @@ bool ShaderProgram::LoadShaderFromFile(string path)
 }
 
 // from http://lazyfoo.net/tutorials/OpenGL/30_loading_text_file_shaders/index.php
-GLuint ShaderProgram::CompileShader(string source, string path, GLenum type)
+GLuint ShaderProgramImpl::CompileShader(string source, string path, GLenum type)
 {
     if (type == GL_VERTEX_SHADER)
     {
@@ -195,7 +207,7 @@ GLuint ShaderProgram::CompileShader(string source, string path, GLenum type)
     return shaderID;
 }
 
-void ShaderProgram::LinkProgram()
+void ShaderProgramImpl::LinkProgram()
 {
     m_programID = glCreateProgram();
     glAttachShader(m_programID, m_vertexID);
@@ -214,7 +226,7 @@ void ShaderProgram::LinkProgram()
     }
 }
 
-bool ShaderProgram::IsShaderTypeDelimiter(string line)
+bool ShaderProgramImpl::IsShaderTypeDelimiter(string line)
 {
     return (line.length() > 3 && line[0] == '/' && line[1] == '/' && line[2] == '-');
 }

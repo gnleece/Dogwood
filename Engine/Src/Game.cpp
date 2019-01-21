@@ -50,7 +50,7 @@ void Game::Init(string projectPath, GameComponentFactory* componentFactory)
     }
 
     // Rendering setup
-    RenderManager::Singleton().Startup(windowWidth, windowHeight);
+    RenderManager::Singleton()->Startup(windowWidth, windowHeight);
 
     // Input setup
     InputManager::Singleton().Startup(&m_gameWindow);
@@ -66,7 +66,7 @@ void Game::Run(Scene* scene)
     printf("\n=============== GAME RUN ===============\n");
 
     m_rootObject = scene->GetRuntimeRootObject();
-    RenderManager::Singleton().SetRootObject(m_rootObject);
+    RenderManager::Singleton()->SetRootObject(m_rootObject);
     
     // Frame time setup
     m_minFrameTime = 1 / (float)MAX_FPS;
@@ -100,7 +100,7 @@ void Game::Run(Scene* scene)
         }
 
         // Rendering update
-        RenderManager::Singleton().RenderScene();
+        RenderManager::Singleton()->RenderScene();
         m_gameWindow.SwapBuffers();
 
         UpdateTime();
@@ -118,7 +118,7 @@ void Game::Shutdown()
     GameProject::Singleton().Shutdown();
     ResourceManager::Singleton().Shutdown();
     InputManager::Singleton().Shutdown();
-    RenderManager::Singleton().Shutdown();
+    RenderManager::Singleton()->Shutdown();
 
     delete m_engineComponentFactory;
 

@@ -3,7 +3,7 @@
 #include "DebugLogger.h"
 #include "MainEditorWindow.h"
 #include "ToolsideGameObject.h"
-#include "Debugging\DebugDraw.h"
+//#include "Debugging\DebugDraw.h"  // TODO fix me - debug draw
 #include "Rendering\MeshInstance.h"
 #include "Rendering\RenderManager.h"
 #include "Scene\Scene.h"
@@ -44,7 +44,8 @@ void SceneViewWidget::PostSetup()
 
     m_gridColor = ColorRGB(0.5f, 0.5f, 0.5f);
 
-    DebugDraw::Singleton().PrepareLineBuffer(m_gridLinesVertexBuffer, GRID_BUFFER_SIZE, m_gridVAO, m_gridVBO);
+    // TODO fix me - debug draw
+    //DebugDraw::Singleton().PrepareLineBuffer(m_gridLinesVertexBuffer, GRID_BUFFER_SIZE, m_gridVAO, m_gridVBO);
     m_transformTool.Init(this);
 }
 
@@ -60,7 +61,8 @@ void SceneViewWidget::update()
 {
     GLWidget::update();
 
-    DebugDraw::Singleton().DrawLineBuffer(m_gridVAO, m_gridVBO, m_gridLinesVertexBuffer, GRID_BUFFER_SIZE, m_gridColor);
+    // TODO fix me - debug draw
+    //DebugDraw::Singleton().DrawLineBuffer(m_gridVAO, m_gridVBO, m_gridLinesVertexBuffer, GRID_BUFFER_SIZE, m_gridColor);
 
     ToolsideGameObject* selectedObject = m_window->GetSelectedObject();
     if (selectedObject)
@@ -216,8 +218,8 @@ void SceneViewWidget::TranslateCamera(Vector3& localSpaceOffset)
     Matrix4x4 cameraRotation = Rotation(m_cameraPitch, eAXIS::AXIS_X)*Rotation(m_cameraYaw, eAXIS::AXIS_Y);
     Vector3 offset = (Vector4(localSpaceOffset, 0)*cameraRotation).xyz();
 
-    Vector3 newCameraPosition = RenderManager::Singleton().GetCamera().GetPosition() + offset;
-    RenderManager::Singleton().GetCamera().GetCameraTransform().SetLocalPosition(newCameraPosition);
+    Vector3 newCameraPosition = RenderManager::Singleton()->GetCamera().GetPosition() + offset;
+    RenderManager::Singleton()->GetCamera().GetCameraTransform().SetLocalPosition(newCameraPosition);
 }
 
 void SceneViewWidget::RotateCamera(CameraRotationType type, float degrees)
@@ -234,8 +236,8 @@ void SceneViewWidget::RotateCamera(CameraRotationType type, float degrees)
     }
 
     Matrix4x4 view = Rotation(m_cameraPitch, eAXIS::AXIS_X)*Rotation(m_cameraYaw, eAXIS::AXIS_Y);
-    view = view*Translation(RenderManager::Singleton().GetCamera().GetPosition());
-    RenderManager::Singleton().GetCamera().SetViewTransform(Transform(view));
+    view = view*Translation(RenderManager::Singleton()->GetCamera().GetPosition());
+    RenderManager::Singleton()->GetCamera().SetViewTransform(Transform(view));
 }
 
 void SceneViewWidget::CenterCameraOnSelectedObject()
@@ -255,10 +257,10 @@ void SceneViewWidget::CenterCameraOnSelectedObject()
 
     // Position the camera so that the selected object is in the center of the view.
     Vector3 objectPosition = selectedObject->GetTransform().GetWorldPosition();
-    Vector3 cameraForward = RenderManager::Singleton().GetCamera().GetCameraTransform().GetForward();
+    Vector3 cameraForward = RenderManager::Singleton()->GetCamera().GetCameraTransform().GetForward();
     Vector3 newCameraPosition = objectPosition + distance*cameraForward;
 
-    RenderManager::Singleton().GetCamera().GetCameraTransform().SetLocalPosition(newCameraPosition);
+    RenderManager::Singleton()->GetCamera().GetCameraTransform().SetLocalPosition(newCameraPosition);
 
     // TODO this doesn't account for other objects that might be in the way in the line of sight
     // TODO lerp to new camera position instead of jumping instantly
@@ -286,8 +288,8 @@ void SceneViewWidget::HandleSelectionClick(const QPointF clickPosition)
     int screenY = clickPosition.y();
 
     // Normalized coords: x in [-1, 1], y in [-1, 1]
-    int width = RenderManager::Singleton().GetViewportWidth();
-    int height = RenderManager::Singleton().GetViewportHeight();
+    int width = RenderManager::Singleton()->GetViewportWidth();
+    int height = RenderManager::Singleton()->GetViewportHeight();
     float normalizedX = (2.0f * screenX) / width - 1.0f;
     float normalizedY = 1.0f - (2.0f * screenY) / height;
 
@@ -295,16 +297,16 @@ void SceneViewWidget::HandleSelectionClick(const QPointF clickPosition)
     Vector4 rayDirectionClipSpace = Vector4(normalizedX, normalizedY, -1.0, 1.0);
 
     // Ray direction: clip space -> camera space
-    Vector4 rayDirectionCameraSpace = RenderManager::Singleton().GetCamera().GetProjectionTransform().GetWorldMatrix().Inverse() * rayDirectionClipSpace;
+    Vector4 rayDirectionCameraSpace = RenderManager::Singleton()->GetCamera().GetProjectionTransform().GetWorldMatrix().Inverse() * rayDirectionClipSpace;
     rayDirectionCameraSpace[2] = -1;     // we only need to unproject x and y, not z and w
     rayDirectionCameraSpace[3] = 0;
 
     // Ray direction: camera space -> world space
-    Vector3 rayDirectionWorldSpace = (RenderManager::Singleton().GetCamera().GetCameraTransform() * rayDirectionCameraSpace).xyz();
+    Vector3 rayDirectionWorldSpace = (RenderManager::Singleton()->GetCamera().GetCameraTransform() * rayDirectionCameraSpace).xyz();
     rayDirectionWorldSpace = rayDirectionWorldSpace.Normalized();
 
     // Ray origin: camera position (world space)
-    Vector3 rayOriginWorldSpace = RenderManager::Singleton().GetCamera().GetCameraTransform().GetWorldPosition();
+    Vector3 rayOriginWorldSpace = RenderManager::Singleton()->GetCamera().GetCameraTransform().GetWorldPosition();
 
     // First, check whether the click hit any of the tools
     bool hitTool = PickTool(clickPosition, rayOriginWorldSpace, rayDirectionWorldSpace);
@@ -336,7 +338,7 @@ bool SceneViewWidget::PickObject(Vector3& rayOrigin, Vector3& rayDirection)
     if (hitObject != NULL)
     {
         m_window->SelectObject((ToolsideGameObject*)hitObject);
-        bool isInView = RenderManager::Singleton().GetCamera().IsInView(hitObject->GetTransform().GetWorldPosition());
+        bool isInView = RenderManager::Singleton()->GetCamera().IsInView(hitObject->GetTransform().GetWorldPosition());
         if (!isInView)
         {
             CenterCameraOnSelectedObject();

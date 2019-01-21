@@ -1,6 +1,7 @@
 #include "Physics/Collider.h"
 
-#include "Debugging/DebugDraw.h"
+#include "Rendering/DebugDraw.h"
+#include "Rendering/RenderManager.h"
 #include "Math/Transformations.h"
 #include "Serialization/HierarchicalSerializer.h"
 #include "GameObjectBase.h"
@@ -150,7 +151,7 @@ void SphereCollider::DebugDraw(ColorRGB color, bool useDepth)
 {
     Matrix4x4 m = Translation(GetWorldPosition());
     m = m * UniformScaling(GetWorldspaceBoundingRadius());
-    DebugDraw::Singleton().DrawSphere(m, color, useDepth);
+    RenderManager::Singleton()->GetDebugDraw()->DrawSphere(m, color, useDepth);
 }
 
 float SphereCollider::GetLocalRadius()
@@ -214,7 +215,7 @@ Matrix3x3 BoxCollider::GetInertiaTensor(float mass)
 void BoxCollider::DebugDraw(ColorRGB color, bool useDepth)
 {
     Matrix4x4 m = m_transform.GetWorldMatrix() * Scaling(m_size);
-    DebugDraw::Singleton().DrawCube(m, color, useDepth);
+    RenderManager::Singleton()->GetDebugDraw()->DrawCube(m, color, useDepth);
 }
 
 Vector3 BoxCollider::GetLocalSize()
@@ -241,10 +242,11 @@ CapsuleCollider::CapsuleCollider(GameObjectBase* gameObject, float radius, float
 
 CapsuleCollider::~CapsuleCollider()
 {
-    if (m_debugCapsule != NULL)
-    {
-        delete m_debugCapsule;
-    }
+    // TODO fix me - debug draw
+    //if (m_debugCapsule != NULL)
+    //{
+    //    delete m_debugCapsule;
+    //}
 }
 
 void CapsuleCollider::Save(HierarchicalSerializer* serializer)
@@ -309,7 +311,9 @@ void CapsuleCollider::DebugDraw(ColorRGB color, bool useDepth)
 
     Matrix4x4 r = RotationEulerAngles(m_transform.GetWorldRotation());
     Matrix4x4 m = Translation(GetWorldPosition()) * r;
-    m_debugCapsule->Draw(m, color, useDepth);
+
+    // TODO fix me - debug draw
+    //RenderManager::Singleton()->GetDebugDraw()->Draw(m, color, useDepth);
 }
 
 float CapsuleCollider::GetLocalRadius()
@@ -376,6 +380,7 @@ void CapsuleCollider::RefreshDebugInfo()
     float worldRadius = CalculateWorldRadius();
     float worldHeight = CalculateWorldHeight();
 
-    m_debugCapsule = new DebugCapsule();
-    m_debugCapsule->Init(worldRadius, worldHeight, 10, m_axis);
+    // TODO fix me - debug draw
+    //m_debugCapsule = new DebugCapsule();
+    //m_debugCapsule->Init(worldRadius, worldHeight, 10, m_axis);
 }

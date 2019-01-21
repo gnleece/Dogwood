@@ -15,7 +15,7 @@ void TransformTool::Init(SceneViewWidget* parent)
     // Init gnomon
     m_arrowBase = 0.25f;
     m_arrowHeight = 0.5f;
-    m_gnomon.Init(m_arrowBase, m_arrowHeight);
+    //m_gnomon.Init(m_arrowBase, m_arrowHeight);
 
     // Calculate & store the transforms for each arrow on the gnomon
     float offset = m_arrowHeight / 2;
@@ -35,11 +35,11 @@ void TransformTool::Draw()
     {
         if (m_space == TOOL_SPACE_LOCAL)
         {
-            m_gnomon.Draw(*m_transform);
+            //m_gnomon.Draw(*m_transform);
         }
         else
         {
-            m_gnomon.Draw(UnrotatedTransform(m_transform));
+            //m_gnomon.Draw(UnrotatedTransform(m_transform));
         }
     }
 }
@@ -72,11 +72,11 @@ bool TransformTool::OnMouseDown(int screenX, int screenY, Vector3 rayOrigin, Vec
     Transform gnomonTransform;
     if (m_space == TOOL_SPACE_LOCAL)
     {
-        gnomonTransform = m_gnomon.GetScaledTransform(*m_transform);
+        //gnomonTransform = m_gnomon.GetScaledTransform(*m_transform);
     }
     else
     {
-        gnomonTransform = m_gnomon.GetScaledTransform(UnrotatedTransform(m_transform));
+        //gnomonTransform = m_gnomon.GetScaledTransform(UnrotatedTransform(m_transform));
     }
     float arrowRadius = m_arrowHeight/2;
 
@@ -101,8 +101,8 @@ bool TransformTool::OnMouseDown(int screenX, int screenY, Vector3 rayOrigin, Vec
         m_activeAxis = (eAXIS)arrowIndex;
 
         // Calculate the equation of the line for the active axis, in screen space
-        m_activeAxisPoint0 = RenderManager::Singleton().GetCamera().WorldToScreenSpace(gnomonTransform.GetWorldPosition());
-        m_activeAxisPoint1 = RenderManager::Singleton().GetCamera().WorldToScreenSpace(((gnomonTransform)*m_arrowTransforms[m_activeAxis]).GetWorldPosition());
+        m_activeAxisPoint0 = RenderManager::Singleton()->GetCamera().WorldToScreenSpace(gnomonTransform.GetWorldPosition());
+        m_activeAxisPoint1 = RenderManager::Singleton()->GetCamera().WorldToScreenSpace(((gnomonTransform)*m_arrowTransforms[m_activeAxis]).GetWorldPosition());
         m_vertical = true;
         if (m_activeAxisPoint1.x() - m_activeAxisPoint0.x() != 0)
         {

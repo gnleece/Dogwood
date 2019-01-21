@@ -396,7 +396,7 @@ void Scene::LoadGlobalSettings(HierarchicalDeserializer* deserializer)
         m_mainCamera.SetCameraPositionDirectionUp(position, direction, up);
         // TOOD save/load additional camera settings
 
-        RenderManager::Singleton().SetCamera(m_mainCamera);
+        RenderManager::Singleton()->SetCamera(m_mainCamera);
         deserializer->PopScope();
     }
     else
@@ -413,7 +413,7 @@ void Scene::LoadGlobalSettings(HierarchicalDeserializer* deserializer)
         //deserializer->ReadLeaf("Power", "value",    m_light.power);
         m_light.power = 5000;
 
-        RenderManager::Singleton().SetLight(m_light);
+        RenderManager::Singleton()->SetLight(m_light);
         deserializer->PopScope();
     }
     else

@@ -76,9 +76,6 @@
     <ClInclude Include="Include\Debugging\DebugCameraControls.h">
       <Filter>Header Files\Debugging</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Debugging\DebugDraw.h">
-      <Filter>Header Files\Debugging</Filter>
-    </ClInclude>
     <ClInclude Include="Include\Input\InputManager.h">
       <Filter>Header Files\Input</Filter>
     </ClInclude>
@@ -235,12 +232,21 @@
     <ClInclude Include="Include\Rendering\OpenGL\MaterialImpl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Include\Rendering\OpenGL\ShaderProgramImpl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Rendering\DebugDraw.h">
+      <Filter>Header Files\Debugging</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Rendering\OpenGL\DebugDrawImpl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Rendering\OpenGL\RenderManagerImpl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Debugging\DebugCameraControls.cpp">
-      <Filter>Source Files\Debugging</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Debugging\DebugDraw.cpp">
       <Filter>Source Files\Debugging</Filter>
     </ClCompile>
     <ClCompile Include="Src\Input\InputManager.cpp">
@@ -261,19 +267,10 @@
     <ClCompile Include="Src\Rendering\Light.cpp">
       <Filter>Source Files\Rendering</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Rendering\Material.cpp">
-      <Filter>Source Files\Rendering</Filter>
-    </ClCompile>
     <ClCompile Include="Src\Rendering\MeshInstance.cpp">
       <Filter>Source Files\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="Src\Rendering\ModelLoading.cpp">
-      <Filter>Source Files\Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Rendering\RenderManager.cpp">
-      <Filter>Source Files\Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Rendering\ShaderProgram.cpp">
       <Filter>Source Files\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="Src\Rendering\Vertex.cpp">
@@ -401,6 +398,15 @@
     </ClCompile>
     <ClCompile Include="Src\Rendering\OpenGL\Material.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rendering\OpenGL\ShaderProgram.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rendering\OpenGL\RenderManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rendering\OpenGL\DebugDraw.cpp">
+      <Filter>Source Files\Debugging</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

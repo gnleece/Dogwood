@@ -102,7 +102,8 @@ struct ShaderResourceInfo : ResourceInfo
     virtual Resource* Load()
     {
         string absolutePath = ResourceManager::Singleton().GetResourceBasePath() + path;
-        ShaderProgram* shader = new ShaderProgram(absolutePath, this);
+        ShaderProgram* shader = ShaderProgram::Create();
+        shader->Init(absolutePath, this);
         return shader;
     }
 

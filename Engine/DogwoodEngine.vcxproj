@@ -147,7 +147,7 @@
     <ClInclude Include="Include\Components\ParticleSystem.h" />
     <ClInclude Include="Include\Components\TestComponent.h" />
     <ClInclude Include="Include\Debugging\DebugCameraControls.h" />
-    <ClInclude Include="Include\Debugging\DebugDraw.h" />
+    <ClInclude Include="Include\Rendering\DebugDraw.h" />
     <ClInclude Include="Include\Debugging\DebugLog.h" />
     <ClInclude Include="Include\Game.h" />
     <ClInclude Include="Include\GameComponent.h" />
@@ -185,8 +185,11 @@
     <ClInclude Include="Include\Rendering\Mesh.h" />
     <ClInclude Include="Include\Rendering\MeshInstance.h" />
     <ClInclude Include="Include\Rendering\ModelLoading.h" />
+    <ClInclude Include="Include\Rendering\OpenGL\DebugDrawImpl.h" />
     <ClInclude Include="Include\Rendering\OpenGL\GLRenderer.h" />
     <ClInclude Include="Include\Rendering\OpenGL\MaterialImpl.h" />
+    <ClInclude Include="Include\Rendering\OpenGL\RenderManagerImpl.h" />
+    <ClInclude Include="Include\Rendering\OpenGL\ShaderProgramImpl.h" />
     <ClInclude Include="Include\Rendering\RenderManager.h" />
     <ClInclude Include="Include\Rendering\ShaderProgram.h" />
     <ClInclude Include="Include\Rendering\Texture.h" />
@@ -207,7 +210,7 @@
     <ClCompile Include="Src\Components\ParticleSystem.cpp" />
     <ClCompile Include="Src\Components\TestComponent.cpp" />
     <ClCompile Include="Src\Debugging\DebugCameraControls.cpp" />
-    <ClCompile Include="Src\Debugging\DebugDraw.cpp" />
+    <ClCompile Include="Src\Rendering\OpenGL\DebugDraw.cpp" />
     <ClCompile Include="Src\Debugging\DebugLog.cpp" />
     <ClCompile Include="Src\Game.cpp" />
     <ClCompile Include="Src\GameComponent.cpp" />
@@ -244,9 +247,9 @@
     <ClCompile Include="Src\Rendering\OpenGL\GLRenderer.cpp" />
     <ClCompile Include="Src\Rendering\OpenGL\Material.cpp" />
     <ClCompile Include="Src\Rendering\OpenGL\Mesh.cpp" />
+    <ClCompile Include="Src\Rendering\OpenGL\RenderManager.cpp" />
+    <ClCompile Include="Src\Rendering\OpenGL\ShaderProgram.cpp" />
     <ClCompile Include="Src\Rendering\OpenGL\Texture.cpp" />
-    <ClCompile Include="Src\Rendering\RenderManager.cpp" />
-    <ClCompile Include="Src\Rendering\ShaderProgram.cpp" />
     <ClCompile Include="Src\Rendering\Vertex.cpp" />
     <ClCompile Include="Src\Scene\ResourceManager.cpp" />
     <ClCompile Include="Src\Scene\Scene.cpp" />

@@ -1,5 +1,6 @@
 #include "Rendering\Material.h"
 #include "Rendering\OpenGL\MaterialImpl.h"
+#include "Rendering\OpenGL\ShaderProgramImpl.h"
 
 #include "Rendering\RenderManager.h"
 #include "Rendering\ShaderProgram.h"
@@ -7,12 +8,17 @@
 
 Material* Material::Create()
 {
-    return new MaterialImpl();
+    return MaterialImpl::Create();
 }
 
 void Material::Destroy(Material* material)
 {
     delete material;
+}
+
+MaterialImpl* MaterialImpl::Create()
+{
+    return new MaterialImpl();
 }
 
 void MaterialImpl::SetMesh(MeshInstance* mesh)
@@ -22,14 +28,25 @@ void MaterialImpl::SetMesh(MeshInstance* mesh)
 
 void MaterialImpl::SetShader(ShaderProgram* shader)
 {
-    m_shader = shader;
     m_colors.clear();
     m_textures.clear();
 
-    m_positionParamID = m_shader->GetAttributeLocation("position");
-    m_normalParamID = m_shader->GetAttributeLocation("normal");
-    m_uvParamID = m_shader->GetAttributeLocation("texcoord");
-    m_modelID = m_shader->GetUniformLocation("model");
+    if (shader != NULL)
+    {
+        m_shader = (ShaderProgramImpl*)shader;
+        if (m_shader != NULL)
+        {
+            m_positionParamID = m_shader->GetAttributeLocation("position");
+            m_normalParamID = m_shader->GetAttributeLocation("normal");
+            m_uvParamID = m_shader->GetAttributeLocation("texcoord");
+            m_modelID = m_shader->GetUniformLocation("model");
+        }
+    }
+    else
+    {
+        m_shader = NULL;
+    }
+
 }
 
 void MaterialImpl::SetColor(string paramName, ColorRGB color)

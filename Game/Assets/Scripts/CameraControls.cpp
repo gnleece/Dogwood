@@ -66,9 +66,9 @@ void CameraControls::ApplyCameraSettings(Transform& cameraTransform)
 {
     Vector3 cameraPosition = cameraTransform.GetWorldPosition();
     Vector3 cameraDirection = cameraTransform.GetForward();
-    RenderManager::Singleton().GetCamera().SetCameraPositionDirectionUp(cameraPosition, cameraDirection, Vector3::Up);
+    RenderManager::Singleton()->GetCamera().SetCameraPositionDirectionUp(cameraPosition, cameraDirection, Vector3::Up);
 
-    Transform renderCameraTransform = RenderManager::Singleton().GetCamera().GetCameraTransform();
+    Transform renderCameraTransform = RenderManager::Singleton()->GetCamera().GetCameraTransform();
 
     Vector3 newCameraPosition = renderCameraTransform.GetWorldPosition();
     Vector3 newCameraDirection = renderCameraTransform.GetForward();

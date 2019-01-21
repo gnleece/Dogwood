@@ -1,8 +1,9 @@
 #include "Rendering\Mesh.h"
 
-#include "Debugging\DebugDraw.h"
+#include "Rendering\OpenGL\DebugDrawImpl.h"
 #include "Rendering\Image.h"
 #include "Rendering\ModelLoading.h"
+#include "Rendering\RenderManager.h"
 
 #include "Rendering\OpenGL\MaterialImpl.h"
 
@@ -119,7 +120,7 @@ void MeshImpl::Render(Transform& transform, Material* material, bool wireframe)
 
             if (wireframe)
             {
-                MaterialImpl* debugMat = (MaterialImpl*)(DebugDraw::Singleton().GetDebugMaterial());
+                MaterialImpl* debugMat = ((DebugDrawImpl*)(RenderManager::Singleton()->GetDebugDraw()))->GetDebugMaterial();
                 if (debugMat != NULL)
                 {
                     debugMat->SetColor("color", ColorRGB(0.7f, 0.7f, 0.7f));

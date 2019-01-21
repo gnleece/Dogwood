@@ -2,7 +2,8 @@
 
 #include "GameObject.h"
 #include "GameObjectBase.h"
-#include "Debugging/DebugDraw.h"
+#include "Rendering/DebugDraw.h"
+#include "Rendering/RenderManager.h"
 #include "Math/Transformations.h"
 #include "Physics/Collider.h"
 #include "Util.h"
@@ -177,7 +178,7 @@ void CollisionEngine::DrawBoundingSpheres(BVHNode<BoundingSphere>* bvhNode, Colo
         float radius = bvhNode->GetVolume().Radius;
         Matrix4x4 sphereMatrix = Translation(position);
         sphereMatrix = sphereMatrix * UniformScaling(radius);
-        DebugDraw::Singleton().DrawSphere(sphereMatrix, color);
+        RenderManager::Singleton()->GetDebugDraw()->DrawSphere(sphereMatrix, color);
     }
     else
     {
