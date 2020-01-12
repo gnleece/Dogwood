@@ -55,6 +55,12 @@
     <Filter Include="Libraries">
       <UniqueIdentifier>{54a863f3-696b-42f4-a36b-371ea6356943}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Rendering\OpenGL">
+      <UniqueIdentifier>{e432896d-6c8a-4003-965e-100080374046}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Rendering\OpenGL">
+      <UniqueIdentifier>{81f957cc-e3ed-45e6-8cb3-3f9a74030393}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -220,29 +226,29 @@
     <ClInclude Include="Include\Physics\RigidBodyContact.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Debugging\DebugLog.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Include\Animation\Joint.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Rendering\OpenGL\GLRenderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Include\Rendering\OpenGL\MaterialImpl.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Rendering\OpenGL\ShaderProgramImpl.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Rendering\DebugDraw.h">
-      <Filter>Header Files\Debugging</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Rendering\OpenGL\DebugDrawImpl.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Rendering\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="Include\Rendering\OpenGL\RenderManagerImpl.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Rendering\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Rendering\OpenGL\ShaderProgramImpl.h">
+      <Filter>Header Files\Rendering\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Rendering\OpenGL\DebugDrawImpl.h">
+      <Filter>Header Files\Rendering\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Rendering\OpenGL\GLRenderer.h">
+      <Filter>Header Files\Rendering\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Rendering\DebugDraw.h">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Debugging\DebugLog.h">
+      <Filter>Header Files\Debugging</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -378,9 +384,6 @@
     <ClCompile Include="Src\Physics\RigidBodyContact.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Debugging\DebugLog.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Src\Rendering\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -388,24 +391,27 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Src\Rendering\OpenGL\GLRenderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Rendering\OpenGL\Mesh.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Rendering\OpenGL\Texture.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Rendering\OpenGL\Material.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Rendering\OpenGL\ShaderProgram.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Rendering\OpenGL\RenderManager.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Rendering\OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="Src\Rendering\OpenGL\DebugDraw.cpp">
+      <Filter>Source Files\Rendering\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rendering\OpenGL\Mesh.cpp">
+      <Filter>Source Files\Rendering\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rendering\OpenGL\ShaderProgram.cpp">
+      <Filter>Source Files\Rendering\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rendering\OpenGL\Texture.cpp">
+      <Filter>Source Files\Rendering\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rendering\OpenGL\RenderManager.cpp">
+      <Filter>Source Files\Rendering\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rendering\OpenGL\Material.cpp">
+      <Filter>Source Files\Rendering\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Debugging\DebugLog.cpp">
       <Filter>Source Files\Debugging</Filter>
     </ClCompile>
   </ItemGroup>
