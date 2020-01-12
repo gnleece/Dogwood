@@ -1,5 +1,7 @@
 #pragma once
 
+#ifdef GRAPHICS_GL
+
 #include "Testing/GraphicsAPI.h"
 #include "Testing/GL/GLGraphicsAPI.h"
 
@@ -10,3 +12,5 @@ public:
 
     virtual string GetGraphicsAPIName();
 };
+
+#endif

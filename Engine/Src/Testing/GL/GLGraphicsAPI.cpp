@@ -1,3 +1,5 @@
+#ifdef GRAPHICS_GL
+
 #include "Testing/GraphicsAPI.h"
 #include "Testing/GL/GLGraphicsAPI.h"
 
@@ -15,3 +17,5 @@ string GLGraphicsAPI::GetGraphicsAPIName()
 {
     return "OpenGL";
 }
+
+#endif

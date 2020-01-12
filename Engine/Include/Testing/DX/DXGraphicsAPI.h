@@ -1,5 +1,7 @@
 #pragma once
 
+#ifdef GRAPHICS_DX
+
 #include "Testing/GraphicsAPI.h"
 #include "Testing/DX/DXGraphicsAPI.h"
 
@@ -10,3 +12,5 @@ public:
 
     virtual string GetGraphicsAPIName();
 };
+
+#endif

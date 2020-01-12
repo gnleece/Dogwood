@@ -1,3 +1,5 @@
+#ifdef GRAPHICS_DX
+
 #include "Testing/GraphicsAPI.h"
 #include "Testing/DX/DXGraphicsAPI.h"
 
@@ -15,3 +17,5 @@ string DXGraphicsAPI::GetGraphicsAPIName()
 {
     return "DirectX";
 }
+
+#endif
