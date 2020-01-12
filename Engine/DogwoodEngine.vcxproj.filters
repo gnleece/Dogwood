@@ -73,6 +73,39 @@
     <Filter Include="Source Files\Window\GL">
       <UniqueIdentifier>{5a0c2689-7c59-4c9d-80cd-cb5c9259213f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Animation">
+      <UniqueIdentifier>{1e8bfadc-a7c9-4281-95f2-1620bec84e13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components">
+      <UniqueIdentifier>{35c8030f-6d1f-4ae2-8061-0d00e1f4d1d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Generated">
+      <UniqueIdentifier>{a4b5f77c-f3bc-4812-ae94-6fa9a813e579}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Physics">
+      <UniqueIdentifier>{c471c580-765c-4ed4-b878-f1783875a451}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Physics\Particles">
+      <UniqueIdentifier>{8ec1cf71-3256-4bfd-965e-f4d2bfd19b0b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Serialization">
+      <UniqueIdentifier>{d38e4ab3-ad55-4127-881f-2f25b4e55364}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Animation">
+      <UniqueIdentifier>{e57db192-e828-494d-afea-ce3c603e4eca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components">
+      <UniqueIdentifier>{67baa7d4-cfda-402a-8e16-177d4cb2c4f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Physics">
+      <UniqueIdentifier>{a36dacd7-616d-429b-a359-b675ed1d0dc0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Physics\Particles">
+      <UniqueIdentifier>{1393aad6-c658-456a-9c0c-144daa92f27d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Serialization">
+      <UniqueIdentifier>{1713ee44-6747-4e5b-abb3-b1071329a126}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -187,59 +220,8 @@
     <ClInclude Include="Include\GameObjectBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Physics\Collider.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Physics\BVHNode.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Physics\CollisionEngine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Physics\BoundingSphere.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Include\Rendering\Color.h">
       <Filter>Header Files\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Physics\CollisionDetection.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Math\MathUtil.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Components\ParticleSystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Components\TestComponent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Generated\EngineComponentBindings.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Physics\Particles\PhysicsParticle.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Physics\Particles\EffectParticle.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Serialization\HierarchicalSerializer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Physics\RigidBody.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Physics\ForceGenerator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Physics\PhysicsEngine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Physics\RigidBodyContact.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Animation\Joint.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Include\Rendering\DebugDraw.h">
       <Filter>Header Files\Rendering</Filter>
@@ -270,6 +252,57 @@
     </ClInclude>
     <ClInclude Include="Include\Window\GL\GLGameWindow.h">
       <Filter>Header Files\Window\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Animation\Joint.h">
+      <Filter>Header Files\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Components\ParticleSystem.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Components\TestComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Generated\EngineComponentBindings.h">
+      <Filter>Header Files\Generated</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Math\MathUtil.h">
+      <Filter>Header Files\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Physics\BoundingSphere.h">
+      <Filter>Header Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Physics\BVHNode.h">
+      <Filter>Header Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Physics\CollisionDetection.h">
+      <Filter>Header Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Physics\Collider.h">
+      <Filter>Header Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Physics\CollisionEngine.h">
+      <Filter>Header Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Physics\ForceGenerator.h">
+      <Filter>Header Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Physics\PhysicsEngine.h">
+      <Filter>Header Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Physics\RigidBody.h">
+      <Filter>Header Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Physics\RigidBodyContact.h">
+      <Filter>Header Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Physics\Particles\EffectParticle.h">
+      <Filter>Header Files\Physics\Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Physics\Particles\PhysicsParticle.h">
+      <Filter>Header Files\Physics\Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Serialization\HierarchicalSerializer.h">
+      <Filter>Header Files\Serialization</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -351,59 +384,8 @@
     <ClCompile Include="Src\GameObjectBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Physics\BVHNode.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Physics\CollisionEngine.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Physics\BoundingSphere.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Src\Rendering\Color.cpp">
       <Filter>Source Files\Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Physics\Collider.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Physics\CollisionDetection.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Math\MathUtil.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Components\ParticleSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Components\TestComponent.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Physics\Particles\PhysicsParticle.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Physics\Particles\EffectParticle.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Serialization\HierarchicalSerializer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Physics\RigidBody.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Physics\ForceGenerator.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Physics\PhysicsEngine.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Physics\RigidBodyContact.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Rendering\Camera.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Animation\Joint.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Src\Debugging\DebugLog.cpp">
       <Filter>Source Files\Debugging</Filter>
@@ -434,6 +416,57 @@
     </ClCompile>
     <ClCompile Include="Src\Window\GL\GLGameWindow.cpp">
       <Filter>Source Files\Window\GL</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Animation\Joint.cpp">
+      <Filter>Source Files\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Components\ParticleSystem.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Components\TestComponent.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Math\MathUtil.cpp">
+      <Filter>Source Files\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Physics\BoundingSphere.cpp">
+      <Filter>Source Files\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Physics\BVHNode.cpp">
+      <Filter>Source Files\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Physics\Collider.cpp">
+      <Filter>Source Files\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Physics\CollisionDetection.cpp">
+      <Filter>Source Files\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Physics\CollisionEngine.cpp">
+      <Filter>Source Files\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Physics\ForceGenerator.cpp">
+      <Filter>Source Files\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Physics\PhysicsEngine.cpp">
+      <Filter>Source Files\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Physics\RigidBody.cpp">
+      <Filter>Source Files\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Physics\RigidBodyContact.cpp">
+      <Filter>Source Files\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Physics\Particles\EffectParticle.cpp">
+      <Filter>Source Files\Physics\Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Physics\Particles\PhysicsParticle.cpp">
+      <Filter>Source Files\Physics\Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rendering\Camera.cpp">
+      <Filter>Source Files\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Serialization\HierarchicalSerializer.cpp">
+      <Filter>Source Files\Serialization</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
