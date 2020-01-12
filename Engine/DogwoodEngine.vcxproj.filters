@@ -106,6 +106,24 @@
     <Filter Include="Source Files\Serialization">
       <UniqueIdentifier>{1713ee44-6747-4e5b-abb3-b1071329a126}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Testing">
+      <UniqueIdentifier>{d5884769-2b56-45af-872a-603194bfab06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Testing\GL">
+      <UniqueIdentifier>{a8be6ce8-aa65-413c-a5eb-4f4ecc3bf443}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Testing\DX">
+      <UniqueIdentifier>{b888c9b5-c30f-47ec-8dcf-d92332d12595}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Testing">
+      <UniqueIdentifier>{d5807f45-b80e-4bfd-a3b5-6df46a69cf1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Testing\GL">
+      <UniqueIdentifier>{4100ec33-0226-40b2-9028-b0c5ada21e05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Testing\DX">
+      <UniqueIdentifier>{5fe8488b-9bda-4361-856d-7aff93a86e63}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -304,6 +322,15 @@
     <ClInclude Include="Include\Serialization\HierarchicalSerializer.h">
       <Filter>Header Files\Serialization</Filter>
     </ClInclude>
+    <ClInclude Include="Include\Testing\GraphicsAPI.h">
+      <Filter>Header Files\Testing</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Testing\GL\GLGraphicsAPI.h">
+      <Filter>Header Files\Testing\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Testing\DX\DXGraphicsAPI.h">
+      <Filter>Header Files\Testing\DX</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Debugging\DebugCameraControls.cpp">
@@ -467,6 +494,12 @@
     </ClCompile>
     <ClCompile Include="Src\Serialization\HierarchicalSerializer.cpp">
       <Filter>Source Files\Serialization</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Testing\GL\GLGraphicsAPI.cpp">
+      <Filter>Source Files\Testing\GL</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Testing\DX\DXGraphicsAPI.cpp">
+      <Filter>Source Files\Testing\DX</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

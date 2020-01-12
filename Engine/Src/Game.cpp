@@ -16,9 +16,14 @@
 #include "GameObject.h"
 #include "GameObjectManager.h"
 #include "GameProject.h"
+#include "Testing\GraphicsAPI.h"
 
 void Game::Init(string projectPath, GameComponentFactory* componentFactory)
 {
+    GraphicsAPI* graphicsAPI = GraphicsAPI::Create();
+    auto graphicsAPIName = graphicsAPI->GetGraphicsAPIName();
+    printf(graphicsAPIName.c_str());
+
     printf("=============== GAME INIT ===============\n");
 
     srand((unsigned int)time(NULL));

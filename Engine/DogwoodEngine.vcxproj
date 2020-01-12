@@ -200,6 +200,9 @@
     <ClInclude Include="Include\Scene\ResourceManager.h" />
     <ClInclude Include="Include\Scene\Scene.h" />
     <ClInclude Include="Include\Serialization\HierarchicalSerializer.h" />
+    <ClInclude Include="Include\Testing\DX\DXGraphicsAPI.h" />
+    <ClInclude Include="Include\Testing\GL\GLGraphicsAPI.h" />
+    <ClInclude Include="Include\Testing\GraphicsAPI.h" />
     <ClInclude Include="Include\ToolsideGameComponent.h" />
     <ClInclude Include="Include\ToolsideGameObject.h" />
     <ClInclude Include="Include\ToolsideShaderSchema.h" />
@@ -257,6 +260,8 @@
     <ClCompile Include="Src\Scene\ResourceManager.cpp" />
     <ClCompile Include="Src\Scene\Scene.cpp" />
     <ClCompile Include="Src\Serialization\HierarchicalSerializer.cpp" />
+    <ClCompile Include="Src\Testing\DX\DXGraphicsAPI.cpp" />
+    <ClCompile Include="Src\Testing\GL\GLGraphicsAPI.cpp" />
     <ClCompile Include="Src\ToolsideGameComponent.cpp" />
     <ClCompile Include="Src\ToolsideGameObject.cpp" />
     <ClCompile Include="Src\ToolsideShaderSchema.cpp" />
