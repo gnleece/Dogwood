@@ -8,14 +8,14 @@
 #define GLFW_INCLUDE_GLU
 #include <GLFW/glfw3.h>
 
-class ShaderProgramImpl;
+class GLShaderProgram;
 
-class MaterialImpl : public Material
+class GLMaterial : public Material
 {
 public:
     friend class Material;
 
-    static MaterialImpl* Create();
+    static GLMaterial* Create();
 
     virtual void    SetMesh(MeshInstance* mesh);
     virtual void    SetShader(ShaderProgram* shader);
@@ -41,7 +41,7 @@ private:
     void   DisableAttribArray(GLint paramID);
 
     MeshInstance*       m_mesh;
-    ShaderProgramImpl*  m_shader;
+    GLShaderProgram*  m_shader;
 
     unordered_map<string, ColorRGB>  m_colors;
     unordered_map<string, Texture*>  m_textures;

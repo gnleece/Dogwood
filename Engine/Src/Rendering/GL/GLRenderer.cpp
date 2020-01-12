@@ -1,12 +1,12 @@
-#include "Rendering/OpenGL/GLRenderer.h"
-#include "Rendering/OpenGL/ShaderProgramImpl.h"
+#include "Rendering/GL/GLRenderer.h"
+#include "Rendering/GL/GLShaderProgram.h"
 
 void GLRenderer::ApplyLight(Light& light, ShaderProgram* shader)
 {
     
     if (shader != NULL)
     {
-        ShaderProgramImpl* shaderImpl = (ShaderProgramImpl*)shader;
+        GLShaderProgram* shaderImpl = (GLShaderProgram*)shader;
         if (shaderImpl != NULL)
         {
             GLint uniPosition = shaderImpl->GetUniformLocation("lightPos");

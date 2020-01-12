@@ -147,8 +147,8 @@
     <ClInclude Include="Include\Components\ParticleSystem.h" />
     <ClInclude Include="Include\Components\TestComponent.h" />
     <ClInclude Include="Include\Debugging\DebugCameraControls.h" />
+    <ClInclude Include="Include\Input\GL\GLInputManager.h" />
     <ClInclude Include="Include\Input\Input.h" />
-    <ClInclude Include="Include\Input\OpenGL\InputManagerImpl.h" />
     <ClInclude Include="Include\Rendering\DebugDraw.h" />
     <ClInclude Include="Include\Debugging\DebugLog.h" />
     <ClInclude Include="Include\Game.h" />
@@ -181,17 +181,17 @@
     <ClInclude Include="Include\Physics\RigidBodyContact.h" />
     <ClInclude Include="Include\Rendering\Camera.h" />
     <ClInclude Include="Include\Rendering\Color.h" />
+    <ClInclude Include="Include\Rendering\GL\GLDebugDraw.h" />
+    <ClInclude Include="Include\Rendering\GL\GLMaterial.h" />
+    <ClInclude Include="Include\Rendering\GL\GLRenderer.h" />
+    <ClInclude Include="Include\Rendering\GL\GLRenderManager.h" />
+    <ClInclude Include="Include\Rendering\GL\GLShaderProgram.h" />
     <ClInclude Include="Include\Rendering\Image.h" />
     <ClInclude Include="Include\Rendering\Light.h" />
     <ClInclude Include="Include\Rendering\Material.h" />
     <ClInclude Include="Include\Rendering\Mesh.h" />
     <ClInclude Include="Include\Rendering\MeshInstance.h" />
     <ClInclude Include="Include\Rendering\ModelLoading.h" />
-    <ClInclude Include="Include\Rendering\OpenGL\DebugDrawImpl.h" />
-    <ClInclude Include="Include\Rendering\OpenGL\GLRenderer.h" />
-    <ClInclude Include="Include\Rendering\OpenGL\MaterialImpl.h" />
-    <ClInclude Include="Include\Rendering\OpenGL\RenderManagerImpl.h" />
-    <ClInclude Include="Include\Rendering\OpenGL\ShaderProgramImpl.h" />
     <ClInclude Include="Include\Rendering\RenderManager.h" />
     <ClInclude Include="Include\Rendering\ShaderProgram.h" />
     <ClInclude Include="Include\Rendering\Texture.h" />
@@ -205,7 +205,7 @@
     <ClInclude Include="Include\ToolsideShaderSchema.h" />
     <ClInclude Include="Include\Util.h" />
     <ClInclude Include="Include\Window\GameWindow.h" />
-    <ClInclude Include="Include\Window\OpenGL\GameWindowImpl.h" />
+    <ClInclude Include="Include\Window\GL\GLGameWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Libraries\tinyxml2\tinyxml2.cpp" />
@@ -213,8 +213,7 @@
     <ClCompile Include="Src\Components\ParticleSystem.cpp" />
     <ClCompile Include="Src\Components\TestComponent.cpp" />
     <ClCompile Include="Src\Debugging\DebugCameraControls.cpp" />
-    <ClCompile Include="Src\Input\OpenGL\InputManager.cpp" />
-    <ClCompile Include="Src\Rendering\OpenGL\DebugDraw.cpp" />
+    <ClCompile Include="Src\Input\GL\GLInputManager.cpp" />
     <ClCompile Include="Src\Debugging\DebugLog.cpp" />
     <ClCompile Include="Src\Game.cpp" />
     <ClCompile Include="Src\GameComponent.cpp" />
@@ -243,16 +242,17 @@
     <ClCompile Include="Src\Physics\RigidBodyContact.cpp" />
     <ClCompile Include="Src\Rendering\Camera.cpp" />
     <ClCompile Include="Src\Rendering\Color.cpp" />
+    <ClCompile Include="Src\Rendering\GL\GLDebugDraw.cpp" />
+    <ClCompile Include="Src\Rendering\GL\GLMaterial.cpp" />
+    <ClCompile Include="Src\Rendering\GL\GLMesh.cpp" />
+    <ClCompile Include="Src\Rendering\GL\GLRenderer.cpp" />
+    <ClCompile Include="Src\Rendering\GL\GLRenderManager.cpp" />
+    <ClCompile Include="Src\Rendering\GL\GLShaderProgram.cpp" />
+    <ClCompile Include="Src\Rendering\GL\GLTexture.cpp" />
     <ClCompile Include="Src\Rendering\Image.cpp" />
     <ClCompile Include="Src\Rendering\Light.cpp" />
     <ClCompile Include="Src\Rendering\MeshInstance.cpp" />
     <ClCompile Include="Src\Rendering\ModelLoading.cpp" />
-    <ClCompile Include="Src\Rendering\OpenGL\GLRenderer.cpp" />
-    <ClCompile Include="Src\Rendering\OpenGL\Material.cpp" />
-    <ClCompile Include="Src\Rendering\OpenGL\Mesh.cpp" />
-    <ClCompile Include="Src\Rendering\OpenGL\RenderManager.cpp" />
-    <ClCompile Include="Src\Rendering\OpenGL\ShaderProgram.cpp" />
-    <ClCompile Include="Src\Rendering\OpenGL\Texture.cpp" />
     <ClCompile Include="Src\Rendering\Vertex.cpp" />
     <ClCompile Include="Src\Scene\ResourceManager.cpp" />
     <ClCompile Include="Src\Scene\Scene.cpp" />
@@ -261,7 +261,7 @@
     <ClCompile Include="Src\ToolsideGameObject.cpp" />
     <ClCompile Include="Src\ToolsideShaderSchema.cpp" />
     <ClCompile Include="Src\Util.cpp" />
-    <ClCompile Include="Src\Window\OpenGL\GameWindow.cpp" />
+    <ClCompile Include="Src\Window\GL\GLGameWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Src\Shaders\Unlit.frag.glsl" />

@@ -1,13 +1,13 @@
-#include "Rendering\OpenGL\DebugDrawImpl.h"
-#include "Rendering\OpenGL\MaterialImpl.h"
-#include "Rendering\OpenGL\RenderManagerImpl.h"
-#include "Rendering\OpenGL\ShaderProgramImpl.h"
-#include "Rendering\Material.h"
-#include "Rendering\RenderManager.h"
+#include "Rendering/GL/GLDebugDraw.h"
+#include "Rendering/GL/GLMaterial.h"
+#include "Rendering/GL/GLRenderManager.h"
+#include "Rendering/GL/GLShaderProgram.h"
+#include "Rendering/Material.h"
+#include "Rendering/RenderManager.h"
 
 DebugDraw* DebugDraw::Create()
 {
-    return new DebugDrawImpl();
+    return new GLDebugDraw();
 }
 
 void DebugDraw::Destroy(DebugDraw* debugDraw)
@@ -15,7 +15,7 @@ void DebugDraw::Destroy(DebugDraw* debugDraw)
     delete debugDraw;
 }
 
-void DebugDrawImpl::Startup(RenderManagerImpl* renderManager)
+void GLDebugDraw::Startup(GLRenderManager* renderManager)
 {
     m_renderManager = renderManager;
 
@@ -34,7 +34,7 @@ void DebugDrawImpl::Startup(RenderManagerImpl* renderManager)
     m_debugCapsule.Init(renderManager, 1, 2, 12, AXIS_Y);
 }
 
-void DebugDrawImpl::Shutdown()
+void GLDebugDraw::Shutdown()
 {
     glDeleteBuffers(1, &m_vertexBufferID);
     glDeleteBuffers(1, &m_ColorBufferID);
@@ -43,7 +43,7 @@ void DebugDrawImpl::Shutdown()
     //TODO clean up material/shader
 }
 
-void DebugDrawImpl::DrawLine(Vector3& a, Vector3& b, ColorRGB& Color)
+void GLDebugDraw::DrawLine(Vector3& a, Vector3& b, ColorRGB& Color)
 {
     if (m_numLines < MAX_LINES_PER_FRAME)
     {
@@ -93,7 +93,7 @@ void DebugDrawImpl::DrawLine(Vector3& a, Vector3& b, ColorRGB& Color)
 //    glDisableVertexAttribArray(0);
 //}
 
-void DebugDrawImpl::RenderLines()
+void GLDebugDraw::RenderLines()
 {
     m_shader->ApplyShader();
 
@@ -126,35 +126,35 @@ void DebugDrawImpl::RenderLines()
     m_numLines = 0;
 }
 
-void DebugDrawImpl::DrawSphere(Matrix4x4& transform, ColorRGB color, bool useDepth)
+void GLDebugDraw::DrawSphere(Matrix4x4& transform, ColorRGB color, bool useDepth)
 {
     m_debugSphere.Draw(transform, color, useDepth);
 }
 
-void DebugDrawImpl::DrawCube(Matrix4x4& transform, ColorRGB color, bool useDepth)
+void GLDebugDraw::DrawCube(Matrix4x4& transform, ColorRGB color, bool useDepth)
 {
     m_debugCube.Draw(transform, color, useDepth);
 }
 
-void DebugDrawImpl::DrawCapsule(Matrix4x4& transform, ColorRGB color, bool useDepth)
+void GLDebugDraw::DrawCapsule(Matrix4x4& transform, ColorRGB color, bool useDepth)
 {
     m_debugCapsule.Draw(transform, color, useDepth);
 }
 
-MaterialImpl* DebugDrawImpl::GetDebugMaterial()
+GLMaterial* GLDebugDraw::GetDebugMaterial()
 {
     return m_material;
 }
 
-void DebugDrawImpl::SetupDebugMat(RenderManagerImpl* renderManager)
+void GLDebugDraw::SetupDebugMat(GLRenderManager* renderManager)
 {
     m_shader = renderManager->GetCommonShader(RenderManager::eCommonShader::SHADER_UNLIT_UNI_COLOR);
 
-    m_material = MaterialImpl::Create();
+    m_material = GLMaterial::Create();
     m_material->SetShader(m_shader);
 }
 
-void Gnomon::Init(RenderManagerImpl* renderManager, float arrowBase, float arrowHeight)
+void Gnomon::Init(GLRenderManager* renderManager, float arrowBase, float arrowHeight)
 {
     // Unit lines along x, y, z axes
     m_positionBufferData[0] = Vector3::Zero;
@@ -287,7 +287,7 @@ void DebugPrimitive::Draw(Matrix4x4& transform, ColorRGB& color, bool useDepth)
     }
 }
 
-void DebugSphere::Init(RenderManagerImpl* renderManager, float radius, int divisions)
+void DebugSphere::Init(GLRenderManager* renderManager, float radius, int divisions)
 {
     // Calculate vertex positions
     int numPoints = divisions*divisions + 1;
@@ -360,7 +360,7 @@ DebugSphere::~DebugSphere()
     delete[] m_indices;
 }
 
-void DebugCube::Init(RenderManagerImpl* renderManager)
+void DebugCube::Init(GLRenderManager* renderManager)
 {
     // Calculate vertex positions
     int numPoints = 8;
@@ -415,7 +415,7 @@ DebugCube::~DebugCube()
     delete[] m_indices;
 }
 
-void DebugCapsule::Init(RenderManagerImpl* renderManager, float radius, float height, int divisions, eAXIS axis)
+void DebugCapsule::Init(GLRenderManager* renderManager, float radius, float height, int divisions, eAXIS axis)
 {
     // The points always define the capsule along the y-axis, but we'll rotate them
     // in Draw() if the given axis is different
@@ -508,7 +508,7 @@ DebugCapsule::~DebugCapsule()
     delete[] m_indices;
 }
 
-void Pyramid::Init(RenderManagerImpl* renderManager, float base, float height)
+void Pyramid::Init(GLRenderManager* renderManager, float base, float height)
 {
     // Calculate vertex positions
     float x = 0.866f*base;      // 0.866 = cos30

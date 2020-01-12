@@ -4,7 +4,7 @@
 
 class DebugDraw;
 
-class RenderManagerImpl : public RenderManager
+class GLRenderManager : public RenderManager
 {
 public:
     friend class RenderManager;
@@ -29,7 +29,7 @@ public:
 
     virtual DebugDraw* GetDebugDraw();
 
-    ShaderProgramImpl* GetCommonShader(eCommonShader name);
+    GLShaderProgram* GetCommonShader(eCommonShader name);
 
 private:
 
@@ -45,7 +45,7 @@ private:
 
     bool            m_dirty;
 
-    ShaderProgramImpl*  m_commonShaders[NUM_COMMON_SHADERS];
+    GLShaderProgram*  m_commonShaders[NUM_COMMON_SHADERS];
 
-    DebugDrawImpl*  m_debugDraw;
+    GLDebugDraw*  m_debugDraw;
 };

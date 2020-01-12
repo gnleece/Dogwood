@@ -1,15 +1,15 @@
-#include "Rendering/OpenGL/DebugDrawImpl.h"
-#include "Rendering/OpenGL/RenderManagerImpl.h"
-#include "Rendering/OpenGL/ShaderProgramImpl.h"
+#include "Rendering\GL\GLDebugDraw.h"
+#include "Rendering\GL\GLRenderManager.h"
+#include "Rendering\GL\GLShaderProgram.h"
 
 #include "GameObject.h"
 #include "Physics\CollisionEngine.h"
 
-#include "Rendering/OpenGL/GLRenderer.h"			// TODO [GL+DX] ifdef
+#include "Rendering\GL\GLRenderer.h"			// TODO [GL+DX] ifdef
 
 RenderManager* RenderManager::Create()
 {
-    return new RenderManagerImpl();
+    return new GLRenderManager();
 }
 
 void RenderManager::Destroy(RenderManager* renderManager)
@@ -17,7 +17,7 @@ void RenderManager::Destroy(RenderManager* renderManager)
     delete renderManager;
 }
 
-void RenderManagerImpl::Startup(int viewportWidth, int viewportHeight)
+void GLRenderManager::Startup(int viewportWidth, int viewportHeight)
 {
     m_dirty = true;
     m_rootObject = NULL;
@@ -43,42 +43,42 @@ void RenderManagerImpl::Startup(int viewportWidth, int viewportHeight)
     LoadCommonShaders();
 
     // Dependent manager setup
-    m_debugDraw = (DebugDrawImpl*)DebugDraw::Create();
+    m_debugDraw = (GLDebugDraw*)DebugDraw::Create();
     m_debugDraw->Startup(this);
 }
 
-void RenderManagerImpl::Shutdown()
+void GLRenderManager::Shutdown()
 {
     m_debugDraw->Shutdown();
     DebugDraw::Destroy(m_debugDraw);
     delete m_platSpecificRenderer;
 }
 
-void RenderManagerImpl::SetRootObject(GameObjectBase* rootObject)
+void GLRenderManager::SetRootObject(GameObjectBase* rootObject)
 {
     m_rootObject = rootObject;
     m_dirty = true;
 }
 
-void RenderManagerImpl::SetLight(Light light)
+void GLRenderManager::SetLight(Light light)
 {
     m_light = light;
     m_dirty = true;
 }
 
-Camera& RenderManagerImpl::GetCamera()
+Camera& GLRenderManager::GetCamera()
 {
     return m_camera;
 }
 
-void RenderManagerImpl::SetCamera(Camera& camera)
+void GLRenderManager::SetCamera(Camera& camera)
 {
     m_camera = camera;
     m_camera.SetPixelWidth(m_viewportWidth);
     m_camera.SetPixelHeight(m_viewportHeight);
 }
 
-void RenderManagerImpl::RenderScene()
+void GLRenderManager::RenderScene()
 {
     // Clear the screen to black
     ColorRGB clearColor = m_camera.GetClearColor();
@@ -95,9 +95,9 @@ void RenderManagerImpl::RenderScene()
     CollisionEngine::Singleton().DrawDebugInfo();
 }
 
-void RenderManagerImpl::ApplyGlobalParams(ShaderProgram* shader)
+void GLRenderManager::ApplyGlobalParams(ShaderProgram* shader)
 {
-    ShaderProgramImpl* shaderImpl = (ShaderProgramImpl*)shader;
+    GLShaderProgram* shaderImpl = (GLShaderProgram*)shader;
     if (shaderImpl != NULL)
     {
         // Light
@@ -120,27 +120,27 @@ void RenderManagerImpl::ApplyGlobalParams(ShaderProgram* shader)
     }
 }
 
-int RenderManagerImpl::GetViewportWidth()
+int GLRenderManager::GetViewportWidth()
 {
     return m_viewportWidth;
 }
 
-int RenderManagerImpl::GetViewportHeight()
+int GLRenderManager::GetViewportHeight()
 {
     return m_viewportHeight;
 }
 
-bool RenderManagerImpl::SettingsDirty()
+bool GLRenderManager::SettingsDirty()
 {
     return m_dirty || m_camera.IsDirty();
 }
 
-DebugDraw* RenderManagerImpl::GetDebugDraw()
+DebugDraw* GLRenderManager::GetDebugDraw()
 {
     return m_debugDraw;
 }
 
-ShaderProgramImpl* RenderManagerImpl::GetCommonShader(eCommonShader name)
+GLShaderProgram* GLRenderManager::GetCommonShader(eCommonShader name)
 {
     if (name >= 0 && name < NUM_COMMON_SHADERS)
     {
@@ -149,18 +149,18 @@ ShaderProgramImpl* RenderManagerImpl::GetCommonShader(eCommonShader name)
     return NULL;
 }
 
-void RenderManagerImpl::LoadCommonShaders()
+void GLRenderManager::LoadCommonShaders()
 {
     // TODO this is pretty awful
-    m_commonShaders[SHADER_UNLIT] = ShaderProgramImpl::Create();
+    m_commonShaders[SHADER_UNLIT] = GLShaderProgram::Create();
     (m_commonShaders[SHADER_UNLIT])->Init("..\\Engine\\Assets\\Shaders\\Unlit.glsl");
 
-    m_commonShaders[SHADER_UNLIT_UNI_COLOR] = ShaderProgramImpl::Create();
+    m_commonShaders[SHADER_UNLIT_UNI_COLOR] = GLShaderProgram::Create();
     (m_commonShaders[SHADER_UNLIT_UNI_COLOR])->Init("..\\Engine\\Assets\\Shaders\\UnlitUniformColor.glsl");
 
-    m_commonShaders[SHADER_UNLIT_TEXTURE] = ShaderProgramImpl::Create();
+    m_commonShaders[SHADER_UNLIT_TEXTURE] = GLShaderProgram::Create();
     (m_commonShaders[SHADER_UNLIT_TEXTURE])->Init("..\\Engine\\Assets\\Shaders\\UnlitTexture.glsl");
 
-    m_commonShaders[SHADER_GOURAUD] = ShaderProgramImpl::Create();
+    m_commonShaders[SHADER_GOURAUD] = GLShaderProgram::Create();
     (m_commonShaders[SHADER_GOURAUD])->Init("..\\Engine\\Assets\\Shaders\\Gouraud.glsl");
 }

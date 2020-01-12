@@ -12,10 +12,10 @@
 
 using std::string;
 
-class GameWindowImpl : public GameWindow
+class GLGameWindow : public GameWindow
 {
 public:
-    static GameWindowImpl* Create();
+    static GLGameWindow* Create();
 
     virtual void Setup(string name, int width, int height);
     virtual void Destroy();

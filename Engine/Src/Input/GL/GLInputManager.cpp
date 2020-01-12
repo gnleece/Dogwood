@@ -1,6 +1,6 @@
 #include "Input\InputManager.h"
 #include "Input\GamePad.h"
-#include "Input/OpenGL/InputManagerImpl.h"
+#include "Input/GL/GLInputManager.h"
 #include "Window\GameWindow.h"
 
 #define GLEW_STATIC
@@ -11,7 +11,7 @@
 
 InputManager* InputManager::Create()
 {
-    return InputManagerImpl::Create();
+    return GLInputManager::Create();
 }
 
 void InputManager::Destroy(InputManager* inputManager)
@@ -19,23 +19,23 @@ void InputManager::Destroy(InputManager* inputManager)
     delete inputManager;
 }
 
-InputManagerImpl* InputManagerImpl::Create()
+GLInputManager* GLInputManager::Create()
 {
-    return new InputManagerImpl();
+    return new GLInputManager();
 }
 
-void InputManagerImpl::Startup(GameWindow* gameWindow)
+void GLInputManager::Startup(GameWindow* gameWindow)
 {
     m_gameWindow = gameWindow;
     m_enableDebugCameraControls = true;
 }
 
-void InputManagerImpl::Shutdown()
+void GLInputManager::Shutdown()
 {
     // TODO clean up gamepads
 }
 
-void InputManagerImpl::PollEvents(float deltaTime)
+void GLInputManager::PollEvents(float deltaTime)
 {
     // Mouse / keyboard input
     glfwPollEvents();
@@ -53,7 +53,7 @@ void InputManagerImpl::PollEvents(float deltaTime)
     }
 }
 
-GamePad* InputManagerImpl::GetGamePad(unsigned int id)
+GamePad* GLInputManager::GetGamePad(unsigned int id)
 {
     if (m_gamePads.count(id) == 0)
         return NULL;
@@ -61,7 +61,7 @@ GamePad* InputManagerImpl::GetGamePad(unsigned int id)
     return m_gamePads[id];
 }
 
-bool InputManagerImpl::EnableGamePad(GamePad* pad, unsigned int id, bool enable)
+bool GLInputManager::EnableGamePad(GamePad* pad, unsigned int id, bool enable)
 {
     if (enable)
     {
@@ -82,17 +82,17 @@ bool InputManagerImpl::EnableGamePad(GamePad* pad, unsigned int id, bool enable)
     return true;
 }
 
-bool InputManagerImpl::GetKeyPressed(eKeyValue key)
+bool GLInputManager::GetKeyPressed(eKeyValue key)
 {
     return m_gameWindow->GetKeyPressed(key);
 }
 
-bool InputManagerImpl::GetMouseButtonPressed(eMouseButtonValue button)
+bool GLInputManager::GetMouseButtonPressed(eMouseButtonValue button)
 {
     return m_gameWindow->GetMouseButtonPressed(button);
 }
 
-CursorPos InputManagerImpl::GetCursorPosition()
+CursorPos GLInputManager::GetCursorPosition()
 {
     return m_gameWindow->GetCursorPosition();
 }

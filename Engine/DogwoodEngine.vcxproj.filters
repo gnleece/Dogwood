@@ -55,23 +55,23 @@
     <Filter Include="Libraries">
       <UniqueIdentifier>{54a863f3-696b-42f4-a36b-371ea6356943}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Rendering\OpenGL">
-      <UniqueIdentifier>{e432896d-6c8a-4003-965e-100080374046}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Rendering\OpenGL">
-      <UniqueIdentifier>{81f957cc-e3ed-45e6-8cb3-3f9a74030393}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Window\OpenGL">
-      <UniqueIdentifier>{66f2cf64-98ca-40f2-86dc-f7d5556c1f71}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Window\OpenGL">
-      <UniqueIdentifier>{5a0c2689-7c59-4c9d-80cd-cb5c9259213f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Input\OpenGL">
+    <Filter Include="Header Files\Input\GL">
       <UniqueIdentifier>{e11f22ec-28ed-4809-ab56-f684665c7b88}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Input\OpenGL">
+    <Filter Include="Header Files\Rendering\GL">
+      <UniqueIdentifier>{e432896d-6c8a-4003-965e-100080374046}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Window\GL">
+      <UniqueIdentifier>{66f2cf64-98ca-40f2-86dc-f7d5556c1f71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Input\GL">
       <UniqueIdentifier>{ff7fea58-1a60-470f-bcee-e038bb884eb7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Rendering\GL">
+      <UniqueIdentifier>{81f957cc-e3ed-45e6-8cb3-3f9a74030393}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Window\GL">
+      <UniqueIdentifier>{5a0c2689-7c59-4c9d-80cd-cb5c9259213f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -241,35 +241,35 @@
     <ClInclude Include="Include\Animation\Joint.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Rendering\OpenGL\MaterialImpl.h">
-      <Filter>Header Files\Rendering\OpenGL</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Rendering\OpenGL\RenderManagerImpl.h">
-      <Filter>Header Files\Rendering\OpenGL</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Rendering\OpenGL\ShaderProgramImpl.h">
-      <Filter>Header Files\Rendering\OpenGL</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Rendering\OpenGL\DebugDrawImpl.h">
-      <Filter>Header Files\Rendering\OpenGL</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Rendering\OpenGL\GLRenderer.h">
-      <Filter>Header Files\Rendering\OpenGL</Filter>
-    </ClInclude>
     <ClInclude Include="Include\Rendering\DebugDraw.h">
       <Filter>Header Files\Rendering</Filter>
     </ClInclude>
     <ClInclude Include="Include\Debugging\DebugLog.h">
       <Filter>Header Files\Debugging</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Window\OpenGL\GameWindowImpl.h">
-      <Filter>Header Files\Window\OpenGL</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Input\OpenGL\InputManagerImpl.h">
-      <Filter>Header Files\Input\OpenGL</Filter>
-    </ClInclude>
     <ClInclude Include="Include\Input\Input.h">
       <Filter>Header Files\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Input\GL\GLInputManager.h">
+      <Filter>Header Files\Input\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Rendering\GL\GLDebugDraw.h">
+      <Filter>Header Files\Rendering\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Rendering\GL\GLMaterial.h">
+      <Filter>Header Files\Rendering\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Rendering\GL\GLRenderer.h">
+      <Filter>Header Files\Rendering\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Rendering\GL\GLRenderManager.h">
+      <Filter>Header Files\Rendering\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Rendering\GL\GLShaderProgram.h">
+      <Filter>Header Files\Rendering\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Window\GL\GLGameWindow.h">
+      <Filter>Header Files\Window\GL</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -405,35 +405,35 @@
     <ClCompile Include="Src\Animation\Joint.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Rendering\OpenGL\GLRenderer.cpp">
-      <Filter>Source Files\Rendering\OpenGL</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Rendering\OpenGL\DebugDraw.cpp">
-      <Filter>Source Files\Rendering\OpenGL</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Rendering\OpenGL\Mesh.cpp">
-      <Filter>Source Files\Rendering\OpenGL</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Rendering\OpenGL\ShaderProgram.cpp">
-      <Filter>Source Files\Rendering\OpenGL</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Rendering\OpenGL\Texture.cpp">
-      <Filter>Source Files\Rendering\OpenGL</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Rendering\OpenGL\RenderManager.cpp">
-      <Filter>Source Files\Rendering\OpenGL</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Rendering\OpenGL\Material.cpp">
-      <Filter>Source Files\Rendering\OpenGL</Filter>
-    </ClCompile>
     <ClCompile Include="Src\Debugging\DebugLog.cpp">
       <Filter>Source Files\Debugging</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Window\OpenGL\GameWindow.cpp">
-      <Filter>Source Files\Window\OpenGL</Filter>
+    <ClCompile Include="Src\Input\GL\GLInputManager.cpp">
+      <Filter>Source Files\Input\GL</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Input\OpenGL\InputManager.cpp">
-      <Filter>Source Files\Input\OpenGL</Filter>
+    <ClCompile Include="Src\Rendering\GL\GLDebugDraw.cpp">
+      <Filter>Source Files\Rendering\GL</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rendering\GL\GLMaterial.cpp">
+      <Filter>Source Files\Rendering\GL</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rendering\GL\GLMesh.cpp">
+      <Filter>Source Files\Rendering\GL</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rendering\GL\GLRenderer.cpp">
+      <Filter>Source Files\Rendering\GL</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rendering\GL\GLRenderManager.cpp">
+      <Filter>Source Files\Rendering\GL</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rendering\GL\GLShaderProgram.cpp">
+      <Filter>Source Files\Rendering\GL</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rendering\GL\GLTexture.cpp">
+      <Filter>Source Files\Rendering\GL</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Window\GL\GLGameWindow.cpp">
+      <Filter>Source Files\Window\GL</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

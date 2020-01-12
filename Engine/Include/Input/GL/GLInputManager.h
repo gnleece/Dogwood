@@ -11,10 +11,10 @@ class GameWindow;
 using std::pair;
 using std::unordered_map;
 
-class InputManagerImpl : public InputManager
+class GLInputManager : public InputManager
 {
 public:
-    static InputManagerImpl* Create();
+    static GLInputManager* Create();
 
     virtual void Startup(GameWindow* gameWindow);
     virtual void Shutdown();

@@ -1,7 +1,7 @@
-#include "Window\GameWindow.h"
-#include "Window/OpenGL/GameWindowImpl.h"
+#include "Window/GameWindow.h"
+#include "Window/GL/GLGameWindow.h"
 
-#include "Math\Algebra.h"
+#include "Math/Algebra.h"
 
 #define GLEW_STATIC
 #include <GL/glew.h>
@@ -11,7 +11,7 @@
 
 GameWindow* GameWindow::Create()
 {
-    return GameWindowImpl::Create();
+    return GLGameWindow::Create();
 }
 
 void GameWindow::Destroy(GameWindow* gameWindow)
@@ -19,12 +19,12 @@ void GameWindow::Destroy(GameWindow* gameWindow)
     delete gameWindow;
 }
 
-GameWindowImpl* GameWindowImpl::Create()
+GLGameWindow* GLGameWindow::Create()
 {
-    return new GameWindowImpl();
+    return new GLGameWindow();
 }
 
-void GameWindowImpl::Setup(string name, int width, int height)
+void GLGameWindow::Setup(string name, int width, int height)
 {
     m_name = name;
     m_width = width;
@@ -46,59 +46,59 @@ void GameWindowImpl::Setup(string name, int width, int height)
     glfwMakeContextCurrent(m_window);
 }
 
-void GameWindowImpl::Destroy()
+void GLGameWindow::Destroy()
 {
     glfwDestroyWindow(m_window);
     glfwTerminate();
 }
 
-void GameWindowImpl::SwapBuffers()
+void GLGameWindow::SwapBuffers()
 {
     glfwSwapBuffers(m_window);
 }
 
-bool GameWindowImpl::ShouldClose()
+bool GLGameWindow::ShouldClose()
 {
     return glfwWindowShouldClose(m_window) != 0;
 }
 
-int GameWindowImpl::GetWidth()
+int GLGameWindow::GetWidth()
 {
     return m_width;
 }
 
-int GameWindowImpl::GetHeight()
+int GLGameWindow::GetHeight()
 {
     return m_height;
 }
 
-bool GameWindowImpl::GetKeyPressed(eKeyValue key)
+bool GLGameWindow::GetKeyPressed(eKeyValue key)
 {
     int glfwKey = DGWDKeyToGLFWKey(key);
     int ret = glfwGetKey(m_window, glfwKey);
     return ret == GLFW_PRESS;
 }
 
-bool GameWindowImpl::GetMouseButtonPressed(eMouseButtonValue button)
+bool GLGameWindow::GetMouseButtonPressed(eMouseButtonValue button)
 {
     int glfwButton = DGWDMouseButtonToGLFWMouseButton(button);
     int ret = glfwGetMouseButton(m_window, glfwButton);
     return ret == GLFW_PRESS;
 }
 
-CursorPos GameWindowImpl::GetCursorPosition()
+CursorPos GLGameWindow::GetCursorPosition()
 {
     double xPos, yPos;
     glfwGetCursorPos(m_window, &xPos, &yPos);
     return CursorPos((float)xPos, (float)yPos);
 }
 
-void GameWindowImpl::ErrorCallback(int error, const char* description)
+void GLGameWindow::ErrorCallback(int error, const char* description)
 {
     fputs(description, stderr);
 }
 
-int GameWindowImpl::DGWDKeyToGLFWKey(eKeyValue dgwdKey)
+int GLGameWindow::DGWDKeyToGLFWKey(eKeyValue dgwdKey)
 {
     // The conversion is simple because the eKeyValue enum was defined to match
     // the GLFW values. If this ever changes then this function will need to be updated.
@@ -106,7 +106,7 @@ int GameWindowImpl::DGWDKeyToGLFWKey(eKeyValue dgwdKey)
     return glfwKey;
 }
 
-int GameWindowImpl::DGWDMouseButtonToGLFWMouseButton(eMouseButtonValue dgwdButton)
+int GLGameWindow::DGWDMouseButtonToGLFWMouseButton(eMouseButtonValue dgwdButton)
 {
     // The conversion is simple because the eButtonValue enum was defined to match
     // the GLFW values. If this ever changes then this function will need to be updated.

@@ -1,5 +1,5 @@
-#include "Rendering\ShaderProgram.h"
-#include "Rendering\OpenGL\ShaderProgramImpl.h"
+#include "Rendering/ShaderProgram.h"
+#include "Rendering/GL/GLShaderProgram.h"
 
 #include <fstream>
 #include <iostream>
@@ -9,7 +9,7 @@
 
 ShaderProgram* ShaderProgram::Create()
 {
-    return ShaderProgramImpl::Create();
+    return GLShaderProgram::Create();
 }
 
 void ShaderProgram::Destroy(ShaderProgram* shader)
@@ -17,12 +17,12 @@ void ShaderProgram::Destroy(ShaderProgram* shader)
     delete shader;
 }
 
-ShaderProgramImpl* ShaderProgramImpl::Create()
+GLShaderProgram* GLShaderProgram::Create()
 {
-    return new ShaderProgramImpl();
+    return new GLShaderProgram();
 }
 
-void ShaderProgramImpl::Init(string path, ResourceInfo* resourceInfo)
+void GLShaderProgram::Init(string path, ResourceInfo* resourceInfo)
 {
     m_resourceInfo = resourceInfo;
 
@@ -34,7 +34,7 @@ void ShaderProgramImpl::Init(string path, ResourceInfo* resourceInfo)
     }
 }
 
-void ShaderProgramImpl::ApplyShader()
+void GLShaderProgram::ApplyShader()
 {
     // Enable shader program if not already active
     bool changedProgram = false;
@@ -52,12 +52,12 @@ void ShaderProgramImpl::ApplyShader()
     }
 }
 
-GLuint ShaderProgramImpl::GetID() const
+GLuint GLShaderProgram::GetID() const
 {
     return m_programID;
 }
 
-GLint ShaderProgramImpl::GetUniformLocation(string param)
+GLint GLShaderProgram::GetUniformLocation(string param)
 {
     if (m_cachedUniformLocations.count(param) == 0)
     {
@@ -66,7 +66,7 @@ GLint ShaderProgramImpl::GetUniformLocation(string param)
     return m_cachedUniformLocations[param];
 }
 
-GLint ShaderProgramImpl::GetAttributeLocation(string param)
+GLint GLShaderProgram::GetAttributeLocation(string param)
 {
     if (m_cachedAttributeLocations.count(param) == 0)
     {
@@ -75,7 +75,7 @@ GLint ShaderProgramImpl::GetAttributeLocation(string param)
     return m_cachedAttributeLocations[param];
 }
 
-string ShaderProgramImpl::GetUniformName(GLint paramID)
+string GLShaderProgram::GetUniformName(GLint paramID)
 {
     // This lookup is slow, but should only be needed during scene serialization
     unordered_map<string, GLint>::iterator iter = m_cachedUniformLocations.begin();
@@ -89,7 +89,7 @@ string ShaderProgramImpl::GetUniformName(GLint paramID)
     return "";
 }
 
-string ShaderProgramImpl::GetAttributeName(GLint paramID)
+string GLShaderProgram::GetAttributeName(GLint paramID)
 {
     // This lookup is slow, but should only be needed during scene serialization
     unordered_map<string, GLint>::iterator iter = m_cachedAttributeLocations.begin();
@@ -103,7 +103,7 @@ string ShaderProgramImpl::GetAttributeName(GLint paramID)
     return "";
 }
 
-void ShaderProgramImpl::Delete()
+void GLShaderProgram::Delete()
 {
     glDeleteProgram(m_programID);
 
@@ -111,7 +111,7 @@ void ShaderProgramImpl::Delete()
     glDeleteShader(m_fragmentID);
 }
 
-bool ShaderProgramImpl::LoadShaderFromFile(string path)
+bool GLShaderProgram::LoadShaderFromFile(string path)
 {
     std::string shaderString;
     std::ifstream sourceFile(path.c_str());
@@ -159,7 +159,7 @@ bool ShaderProgramImpl::LoadShaderFromFile(string path)
 }
 
 // from http://lazyfoo.net/tutorials/OpenGL/30_loading_text_file_shaders/index.php
-GLuint ShaderProgramImpl::CompileShader(string source, string path, GLenum type)
+GLuint GLShaderProgram::CompileShader(string source, string path, GLenum type)
 {
     if (type == GL_VERTEX_SHADER)
     {
@@ -207,7 +207,7 @@ GLuint ShaderProgramImpl::CompileShader(string source, string path, GLenum type)
     return shaderID;
 }
 
-void ShaderProgramImpl::LinkProgram()
+void GLShaderProgram::LinkProgram()
 {
     m_programID = glCreateProgram();
     glAttachShader(m_programID, m_vertexID);
@@ -226,7 +226,7 @@ void ShaderProgramImpl::LinkProgram()
     }
 }
 
-bool ShaderProgramImpl::IsShaderTypeDelimiter(string line)
+bool GLShaderProgram::IsShaderTypeDelimiter(string line)
 {
     return (line.length() > 3 && line[0] == '/' && line[1] == '/' && line[2] == '-');
 }

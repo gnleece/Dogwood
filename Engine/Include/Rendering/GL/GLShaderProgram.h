@@ -10,12 +10,12 @@
 
 using std::unordered_map;
 
-class ShaderProgramImpl : public ShaderProgram
+class GLShaderProgram : public ShaderProgram
 {
 public:
     friend class ShaderProgram;
 
-    static ShaderProgramImpl* Create();
+    static GLShaderProgram* Create();
 
     virtual void Init(string path, ResourceInfo* resourceInfo = NULL);
     virtual void ApplyShader();

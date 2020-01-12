@@ -1,14 +1,14 @@
-#include "Rendering\Material.h"
-#include "Rendering\OpenGL\MaterialImpl.h"
-#include "Rendering\OpenGL\ShaderProgramImpl.h"
+#include "Rendering/Material.h"
+#include "Rendering/GL/GLMaterial.h"
+#include "Rendering/GL/GLShaderProgram.h"
 
-#include "Rendering\RenderManager.h"
-#include "Rendering\ShaderProgram.h"
-#include "Rendering\Texture.h"
+#include "Rendering/RenderManager.h"
+#include "Rendering/ShaderProgram.h"
+#include "Rendering/Texture.h"
 
 Material* Material::Create()
 {
-    return MaterialImpl::Create();
+    return GLMaterial::Create();
 }
 
 void Material::Destroy(Material* material)
@@ -16,24 +16,24 @@ void Material::Destroy(Material* material)
     delete material;
 }
 
-MaterialImpl* MaterialImpl::Create()
+GLMaterial* GLMaterial::Create()
 {
-    return new MaterialImpl();
+    return new GLMaterial();
 }
 
-void MaterialImpl::SetMesh(MeshInstance* mesh)
+void GLMaterial::SetMesh(MeshInstance* mesh)
 {
     m_mesh = mesh;
 }
 
-void MaterialImpl::SetShader(ShaderProgram* shader)
+void GLMaterial::SetShader(ShaderProgram* shader)
 {
     m_colors.clear();
     m_textures.clear();
 
     if (shader != NULL)
     {
-        m_shader = (ShaderProgramImpl*)shader;
+        m_shader = (GLShaderProgram*)shader;
         if (m_shader != NULL)
         {
             m_positionParamID = m_shader->GetAttributeLocation("position");
@@ -49,27 +49,27 @@ void MaterialImpl::SetShader(ShaderProgram* shader)
 
 }
 
-void MaterialImpl::SetColor(string paramName, ColorRGB color)
+void GLMaterial::SetColor(string paramName, ColorRGB color)
 {
     m_colors[paramName] = color;
 }
 
-void MaterialImpl::SetTexture(string paramName, Texture* texture)
+void GLMaterial::SetTexture(string paramName, Texture* texture)
 {
     m_textures[paramName] = texture;
 }
 
-MeshInstance* MaterialImpl::GetMesh()
+MeshInstance* GLMaterial::GetMesh()
 {
     return m_mesh;
 }
 
-ShaderProgram* MaterialImpl::GetShader()
+ShaderProgram* GLMaterial::GetShader()
 {
     return m_shader;
 }
 
-ColorRGB MaterialImpl::GetColor(string paramName)
+ColorRGB GLMaterial::GetColor(string paramName)
 {
     if (m_colors.count(paramName) > 0)
     {
@@ -78,7 +78,7 @@ ColorRGB MaterialImpl::GetColor(string paramName)
     return ColorRGB::Black;
 }
 
-Texture* MaterialImpl::GetTexture(string paramName)
+Texture* GLMaterial::GetTexture(string paramName)
 {
     if (m_textures.count(paramName) > 0)
     {
@@ -87,17 +87,17 @@ Texture* MaterialImpl::GetTexture(string paramName)
     return NULL;
 }
 
-unordered_map<string, ColorRGB>& MaterialImpl::GetColors()
+unordered_map<string, ColorRGB>& GLMaterial::GetColors()
 {
     return m_colors;
 }
 
-unordered_map<string, Texture*>& MaterialImpl::GetTextures()
+unordered_map<string, Texture*>& GLMaterial::GetTextures()
 {
     return m_textures;
 }
 
-void MaterialImpl::ApplyMaterial(Transform& transform, GLint posVBO, GLint normVBO, GLint uvVBO, bool useUVs)
+void GLMaterial::ApplyMaterial(Transform& transform, GLint posVBO, GLint normVBO, GLint uvVBO, bool useUVs)
 {
     // Apply shader
     m_shader->ApplyShader();
@@ -128,16 +128,16 @@ void MaterialImpl::ApplyMaterial(Transform& transform, GLint posVBO, GLint normV
     glUniformMatrix4fv(m_modelID, 1, GL_FALSE, transform.GetWorldMatrix().Transpose().Start());
 }
 
-void MaterialImpl::UnapplyMaterial()
+void GLMaterial::UnapplyMaterial()
 {
     DisableAttribArray(m_positionParamID);
     DisableAttribArray(m_normalParamID);
     DisableAttribArray(m_uvParamID);
 }
 
-Material* MaterialImpl::DeepCopy()
+Material* GLMaterial::DeepCopy()
 {
-    MaterialImpl* newMaterial = (MaterialImpl*)(MaterialImpl::Create());
+    GLMaterial* newMaterial = (GLMaterial*)(GLMaterial::Create());
 
     newMaterial->m_shader = m_shader;
 
@@ -158,20 +158,20 @@ Material* MaterialImpl::DeepCopy()
     return newMaterial;
 }
 
-void MaterialImpl::SetUniformParam(string paramName, ColorRGB& color)
+void GLMaterial::SetUniformParam(string paramName, ColorRGB& color)
 {
     GLint paramID = m_shader->GetUniformLocation(paramName);
     glUniform3fv(paramID, 1, color.Start());
 }
 
-void MaterialImpl::SetAttribParam(GLint paramID, GLint buffer, int size)
+void GLMaterial::SetAttribParam(GLint paramID, GLint buffer, int size)
 {
     glEnableVertexAttribArray(paramID);
     glBindBuffer(GL_ARRAY_BUFFER, buffer);
     glVertexAttribPointer(paramID, size, GL_FLOAT, GL_FALSE, size * sizeof(float), 0);
 }
 
-void MaterialImpl::DisableAttribArray(GLint paramID)
+void GLMaterial::DisableAttribArray(GLint paramID)
 {
     glDisableVertexAttribArray(paramID);
 }

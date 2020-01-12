@@ -1,11 +1,11 @@
-#include "Rendering\Mesh.h"
+#include "Rendering/Mesh.h"
 
-#include "Rendering\OpenGL\DebugDrawImpl.h"
-#include "Rendering\Image.h"
-#include "Rendering\ModelLoading.h"
-#include "Rendering\RenderManager.h"
+#include "Rendering/GL/GLDebugDraw.h"
+#include "Rendering/Image.h"
+#include "Rendering/ModelLoading.h"
+#include "Rendering/RenderManager.h"
 
-#include "Rendering\OpenGL\MaterialImpl.h"
+#include "Rendering/GL/GLMaterial.h"
 
 #define GLEW_STATIC
 #include <GL/glew.h>
@@ -108,7 +108,7 @@ void MeshImpl::Render(Transform& transform, Material* material, bool wireframe)
 {
     if (material)
     {
-        MaterialImpl* matImpl = (MaterialImpl*)material;
+        GLMaterial* matImpl = (GLMaterial*)material;
         if (matImpl != NULL)
         {
             glBindVertexArray(m_vao);
@@ -120,7 +120,7 @@ void MeshImpl::Render(Transform& transform, Material* material, bool wireframe)
 
             if (wireframe)
             {
-                MaterialImpl* debugMat = ((DebugDrawImpl*)(RenderManager::Singleton()->GetDebugDraw()))->GetDebugMaterial();
+                GLMaterial* debugMat = ((GLDebugDraw*)(RenderManager::Singleton()->GetDebugDraw()))->GetDebugMaterial();
                 if (debugMat != NULL)
                 {
                     debugMat->SetColor("color", ColorRGB(0.7f, 0.7f, 0.7f));
