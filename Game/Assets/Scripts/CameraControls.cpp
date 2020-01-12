@@ -80,27 +80,27 @@ void CameraControls::GetInputAxisValues(float& x, float& y)
 {
     x = 0.0f;
     y = 0.0f;
-    if (InputManager::Singleton().GetGamePad(0)->Connected())
+    if (InputManager::Singleton()->GetGamePad(0)->Connected())
     {
-        x = InputManager::Singleton().GetGamePad(0)->GetAxisValue(GAMEPAD_RSTICK_X);
-        y = InputManager::Singleton().GetGamePad(0)->GetAxisValue(GAMEPAD_RSTICK_Y);
+        x = InputManager::Singleton()->GetGamePad(0)->GetAxisValue(GAMEPAD_RSTICK_X);
+        y = InputManager::Singleton()->GetGamePad(0)->GetAxisValue(GAMEPAD_RSTICK_Y);
     }
     else
     {
         // No gamepad is connected, so use keyboard controls
-        if (InputManager::Singleton().GetKeyPressed(DGWD_KEY_LEFT))
+        if (InputManager::Singleton()->GetKeyPressed(DGWD_KEY_LEFT))
         {
             x -= 1.0f;
         }
-        if (InputManager::Singleton().GetKeyPressed(DGWD_KEY_RIGHT))
+        if (InputManager::Singleton()->GetKeyPressed(DGWD_KEY_RIGHT))
         {
             x += 1.0f;
         }
-        if (InputManager::Singleton().GetKeyPressed(DGWD_KEY_UP))
+        if (InputManager::Singleton()->GetKeyPressed(DGWD_KEY_UP))
         {
             y += 1.0f;
         }
-        if (InputManager::Singleton().GetKeyPressed(DGWD_KEY_DOWN))
+        if (InputManager::Singleton()->GetKeyPressed(DGWD_KEY_DOWN))
         {
             y-= 1.0f;
         }

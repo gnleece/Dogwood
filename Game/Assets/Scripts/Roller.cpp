@@ -19,33 +19,33 @@ void Roller::Update(float deltaTime)
 {
     float lstickX = 0;
     float lstickY = 0;
-    if (InputManager::Singleton().GetGamePad(0)->Connected())
+    if (InputManager::Singleton()->GetGamePad(0)->Connected())
     {
         // Use the direction of the left joystick as a "push" vector to roll the object.
         // The x direction of the joystick applies a push in the x direction in camera space,
         // and the y direction of the joystick applies a push in the z direction in camera space.
 
-        lstickX = InputManager::Singleton().GetGamePad(0)->GetAxisValue(GAMEPAD_LSTICK_X);
-        lstickY = InputManager::Singleton().GetGamePad(0)->GetAxisValue(GAMEPAD_LSTICK_Y);
+        lstickX = InputManager::Singleton()->GetGamePad(0)->GetAxisValue(GAMEPAD_LSTICK_X);
+        lstickY = InputManager::Singleton()->GetGamePad(0)->GetAxisValue(GAMEPAD_LSTICK_Y);
     }
     else
     {
         // No gamepad is connected, so use keyboard controls
         // Use "A" and "D as left stick horizontal and "W" and "S" as left stick vertical
 
-        if (InputManager::Singleton().GetKeyPressed(DGWD_KEY_A))
+        if (InputManager::Singleton()->GetKeyPressed(DGWD_KEY_A))
         {
             lstickX -= 1.0f;
         }
-        if (InputManager::Singleton().GetKeyPressed(DGWD_KEY_D))
+        if (InputManager::Singleton()->GetKeyPressed(DGWD_KEY_D))
         {
             lstickX += 1.0f;
         }
-        if (InputManager::Singleton().GetKeyPressed(DGWD_KEY_W))
+        if (InputManager::Singleton()->GetKeyPressed(DGWD_KEY_W))
         {
             lstickY += 1.0f;
         }
-        if (InputManager::Singleton().GetKeyPressed(DGWD_KEY_S))
+        if (InputManager::Singleton()->GetKeyPressed(DGWD_KEY_S))
         {
             lstickY -= 1.0f;
         }

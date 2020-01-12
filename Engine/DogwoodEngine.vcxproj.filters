@@ -61,6 +61,18 @@
     <Filter Include="Source Files\Rendering\OpenGL">
       <UniqueIdentifier>{81f957cc-e3ed-45e6-8cb3-3f9a74030393}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Window\OpenGL">
+      <UniqueIdentifier>{66f2cf64-98ca-40f2-86dc-f7d5556c1f71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Window\OpenGL">
+      <UniqueIdentifier>{5a0c2689-7c59-4c9d-80cd-cb5c9259213f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Input\OpenGL">
+      <UniqueIdentifier>{e11f22ec-28ed-4809-ab56-f684665c7b88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Input\OpenGL">
+      <UniqueIdentifier>{ff7fea58-1a60-470f-bcee-e038bb884eb7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -250,13 +262,19 @@
     <ClInclude Include="Include\Debugging\DebugLog.h">
       <Filter>Header Files\Debugging</Filter>
     </ClInclude>
+    <ClInclude Include="Include\Window\OpenGL\GameWindowImpl.h">
+      <Filter>Header Files\Window\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Input\OpenGL\InputManagerImpl.h">
+      <Filter>Header Files\Input\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Input\Input.h">
+      <Filter>Header Files\Input</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Debugging\DebugCameraControls.cpp">
       <Filter>Source Files\Debugging</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Input\InputManager.cpp">
-      <Filter>Source Files\Input</Filter>
     </ClCompile>
     <ClCompile Include="Src\Math\Algebra.cpp">
       <Filter>Source Files\Math</Filter>
@@ -287,9 +305,6 @@
     </ClCompile>
     <ClCompile Include="Src\Scene\Scene.cpp">
       <Filter>Source Files\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Window\GameWindow.cpp">
-      <Filter>Source Files\Window</Filter>
     </ClCompile>
     <ClCompile Include="Src\Game.cpp">
       <Filter>Source Files</Filter>
@@ -413,6 +428,12 @@
     </ClCompile>
     <ClCompile Include="Src\Debugging\DebugLog.cpp">
       <Filter>Source Files\Debugging</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Window\OpenGL\GameWindow.cpp">
+      <Filter>Source Files\Window\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Input\OpenGL\InputManager.cpp">
+      <Filter>Source Files\Input\OpenGL</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

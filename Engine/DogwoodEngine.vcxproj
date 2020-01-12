@@ -77,7 +77,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)\Include;$(ProjectDir)\..\Libraries\GLFW\include;$(ProjectDir)\..\Libraries\GLEW\include;$(ProjectDir)\..\Libraries\tinyxml2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Include;$(ProjectDir)\..\Libraries\GLFW\include;$(ProjectDir)\..\Libraries\GLEW\include;$(ProjectDir)\..\Libraries\tinyxml2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -147,6 +147,8 @@
     <ClInclude Include="Include\Components\ParticleSystem.h" />
     <ClInclude Include="Include\Components\TestComponent.h" />
     <ClInclude Include="Include\Debugging\DebugCameraControls.h" />
+    <ClInclude Include="Include\Input\Input.h" />
+    <ClInclude Include="Include\Input\OpenGL\InputManagerImpl.h" />
     <ClInclude Include="Include\Rendering\DebugDraw.h" />
     <ClInclude Include="Include\Debugging\DebugLog.h" />
     <ClInclude Include="Include\Game.h" />
@@ -203,6 +205,7 @@
     <ClInclude Include="Include\ToolsideShaderSchema.h" />
     <ClInclude Include="Include\Util.h" />
     <ClInclude Include="Include\Window\GameWindow.h" />
+    <ClInclude Include="Include\Window\OpenGL\GameWindowImpl.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Libraries\tinyxml2\tinyxml2.cpp" />
@@ -210,6 +213,7 @@
     <ClCompile Include="Src\Components\ParticleSystem.cpp" />
     <ClCompile Include="Src\Components\TestComponent.cpp" />
     <ClCompile Include="Src\Debugging\DebugCameraControls.cpp" />
+    <ClCompile Include="Src\Input\OpenGL\InputManager.cpp" />
     <ClCompile Include="Src\Rendering\OpenGL\DebugDraw.cpp" />
     <ClCompile Include="Src\Debugging\DebugLog.cpp" />
     <ClCompile Include="Src\Game.cpp" />
@@ -220,7 +224,6 @@
     <ClCompile Include="Src\GameObjectReference.cpp" />
     <ClCompile Include="Src\GameProject.cpp" />
     <ClCompile Include="Src\Input\GamePad.cpp" />
-    <ClCompile Include="Src\Input\InputManager.cpp" />
     <ClCompile Include="Src\Input\XInputGamePad.cpp" />
     <ClCompile Include="Src\Math\Algebra.cpp" />
     <ClCompile Include="Src\Math\MathUtil.cpp" />
@@ -258,7 +261,7 @@
     <ClCompile Include="Src\ToolsideGameObject.cpp" />
     <ClCompile Include="Src\ToolsideShaderSchema.cpp" />
     <ClCompile Include="Src\Util.cpp" />
-    <ClCompile Include="Src\Window\GameWindow.cpp" />
+    <ClCompile Include="Src\Window\OpenGL\GameWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Src\Shaders\Unlit.frag.glsl" />

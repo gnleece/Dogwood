@@ -33,7 +33,7 @@ private:
     void Shutdown();
     void UpdateTime();
 
-    GameWindow  m_gameWindow;
+    GameWindow* m_gameWindow;
     GameObject* m_rootObject;
     GameComponentFactory* m_engineComponentFactory;
 

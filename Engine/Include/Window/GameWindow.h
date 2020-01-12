@@ -1,34 +1,28 @@
 #pragma once
 
-#define GLEW_STATIC
-#include <GL/glew.h>
-
-#define GLFW_INCLUDE_GLU
-#include <GLFW/glfw3.h>
-
 #include <string>
+#include "Input/Input.h"
 
 using std::string;
 
 class GameWindow
 {
 public:
-    void Setup(string name, int width, int height);
-    void Destroy();
+    static GameWindow* Create();
+    static void Destroy(GameWindow* gameWindow);
 
-    void SwapBuffers();
-    bool ShouldClose();
+    virtual ~GameWindow() {}
 
-    int GetWidth();
-    int GetHeight();
-    GLFWwindow* GetGLFWWindow();
+    virtual void Setup(string name, int width, int height) = 0;
+    virtual void Destroy() = 0;
 
-private:
-    static void ErrorCallback(int error, const char* description);
+    virtual void SwapBuffers() = 0;
+    virtual bool ShouldClose() = 0;
 
-    GLFWwindow* m_window;
+    virtual int GetWidth() = 0;
+    virtual int GetHeight() = 0;
 
-    string      m_name;
-    int         m_width;
-    int         m_height;
+    virtual bool GetKeyPressed(eKeyValue key) = 0;
+    virtual bool GetMouseButtonPressed(eMouseButtonValue button) = 0;
+    virtual CursorPos GetCursorPosition() = 0;
 };
