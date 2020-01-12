@@ -30,6 +30,8 @@ public:
     virtual bool GetMouseButtonPressed(eMouseButtonValue button);
     virtual CursorPos GetCursorPosition();
 
+    virtual float GetLastFrameTime();
+
 private:
     static void ErrorCallback(int error, const char* description);
 

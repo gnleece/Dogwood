@@ -93,6 +93,11 @@ CursorPos GLGameWindow::GetCursorPosition()
     return CursorPos((float)xPos, (float)yPos);
 }
 
+float GLGameWindow::GetLastFrameTime()
+{
+    return (float)glfwGetTime();
+}
+
 void GLGameWindow::ErrorCallback(int error, const char* description)
 {
     fputs(description, stderr);

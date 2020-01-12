@@ -25,4 +25,6 @@ public:
     virtual bool GetKeyPressed(eKeyValue key) = 0;
     virtual bool GetMouseButtonPressed(eMouseButtonValue button) = 0;
     virtual CursorPos GetCursorPosition() = 0;
+
+    virtual float GetLastFrameTime() = 0;
 };

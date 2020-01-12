@@ -5,7 +5,6 @@ using std::pair;
 
 typedef pair<float, float> CursorPos;
 
-// These are defined the match the mouse button values in GLFW (see glfw3.h)
 enum eMouseButtonValue
 {
     DGWD_MOUSE_BUTTON_LEFT = 0,
@@ -13,7 +12,6 @@ enum eMouseButtonValue
     DGWD_MOUSE_BUTTON_MIDDLE = 2
 };
 
-// These are defined to match the key values in GLFW (see glfw3.h)
 enum eKeyValue
 {
     DGWD_KEY_SPACE = 32,

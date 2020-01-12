@@ -2,13 +2,13 @@
 
 #include "Rendering\Vertex.h"
 
-bool FindIndex(Vertex & vertex, std::unordered_map<Vertex, GLuint> & map, GLuint &index);
+bool FindIndex(Vertex & vertex, std::unordered_map<Vertex, unsigned int> & map, unsigned int&index);
 
 bool LoadIndexedModel(std::string path, 
     std::vector<Vector3> & positions,
     std::vector<Vector3> & normals,
     std::vector<Vector2> & uvs,
-    std::vector<GLuint>  & indices)
+    std::vector<unsigned int>  & indices)
 {
     // TODO check if file extension is .obj
 
@@ -151,12 +151,12 @@ bool IndexVBO(std::vector<Vector3> & in_positions,
     std::vector<Vector3> & out_positions,
     std::vector<Vector3> & out_normals,
     std::vector<Vector2> & out_uvs,
-    std::vector<GLuint>  & out_indices)
+    std::vector<unsigned int>  & out_indices)
 {
-    std::unordered_map<Vertex, GLuint> vertexToIndexMap;
+    std::unordered_map<Vertex, unsigned int> vertexToIndexMap;
     for (unsigned int i = 0; i < in_positions.size(); i++)
     {
-        GLuint index;
+        unsigned int index;
         Vector2 uv = i < in_uvs.size() ? in_uvs[i] : Vector2::Zero;
         Vertex vertex(in_positions[i], in_normals[i], uv);
         bool found = FindIndex(vertex, vertexToIndexMap, index);
@@ -184,9 +184,9 @@ bool IndexVBO(std::vector<Vector3> & in_positions,
     return true;
 }
 
-bool FindIndex(Vertex & vertex, std::unordered_map<Vertex, GLuint> & map, GLuint & index)
+bool FindIndex(Vertex & vertex, std::unordered_map<Vertex, unsigned int> & map, unsigned int& index)
 {
-    std::unordered_map<Vertex, GLuint>::iterator it = map.find(vertex);
+    std::unordered_map<Vertex, unsigned int>::iterator it = map.find(vertex);
     if (it != map.end())
     {
         index = it->second;
