@@ -37,7 +37,7 @@ public:
     //void            SetTransform(Matrix4x4& m);
 
     // TODO Rendering/Mesh function should not exist here
-    virtual void    Render(bool dirty, bool wireframe = false);
+    virtual void    Render(bool wireframe = false);
     void            SetMeshInstance(MeshInstance* mesh);
     MeshInstance*   GetMeshInstance();
 

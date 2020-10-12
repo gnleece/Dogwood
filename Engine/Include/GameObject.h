@@ -42,7 +42,7 @@ public:
     void    OnCollisionExit();
 
     // TODO this shouldn't be here
-    void    Render(bool dirty, bool wireframe = false);
+    void    Render(bool wireframe = false);
 
     static GameObject*  CreateGameObject();                 // TODO implement me
     static void         DestroyGameObject(GameObject*);     // TODO implement me

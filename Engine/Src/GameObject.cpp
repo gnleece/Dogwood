@@ -152,7 +152,7 @@ void GameObject::OnCollisionExit()
     }
 }
 
-void GameObject::Render(bool dirty, bool wireframe)
+void GameObject::Render(bool wireframe)
 {
     // Render the mesh
     if (m_mesh)
@@ -165,6 +165,6 @@ void GameObject::Render(bool dirty, bool wireframe)
     for (childIter = m_children.begin(); childIter != m_children.end(); childIter++)
     {
         GameObjectBase* child = *childIter;
-        child->Render(dirty, wireframe);
+        child->Render(wireframe);
     }
 }
