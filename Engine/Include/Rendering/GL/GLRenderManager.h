@@ -13,13 +13,12 @@ public:
     virtual void Startup(int viewportWidth, int viewportHeight);
     virtual void Shutdown();
 
-    virtual void SetRootObject(GameObjectBase* rootObject);
     virtual void SetLight(Light light);
 
     virtual Camera& GetCamera();
     virtual void SetCamera(Camera& camera);
 
-    virtual void RenderScene();
+    virtual void RenderScene(Scene* scene);
     virtual void ApplyGlobalParams(ShaderProgram* shader);
 
     virtual int GetViewportWidth();
@@ -40,7 +39,6 @@ private:
     int             m_viewportHeight;
     Camera          m_camera;                   // TODO support multiple cameras
     Light           m_light;                    // TODO support multiple light sources
-    GameObjectBase* m_rootObject;
 
     bool            m_dirty;
 

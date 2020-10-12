@@ -70,9 +70,6 @@ void Game::Init(string projectPath, GameComponentFactory* componentFactory)
 void Game::Run(Scene* scene)
 {
     printf("\n=============== GAME RUN ===============\n");
-
-    m_rootObject = scene->GetRuntimeRootObject();
-    RenderManager::Singleton()->SetRootObject(m_rootObject);
     
     // Frame time setup
     m_minFrameTime = 1 / (float)MAX_FPS;
@@ -96,9 +93,9 @@ void Game::Run(Scene* scene)
         // Game Object update
         GameObjectManager::Singleton().Update(m_deltaTime);
 
+        // Physics update
         if (physicsEnabled && framesSinceLastPhysicsUpdate > physicsUpdateInterval)
         {
-            // Physics update
             PhysicsEngine::Singleton().UpdateBodies(m_deltaTime);
             CollisionEngine::Singleton().CalculateCollisions(m_deltaTime);       // TODO fixed physics timestep?
             PhysicsEngine::Singleton().ResolveCollisions(m_deltaTime);
@@ -106,7 +103,7 @@ void Game::Run(Scene* scene)
         }
 
         // Rendering update
-        RenderManager::Singleton()->RenderScene();
+        RenderManager::Singleton()->RenderScene(scene);
         m_gameWindow->SwapBuffers();
 
         UpdateTime();

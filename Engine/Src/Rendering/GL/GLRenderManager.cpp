@@ -4,6 +4,7 @@
 
 #include "GameObject.h"
 #include "Physics\CollisionEngine.h"
+#include "Scene\Scene.h"
 
 RenderManager* RenderManager::Create()
 {
@@ -18,7 +19,6 @@ void RenderManager::Destroy(RenderManager* renderManager)
 void GLRenderManager::Startup(int viewportWidth, int viewportHeight)
 {
     m_dirty = true;
-    m_rootObject = NULL;
     m_viewportWidth = viewportWidth;
     m_viewportHeight = viewportHeight;
 
@@ -49,12 +49,6 @@ void GLRenderManager::Shutdown()
     DebugDraw::Destroy(m_debugDraw);
 }
 
-void GLRenderManager::SetRootObject(GameObjectBase* rootObject)
-{
-    m_rootObject = rootObject;
-    m_dirty = true;
-}
-
 void GLRenderManager::SetLight(Light light)
 {
     m_light = light;
@@ -73,7 +67,7 @@ void GLRenderManager::SetCamera(Camera& camera)
     m_camera.SetPixelHeight(m_viewportHeight);
 }
 
-void GLRenderManager::RenderScene()
+void GLRenderManager::RenderScene(Scene* scene)
 {
     // Clear the screen to black
     ColorRGB clearColor = m_camera.GetClearColor();
@@ -81,9 +75,13 @@ void GLRenderManager::RenderScene()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // Render game objects
-    if (m_rootObject != NULL)
+    if (scene != NULL)
     {
-        m_rootObject->Render(false);
+        auto rootObject = scene->GetRuntimeRootObject();
+        if (rootObject != NULL)
+        {
+            rootObject->Render(false);
+        }
     }
 
     // Render debug info    // TODO this is hacky, RenderManager shouldn't have reference to CollisionEngine

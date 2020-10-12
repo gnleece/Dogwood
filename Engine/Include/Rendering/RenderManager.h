@@ -9,6 +9,7 @@
 
 class DebugDraw;
 class GameObjectBase;
+class Scene;
 
 class RenderManager
 {
@@ -35,13 +36,12 @@ public:
     virtual void Startup(int viewportWidth, int viewportHeight) = 0;
     virtual void Shutdown() = 0;
 
-    virtual void SetRootObject(GameObjectBase* rootObject) = 0;
     virtual void SetLight(Light light) = 0;
 
     virtual Camera& GetCamera() = 0;
     virtual void SetCamera(Camera& camera) = 0;
 
-    virtual void RenderScene() = 0;
+    virtual void RenderScene(Scene* scene) = 0;
     virtual void ApplyGlobalParams(ShaderProgram* shader) = 0;
 
     virtual int GetViewportWidth() = 0;

@@ -34,7 +34,6 @@ private:
     void UpdateTime();
 
     GameWindow* m_gameWindow;
-    GameObject* m_rootObject;
     GameComponentFactory* m_engineComponentFactory;
 
     float       m_prevFrameEndTime;
