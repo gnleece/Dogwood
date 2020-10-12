@@ -4,12 +4,6 @@
 #include "Math\Transform.h"
 #include "Rendering\Color.h"
 
-#define GLEW_STATIC
-#include <GL/glew.h>
-
-#define GLFW_INCLUDE_GLU
-#include <GLFW/glfw3.h>
-
 class Material;
 
 class DebugDraw
