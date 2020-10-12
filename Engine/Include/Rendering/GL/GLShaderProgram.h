@@ -3,7 +3,6 @@
 #define GLEW_STATIC
 #include <GL/glew.h>
 
-
 #include "Rendering\ShaderProgram.h"
 
 #include <unordered_map>
@@ -34,6 +33,9 @@ private:
     void    LinkProgram();
 
     bool    IsShaderTypeDelimiter(string line);
+
+    void    ApplyCamera();
+    void    ApplyLight();
 
     GLuint  m_programID;
     GLuint  m_vertexID;

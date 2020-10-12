@@ -13,18 +13,16 @@ public:
     virtual void Startup(int viewportWidth, int viewportHeight);
     virtual void Shutdown();
 
-    virtual void SetLight(Light light);
+    virtual Light& GetLight();
+    virtual void SetLight(Light& light);
 
     virtual Camera& GetCamera();
     virtual void SetCamera(Camera& camera);
 
     virtual void RenderScene(Scene* scene);
-    virtual void ApplyGlobalParams(ShaderProgram* shader);
 
     virtual int GetViewportWidth();
     virtual int GetViewportHeight();
-
-    virtual bool SettingsDirty();
 
     virtual DebugDraw* GetDebugDraw();
 
@@ -33,14 +31,11 @@ public:
 private:
 
     void            LoadCommonShaders();
-    void            ApplyLight(Light& light, ShaderProgram* shader);
 
     int             m_viewportWidth;
     int             m_viewportHeight;
     Camera          m_camera;                   // TODO support multiple cameras
     Light           m_light;                    // TODO support multiple light sources
-
-    bool            m_dirty;
 
     GLShaderProgram*  m_commonShaders[NUM_COMMON_SHADERS];
 

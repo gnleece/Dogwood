@@ -37,19 +37,47 @@ void GLShaderProgram::Init(string path, ResourceInfo* resourceInfo)
 void GLShaderProgram::ApplyShader()
 {
     // Enable shader program if not already active
-    bool changedProgram = false;
     GLint currentProgram;
     glGetIntegerv(GL_CURRENT_PROGRAM, (GLint*)&currentProgram);
     if (currentProgram != GetID())
     {
         glUseProgram(GetID());
-        changedProgram = true;
+        ApplyLight();
+        ApplyCamera();
     }
+}
 
-    if (changedProgram || RenderManager::Singleton()->SettingsDirty())
-    {
-        RenderManager::Singleton()->ApplyGlobalParams(this);
-    }
+void GLShaderProgram::ApplyCamera()
+{
+    auto camera = RenderManager::Singleton()->GetCamera();
+
+    Vector3 position = camera.GetPosition();
+    Vector3 direction = camera.GetDirection();
+    Vector3 up = camera.GetUp();
+
+    // View matrix
+    GLint viewLocation = GetUniformLocation("view");
+    glUniformMatrix4fv(viewLocation, 1, GL_FALSE, camera.GetViewTransform().GetLocalMatrix().Transpose().Start());
+
+    // Projection matrix
+    GLint projLocation = GetUniformLocation("proj");
+    glUniformMatrix4fv(projLocation, 1, GL_FALSE, camera.GetProjectionTransform().GetLocalMatrix().Transpose().Start());
+
+    camera.ClearDirtyFlag();
+}
+
+void GLShaderProgram::ApplyLight()
+{
+    auto light = RenderManager::Singleton()->GetLight();
+
+    GLint uniPosition = GetUniformLocation("lightPos");
+    glUniform3fv(uniPosition, 1, light.position.Start());
+
+    GLint uniColor = GetUniformLocation("lightColor");
+    glUniform3fv(uniColor, 1, light.color.Start());
+
+    GLint uniPower = GetUniformLocation("lightPower");
+    glUniform1f(uniPower, light.power);
 }
 
 GLuint GLShaderProgram::GetID() const

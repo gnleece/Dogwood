@@ -18,7 +18,6 @@ void RenderManager::Destroy(RenderManager* renderManager)
 
 void GLRenderManager::Startup(int viewportWidth, int viewportHeight)
 {
-    m_dirty = true;
     m_viewportWidth = viewportWidth;
     m_viewportHeight = viewportHeight;
 
@@ -49,10 +48,14 @@ void GLRenderManager::Shutdown()
     DebugDraw::Destroy(m_debugDraw);
 }
 
-void GLRenderManager::SetLight(Light light)
+Light& GLRenderManager::GetLight()
+{
+    return m_light;
+}
+
+void GLRenderManager::SetLight(Light& light)
 {
     m_light = light;
-    m_dirty = true;
 }
 
 Camera& GLRenderManager::GetCamera()
@@ -88,31 +91,6 @@ void GLRenderManager::RenderScene(Scene* scene)
     CollisionEngine::Singleton().DrawDebugInfo();
 }
 
-void GLRenderManager::ApplyGlobalParams(ShaderProgram* shader)
-{
-    GLShaderProgram* shaderImpl = (GLShaderProgram*)shader;
-    if (shaderImpl != NULL)
-    {
-        // Light
-        ApplyLight(m_light, shader);
-
-        Vector3 position = m_camera.GetPosition();
-        Vector3 direction = m_camera.GetDirection();
-        Vector3 up = m_camera.GetUp();
-
-        // View matrix
-        GLint viewLocation = shaderImpl->GetUniformLocation("view");
-        glUniformMatrix4fv(viewLocation, 1, GL_FALSE, m_camera.GetViewTransform().GetLocalMatrix().Transpose().Start());
-
-        // Projection matrix
-        GLint projLocation = shaderImpl->GetUniformLocation("proj");
-        glUniformMatrix4fv(projLocation, 1, GL_FALSE, m_camera.GetProjectionTransform().GetLocalMatrix().Transpose().Start());
-
-        m_dirty = false;
-        m_camera.ClearDirtyFlag();
-    }
-}
-
 int GLRenderManager::GetViewportWidth()
 {
     return m_viewportWidth;
@@ -121,11 +99,6 @@ int GLRenderManager::GetViewportWidth()
 int GLRenderManager::GetViewportHeight()
 {
     return m_viewportHeight;
-}
-
-bool GLRenderManager::SettingsDirty()
-{
-    return m_dirty || m_camera.IsDirty();
 }
 
 DebugDraw* GLRenderManager::GetDebugDraw()
@@ -156,23 +129,4 @@ void GLRenderManager::LoadCommonShaders()
 
     m_commonShaders[SHADER_GOURAUD] = GLShaderProgram::Create();
     (m_commonShaders[SHADER_GOURAUD])->Init("..\\Engine\\Assets\\Shaders\\Gouraud.glsl");
-}
-
-void GLRenderManager::ApplyLight(Light& light, ShaderProgram* shader)
-{
-    if (shader != NULL)
-    {
-        GLShaderProgram* shaderImpl = (GLShaderProgram*)shader;
-        if (shaderImpl != NULL)
-        {
-            GLint uniPosition = shaderImpl->GetUniformLocation("lightPos");
-            glUniform3fv(uniPosition, 1, light.position.Start());
-
-            GLint uniColor = shaderImpl->GetUniformLocation("lightColor");
-            glUniform3fv(uniColor, 1, light.color.Start());
-
-            GLint uniPower = shaderImpl->GetUniformLocation("lightPower");
-            glUniform1f(uniPower, light.power);
-        }
-    }
 }
