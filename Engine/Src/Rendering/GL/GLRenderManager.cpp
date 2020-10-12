@@ -5,8 +5,6 @@
 #include "GameObject.h"
 #include "Physics\CollisionEngine.h"
 
-#include "Rendering\GL\GLRenderer.h"			// TODO [GL+DX] ifdef
-
 RenderManager* RenderManager::Create()
 {
     return new GLRenderManager();
@@ -23,8 +21,6 @@ void GLRenderManager::Startup(int viewportWidth, int viewportHeight)
     m_rootObject = NULL;
     m_viewportWidth = viewportWidth;
     m_viewportHeight = viewportHeight;
-
-    m_platSpecificRenderer = new GLRenderer();		// TODO [GL+DX] ifdef
 
     // OpenGL setup
     glViewport(0, 0, m_viewportWidth, m_viewportHeight);
@@ -51,7 +47,6 @@ void GLRenderManager::Shutdown()
 {
     m_debugDraw->Shutdown();
     DebugDraw::Destroy(m_debugDraw);
-    delete m_platSpecificRenderer;
 }
 
 void GLRenderManager::SetRootObject(GameObjectBase* rootObject)
@@ -101,7 +96,7 @@ void GLRenderManager::ApplyGlobalParams(ShaderProgram* shader)
     if (shaderImpl != NULL)
     {
         // Light
-        m_platSpecificRenderer->ApplyLight(m_light, shader);
+        ApplyLight(m_light, shader);
 
         Vector3 position = m_camera.GetPosition();
         Vector3 direction = m_camera.GetDirection();
@@ -163,4 +158,23 @@ void GLRenderManager::LoadCommonShaders()
 
     m_commonShaders[SHADER_GOURAUD] = GLShaderProgram::Create();
     (m_commonShaders[SHADER_GOURAUD])->Init("..\\Engine\\Assets\\Shaders\\Gouraud.glsl");
+}
+
+void GLRenderManager::ApplyLight(Light& light, ShaderProgram* shader)
+{
+    if (shader != NULL)
+    {
+        GLShaderProgram* shaderImpl = (GLShaderProgram*)shader;
+        if (shaderImpl != NULL)
+        {
+            GLint uniPosition = shaderImpl->GetUniformLocation("lightPos");
+            glUniform3fv(uniPosition, 1, light.position.Start());
+
+            GLint uniColor = shaderImpl->GetUniformLocation("lightColor");
+            glUniform3fv(uniColor, 1, light.color.Start());
+
+            GLint uniPower = shaderImpl->GetUniformLocation("lightPower");
+            glUniform1f(uniPower, light.power);
+        }
+    }
 }

@@ -259,9 +259,6 @@
     <ClInclude Include="Include\Rendering\GL\GLMaterial.h">
       <Filter>Header Files\Rendering\GL</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Rendering\GL\GLRenderer.h">
-      <Filter>Header Files\Rendering\GL</Filter>
-    </ClInclude>
     <ClInclude Include="Include\Rendering\GL\GLRenderManager.h">
       <Filter>Header Files\Rendering\GL</Filter>
     </ClInclude>
@@ -427,9 +424,6 @@
       <Filter>Source Files\Rendering\GL</Filter>
     </ClCompile>
     <ClCompile Include="Src\Rendering\GL\GLMesh.cpp">
-      <Filter>Source Files\Rendering\GL</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Rendering\GL\GLRenderer.cpp">
       <Filter>Source Files\Rendering\GL</Filter>
     </ClCompile>
     <ClCompile Include="Src\Rendering\GL\GLRenderManager.cpp">

@@ -34,8 +34,7 @@ public:
 private:
 
     void            LoadCommonShaders();
-
-    PlatSpecificRenderer* m_platSpecificRenderer;
+    void            ApplyLight(Light& light, ShaderProgram* shader);
 
     int             m_viewportWidth;
     int             m_viewportHeight;

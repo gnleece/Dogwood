@@ -1,8 +1,5 @@
 #pragma once
 
-#define GLEW_STATIC
-#include <GL/glew.h>
-
 #include "Math\Algebra.h"
 #include "Math\Transform.h"
 #include "Math\Transformations.h"
@@ -10,17 +7,8 @@
 #include "Rendering\Light.h"
 #include "Rendering\ShaderProgram.h"
 
-#define GLFW_INCLUDE_GLU
-#include <GLFW/glfw3.h>
-
 class DebugDraw;
 class GameObjectBase;
-
-class PlatSpecificRenderer
-{
-public:
-    virtual void ApplyLight(Light& light, ShaderProgram* shader) = 0;
-};
 
 class RenderManager
 {

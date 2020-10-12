@@ -295,7 +295,6 @@
     <ClInclude Include="Include\Rendering\Color.h" />
     <ClInclude Include="Include\Rendering\GL\GLDebugDraw.h" />
     <ClInclude Include="Include\Rendering\GL\GLMaterial.h" />
-    <ClInclude Include="Include\Rendering\GL\GLRenderer.h" />
     <ClInclude Include="Include\Rendering\GL\GLRenderManager.h" />
     <ClInclude Include="Include\Rendering\GL\GLShaderProgram.h" />
     <ClInclude Include="Include\Rendering\Image.h" />
@@ -360,7 +359,6 @@
     <ClCompile Include="Src\Rendering\GL\GLDebugDraw.cpp" />
     <ClCompile Include="Src\Rendering\GL\GLMaterial.cpp" />
     <ClCompile Include="Src\Rendering\GL\GLMesh.cpp" />
-    <ClCompile Include="Src\Rendering\GL\GLRenderer.cpp" />
     <ClCompile Include="Src\Rendering\GL\GLRenderManager.cpp" />
     <ClCompile Include="Src\Rendering\GL\GLShaderProgram.cpp" />
     <ClCompile Include="Src\Rendering\GL\GLTexture.cpp" />
