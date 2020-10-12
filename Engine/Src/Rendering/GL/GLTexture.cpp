@@ -1,31 +1,10 @@
-#include "Rendering\Texture.h"
-#include "Rendering\Image.h"
+#ifdef GRAPHICS_GL
 
-#include <fstream>
-
-#define GLEW_STATIC
-#include <GL/glew.h>
-
-class TextureImpl : public Texture
-{
-public:
-    friend class Texture;
-
-    virtual void    Init(std::string filename, ResourceInfo* resourceInfo);
-
-    virtual void    BindTexture();
-    virtual void    FreeTexture();
-
-private:
-    GLuint          m_id;
-    std::string     m_filename;
-
-    static Texture* m_defaultTexture;
-};
+#include "Rendering\GL\GLTexture.h"
 
 Texture* Texture::Create()
 {
-    return new TextureImpl();
+    return new GLTexture();
 }
 
 void Texture::Destroy(Texture* texture)
@@ -46,7 +25,7 @@ Texture* Texture::DefaultTexture()
 
 Texture* Texture::m_defaultTexture = NULL;
 
-void TextureImpl::Init(std::string filename, ResourceInfo* resourceInfo)
+void GLTexture::Init(std::string filename, ResourceInfo* resourceInfo)
 {
     m_filename = filename;
     m_resourceInfo = resourceInfo;
@@ -70,13 +49,14 @@ void TextureImpl::Init(std::string filename, ResourceInfo* resourceInfo)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }
 
-void TextureImpl::BindTexture()
+void GLTexture::BindTexture()
 {
     glBindTexture(GL_TEXTURE_2D, m_id);
 }
 
-void TextureImpl::FreeTexture()
+void GLTexture::FreeTexture()
 {
     glDeleteTextures(1, &m_id);
 }
 
+#endif

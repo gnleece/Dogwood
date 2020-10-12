@@ -2,7 +2,7 @@
 #include "Game_DirectXMain.h"
 #include "Common\DirectXHelper.h"
 
-//#include "Game.h"
+#include "Game.h"
 #include "Testing/GraphicsAPI.h"
 
 using namespace Game_DirectX;
@@ -22,17 +22,11 @@ Game_DirectXMain::Game_DirectXMain(const std::shared_ptr<DX::DeviceResources>& d
 
 	m_fpsTextRenderer = std::unique_ptr<SampleFpsTextRenderer>(new SampleFpsTextRenderer(m_deviceResources));
 
-	//Game::Singleton().Init("Katamari.xml", NULL);
+	Game::Singleton().Init("Katamari.xml", NULL);
+
 	GraphicsAPI* graphicsAPI = GraphicsAPI::Create();
 	auto graphicsAPIName = graphicsAPI->GetGraphicsAPIName();
 	printf(graphicsAPIName.c_str());
-
-	// TODO: Change the timer settings if you want something other than the default variable timestep mode.
-	// e.g. for 60 FPS fixed timestep update logic, call:
-	/*
-	m_timer.SetFixedTimeStep(true);
-	m_timer.SetTargetElapsedSeconds(1.0 / 60);
-	*/
 }
 
 Game_DirectXMain::~Game_DirectXMain()

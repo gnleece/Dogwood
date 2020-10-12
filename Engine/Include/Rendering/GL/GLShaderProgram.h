@@ -1,5 +1,7 @@
 #pragma once
 
+#ifdef GRAPHICS_GL
+
 #define GLEW_STATIC
 #include <GL/glew.h>
 
@@ -44,3 +46,5 @@ private:
     unordered_map<string, GLint> m_cachedUniformLocations;
     unordered_map<string, GLint> m_cachedAttributeLocations;
 };
+
+#endif

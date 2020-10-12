@@ -1,23 +1,17 @@
 #pragma once
 
-#ifdef GRAPHICS_GL
+#ifdef GRAPHICS_DX
 
 #include "Window/GameWindow.h"
-
-#define GLEW_STATIC
-#include <GL/glew.h>
-
-#define GLFW_INCLUDE_GLU
-#include <GLFW/glfw3.h>
 
 #include <string>
 
 using std::string;
 
-class GLGameWindow : public GameWindow
+class DXGameWindow : public GameWindow
 {
 public:
-    static GLGameWindow* Create();
+    static DXGameWindow* Create();
 
     virtual void Setup(string name, int width, int height);
     virtual void Destroy();
@@ -33,18 +27,6 @@ public:
     virtual CursorPos GetCursorPosition();
 
     virtual float GetLastFrameTime();
-
-private:
-    static void ErrorCallback(int error, const char* description);
-
-    static int DGWDKeyToGLFWKey(eKeyValue dgwdKey);
-    static int DGWDMouseButtonToGLFWMouseButton(eMouseButtonValue dgwdButton);
-
-    GLFWwindow* m_window;
-
-    string      m_name;
-    int         m_width;
-    int         m_height;
 };
 
 #endif

@@ -1,3 +1,5 @@
+#ifdef GRAPHICS_GL
+
 #include "Input\InputManager.h"
 #include "Input\GamePad.h"
 #include "Input/GL/GLInputManager.h"
@@ -96,3 +98,5 @@ CursorPos GLInputManager::GetCursorPosition()
 {
     return m_gameWindow->GetCursorPosition();
 }
+
+#endif

@@ -1,5 +1,7 @@
 #pragma once
 
+#ifdef GRAPHICS_GL
+
 #include "Rendering\Material.h"
 
 #define GLEW_STATIC
@@ -51,3 +53,5 @@ private:
     GLint   m_uvParamID;
     GLint   m_modelID;
 };
+
+#endif

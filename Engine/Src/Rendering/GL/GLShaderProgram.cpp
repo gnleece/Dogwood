@@ -1,3 +1,5 @@
+#ifdef GRAPHICS_GL
+
 #include "Rendering/ShaderProgram.h"
 #include "Rendering/GL/GLShaderProgram.h"
 
@@ -258,3 +260,5 @@ bool GLShaderProgram::IsShaderTypeDelimiter(string line)
 {
     return (line.length() > 3 && line[0] == '/' && line[1] == '/' && line[2] == '-');
 }
+
+#endif

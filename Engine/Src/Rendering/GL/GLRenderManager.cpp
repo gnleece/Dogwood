@@ -1,3 +1,5 @@
+#ifdef GRAPHICS_GL
+
 #include "Rendering\GL\GLDebugDraw.h"
 #include "Rendering\GL\GLRenderManager.h"
 #include "Rendering\GL\GLShaderProgram.h"
@@ -130,3 +132,5 @@ void GLRenderManager::LoadCommonShaders()
     m_commonShaders[SHADER_GOURAUD] = GLShaderProgram::Create();
     (m_commonShaders[SHADER_GOURAUD])->Init("..\\Engine\\Assets\\Shaders\\Gouraud.glsl");
 }
+
+#endif

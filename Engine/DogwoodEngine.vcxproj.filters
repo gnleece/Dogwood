@@ -124,6 +124,24 @@
     <Filter Include="Source Files\Testing\DX">
       <UniqueIdentifier>{5fe8488b-9bda-4361-856d-7aff93a86e63}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Input\DX">
+      <UniqueIdentifier>{531bd7f3-1b3e-4d34-82d4-1c6bde3d1c61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Rendering\DX">
+      <UniqueIdentifier>{a222f19c-f628-4bc3-bd22-fa257280de30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Window\DX">
+      <UniqueIdentifier>{bb6119f5-07eb-467e-b26e-771010096918}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Input\DX">
+      <UniqueIdentifier>{50089525-5313-42f6-b50c-b68cc8696e2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Rendering\DX">
+      <UniqueIdentifier>{fba6a7ea-a2c7-4306-87a3-feee3b015d21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Window\DX">
+      <UniqueIdentifier>{8efb3c84-5463-443a-ba1f-bcb011cc93ce}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -328,6 +346,36 @@
     <ClInclude Include="Include\Testing\DX\DXGraphicsAPI.h">
       <Filter>Header Files\Testing\DX</Filter>
     </ClInclude>
+    <ClInclude Include="Include\Input\DX\DXInputManager.h">
+      <Filter>Header Files\Input\DX</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Rendering\DX\DXDebugDraw.h">
+      <Filter>Header Files\Rendering\DX</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Rendering\DX\DXMaterial.h">
+      <Filter>Header Files\Rendering\DX</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Rendering\DX\DXRenderManager.h">
+      <Filter>Header Files\Rendering\DX</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Rendering\DX\DXShaderProgram.h">
+      <Filter>Header Files\Rendering\DX</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Window\DX\DXGameWindow.h">
+      <Filter>Header Files\Window\DX</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Rendering\GL\GLMesh.h">
+      <Filter>Header Files\Rendering\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Rendering\DX\DXMesh.h">
+      <Filter>Header Files\Rendering\DX</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Rendering\GL\GLTexture.h">
+      <Filter>Header Files\Rendering\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Rendering\DX\DXTexture.h">
+      <Filter>Header Files\Rendering\DX</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Debugging\DebugCameraControls.cpp">
@@ -494,6 +542,30 @@
     </ClCompile>
     <ClCompile Include="Src\Testing\DX\DXGraphicsAPI.cpp">
       <Filter>Source Files\Testing\DX</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Input\DX\DXInputManager.cpp">
+      <Filter>Source Files\Input\DX</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rendering\DX\DXDebugDraw.cpp">
+      <Filter>Source Files\Rendering\DX</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rendering\DX\DXMaterial.cpp">
+      <Filter>Source Files\Rendering\DX</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rendering\DX\DXMesh.cpp">
+      <Filter>Source Files\Rendering\DX</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rendering\DX\DXRenderManager.cpp">
+      <Filter>Source Files\Rendering\DX</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rendering\DX\DXShaderProgram.cpp">
+      <Filter>Source Files\Rendering\DX</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Rendering\DX\DXTexture.cpp">
+      <Filter>Source Files\Rendering\DX</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Window\DX\DXGameWindow.cpp">
+      <Filter>Source Files\Window\DX</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -1,3 +1,5 @@
+#ifdef GRAPHICS_GL
+
 #include "Rendering/GL/GLDebugDraw.h"
 #include "Rendering/GL/GLMaterial.h"
 #include "Rendering/GL/GLRenderManager.h"
@@ -565,3 +567,5 @@ void Pyramid::Draw(Matrix4x4& transform, ColorRGB& color)
 
     glDisableVertexAttribArray(paramLocation);
 }
+
+#endif

@@ -1,3 +1,5 @@
+#ifdef GRAPHICS_GL
+
 #include "Window/GameWindow.h"
 #include "Window/GL/GLGameWindow.h"
 
@@ -118,3 +120,5 @@ int GLGameWindow::DGWDMouseButtonToGLFWMouseButton(eMouseButtonValue dgwdButton)
     int glfwButton = (int)dgwdButton;
     return glfwButton;
 }
+
+#endif

@@ -1,12 +1,12 @@
 #pragma once
 
-#ifdef GRAPHICS_GL
+#ifdef GRAPHICS_DX
 
 #include "Rendering/RenderManager.h"
 
 class DebugDraw;
 
-class GLRenderManager : public RenderManager
+class DXRenderManager : public RenderManager
 {
 public:
     friend class RenderManager;
@@ -27,21 +27,6 @@ public:
     virtual int GetViewportHeight();
 
     virtual DebugDraw* GetDebugDraw();
-
-    GLShaderProgram* GetCommonShader(eCommonShader name);
-
-private:
-
-    void            LoadCommonShaders();
-
-    int             m_viewportWidth;
-    int             m_viewportHeight;
-    Camera          m_camera;                   // TODO support multiple cameras
-    Light           m_light;                    // TODO support multiple light sources
-
-    GLShaderProgram* m_commonShaders[NUM_COMMON_SHADERS];
-
-    GLDebugDraw* m_debugDraw;
 };
 
 #endif

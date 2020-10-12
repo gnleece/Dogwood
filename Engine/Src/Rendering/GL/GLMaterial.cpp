@@ -1,3 +1,5 @@
+#ifdef GRAPHICS_GL
+
 #include "Rendering/Material.h"
 #include "Rendering/GL/GLMaterial.h"
 #include "Rendering/GL/GLShaderProgram.h"
@@ -175,3 +177,5 @@ void GLMaterial::DisableAttribArray(GLint paramID)
 {
     glDisableVertexAttribArray(paramID);
 }
+
+#endif

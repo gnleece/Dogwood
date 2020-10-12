@@ -1,5 +1,7 @@
 #pragma once
 
+#ifdef GRAPHICS_GL
+
 #define GLEW_STATIC
 #include <GL/glew.h>
 
@@ -128,3 +130,5 @@ private:
     ColorRGB        m_lineColors[MAX_LINES_PER_FRAME * 2];
     int             m_numLines = 0;
 };
+
+#endif
