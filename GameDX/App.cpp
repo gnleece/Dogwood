@@ -3,7 +3,7 @@
 
 #include <ppltasks.h>
 
-using namespace Game_DirectX;
+using namespace GameDX;
 
 using namespace concurrency;
 using namespace Windows::ApplicationModel;
@@ -85,7 +85,7 @@ void App::Load(Platform::String^ entryPoint)
 {
 	if (m_main == nullptr)
 	{
-		m_main = std::unique_ptr<Game_DirectXMain>(new Game_DirectXMain(m_deviceResources));
+		m_main = std::unique_ptr<GameDXMain>(new GameDXMain(m_deviceResources));
 	}
 }
 

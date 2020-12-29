@@ -3,7 +3,7 @@
 
 #include "..\Common\DirectXHelper.h"
 
-using namespace Game_DirectX;
+using namespace GameDX;
 
 using namespace DirectX;
 using namespace Windows::Foundation;

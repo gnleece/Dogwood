@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-namespace Game_DirectX
+namespace GameDX
 {
 	// Constant buffer used to send MVP matrices to the vertex shader.
 	struct ModelViewProjectionConstantBuffer

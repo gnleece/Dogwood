@@ -2,9 +2,9 @@
 
 #include "pch.h"
 #include "Common\DeviceResources.h"
-#include "Game_DirectXMain.h"
+#include "GameDXMain.h"
 
-namespace Game_DirectX
+namespace GameDX
 {
 	// Main entry point for our app. Connects the app with the Windows shell and handles application lifecycle events.
 	ref class App sealed : public Windows::ApplicationModel::Core::IFrameworkView
@@ -37,7 +37,7 @@ namespace Game_DirectX
 
 	private:
 		std::shared_ptr<DX::DeviceResources> m_deviceResources;
-		std::unique_ptr<Game_DirectXMain> m_main;
+		std::unique_ptr<GameDXMain> m_main;
 		bool m_windowClosed;
 		bool m_windowVisible;
 	};

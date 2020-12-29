@@ -2,19 +2,19 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Common">
-      <UniqueIdentifier>f6d189c5-edd9-4419-97af-426e7e64379f</UniqueIdentifier>
+      <UniqueIdentifier>c001b305-f618-4749-bdce-76a893d42460</UniqueIdentifier>
     </Filter>
     <Filter Include="Assets">
-      <UniqueIdentifier>773a9b2a-b35f-4e52-8d5a-3e48df79e102</UniqueIdentifier>
+      <UniqueIdentifier>b2ab34ca-c5b4-45f0-8400-cd537b354f76</UniqueIdentifier>
       <Extensions>bmp;fbx;gif;jpg;jpeg;tga;tiff;tif;png</Extensions>
     </Filter>
-    <Filter Include="Content">
-      <UniqueIdentifier>d35f339f-deb9-46c4-b8b1-99170fd99b76</UniqueIdentifier>
+	<Filter Include="Content">
+      <UniqueIdentifier>e19d9892-bf3d-4432-ac35-c4c036a6539d</UniqueIdentifier>
     </Filter>
     <ClInclude Include="Common\DirectXHelper.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="Common\StepTimer.h">
+	<ClInclude Include="Common\StepTimer.h">
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="Common\DeviceResources.h">
@@ -23,7 +23,7 @@
     <ClCompile Include="Common\DeviceResources.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClInclude Include="Content\Sample3DSceneRenderer.h">
+	<ClInclude Include="Content\Sample3DSceneRenderer.h">
       <Filter>Content</Filter>
     </ClInclude>
     <ClInclude Include="Content\SampleFpsTextRenderer.h">
@@ -32,13 +32,13 @@
     <ClInclude Include="Content\ShaderStructures.h">
       <Filter>Content</Filter>
     </ClInclude>
-    <ClCompile Include="Content\Sample3DSceneRenderer.cpp">
+	<ClCompile Include="Content\Sample3DSceneRenderer.cpp">
       <Filter>Content</Filter>
     </ClCompile>
     <ClCompile Include="Content\SampleFpsTextRenderer.cpp">
       <Filter>Content</Filter>
     </ClCompile>
-    <FxCompile Include="Content\SamplePixelShader.hlsl">
+	<FxCompile Include="Content\SamplePixelShader.hlsl">
       <Filter>Content</Filter>
     </FxCompile>
     <FxCompile Include="Content\SampleVertexShader.hlsl">
@@ -62,23 +62,5 @@
     <Image Include="Assets\Wide310x150Logo.scale-200.png">
       <Filter>Assets</Filter>
     </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="App.cpp" />
-    <ClCompile Include="Game_DirectXMain.cpp" />
-    <ClCompile Include="pch.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="App.h" />
-    <ClInclude Include="Game_DirectXMain.h" />
-    <ClInclude Include="pch.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="Assets\StoreLogo.png">
-      <Filter>Assets</Filter>
-    </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <AppxManifest Include="Package.appxmanifest" />
   </ItemGroup>
 </Project>

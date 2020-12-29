@@ -4,7 +4,7 @@
 #include "ShaderStructures.h"
 #include "..\Common\StepTimer.h"
 
-namespace Game_DirectX
+namespace GameDX
 {
 	// This sample renderer instantiates a basic rendering pipeline.
 	class Sample3DSceneRenderer

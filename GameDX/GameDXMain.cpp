@@ -1,17 +1,14 @@
 ﻿#include "pch.h"
-#include "Game_DirectXMain.h"
+#include "GameDXMain.h"
 #include "Common\DirectXHelper.h"
 
-#include "Game.h"
-#include "Testing/GraphicsAPI.h"
-
-using namespace Game_DirectX;
+using namespace GameDX;
 using namespace Windows::Foundation;
 using namespace Windows::System::Threading;
 using namespace Concurrency;
 
 // Loads and initializes application assets when the application is loaded.
-Game_DirectXMain::Game_DirectXMain(const std::shared_ptr<DX::DeviceResources>& deviceResources) :
+GameDXMain::GameDXMain(const std::shared_ptr<DX::DeviceResources>& deviceResources) :
 	m_deviceResources(deviceResources)
 {
 	// Register to be notified if the Device is lost or recreated
@@ -22,28 +19,29 @@ Game_DirectXMain::Game_DirectXMain(const std::shared_ptr<DX::DeviceResources>& d
 
 	m_fpsTextRenderer = std::unique_ptr<SampleFpsTextRenderer>(new SampleFpsTextRenderer(m_deviceResources));
 
-	Game::Singleton().Init("Katamari.xml", NULL);
-
-	GraphicsAPI* graphicsAPI = GraphicsAPI::Create();
-	auto graphicsAPIName = graphicsAPI->GetGraphicsAPIName();
-	printf(graphicsAPIName.c_str());
+	// TODO: Change the timer settings if you want something other than the default variable timestep mode.
+	// e.g. for 60 FPS fixed timestep update logic, call:
+	/*
+	m_timer.SetFixedTimeStep(true);
+	m_timer.SetTargetElapsedSeconds(1.0 / 60);
+	*/
 }
 
-Game_DirectXMain::~Game_DirectXMain()
+GameDXMain::~GameDXMain()
 {
 	// Deregister device notification
 	m_deviceResources->RegisterDeviceNotify(nullptr);
 }
 
 // Updates application state when the window size changes (e.g. device orientation change)
-void Game_DirectXMain::CreateWindowSizeDependentResources() 
+void GameDXMain::CreateWindowSizeDependentResources() 
 {
 	// TODO: Replace this with the size-dependent initialization of your app's content.
 	m_sceneRenderer->CreateWindowSizeDependentResources();
 }
 
 // Updates the application state once per frame.
-void Game_DirectXMain::Update() 
+void GameDXMain::Update() 
 {
 	// Update scene objects.
 	m_timer.Tick([&]()
@@ -56,7 +54,7 @@ void Game_DirectXMain::Update()
 
 // Renders the current frame according to the current application state.
 // Returns true if the frame was rendered and is ready to be displayed.
-bool Game_DirectXMain::Render() 
+bool GameDXMain::Render() 
 {
 	// Don't try to render anything before the first Update.
 	if (m_timer.GetFrameCount() == 0)
@@ -87,14 +85,14 @@ bool Game_DirectXMain::Render()
 }
 
 // Notifies renderers that device resources need to be released.
-void Game_DirectXMain::OnDeviceLost()
+void GameDXMain::OnDeviceLost()
 {
 	m_sceneRenderer->ReleaseDeviceDependentResources();
 	m_fpsTextRenderer->ReleaseDeviceDependentResources();
 }
 
 // Notifies renderers that device resources may now be recreated.
-void Game_DirectXMain::OnDeviceRestored()
+void GameDXMain::OnDeviceRestored()
 {
 	m_sceneRenderer->CreateDeviceDependentResources();
 	m_fpsTextRenderer->CreateDeviceDependentResources();

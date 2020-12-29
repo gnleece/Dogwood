@@ -6,13 +6,13 @@
 #include "Content\SampleFpsTextRenderer.h"
 
 // Renders Direct2D and 3D content on the screen.
-namespace Game_DirectX
+namespace GameDX
 {
-	class Game_DirectXMain : public DX::IDeviceNotify
+	class GameDXMain : public DX::IDeviceNotify
 	{
 	public:
-		Game_DirectXMain(const std::shared_ptr<DX::DeviceResources>& deviceResources);
-		~Game_DirectXMain();
+		GameDXMain(const std::shared_ptr<DX::DeviceResources>& deviceResources);
+		~GameDXMain();
 		void CreateWindowSizeDependentResources();
 		void Update();
 		bool Render();
