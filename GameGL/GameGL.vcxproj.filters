@@ -22,6 +22,9 @@
     <Filter Include="Source Files\Scripts">
       <UniqueIdentifier>{a208ad26-0ef2-4fdb-bd2f-cc471db1f5b2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Common">
+      <UniqueIdentifier>{4f91f48f-c4c6-4c9e-af13-a48faa09971c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -48,6 +51,12 @@
     <ClInclude Include="Assets\Scripts\CameraControls.h">
       <Filter>Header Files\Scripts</Filter>
     </ClInclude>
+    <ClInclude Include="Common\GLGameWindow.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\GLInputProvider.h">
+      <Filter>Common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -70,6 +79,12 @@
     </ClCompile>
     <ClCompile Include="Assets\Scripts\CameraControls.cpp">
       <Filter>Source Files\Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\GLGameWindow.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\GLInputProvider.cpp">
+      <Filter>Common</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

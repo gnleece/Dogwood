@@ -259,9 +259,8 @@
     <ClInclude Include="Include\Components\ParticleSystem.h" />
     <ClInclude Include="Include\Components\TestComponent.h" />
     <ClInclude Include="Include\Debugging\DebugCameraControls.h" />
-    <ClInclude Include="Include\Input\DX\DXInputManager.h" />
-    <ClInclude Include="Include\Input\GL\GLInputManager.h" />
     <ClInclude Include="Include\Input\Input.h" />
+    <ClInclude Include="Include\Input\InputProvider.h" />
     <ClInclude Include="Include\Rendering\DebugDraw.h" />
     <ClInclude Include="Include\Debugging\DebugLog.h" />
     <ClInclude Include="Include\Game.h" />
@@ -327,9 +326,7 @@
     <ClInclude Include="Include\ToolsideGameObject.h" />
     <ClInclude Include="Include\ToolsideShaderSchema.h" />
     <ClInclude Include="Include\Util.h" />
-    <ClInclude Include="Include\Window\DX\DXGameWindow.h" />
     <ClInclude Include="Include\Window\GameWindow.h" />
-    <ClInclude Include="Include\Window\GL\GLGameWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Libraries\tinyxml2\tinyxml2.cpp" />
@@ -337,8 +334,6 @@
     <ClCompile Include="Src\Components\ParticleSystem.cpp" />
     <ClCompile Include="Src\Components\TestComponent.cpp" />
     <ClCompile Include="Src\Debugging\DebugCameraControls.cpp" />
-    <ClCompile Include="Src\Input\DX\DXInputManager.cpp" />
-    <ClCompile Include="Src\Input\GL\GLInputManager.cpp" />
     <ClCompile Include="Src\Debugging\DebugLog.cpp" />
     <ClCompile Include="Src\Game.cpp" />
     <ClCompile Include="Src\GameComponent.cpp" />
@@ -348,6 +343,7 @@
     <ClCompile Include="Src\GameObjectReference.cpp" />
     <ClCompile Include="Src\GameProject.cpp" />
     <ClCompile Include="Src\Input\GamePad.cpp" />
+    <ClCompile Include="Src\Input\InputManager.cpp" />
     <ClCompile Include="Src\Input\XInputGamePad.cpp" />
     <ClCompile Include="Src\Math\Algebra.cpp" />
     <ClCompile Include="Src\Math\MathUtil.cpp" />
@@ -393,8 +389,6 @@
     <ClCompile Include="Src\ToolsideGameObject.cpp" />
     <ClCompile Include="Src\ToolsideShaderSchema.cpp" />
     <ClCompile Include="Src\Util.cpp" />
-    <ClCompile Include="Src\Window\DX\DXGameWindow.cpp" />
-    <ClCompile Include="Src\Window\GL\GLGameWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Src\Shaders\Unlit.frag.glsl" />

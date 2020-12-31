@@ -1,7 +1,5 @@
-#ifdef GRAPHICS_GL
 
-#include "Window/GameWindow.h"
-#include "Window/GL/GLGameWindow.h"
+#include "GLGameWindow.h"
 
 #include "Math/Algebra.h"
 
@@ -11,22 +9,7 @@
 #define GLFW_INCLUDE_GLU
 #include <GLFW/glfw3.h>
 
-GameWindow* GameWindow::Create()
-{
-    return GLGameWindow::Create();
-}
-
-void GameWindow::Destroy(GameWindow* gameWindow)
-{
-    delete gameWindow;
-}
-
-GLGameWindow* GLGameWindow::Create()
-{
-    return new GLGameWindow();
-}
-
-void GLGameWindow::Setup(string name, int width, int height)
+GLGameWindow::GLGameWindow(string name, int width, int height)
 {
     m_name = name;
     m_width = width;
@@ -120,5 +103,3 @@ int GLGameWindow::DGWDMouseButtonToGLFWMouseButton(eMouseButtonValue dgwdButton)
     int glfwButton = (int)dgwdButton;
     return glfwButton;
 }
-
-#endif

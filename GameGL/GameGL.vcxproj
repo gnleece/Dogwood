@@ -287,6 +287,8 @@
     <ClInclude Include="Assets\Scripts\Roller.h" />
     <ClInclude Include="Assets\Scripts\SpinningComponent.h" />
     <ClInclude Include="Assets\Scripts\Translator.h" />
+    <ClInclude Include="Common\GLGameWindow.h" />
+    <ClInclude Include="Common\GLInputProvider.h" />
     <ClInclude Include="Generated\GameComponentBindings.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -297,6 +299,8 @@
     <ClCompile Include="Assets\Scripts\Roller.cpp" />
     <ClCompile Include="Assets\Scripts\SpinningComponent.cpp" />
     <ClCompile Include="Assets\Scripts\Translator.cpp" />
+    <ClCompile Include="Common\GLGameWindow.cpp" />
+    <ClCompile Include="Common\GLInputProvider.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>

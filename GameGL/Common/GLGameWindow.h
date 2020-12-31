@@ -1,7 +1,5 @@
 #pragma once
 
-#ifdef GRAPHICS_GL
-
 #include "Window/GameWindow.h"
 
 #define GLEW_STATIC
@@ -17,20 +15,18 @@ using std::string;
 class GLGameWindow : public GameWindow
 {
 public:
-    static GLGameWindow* Create();
+    GLGameWindow(string name, int width, int height);
+    void Destroy();
 
-    virtual void Setup(string name, int width, int height);
-    virtual void Destroy();
+    void SwapBuffers();
+    bool ShouldClose();
 
-    virtual void SwapBuffers();
-    virtual bool ShouldClose();
+    int GetWidth();
+    int GetHeight();
 
-    virtual int GetWidth();
-    virtual int GetHeight();
-
-    virtual bool GetKeyPressed(eKeyValue key);
-    virtual bool GetMouseButtonPressed(eMouseButtonValue button);
-    virtual CursorPos GetCursorPosition();
+    bool GetKeyPressed(eKeyValue key);
+    bool GetMouseButtonPressed(eMouseButtonValue button);
+    CursorPos GetCursorPosition();
 
     virtual float GetLastFrameTime();
 
@@ -46,5 +42,3 @@ private:
     int         m_width;
     int         m_height;
 };
-
-#endif

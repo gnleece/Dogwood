@@ -6,7 +6,7 @@
 #include "Input/Input.h"
 
 class GamePad;
-class GameWindow;
+class InputProvider;
 
 using std::pair;
 using std::unordered_map;
@@ -15,26 +15,25 @@ class InputManager
 {
 public:
 
-    static InputManager* Singleton()
+    static InputManager& Singleton()
     {
-        static InputManager* singleton = InputManager::Create();
+        static InputManager singleton;
         return singleton;
     }
     InputManager() {}
 
-    virtual void Startup(GameWindow* gameWindow) = 0;
-    virtual void Shutdown() = 0;
+    void Startup(InputProvider* inputProvider);
+    void Shutdown();
 
-    virtual void PollEvents(float deltaTime) = 0;
+    void PollEvents(float deltaTime);
 
-    virtual bool        GetKeyPressed(eKeyValue key) = 0;
-    virtual bool        GetMouseButtonPressed(eMouseButtonValue button) = 0;
-    virtual CursorPos   GetCursorPosition() = 0;
+    bool        GetKeyPressed(eKeyValue key);
+    bool        GetMouseButtonPressed(eMouseButtonValue button);
+    CursorPos   GetCursorPosition();
 
-    virtual GamePad*    GetGamePad(unsigned int id) = 0;
-    virtual bool        EnableGamePad(GamePad* pad, unsigned int id, bool enable = true) = 0;
+    GamePad*    GetGamePad(unsigned int id);
+    bool        EnableGamePad(GamePad* pad, unsigned int id, bool enable = true);
 
 private:
-    static InputManager*    Create();
-    static void             Destroy(InputManager* inputManager);
+    InputProvider* m_inputProvider;
 };

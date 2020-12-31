@@ -18,7 +18,7 @@
 #include "GameProject.h"
 #include "Testing\GraphicsAPI.h"
 
-void Game::Init(string projectPath, GameComponentFactory* componentFactory)
+void Game::Init(string projectPath, GameWindow* gameWindow, InputProvider* inputProvider, GameComponentFactory* componentFactory)
 {
     GraphicsAPI* graphicsAPI = GraphicsAPI::Create();
     auto graphicsAPIName = graphicsAPI->GetGraphicsAPIName();
@@ -43,10 +43,7 @@ void Game::Init(string projectPath, GameComponentFactory* componentFactory)
     GameProject::Singleton().SetRuntimeComponentFactory(m_engineComponentFactory, true);
 
     // Window setup
-    int windowWidth, windowHeight;
-    GameProject::Singleton().GetResolution(windowWidth, windowHeight);
-    m_gameWindow = GameWindow::Create();
-    m_gameWindow->Setup(GameProject::Singleton().GetName(), windowWidth, windowHeight);
+    m_gameWindow = gameWindow;
 
     // Physics setup
     if (GameProject::Singleton().GetPhysicsSettings().Enabled)
@@ -56,12 +53,12 @@ void Game::Init(string projectPath, GameComponentFactory* componentFactory)
     }
 
     // Rendering setup
-    RenderManager::Singleton()->Startup(windowWidth, windowHeight);
+    RenderManager::Singleton()->Startup(m_gameWindow->GetWidth(), m_gameWindow->GetHeight());
 
     // Input setup
-    InputManager::Singleton()->Startup(m_gameWindow);
+    InputManager::Singleton().Startup(inputProvider);
     XInputGamepad* xbox360controller = new XInputGamepad(0);            // TODO make this configurable
-    InputManager::Singleton()->EnableGamePad(xbox360controller, 0);
+    InputManager::Singleton().EnableGamePad(xbox360controller, 0);
 
     // Game Object setup
     GameObjectManager::Singleton().Startup();
@@ -88,7 +85,7 @@ void Game::Run(Scene* scene)
         framesSinceLastPhysicsUpdate++;
 
         // Input update
-        InputManager::Singleton()->PollEvents(m_deltaTime);
+        InputManager::Singleton().PollEvents(m_deltaTime);
 
         // Game Object update
         GameObjectManager::Singleton().Update(m_deltaTime);
@@ -120,13 +117,11 @@ void Game::Shutdown()
     PhysicsEngine::Singleton().Shutdown();
     GameProject::Singleton().Shutdown();
     ResourceManager::Singleton().Shutdown();
-    InputManager::Singleton()->Shutdown();
+    InputManager::Singleton().Shutdown();
     RenderManager::Singleton()->Shutdown();
 
     delete m_engineComponentFactory;
 
-    // Window cleanup
-    m_gameWindow->Destroy();
     exit(EXIT_SUCCESS);
 }
 

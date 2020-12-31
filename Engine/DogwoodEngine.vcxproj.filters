@@ -43,9 +43,6 @@
     <Filter Include="Source Files\Scene">
       <UniqueIdentifier>{daf58575-bc25-4f22-928f-9be5085efdb1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Window">
-      <UniqueIdentifier>{e7b0c546-ddd0-4bf4-a452-0292419e4481}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Rendering">
       <UniqueIdentifier>{2afb9262-a796-461a-966d-2e18de66f9f2}</UniqueIdentifier>
     </Filter>
@@ -55,23 +52,11 @@
     <Filter Include="Libraries">
       <UniqueIdentifier>{54a863f3-696b-42f4-a36b-371ea6356943}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Input\GL">
-      <UniqueIdentifier>{e11f22ec-28ed-4809-ab56-f684665c7b88}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Rendering\GL">
       <UniqueIdentifier>{e432896d-6c8a-4003-965e-100080374046}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Window\GL">
-      <UniqueIdentifier>{66f2cf64-98ca-40f2-86dc-f7d5556c1f71}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Input\GL">
-      <UniqueIdentifier>{ff7fea58-1a60-470f-bcee-e038bb884eb7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Rendering\GL">
       <UniqueIdentifier>{81f957cc-e3ed-45e6-8cb3-3f9a74030393}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Window\GL">
-      <UniqueIdentifier>{5a0c2689-7c59-4c9d-80cd-cb5c9259213f}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Animation">
       <UniqueIdentifier>{1e8bfadc-a7c9-4281-95f2-1620bec84e13}</UniqueIdentifier>
@@ -124,23 +109,11 @@
     <Filter Include="Source Files\Testing\DX">
       <UniqueIdentifier>{5fe8488b-9bda-4361-856d-7aff93a86e63}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Input\DX">
-      <UniqueIdentifier>{531bd7f3-1b3e-4d34-82d4-1c6bde3d1c61}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Rendering\DX">
       <UniqueIdentifier>{a222f19c-f628-4bc3-bd22-fa257280de30}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Window\DX">
-      <UniqueIdentifier>{bb6119f5-07eb-467e-b26e-771010096918}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Input\DX">
-      <UniqueIdentifier>{50089525-5313-42f6-b50c-b68cc8696e2b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Rendering\DX">
       <UniqueIdentifier>{fba6a7ea-a2c7-4306-87a3-feee3b015d21}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Window\DX">
-      <UniqueIdentifier>{8efb3c84-5463-443a-ba1f-bcb011cc93ce}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -268,9 +241,6 @@
     <ClInclude Include="Include\Input\Input.h">
       <Filter>Header Files\Input</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Input\GL\GLInputManager.h">
-      <Filter>Header Files\Input\GL</Filter>
-    </ClInclude>
     <ClInclude Include="Include\Rendering\GL\GLDebugDraw.h">
       <Filter>Header Files\Rendering\GL</Filter>
     </ClInclude>
@@ -282,9 +252,6 @@
     </ClInclude>
     <ClInclude Include="Include\Rendering\GL\GLShaderProgram.h">
       <Filter>Header Files\Rendering\GL</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Window\GL\GLGameWindow.h">
-      <Filter>Header Files\Window\GL</Filter>
     </ClInclude>
     <ClInclude Include="Include\Animation\Joint.h">
       <Filter>Header Files\Animation</Filter>
@@ -346,9 +313,6 @@
     <ClInclude Include="Include\Testing\DX\DXGraphicsAPI.h">
       <Filter>Header Files\Testing\DX</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Input\DX\DXInputManager.h">
-      <Filter>Header Files\Input\DX</Filter>
-    </ClInclude>
     <ClInclude Include="Include\Rendering\DX\DXDebugDraw.h">
       <Filter>Header Files\Rendering\DX</Filter>
     </ClInclude>
@@ -361,9 +325,6 @@
     <ClInclude Include="Include\Rendering\DX\DXShaderProgram.h">
       <Filter>Header Files\Rendering\DX</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Window\DX\DXGameWindow.h">
-      <Filter>Header Files\Window\DX</Filter>
-    </ClInclude>
     <ClInclude Include="Include\Rendering\GL\GLMesh.h">
       <Filter>Header Files\Rendering\GL</Filter>
     </ClInclude>
@@ -375,6 +336,9 @@
     </ClInclude>
     <ClInclude Include="Include\Rendering\DX\DXTexture.h">
       <Filter>Header Files\Rendering\DX</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Input\InputProvider.h">
+      <Filter>Header Files\Input</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -462,9 +426,6 @@
     <ClCompile Include="Src\Debugging\DebugLog.cpp">
       <Filter>Source Files\Debugging</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Input\GL\GLInputManager.cpp">
-      <Filter>Source Files\Input\GL</Filter>
-    </ClCompile>
     <ClCompile Include="Src\Rendering\GL\GLDebugDraw.cpp">
       <Filter>Source Files\Rendering\GL</Filter>
     </ClCompile>
@@ -482,9 +443,6 @@
     </ClCompile>
     <ClCompile Include="Src\Rendering\GL\GLTexture.cpp">
       <Filter>Source Files\Rendering\GL</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Window\GL\GLGameWindow.cpp">
-      <Filter>Source Files\Window\GL</Filter>
     </ClCompile>
     <ClCompile Include="Src\Animation\Joint.cpp">
       <Filter>Source Files\Animation</Filter>
@@ -543,9 +501,6 @@
     <ClCompile Include="Src\Testing\DX\DXGraphicsAPI.cpp">
       <Filter>Source Files\Testing\DX</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Input\DX\DXInputManager.cpp">
-      <Filter>Source Files\Input\DX</Filter>
-    </ClCompile>
     <ClCompile Include="Src\Rendering\DX\DXDebugDraw.cpp">
       <Filter>Source Files\Rendering\DX</Filter>
     </ClCompile>
@@ -564,8 +519,8 @@
     <ClCompile Include="Src\Rendering\DX\DXTexture.cpp">
       <Filter>Source Files\Rendering\DX</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Window\DX\DXGameWindow.cpp">
-      <Filter>Source Files\Window\DX</Filter>
+    <ClCompile Include="Src\Input\InputManager.cpp">
+      <Filter>Source Files\Input</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
