@@ -52,6 +52,8 @@ void App::Initialize(CoreApplicationView^ applicationView)
 	// At this point we have access to the device. 
 	// We can create the device-dependent resources.
 	m_deviceResources = std::make_shared<DX::DeviceResources>();
+
+
 }
 
 // Called when the CoreWindow object is created (or re-created).
@@ -66,6 +68,9 @@ void App::SetWindow(CoreWindow^ window)
 	window->Closed += 
 		ref new TypedEventHandler<CoreWindow^, CoreWindowEventArgs^>(this, &App::OnWindowClosed);
 
+	window->PointerPressed +=
+		ref new TypedEventHandler<CoreWindow^, PointerEventArgs^>(this, &App::OnPointerPressed);
+
 	DisplayInformation^ currentDisplayInformation = DisplayInformation::GetForCurrentView();
 
 	currentDisplayInformation->DpiChanged +=
@@ -78,6 +83,7 @@ void App::SetWindow(CoreWindow^ window)
 		ref new TypedEventHandler<DisplayInformation^, Object^>(this, &App::OnDisplayContentsInvalidated);
 
 	m_deviceResources->SetWindow(window);
+	m_gameWindow->SetCoreWindow(window);
 }
 
 // Initializes scene resources, or loads a previously saved app state.
@@ -86,6 +92,10 @@ void App::Load(Platform::String^ entryPoint)
 	if (m_main == nullptr)
 	{
 		m_main = std::unique_ptr<GameDXMain>(new GameDXMain(m_deviceResources));
+	}
+	if (m_gameWindow == nullptr)
+	{
+		m_gameWindow = std::unique_ptr<DXGameWindow>(new DXGameWindow());
 	}
 }
 
@@ -170,6 +180,11 @@ void App::OnVisibilityChanged(CoreWindow^ sender, VisibilityChangedEventArgs^ ar
 void App::OnWindowClosed(CoreWindow^ sender, CoreWindowEventArgs^ args)
 {
 	m_windowClosed = true;
+}
+
+void App::OnPointerPressed(Windows::UI::Core::CoreWindow^ sender, Windows::UI::Core::PointerEventArgs^ args)
+{
+	// TODO implement me
 }
 
 // DisplayInformation event handlers.

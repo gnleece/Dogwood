@@ -12,14 +12,11 @@ enum eMouseButtonValue
     DGWD_MOUSE_BUTTON_MIDDLE = 2
 };
 
+// Note: these enum values are defined to match the GLFW key codes
 enum eKeyValue
 {
     DGWD_KEY_SPACE = 32,
-    DGWD_KEY_APOSTROPHE = 39,
-    DGWD_KEY_COMMA = 44,
-    DGWD_KEY_MINUS = 45,
-    DGWD_KEY_PERIOD = 46,
-    DGWD_KEY_SLASH = 47,
+
     DGWD_KEY_0 = 48,
     DGWD_KEY_1 = 49,
     DGWD_KEY_2 = 50,
@@ -30,8 +27,7 @@ enum eKeyValue
     DGWD_KEY_7 = 55,
     DGWD_KEY_8 = 56,
     DGWD_KEY_9 = 57,
-    DGWD_KEY_SEMICOLON = 59,
-    DGWD_KEY_EQUAL = 61,
+
     DGWD_KEY_A = 65,
     DGWD_KEY_B = 66,
     DGWD_KEY_C = 67,
@@ -58,10 +54,6 @@ enum eKeyValue
     DGWD_KEY_X = 88,
     DGWD_KEY_Y = 89,
     DGWD_KEY_Z = 90,
-    DGWD_KEY_LEFT_BRACKET = 91,
-    DGWD_KEY_BACKSLASH = 92,
-    DGWD_KEY_RIGHT_BRACKET = 93,
-    DGWD_KEY_GRAVE_ACCENT = 96,
 
     DGWD_KEY_ESCAPE = 256,
     DGWD_KEY_ENTER = 257,
@@ -82,6 +74,7 @@ enum eKeyValue
     DGWD_KEY_NUM_LOCK = 282,
     DGWD_KEY_PRINT_SCREEN = 283,
     DGWD_KEY_PAUSE = 284,
+
     DGWD_KEY_F1 = 290,
     DGWD_KEY_F2 = 291,
     DGWD_KEY_F3 = 292,
@@ -106,7 +99,7 @@ enum eKeyValue
     DGWD_KEY_F22 = 311,
     DGWD_KEY_F23 = 312,
     DGWD_KEY_F24 = 313,
-    DGWD_KEY_F25 = 314,
+
     DGWD_KEY_KP_0 = 320,
     DGWD_KEY_KP_1 = 321,
     DGWD_KEY_KP_2 = 322,
@@ -117,20 +110,20 @@ enum eKeyValue
     DGWD_KEY_KP_7 = 327,
     DGWD_KEY_KP_8 = 328,
     DGWD_KEY_KP_9 = 329,
+
     DGWD_KEY_KP_DECIMAL = 330,
     DGWD_KEY_KP_DIVIDE = 331,
     DGWD_KEY_KP_MULTIPLY = 332,
     DGWD_KEY_KP_SUBTRACT = 333,
     DGWD_KEY_KP_ADD = 334,
-    DGWD_KEY_KP_ENTER = 335,
-    DGWD_KEY_KP_EQUAL = 336,
+
     DGWD_KEY_LEFT_SHIFT = 340,
     DGWD_KEY_LEFT_CONTROL = 341,
     DGWD_KEY_LEFT_ALT = 342,
-    DGWD_KEY_LEFT_SUPER = 343,
+
     DGWD_KEY_RIGHT_SHIFT = 344,
     DGWD_KEY_RIGHT_CONTROL = 345,
     DGWD_KEY_RIGHT_ALT = 346,
-    DGWD_KEY_RIGHT_SUPER = 347,
+
     DGWD_KEY_MENU = 348,
 };

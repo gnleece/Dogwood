@@ -337,9 +337,6 @@
     <ClInclude Include="Include\Rendering\DX\DXTexture.h">
       <Filter>Header Files\Rendering\DX</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Input\InputProvider.h">
-      <Filter>Header Files\Input</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Debugging\DebugCameraControls.cpp">

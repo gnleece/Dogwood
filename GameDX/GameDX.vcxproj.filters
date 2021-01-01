@@ -8,13 +8,13 @@
       <UniqueIdentifier>b2ab34ca-c5b4-45f0-8400-cd537b354f76</UniqueIdentifier>
       <Extensions>bmp;fbx;gif;jpg;jpeg;tga;tiff;tif;png</Extensions>
     </Filter>
-	<Filter Include="Content">
+    <Filter Include="Content">
       <UniqueIdentifier>e19d9892-bf3d-4432-ac35-c4c036a6539d</UniqueIdentifier>
     </Filter>
     <ClInclude Include="Common\DirectXHelper.h">
       <Filter>Common</Filter>
     </ClInclude>
-	<ClInclude Include="Common\StepTimer.h">
+    <ClInclude Include="Common\StepTimer.h">
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="Common\DeviceResources.h">
@@ -23,7 +23,7 @@
     <ClCompile Include="Common\DeviceResources.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-	<ClInclude Include="Content\Sample3DSceneRenderer.h">
+    <ClInclude Include="Content\Sample3DSceneRenderer.h">
       <Filter>Content</Filter>
     </ClInclude>
     <ClInclude Include="Content\SampleFpsTextRenderer.h">
@@ -32,13 +32,13 @@
     <ClInclude Include="Content\ShaderStructures.h">
       <Filter>Content</Filter>
     </ClInclude>
-	<ClCompile Include="Content\Sample3DSceneRenderer.cpp">
+    <ClCompile Include="Content\Sample3DSceneRenderer.cpp">
       <Filter>Content</Filter>
     </ClCompile>
     <ClCompile Include="Content\SampleFpsTextRenderer.cpp">
       <Filter>Content</Filter>
     </ClCompile>
-	<FxCompile Include="Content\SamplePixelShader.hlsl">
+    <FxCompile Include="Content\SamplePixelShader.hlsl">
       <Filter>Content</Filter>
     </FxCompile>
     <FxCompile Include="Content\SampleVertexShader.hlsl">
@@ -62,5 +62,29 @@
     <Image Include="Assets\Wide310x150Logo.scale-200.png">
       <Filter>Assets</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="App.cpp" />
+    <ClCompile Include="GameDXMain.cpp" />
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="Common\DXGameWindow.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="App.h" />
+    <ClInclude Include="GameDXMain.h" />
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="Common\DXGameWindow.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\StoreLogo.png">
+      <Filter>Assets</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <AppxManifest Include="Package.appxmanifest" />
   </ItemGroup>
 </Project>

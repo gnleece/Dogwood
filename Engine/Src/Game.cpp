@@ -18,7 +18,7 @@
 #include "GameProject.h"
 #include "Testing\GraphicsAPI.h"
 
-void Game::Init(string projectPath, GameWindow* gameWindow, InputProvider* inputProvider, GameComponentFactory* componentFactory)
+void Game::Init(string projectPath, GameWindow* gameWindow, GameComponentFactory* componentFactory)
 {
     GraphicsAPI* graphicsAPI = GraphicsAPI::Create();
     auto graphicsAPIName = graphicsAPI->GetGraphicsAPIName();
@@ -56,7 +56,7 @@ void Game::Init(string projectPath, GameWindow* gameWindow, InputProvider* input
     RenderManager::Singleton()->Startup(m_gameWindow->GetWidth(), m_gameWindow->GetHeight());
 
     // Input setup
-    InputManager::Singleton().Startup(inputProvider);
+    InputManager::Singleton().Startup(gameWindow);
     XInputGamepad* xbox360controller = new XInputGamepad(0);            // TODO make this configurable
     InputManager::Singleton().EnableGamePad(xbox360controller, 0);
 

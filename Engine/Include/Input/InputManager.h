@@ -6,7 +6,7 @@
 #include "Input/Input.h"
 
 class GamePad;
-class InputProvider;
+class GameWindow;
 
 using std::pair;
 using std::unordered_map;
@@ -22,7 +22,7 @@ public:
     }
     InputManager() {}
 
-    void Startup(InputProvider* inputProvider);
+    void Startup(GameWindow* gameWindow);
     void Shutdown();
 
     void PollEvents(float deltaTime);
@@ -35,5 +35,5 @@ public:
     bool        EnableGamePad(GamePad* pad, unsigned int id, bool enable = true);
 
 private:
-    InputProvider* m_inputProvider;
+    GameWindow* m_gameWindow;
 };

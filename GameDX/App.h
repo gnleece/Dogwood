@@ -2,7 +2,9 @@
 
 #include "pch.h"
 #include "Common\DeviceResources.h"
+#include "Common/DXGameWindow.h"
 #include "GameDXMain.h"
+
 
 namespace GameDX
 {
@@ -29,6 +31,7 @@ namespace GameDX
 		void OnWindowSizeChanged(Windows::UI::Core::CoreWindow^ sender, Windows::UI::Core::WindowSizeChangedEventArgs^ args);
 		void OnVisibilityChanged(Windows::UI::Core::CoreWindow^ sender, Windows::UI::Core::VisibilityChangedEventArgs^ args);
 		void OnWindowClosed(Windows::UI::Core::CoreWindow^ sender, Windows::UI::Core::CoreWindowEventArgs^ args);
+		void OnPointerPressed(Windows::UI::Core::CoreWindow^ sender, Windows::UI::Core::PointerEventArgs^ args);
 
 		// DisplayInformation event handlers.
 		void OnDpiChanged(Windows::Graphics::Display::DisplayInformation^ sender, Platform::Object^ args);
@@ -40,6 +43,8 @@ namespace GameDX
 		std::unique_ptr<GameDXMain> m_main;
 		bool m_windowClosed;
 		bool m_windowVisible;
+
+		std::unique_ptr<DXGameWindow> m_gameWindow;
 	};
 }
 

@@ -13,7 +13,6 @@ using std::string;
 class GameComponentFactory;
 class GameObject;
 class GameWindow;
-class InputProvider;
 
 class Game
 {
@@ -28,7 +27,7 @@ public:
     }
     Game() {}
 
-    void Init(string projectPath, GameWindow* gameWindow, InputProvider* inputProvider, GameComponentFactory* componentFactory);
+    void Init(string projectPath, GameWindow* gameWindow, GameComponentFactory* componentFactory);
     void Run(Scene* scene);
     
 private:

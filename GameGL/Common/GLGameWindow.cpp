@@ -2,12 +2,15 @@
 #include "GLGameWindow.h"
 
 #include "Math/Algebra.h"
+#include "Input/GamePad.h"
 
 #define GLEW_STATIC
 #include <GL/glew.h>
 
 #define GLFW_INCLUDE_GLU
 #include <GLFW/glfw3.h>
+
+#include <unordered_map>
 
 GLGameWindow::GLGameWindow(string name, int width, int height)
 {
@@ -37,6 +40,19 @@ void GLGameWindow::Destroy()
     glfwTerminate();
 }
 
+void GLGameWindow::PollEvents(float deltaTime)
+{
+    // Mouse / keyboard input
+    glfwPollEvents();
+
+    // Gamepad input
+    unordered_map<unsigned int, GamePad*>::iterator iter = m_gamePads.begin();
+    for (; iter != m_gamePads.end(); iter++)
+    {
+        iter->second->Refresh();
+    }
+}
+
 void GLGameWindow::SwapBuffers()
 {
     glfwSwapBuffers(m_window);
@@ -55,6 +71,11 @@ int GLGameWindow::GetWidth()
 int GLGameWindow::GetHeight()
 {
     return m_height;
+}
+
+float GLGameWindow::GetLastFrameTime()
+{
+    return (float)glfwGetTime();
 }
 
 bool GLGameWindow::GetKeyPressed(eKeyValue key)
@@ -78,9 +99,33 @@ CursorPos GLGameWindow::GetCursorPosition()
     return CursorPos((float)xPos, (float)yPos);
 }
 
-float GLGameWindow::GetLastFrameTime()
+GamePad* GLGameWindow::GetGamePad(unsigned int id)
 {
-    return (float)glfwGetTime();
+    if (m_gamePads.count(id) == 0)
+        return NULL;
+
+    return m_gamePads[id];
+}
+
+bool GLGameWindow::EnableGamePad(GamePad* pad, unsigned int id, bool enable)
+{
+    if (enable)
+    {
+        // Add pad to map if it doesn't exist already
+        if (m_gamePads.count(id) != 0)
+            return false;
+
+        m_gamePads[id] = pad;
+    }
+    else
+    {
+        // Clear pad from map, if it exists
+        if (m_gamePads.count(id) == 0)
+            return false;
+
+        m_gamePads.erase(id);
+    }
+    return true;
 }
 
 void GLGameWindow::ErrorCallback(int error, const char* description)

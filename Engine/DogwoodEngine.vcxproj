@@ -260,7 +260,6 @@
     <ClInclude Include="Include\Components\TestComponent.h" />
     <ClInclude Include="Include\Debugging\DebugCameraControls.h" />
     <ClInclude Include="Include\Input\Input.h" />
-    <ClInclude Include="Include\Input\InputProvider.h" />
     <ClInclude Include="Include\Rendering\DebugDraw.h" />
     <ClInclude Include="Include\Debugging\DebugLog.h" />
     <ClInclude Include="Include\Game.h" />
