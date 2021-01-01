@@ -71,6 +71,9 @@ void App::SetWindow(CoreWindow^ window)
 	window->PointerPressed +=
 		ref new TypedEventHandler<CoreWindow^, PointerEventArgs^>(this, &App::OnPointerPressed);
 
+	window->PointerReleased +=
+		ref new TypedEventHandler<CoreWindow^, PointerEventArgs^>(this, &App::OnPointerReleased);
+
 	DisplayInformation^ currentDisplayInformation = DisplayInformation::GetForCurrentView();
 
 	currentDisplayInformation->DpiChanged +=
@@ -180,7 +183,28 @@ void App::OnWindowClosed(CoreWindow^ sender, CoreWindowEventArgs^ args)
 
 void App::OnPointerPressed(Windows::UI::Core::CoreWindow^ sender, Windows::UI::Core::PointerEventArgs^ args)
 {
-	// TODO implement me
+	m_gameWindow->OnPointerPressed(args);
+
+	auto leftPressed = m_gameWindow->GetMouseButtonPressed(DGWD_MOUSE_BUTTON_LEFT) ? "true" : "false";
+	auto rightPressed = m_gameWindow->GetMouseButtonPressed(DGWD_MOUSE_BUTTON_RIGHT) ? "true" : "false";
+	auto middlePressed = m_gameWindow->GetMouseButtonPressed(DGWD_MOUSE_BUTTON_MIDDLE) ? "true" : "false";
+
+	char output[100];
+	sprintf_s(output, "L: %s, M: %s, R: %s\n", leftPressed, middlePressed, rightPressed);
+	OutputDebugStringA(output);
+}
+
+void App::OnPointerReleased(Windows::UI::Core::CoreWindow^ sender, Windows::UI::Core::PointerEventArgs^ args)
+{
+	m_gameWindow->OnPointerReleased(args);
+
+	auto leftPressed = m_gameWindow->GetMouseButtonPressed(DGWD_MOUSE_BUTTON_LEFT) ? "true" : "false";
+	auto rightPressed = m_gameWindow->GetMouseButtonPressed(DGWD_MOUSE_BUTTON_RIGHT) ? "true" : "false";
+	auto middlePressed = m_gameWindow->GetMouseButtonPressed(DGWD_MOUSE_BUTTON_MIDDLE) ? "true" : "false";
+
+	char output[100];
+	sprintf_s(output, "L: %s, M: %s, R: %s\n", leftPressed, middlePressed, rightPressed);
+	OutputDebugStringA(output);
 }
 
 // DisplayInformation event handlers.

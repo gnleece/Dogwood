@@ -6,6 +6,11 @@ using namespace Windows::UI::Input;
 using namespace Windows::System;
 using namespace Windows::Foundation;
 
+DXGameWindow::DXGameWindow()
+{
+    ClearPointerPressedStates();
+}
+
 void DXGameWindow::SetCoreWindow(Windows::UI::Core::CoreWindow^ coreWindow)
 {
     m_coreWindow = coreWindow;
@@ -13,7 +18,12 @@ void DXGameWindow::SetCoreWindow(Windows::UI::Core::CoreWindow^ coreWindow)
 
 void DXGameWindow::OnPointerPressed(Windows::UI::Core::PointerEventArgs^ args)
 {
-    
+    UpdatePointerPressedStates(args);
+}
+
+void DXGameWindow::OnPointerReleased(Windows::UI::Core::PointerEventArgs^ args)
+{
+    UpdatePointerPressedStates(args);
 }
 
 void DXGameWindow::PollEvents(float deltaTime)
@@ -54,7 +64,12 @@ bool DXGameWindow::GetKeyPressed(eKeyValue key)
 
 bool DXGameWindow::GetMouseButtonPressed(eMouseButtonValue button)
 {
-    return false;   // TODO implement me
+    if (m_pointerPressedStates.count(button) != 0)
+    {
+        return m_pointerPressedStates[button];
+    }
+    
+    return false;
 }
 
 CursorPos DXGameWindow::GetCursorPosition()
@@ -292,4 +307,22 @@ Windows::System::VirtualKey DXGameWindow::DGWDKeyToWindowsKey(eKeyValue dgwdKey)
             return Windows::System::VirtualKey::Menu;
     }
     return Windows::System::VirtualKey::None;
+}
+
+void DXGameWindow::ClearPointerPressedStates()
+{
+    m_pointerPressedStates[DGWD_MOUSE_BUTTON_LEFT] = false;
+    m_pointerPressedStates[DGWD_MOUSE_BUTTON_RIGHT] = false;
+    m_pointerPressedStates[DGWD_MOUSE_BUTTON_MIDDLE] = false;
+}
+
+void DXGameWindow::UpdatePointerPressedStates(Windows::UI::Core::PointerEventArgs^ args)
+{
+    auto leftButtonPressed = args->CurrentPoint->Properties->IsLeftButtonPressed;
+    auto rightButtonPressed = args->CurrentPoint->Properties->IsRightButtonPressed;
+    auto middleButtonPressed = args->CurrentPoint->Properties->IsMiddleButtonPressed;
+
+    m_pointerPressedStates[DGWD_MOUSE_BUTTON_LEFT] = leftButtonPressed;
+    m_pointerPressedStates[DGWD_MOUSE_BUTTON_RIGHT] = rightButtonPressed;
+    m_pointerPressedStates[DGWD_MOUSE_BUTTON_MIDDLE] = middleButtonPressed;
 }
