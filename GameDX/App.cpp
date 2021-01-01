@@ -53,7 +53,7 @@ void App::Initialize(CoreApplicationView^ applicationView)
 	// We can create the device-dependent resources.
 	m_deviceResources = std::make_shared<DX::DeviceResources>();
 
-
+	m_gameWindow = std::unique_ptr<DXGameWindow>(new DXGameWindow());
 }
 
 // Called when the CoreWindow object is created (or re-created).
@@ -92,10 +92,6 @@ void App::Load(Platform::String^ entryPoint)
 	if (m_main == nullptr)
 	{
 		m_main = std::unique_ptr<GameDXMain>(new GameDXMain(m_deviceResources));
-	}
-	if (m_gameWindow == nullptr)
-	{
-		m_gameWindow = std::unique_ptr<DXGameWindow>(new DXGameWindow());
 	}
 }
 

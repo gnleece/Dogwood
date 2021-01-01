@@ -30,7 +30,6 @@ public:
 private:
     static Windows::System::VirtualKey DGWDKeyToWindowsKey(eKeyValue dgwdKey);
 
-    //Windows::UI::Core::CoreWindow^ m_coreWindow;
     Platform::Agile<Windows::UI::Core::CoreWindow> m_coreWindow;
 
     int m_width;
