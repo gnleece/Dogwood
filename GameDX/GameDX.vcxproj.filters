@@ -62,6 +62,12 @@
     <Image Include="Assets\Wide310x150Logo.scale-200.png">
       <Filter>Assets</Filter>
     </Image>
+    <Filter Include="Generated">
+      <UniqueIdentifier>{2a9c40cf-5f03-4264-9359-70867bc14399}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts">
+      <UniqueIdentifier>{b53014c2-becd-4e0f-9da0-47d52437e350}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
@@ -70,6 +76,24 @@
     <ClCompile Include="Common\DXGameWindow.cpp">
       <Filter>Common</Filter>
     </ClCompile>
+    <ClCompile Include="Assets\Scripts\Bouncer.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\CameraControls.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\FooComponent.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Roller.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\SpinningComponent.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Scripts\Translator.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
@@ -77,6 +101,27 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="Common\DXGameWindow.h">
       <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Generated Files\GameComponentBindings.h">
+      <Filter>Generated</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Bouncer.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\CameraControls.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\FooComponent.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Roller.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\SpinningComponent.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Scripts\Translator.h">
+      <Filter>Scripts</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
