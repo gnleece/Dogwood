@@ -31,7 +31,7 @@ public:
     ToolsideGameObject*     DeepCopy(ToolsideGameObject* parent = NULL);
 
     // TODO this shouldn't be here
-    void                    Render(bool dirty, bool wireframe = false);
+    void                    Render(bool wireframe = false);
     void                    SetSelected(bool selected);
 
 private:

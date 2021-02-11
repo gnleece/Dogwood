@@ -1,0 +1,1 @@
+<Scripts><Script guid="248907459" path="ParticleSystem.h"><Param name="Color" type="5" /><Param name="MinAge" type="1" /><Param name="MaxAge" type="1" /><Param name="MinVelocity" type="4" /><Param name="MaxVelocity" type="4" /></Script><Script guid="4141601931" path="TestComponent.h"><Param name="IntParam" type="0" /><Param name="BoolParam" type="2" /></Script></Scripts>

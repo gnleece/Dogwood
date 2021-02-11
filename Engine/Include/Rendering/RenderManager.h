@@ -1,35 +1,28 @@
 #pragma once
 
-#define GLEW_STATIC
-#include <GL/glew.h>
-
 #include "Math\Algebra.h"
 #include "Math\Transform.h"
 #include "Math\Transformations.h"
-#include "Camera.h"
-#include "Light.h"
-#include "ShaderProgram.h"
+#include "Rendering\Camera.h"
+#include "Rendering\Light.h"
+#include "Rendering\ShaderProgram.h"
 
-#define GLFW_INCLUDE_GLU
-#include <GLFW/glfw3.h>
-
+class DebugDraw;
 class GameObjectBase;
-
-class PlatSpecificRenderer
-{
-public:
-    virtual void ApplyLight(Light& light, ShaderProgram* shader) = 0;
-};
+class Scene;
 
 class RenderManager
 {
 public:
-    static RenderManager& Singleton()
+    static RenderManager* Singleton()
     {
-        static RenderManager    singleton;
+        static RenderManager* singleton = RenderManager::Create();
         return singleton;
     }
     RenderManager() {}
+
+    RenderManager(RenderManager const&) = delete;
+    void operator=(RenderManager const&) = delete;
 
     enum eCommonShader
     {
@@ -40,39 +33,23 @@ public:
         NUM_COMMON_SHADERS
     };
 
-    void            Startup(int viewportWidth, int viewportHeight);
-    void            Shutdown();
+    virtual void Startup(int viewportWidth, int viewportHeight) = 0;
+    virtual void Shutdown() = 0;
 
-    void            SetRootObject(GameObjectBase* rootObject);
-    void            SetLight(Light light);
+    virtual Light& GetLight() = 0;
+    virtual void SetLight(Light& light) = 0;
 
-    Camera&         GetCamera();
-    void            SetCamera(Camera& camera);
+    virtual Camera& GetCamera() = 0;
+    virtual void SetCamera(Camera& camera) = 0;
 
-    void            RenderScene();
-    void            ApplyGlobalParams(ShaderProgram* shader);
+    virtual void RenderScene(Scene* scene) = 0;
 
-    int             GetViewportWidth();
-    int             GetViewportHeight();
+    virtual int GetViewportWidth() = 0;
+    virtual int GetViewportHeight() = 0;
 
-    bool            SettingsDirty();
-
-    ShaderProgram*  GetCommonShader(eCommonShader name);
+    virtual DebugDraw* GetDebugDraw() = 0;
 
 private:
-    RenderManager(RenderManager const&);
-
-    void            LoadCommonShaders();
-
-    PlatSpecificRenderer* m_platSpecificRenderer;
-
-    int             m_viewportWidth;
-    int             m_viewportHeight;
-    Camera          m_camera;                   // TODO support multiple cameras
-    Light           m_light;                    // TODO support multiple light sources
-    GameObjectBase* m_rootObject;
-
-    bool            m_dirty;
-
-    ShaderProgram*  m_commonShaders[NUM_COMMON_SHADERS];
+    static RenderManager* Create();
+    static void Destroy(RenderManager* renderManager);
 };

@@ -23,7 +23,8 @@ struct TextureResourceInfo : ResourceInfo
     virtual Resource* Load()
     {
         string absolutePath = ResourceManager::Singleton().GetResourceBasePath() + path;
-        Texture* texture = new Texture(absolutePath, this);
+        Texture* texture = Texture::Create();
+        texture->Init(absolutePath, this);
         return texture;
     }
 
@@ -44,7 +45,8 @@ struct MeshResourceInfo : ResourceInfo
     virtual Resource* Load()
     {
         string absolutePath = ResourceManager::Singleton().GetResourceBasePath() + path;
-        Mesh* mesh = new Mesh(absolutePath, this);
+        Mesh* mesh = Mesh::Create();
+        mesh->Init(absolutePath, this);
         return mesh;
     }
 
@@ -100,7 +102,8 @@ struct ShaderResourceInfo : ResourceInfo
     virtual Resource* Load()
     {
         string absolutePath = ResourceManager::Singleton().GetResourceBasePath() + path;
-        ShaderProgram* shader = new ShaderProgram(absolutePath, this);
+        ShaderProgram* shader = ShaderProgram::Create();
+        shader->Init(absolutePath, this);
         return shader;
     }
 

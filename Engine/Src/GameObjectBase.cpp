@@ -100,7 +100,7 @@ Transform& GameObjectBase::GetTransform()
 //    SetDirtyFlag();
 //}
 
-void GameObjectBase::Render(bool dirty, bool wireframe)
+void GameObjectBase::Render(bool wireframe)
 {
 }
 

@@ -1,0 +1,409 @@
+<Scene guid="3831924600">
+    <Camera>
+        <Position x="0" y="1" z="-5"/>
+        <Direction x="0" y="0" z="-1"/>
+        <Up x="0" y="1" z="0"/>
+    </Camera>
+    <Light>
+        <Position x="0" y="70" z="20"/>
+        <Color r="1" g="1" b="1"/>
+        <Power value="5000"/>
+    </Light>
+    <GameObject guid="2265445123" name="ROOT">
+        <Transform>
+            <Position x="0" y="0" z="0"/>
+            <Rotation x="0" y="-0" z="0"/>
+            <Scale x="1" y="1" z="1"/>
+        </Transform>
+        <Colliders/>
+        <Components/>
+        <GameObject guid="716764393" name="PinkCube">
+            <Transform>
+                <Position x="-10" y="0" z="4.29"/>
+                <Rotation x="0" y="-0" z="0"/>
+                <Scale x="1" y="1" z="1"/>
+            </Transform>
+            <Mesh guid="33727872">
+                <Material>
+                    <Shader guid="3746892247"/>
+                    <Color name="colorDiffuse" r="1" g="0.33333001" b="1"/>
+                    <Color name="colorAmbient" r="1" g="0.33333001" b="1"/>
+                    <Color name="colorSpecular" r="1" g="1" b="1"/>
+                </Material>
+            </Mesh>
+            <Colliders>
+                <Collider Type="1" IsStatic="1">
+                    <Center x="0" y="0" z="0"/>
+                    <Size x="1.1" y="1.1" z="1.1"/>
+                </Collider>
+            </Colliders>
+            <Components>
+                <Component guid="3988628104" engine="0">
+                    <Param name="BounceHeight" type="1" value="0"/>
+                    <Param name="BounceSpeed" type="1" value="1.337"/>
+                </Component>
+            </Components>
+        </GameObject>
+        <GameObject guid="3322579271" name="BlueCube">
+            <Transform>
+                <Position x="10" y="0" z="10"/>
+                <Rotation x="0" y="-0" z="0"/>
+                <Scale x="1" y="1" z="1"/>
+            </Transform>
+            <Mesh guid="33727872">
+                <Material>
+                    <Shader guid="3746892247"/>
+                    <Color name="colorDiffuse" r="0" g="0.66667002" b="1"/>
+                    <Color name="colorAmbient" r="0.33333001" g="0.66667002" b="1"/>
+                    <Color name="colorSpecular" r="1" g="1" b="1"/>
+                </Material>
+            </Mesh>
+            <Colliders>
+                <Collider Type="1" IsStatic="1">
+                    <Center x="0" y="0" z="0"/>
+                    <Size x="1.1" y="1.1" z="1.1"/>
+                </Collider>
+            </Colliders>
+            <Components/>
+        </GameObject>
+        <GameObject guid="3666634221" name="House">
+            <Transform>
+                <Position x="-6.27" y="0" z="-4.29"/>
+                <Rotation x="0" y="-0" z="0"/>
+                <Scale x="1" y="1" z="1"/>
+            </Transform>
+            <Mesh guid="870516493">
+                <Material>
+                    <Shader guid="3746892247"/>
+                    <Color name="colorDiffuse" r="0.60000002" g="0.60000002" b="0.60000002"/>
+                    <Color name="colorAmbient" r="0.67451" g="0.67451" b="0.67451"/>
+                    <Color name="colorSpecular" r="0.29804" g="0.29804" b="0.29804"/>
+                </Material>
+            </Mesh>
+            <Colliders>
+                <Collider Type="1" IsStatic="1">
+                    <Center x="0" y="0" z="-1"/>
+                    <Size x="1.5" y="2" z="2"/>
+                </Collider>
+            </Colliders>
+            <Components/>
+        </GameObject>
+        <GameObject guid="2032717194" name="Katamari">
+            <Transform>
+                <Position x="0" y="0.30000001" z="-3"/>
+                <Rotation x="0" y="-0" z="0"/>
+                <Scale x="0.30000001" y="0.30000001" z="0.30000001"/>
+            </Transform>
+            <Mesh guid="2234616278">
+                <Material>
+                    <Shader guid="3378413933"/>
+                    <Color name="colorDiffuse" r="0.99607998" g="0.66275001" b="0"/>
+                    <Color name="colorAmbient" r="0.93725002" g="0.62352997" b="0"/>
+                </Material>
+            </Mesh>
+            <Colliders>
+                <Collider Type="0" IsStatic="0" Radius="1">
+                    <Center x="0" y="0" z="0"/>
+                </Collider>
+            </Colliders>
+            <Components>
+                <Component guid="3055461197" engine="0">
+                    <Param name="Speed" type="1" value="90"/>
+                    <Param name="Radius" type="1" value="0.30000001"/>
+                    <Param name="CameraObject" type="6" value="2471797450"/>
+                </Component>
+                <Component guid="3988628104" engine="0">
+                    <Param name="BounceHeight" type="1" value="0"/>
+                    <Param name="BounceSpeed" type="1" value="1.337"/>
+                </Component>
+                <Component guid="1515607268" engine="0">
+                    <Param name="BarParam" type="1" value="0"/>
+                    <Param name="IntParam" type="0" value="12"/>
+                </Component>
+                <Component guid="248907459" engine="1">
+                    <Param name="Color" type="5" value="">
+                        <value r="1" g="1" b="0"/>
+                    </Param>
+                    <Param name="MinAge" type="1" value="0"/>
+                    <Param name="MaxAge" type="1" value="1818"/>
+                    <Param name="MinVelocity" type="4" value="">
+                        <value x="0" y="0" z="0"/>
+                    </Param>
+                    <Param name="MaxVelocity" type="4" value="">
+                        <value x="0" y="0" z="0"/>
+                    </Param>
+                </Component>
+            </Components>
+        </GameObject>
+        <GameObject guid="1337922550" name="UVTestCube">
+            <Transform>
+                <Position x="-8.3599997" y="0" z="-0.33000001"/>
+                <Rotation x="144" y="51.499992" z="175.5"/>
+                <Scale x="6.000001" y="1.4" z="2"/>
+            </Transform>
+            <Mesh guid="3303202035">
+                <Material>
+                    <Shader guid="3125582585"/>
+                    <Color name="color" r="1" g="1" b="1"/>
+                    <Texture guid="2152164934" name="tex"/>
+                </Material>
+            </Mesh>
+            <Colliders>
+                <Collider Type="1" IsStatic="1">
+                    <Center x="0" y="0" z="0"/>
+                    <Size x="1" y="1" z="1"/>
+                </Collider>
+            </Colliders>
+            <Components/>
+        </GameObject>
+        <GameObject guid="3882530706" name="Ground">
+            <Transform>
+                <Position x="0" y="0" z="0"/>
+                <Rotation x="0" y="-0" z="0"/>
+                <Scale x="13.10001" y="1" z="12.40001"/>
+            </Transform>
+            <Mesh guid="156145593">
+                <Material>
+                    <Shader guid="3746892247"/>
+                    <Color name="colorDiffuse" r="0" g="0.66667002" b="0"/>
+                    <Color name="colorAmbient" r="0" g="0.28235" b="0"/>
+                    <Color name="colorSpecular" r="1" g="1" b="1"/>
+                </Material>
+            </Mesh>
+            <Colliders/>
+            <Components/>
+        </GameObject>
+        <GameObject guid="674687349" name="Skybox">
+            <Transform>
+                <Position x="0" y="0" z="0"/>
+                <Rotation x="0" y="-0" z="0"/>
+                <Scale x="30" y="30" z="30"/>
+            </Transform>
+            <Mesh guid="3205911089">
+                <Material>
+                    <Shader guid="3125582585"/>
+                    <Color name="color" r="1" g="1" b="1"/>
+                    <Texture guid="536475533" name="tex"/>
+                </Material>
+            </Mesh>
+            <Colliders/>
+            <Components/>
+        </GameObject>
+        <GameObject guid="3825453907" name="YellowCube">
+            <Transform>
+                <Position x="10" y="0" z="0"/>
+                <Rotation x="45" y="-0" z="0"/>
+                <Scale x="1" y="3.9999995" z="0.99999988"/>
+            </Transform>
+            <Mesh guid="33727872">
+                <Material>
+                    <Shader guid="3746892247"/>
+                    <Color name="colorDiffuse" r="1" g="1" b="0"/>
+                    <Color name="colorAmbient" r="0.61961001" g="0.61961001" b="0.30588001"/>
+                    <Color name="colorSpecular" r="1" g="1" b="1"/>
+                </Material>
+            </Mesh>
+            <Colliders>
+                <Collider Type="1" IsStatic="1">
+                    <Center x="0" y="0" z="0"/>
+                    <Size x="1.1" y="1.1" z="1.1"/>
+                </Collider>
+            </Colliders>
+            <Components/>
+        </GameObject>
+        <GameObject guid="2279407888" name="OrangeCube">
+            <Transform>
+                <Position x="0" y="0" z="-10"/>
+                <Rotation x="0" y="-0" z="0"/>
+                <Scale x="1" y="1" z="1"/>
+            </Transform>
+            <Mesh guid="33727872">
+                <Material>
+                    <Shader guid="3125582585"/>
+                    <Color name="color" r="1" g="0.66667002" b="0"/>
+                    <Texture guid="3780387270" name="tex"/>
+                </Material>
+            </Mesh>
+            <Colliders>
+                <Collider Type="1" IsStatic="1">
+                    <Center x="0" y="0" z="0"/>
+                    <Size x="1.1" y="1.1" z="1.1"/>
+                </Collider>
+            </Colliders>
+            <Components/>
+        </GameObject>
+        <GameObject guid="914776713" name="RedCube">
+            <Transform>
+                <Position x="8" y="0" z="8"/>
+                <Rotation x="0" y="-0" z="0"/>
+                <Scale x="1" y="1" z="1"/>
+            </Transform>
+            <Mesh guid="33727872">
+                <Material>
+                    <Shader guid="3746892247"/>
+                    <Color name="colorDiffuse" r="1" g="0" b="0"/>
+                    <Color name="colorAmbient" r="0.41960999" g="0" b="0"/>
+                    <Color name="colorSpecular" r="1" g="1" b="1"/>
+                </Material>
+            </Mesh>
+            <Colliders>
+                <Collider Type="1" IsStatic="1">
+                    <Center x="0" y="0" z="0"/>
+                    <Size x="1.1" y="1.1" z="1.1"/>
+                </Collider>
+            </Colliders>
+            <Components/>
+        </GameObject>
+        <GameObject guid="2420281555" name="TallCube">
+            <Transform>
+                <Position x="-0.99000001" y="0" z="10"/>
+                <Rotation x="45" y="-0" z="0"/>
+                <Scale x="1.1" y="4.4000001" z="1.1"/>
+            </Transform>
+            <Mesh guid="1863496264">
+                <Material>
+                    <Shader guid="3746892247"/>
+                    <Color name="colorDiffuse" r="0.19608" g="0.45881999" b="0.031369999"/>
+                    <Color name="colorAmbient" r="0" g="0.41960999" b="0"/>
+                    <Color name="colorSpecular" r="1" g="1" b="1"/>
+                </Material>
+            </Mesh>
+            <Components/>
+        </GameObject>
+        <GameObject guid="1532105108" name="PurpleSphere">
+            <Transform>
+                <Position x="6.1599998" y="0" z="-4.73"/>
+                <Rotation x="0" y="-0" z="0"/>
+                <Scale x="1" y="1" z="1"/>
+            </Transform>
+            <Mesh guid="3936014360">
+                <Material>
+                    <Shader guid="3378413933"/>
+                    <Color name="colorDiffuse" r="0.47451001" g="0" b="0.7098"/>
+                    <Color name="colorAmbient" r="1" g="1" b="1"/>
+                </Material>
+            </Mesh>
+            <Colliders>
+                <Collider Type="0" IsStatic="1" Radius="1.1">
+                    <Center x="0" y="0" z="0"/>
+                </Collider>
+            </Colliders>
+            <Components>
+                <Component guid="248907459" engine="1">
+                    <Param name="Color" type="5" value="">
+                        <value r="1" g="0" b="0"/>
+                    </Param>
+                    <Param name="MinAge" type="1" value="0"/>
+                    <Param name="MaxAge" type="1" value="0"/>
+                    <Param name="MinVelocity" type="4" value="">
+                        <value x="0" y="0" z="0"/>
+                    </Param>
+                    <Param name="MaxVelocity" type="4" value="">
+                        <value x="0" y="0" z="0"/>
+                    </Param>
+                </Component>
+            </Components>
+        </GameObject>
+        <GameObject guid="1543037526" name="GreenSphere">
+            <Transform>
+                <Position x="2.97" y="0" z="6.5999999"/>
+                <Rotation x="0" y="-0" z="0"/>
+                <Scale x="2" y="2" z="2"/>
+            </Transform>
+            <Mesh guid="3936014360">
+                <Material>
+                    <Shader guid="3378413933"/>
+                    <Color name="colorDiffuse" r="1" g="0.66667002" b="0"/>
+                    <Color name="colorAmbient" r="1" g="0.66667002" b="0"/>
+                </Material>
+            </Mesh>
+            <Colliders>
+                <Collider Type="0" IsStatic="1" Radius="1">
+                    <Center x="0" y="0" z="0"/>
+                </Collider>
+            </Colliders>
+            <RigidBody IsEnabled="1"/>
+            <Components/>
+        </GameObject>
+        <GameObject guid="1890346747" name="CameraControls">
+            <Transform>
+                <Position x="0" y="0" z="0"/>
+                <Rotation x="0" y="-0" z="0"/>
+                <Scale x="1" y="1" z="1"/>
+            </Transform>
+            <Colliders/>
+            <Components>
+                <Component guid="1661142292" engine="0">
+                    <Param name="TargetObject" type="6" value="2032717194"/>
+                    <Param name="CameraObject" type="6" value="2471797450"/>
+                    <Param name="Distance" type="1" value="3.5"/>
+                    <Param name="Height" type="1" value="0.64999998"/>
+                    <Param name="HorizSpeed" type="1" value="100"/>
+                    <Param name="VertSpeed" type="1" value="100"/>
+                    <Param name="VertMin" type="1" value="-20"/>
+                    <Param name="VertMax" type="1" value="35"/>
+                </Component>
+            </Components>
+            <GameObject guid="2471797450" name="CameraObject">
+                <Transform>
+                    <Position x="0" y="0" z="0"/>
+                    <Rotation x="-179.99998" y="-5.0089557e-006" z="-179.99998"/>
+                    <Scale x="1" y="1" z="1"/>
+                </Transform>
+                <Colliders/>
+                <Components/>
+            </GameObject>
+        </GameObject>
+        <GameObject guid="2733155764" name="Marker">
+            <Transform>
+                <Position x="0" y="0" z="-2"/>
+                <Rotation x="0" y="-0" z="0"/>
+                <Scale x="0.2" y="0.2" z="0.2"/>
+            </Transform>
+            <Mesh guid="396944253">
+                <Material>
+                    <Shader guid="3746892247"/>
+                    <Color name="colorDiffuse" r="1" g="0" b="0"/>
+                    <Color name="colorAmbient" r="1" g="1" b="1"/>
+                    <Color name="colorSpecular" r="1" g="1" b="1"/>
+                </Material>
+            </Mesh>
+            <Colliders/>
+            <Components/>
+        </GameObject>
+        <GameObject guid="3232391516" name="Origin">
+            <Transform>
+                <Position x="0" y="0" z="0"/>
+                <Rotation x="0" y="-0" z="0"/>
+                <Scale x="0.2" y="0.2" z="0.2"/>
+            </Transform>
+            <Mesh guid="396944253">
+                <Material>
+                    <Shader guid="3746892247"/>
+                    <Color name="colorDiffuse" r="1" g="1" b="1"/>
+                    <Color name="colorAmbient" r="1" g="1" b="1"/>
+                    <Color name="colorSpecular" r="1" g="1" b="1"/>
+                </Material>
+            </Mesh>
+            <Colliders/>
+            <Components/>
+        </GameObject>
+    </GameObject>
+    <Resources>
+        <Resource guid="33727872"/>
+        <Resource guid="156145593"/>
+        <Resource guid="396944253"/>
+        <Resource guid="536475533"/>
+        <Resource guid="870516493"/>
+        <Resource guid="1863496264"/>
+        <Resource guid="2152164934"/>
+        <Resource guid="2234616278"/>
+        <Resource guid="3125582585"/>
+        <Resource guid="3205911089"/>
+        <Resource guid="3303202035"/>
+        <Resource guid="3378413933"/>
+        <Resource guid="3746892247"/>
+        <Resource guid="3780387270"/>
+        <Resource guid="3936014360"/>
+    </Resources>
+</Scene>

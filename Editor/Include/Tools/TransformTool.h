@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Debugging\DebugDraw.h"
 #include "Math\Algebra.h"
 #include "Math\Transform.h"
 #include "Tools\BaseSceneTool.h"
@@ -36,7 +35,7 @@ private:
     eSpace      m_space;
 
     Transform*  m_transform;
-    Gnomon      m_gnomon;
+    //Gnomon      m_gnomon;     // TODO fix me - debug draw
 
     float       m_arrowBase;
     float       m_arrowHeight;

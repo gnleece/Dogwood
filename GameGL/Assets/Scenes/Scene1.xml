@@ -1,0 +1,124 @@
+<Scene>
+    <Resources>
+        <Resource guid="489851566"/>
+        <Resource guid="156145593"/>
+        <Resource guid="3936014360"/>
+        <Resource guid="3746892247"/>
+        <Resource guid="4197557055"/>
+        <Resource guid="33727872"/>
+    </Resources>
+    <Camera>
+        <Position x="0.00000" y="1.00000" z="5.00000"/>
+        <Direction x="0.00000" y="0.00000" z="-1.00000"/>
+        <Up x="0.00000" y="1.00000" z="0.00000"/>
+    </Camera>
+    <Light>
+        <Position x="0.00000" y="2.00000" z="5.00000"/>
+        <Color r="1.00000" g="1.00000" b="1.00000"/>
+        <Power value="15.00000"/>
+    </Light>
+    <GameObject name="ROOT">
+        <Transform>
+            <Position x="0.00000" y="0.00000" z="0.00000"/>
+            <Rotation x="0.00000" y="0.00000" z="0.00000"/>
+            <Scale x="1.00000" y="1.00000" z="1.00000"/>
+        </Transform>
+        <GameObject name="Ground">
+            <Transform>
+                <Position x="0.00000" y="0.00000" z="0.44000"/>
+                <Rotation x="0.00000" y="0.00000" z="0.00000"/>
+                <Scale x="8.50000" y="1.00000" z="7.40000"/>
+            </Transform>
+            <Mesh guid="156145593">
+                <Material>
+                    <Shader guid="3746892247"/>
+                    <Color name="colorDiffuse" r="0.00000" g="0.66667" b="0.00000"/>
+                    <Color name="colorAmbient" r="1.00000" g="1.00000" b="1.00000"/>
+                    <Color name="colorSpecular" r="1.00000" g="1.00000" b="1.00000"/>
+                </Material>
+            </Mesh>
+        </GameObject>
+        <GameObject name="Sun">
+            <Transform>
+                <Position x="-4.29000" y="5.94000" z="0.00000"/>
+                <Rotation x="0.00000" y="0.00000" z="0.00000"/>
+                <Scale x="1.00000" y="1.00000" z="1.00000"/>
+            </Transform>
+            <Mesh guid="3936014360">
+                <Material>
+                    <Shader guid="3746892247"/>
+                    <Color name="colorDiffuse" r="1.00000" g="1.00000" b="0.00000"/>
+                    <Color name="colorAmbient" r="1.00000" g="1.00000" b="1.00000"/>
+                    <Color name="colorSpecular" r="1.00000" g="1.00000" b="1.00000"/>
+                </Material>
+            </Mesh>
+        </GameObject>
+        <GameObject name="House">
+            <Transform>
+                <Position x="0.00000" y="0.00000" z="0.00000"/>
+                <Rotation x="0.00000" y="0.00000" z="0.00000"/>
+                <Scale x="1.00000" y="1.00000" z="1.00000"/>
+            </Transform>
+            <GameObject name="Frame">
+                <Transform>
+                    <Position x="0.00000" y="1.43000" z="0.00000"/>
+                    <Rotation x="0.00000" y="0.00000" z="0.00000"/>
+                    <Scale x="2.60000" y="1.60000" z="1.00000"/>
+                </Transform>
+                <Mesh guid="33727872">
+                    <Material>
+                        <Shader guid="3746892247"/>
+                        <Color name="colorDiffuse" r="0.66667" g="0.33333" b="0.00000"/>
+                        <Color name="colorAmbient" r="0.09804" g="0.09804" b="0.09804"/>
+                        <Color name="colorSpecular" r="1.00000" g="1.00000" b="1.00000"/>
+                    </Material>
+                </Mesh>
+            </GameObject>
+            <GameObject name="Roof">
+                <Transform>
+                    <Position x="0.00000" y="4.07000" z="0.00000"/>
+                    <Rotation x="0.00000" y="0.00000" z="0.00000"/>
+                    <Scale x="3.20000" y="1.00000" z="1.00000"/>
+                </Transform>
+                <Mesh guid="489851566">
+                    <Material>
+                        <Shader guid="3746892247"/>
+                        <Color name="colorDiffuse" r="0.33333" g="0.00000" b="0.00000"/>
+                        <Color name="colorAmbient" r="0.10000" g="0.10000" b="0.10000"/>
+                        <Color name="colorSpecular" r="1.00000" g="1.00000" b="1.00000"/>
+                    </Material>
+                </Mesh>
+            </GameObject>
+            <GameObject name="Door">
+                <Transform>
+                    <Position x="-0.33000" y="0.99000" z="1.10000"/>
+                    <Rotation x="90.00000" y="0.00000" z="90.00000"/>
+                    <Scale x="1.00000" y="1.00000" z="1.00000"/>
+                </Transform>
+                <Mesh guid="156145593">
+                    <Material>
+                        <Shader guid="3746892247"/>
+                        <Color name="colorDiffuse" r="1.00000" g="0.33333" b="0.00000"/>
+                        <Color name="colorAmbient" r="0.10000" g="0.10000" b="0.10000"/>
+                        <Color name="colorSpecular" r="1.00000" g="1.00000" b="1.00000"/>
+                    </Material>
+                </Mesh>
+            </GameObject>
+            <GameObject name="Chimney">
+                <Transform>
+                    <Position x="1.98000" y="4.18000" z="0.00000"/>
+                    <Rotation x="0.00000" y="0.00000" z="0.00000"/>
+                    <Scale x="0.20000" y="1.00000" z="0.20000"/>
+                </Transform>
+                <Mesh guid="4197557055">
+                    <Material>
+                        <Shader guid="3746892247"/>
+                        <Color name="colorcolorDiffuse" r="1.00000" g="1.00000" b="1.00000"/>
+                        <Color name="colorAmbient" r="0.10000" g="0.10000" b="0.10000"/>
+                        <Color name="colorSpecular" r="1.00000" g="1.00000" b="1.00000"/>
+                    </Material>
+                </Mesh>
+            </GameObject>
+        </GameObject>
+    </GameObject>
+</Scene>

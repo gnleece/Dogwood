@@ -1,6 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug_DX|Win32">
+      <Configuration>Debug_DX</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug_DX|x64">
+      <Configuration>Debug_DX</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug_GL|Win32">
+      <Configuration>Debug_GL</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug_GL|x64">
+      <Configuration>Debug_GL</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
@@ -32,7 +48,31 @@
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_DX|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_GL|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_DX|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_GL|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
@@ -58,7 +98,19 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug_DX|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug_GL|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug_DX|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug_GL|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -77,7 +129,37 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)\Include;$(ProjectDir)\..\Libraries\GLFW\include;$(ProjectDir)\..\Libraries\GLEW\include;$(ProjectDir)\..\Libraries\tinyxml2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Include;$(ProjectDir)\..\Libraries\GLFW\include;$(ProjectDir)\..\Libraries\GLEW\include;$(ProjectDir)\..\Libraries\tinyxml2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_DX|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;GRAPHICS_DX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>false</SDLCheck>
+      <AdditionalIncludeDirectories>$(ProjectDir)Include;$(ProjectDir)\..\Libraries\GLFW\include;$(ProjectDir)\..\Libraries\GLEW\include;$(ProjectDir)\..\Libraries\tinyxml2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_GL|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;GRAPHICS_GL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>false</SDLCheck>
+      <AdditionalIncludeDirectories>$(ProjectDir)Include;$(ProjectDir)\..\Libraries\GLFW\include;$(ProjectDir)\..\Libraries\GLEW\include;$(ProjectDir)\..\Libraries\tinyxml2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -85,6 +167,36 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>false</SDLCheck>
+      <AdditionalIncludeDirectories>$(ProjectDir)\Include;$(ProjectDir)\..\Libraries\GLFW\include;$(ProjectDir)\..\Libraries\GLEW\include;$(ProjectDir)\..\Libraries\tinyxml2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_DX|x64'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>false</SDLCheck>
+      <AdditionalIncludeDirectories>$(ProjectDir)\Include;$(ProjectDir)\..\Libraries\GLFW\include;$(ProjectDir)\..\Libraries\GLEW\include;$(ProjectDir)\..\Libraries\tinyxml2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_GL|x64'">
     <ClCompile>
       <PrecompiledHeader>
       </PrecompiledHeader>
@@ -147,7 +259,8 @@
     <ClInclude Include="Include\Components\ParticleSystem.h" />
     <ClInclude Include="Include\Components\TestComponent.h" />
     <ClInclude Include="Include\Debugging\DebugCameraControls.h" />
-    <ClInclude Include="Include\Debugging\DebugDraw.h" />
+    <ClInclude Include="Include\Input\Input.h" />
+    <ClInclude Include="Include\Rendering\DebugDraw.h" />
     <ClInclude Include="Include\Debugging\DebugLog.h" />
     <ClInclude Include="Include\Game.h" />
     <ClInclude Include="Include\GameComponent.h" />
@@ -179,13 +292,24 @@
     <ClInclude Include="Include\Physics\RigidBodyContact.h" />
     <ClInclude Include="Include\Rendering\Camera.h" />
     <ClInclude Include="Include\Rendering\Color.h" />
+    <ClInclude Include="Include\Rendering\DX\DXDebugDraw.h" />
+    <ClInclude Include="Include\Rendering\DX\DXMaterial.h" />
+    <ClInclude Include="Include\Rendering\DX\DXMesh.h" />
+    <ClInclude Include="Include\Rendering\DX\DXRenderManager.h" />
+    <ClInclude Include="Include\Rendering\DX\DXShaderProgram.h" />
+    <ClInclude Include="Include\Rendering\DX\DXTexture.h" />
+    <ClInclude Include="Include\Rendering\GL\GLDebugDraw.h" />
+    <ClInclude Include="Include\Rendering\GL\GLMaterial.h" />
+    <ClInclude Include="Include\Rendering\GL\GLMesh.h" />
+    <ClInclude Include="Include\Rendering\GL\GLRenderManager.h" />
+    <ClInclude Include="Include\Rendering\GL\GLShaderProgram.h" />
+    <ClInclude Include="Include\Rendering\GL\GLTexture.h" />
     <ClInclude Include="Include\Rendering\Image.h" />
     <ClInclude Include="Include\Rendering\Light.h" />
     <ClInclude Include="Include\Rendering\Material.h" />
     <ClInclude Include="Include\Rendering\Mesh.h" />
     <ClInclude Include="Include\Rendering\MeshInstance.h" />
     <ClInclude Include="Include\Rendering\ModelLoading.h" />
-    <ClInclude Include="Include\Rendering\OpenGL\GLRenderer.h" />
     <ClInclude Include="Include\Rendering\RenderManager.h" />
     <ClInclude Include="Include\Rendering\ShaderProgram.h" />
     <ClInclude Include="Include\Rendering\Texture.h" />
@@ -194,6 +318,9 @@
     <ClInclude Include="Include\Scene\ResourceManager.h" />
     <ClInclude Include="Include\Scene\Scene.h" />
     <ClInclude Include="Include\Serialization\HierarchicalSerializer.h" />
+    <ClInclude Include="Include\Testing\DX\DXGraphicsAPI.h" />
+    <ClInclude Include="Include\Testing\GL\GLGraphicsAPI.h" />
+    <ClInclude Include="Include\Testing\GraphicsAPI.h" />
     <ClInclude Include="Include\ToolsideGameComponent.h" />
     <ClInclude Include="Include\ToolsideGameObject.h" />
     <ClInclude Include="Include\ToolsideShaderSchema.h" />
@@ -206,7 +333,6 @@
     <ClCompile Include="Src\Components\ParticleSystem.cpp" />
     <ClCompile Include="Src\Components\TestComponent.cpp" />
     <ClCompile Include="Src\Debugging\DebugCameraControls.cpp" />
-    <ClCompile Include="Src\Debugging\DebugDraw.cpp" />
     <ClCompile Include="Src\Debugging\DebugLog.cpp" />
     <ClCompile Include="Src\Game.cpp" />
     <ClCompile Include="Src\GameComponent.cpp" />
@@ -236,25 +362,32 @@
     <ClCompile Include="Src\Physics\RigidBodyContact.cpp" />
     <ClCompile Include="Src\Rendering\Camera.cpp" />
     <ClCompile Include="Src\Rendering\Color.cpp" />
+    <ClCompile Include="Src\Rendering\DX\DXDebugDraw.cpp" />
+    <ClCompile Include="Src\Rendering\DX\DXMaterial.cpp" />
+    <ClCompile Include="Src\Rendering\DX\DXMesh.cpp" />
+    <ClCompile Include="Src\Rendering\DX\DXRenderManager.cpp" />
+    <ClCompile Include="Src\Rendering\DX\DXShaderProgram.cpp" />
+    <ClCompile Include="Src\Rendering\DX\DXTexture.cpp" />
+    <ClCompile Include="Src\Rendering\GL\GLDebugDraw.cpp" />
+    <ClCompile Include="Src\Rendering\GL\GLMaterial.cpp" />
+    <ClCompile Include="Src\Rendering\GL\GLMesh.cpp" />
+    <ClCompile Include="Src\Rendering\GL\GLRenderManager.cpp" />
+    <ClCompile Include="Src\Rendering\GL\GLShaderProgram.cpp" />
+    <ClCompile Include="Src\Rendering\GL\GLTexture.cpp" />
     <ClCompile Include="Src\Rendering\Image.cpp" />
     <ClCompile Include="Src\Rendering\Light.cpp" />
-    <ClCompile Include="Src\Rendering\Material.cpp" />
-    <ClCompile Include="Src\Rendering\Mesh.cpp" />
     <ClCompile Include="Src\Rendering\MeshInstance.cpp" />
     <ClCompile Include="Src\Rendering\ModelLoading.cpp" />
-    <ClCompile Include="Src\Rendering\OpenGL\GLRenderer.cpp" />
-    <ClCompile Include="Src\Rendering\RenderManager.cpp" />
-    <ClCompile Include="Src\Rendering\ShaderProgram.cpp" />
-    <ClCompile Include="Src\Rendering\Texture.cpp" />
     <ClCompile Include="Src\Rendering\Vertex.cpp" />
     <ClCompile Include="Src\Scene\ResourceManager.cpp" />
     <ClCompile Include="Src\Scene\Scene.cpp" />
     <ClCompile Include="Src\Serialization\HierarchicalSerializer.cpp" />
+    <ClCompile Include="Src\Testing\DX\DXGraphicsAPI.cpp" />
+    <ClCompile Include="Src\Testing\GL\GLGraphicsAPI.cpp" />
     <ClCompile Include="Src\ToolsideGameComponent.cpp" />
     <ClCompile Include="Src\ToolsideGameObject.cpp" />
     <ClCompile Include="Src\ToolsideShaderSchema.cpp" />
     <ClCompile Include="Src\Util.cpp" />
-    <ClCompile Include="Src\Window\GameWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Src\Shaders\Unlit.frag.glsl" />

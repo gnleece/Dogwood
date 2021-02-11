@@ -1,34 +1,29 @@
 #pragma once
 
-#define GLEW_STATIC
-#include <GL/glew.h>
-
-#define GLFW_INCLUDE_GLU
-#include <GLFW/glfw3.h>
-
 #include <string>
+#include "Input/Input.h"
 
 using std::string;
+
+class GamePad;
 
 class GameWindow
 {
 public:
-    void Setup(string name, int width, int height);
-    void Destroy();
+    virtual void        PollEvents(float deltaTime) = 0;
 
-    void SwapBuffers();
-    bool ShouldClose();
+    virtual void        SwapBuffers() = 0;
+    virtual bool        ShouldClose() = 0;
 
-    int GetWidth();
-    int GetHeight();
-    GLFWwindow* GetGLFWWindow();
+    virtual int         GetWidth() = 0;
+    virtual int         GetHeight() = 0;
 
-private:
-    static void ErrorCallback(int error, const char* description);
+    virtual float       GetLastFrameTime() = 0;
 
-    GLFWwindow* m_window;
+    virtual bool        GetKeyPressed(eKeyValue key) = 0;
+    virtual bool        GetMouseButtonPressed(eMouseButtonValue button) = 0;
+    virtual CursorPos   GetCursorPosition() = 0;
 
-    string      m_name;
-    int         m_width;
-    int         m_height;
+    virtual GamePad*    GetGamePad(unsigned int id) = 0;
+    virtual bool        EnableGamePad(GamePad* pad, unsigned int id, bool enable = true) = 0;
 };

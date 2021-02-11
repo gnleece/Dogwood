@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
     int renderWidth = 990;           // TODO set this properly
     int renderHeight = 610;
     ColorRGB clearColor = ColorRGB(0.4f, 0.4f, 0.4f);   // TODO fixme
-    RenderManager::Singleton().Startup(renderWidth, renderHeight);
+    RenderManager::Singleton()->Startup(renderWidth, renderHeight);
     
     // Other manager setup
     ResourceManager::Singleton().Startup();
@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
             lastUpdate = lastUpdate.addMSecs(updateTimeStep);
         }
 
-        RenderManager::Singleton().RenderScene();
+        RenderManager::Singleton()->RenderScene();
         window.Update();
     }
     app.exit();
@@ -57,6 +57,6 @@ int main(int argc, char *argv[])
     // Shutdown
     GameProject::Singleton().Shutdown();
     ResourceManager::Singleton().Shutdown();
-    RenderManager::Singleton().Shutdown();
+    RenderManager::Singleton()->Shutdown();
 }
 

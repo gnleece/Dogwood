@@ -12,6 +12,7 @@ using std::string;
 
 class GameComponentFactory;
 class GameObject;
+class GameWindow;
 
 class Game
 {
@@ -26,15 +27,14 @@ public:
     }
     Game() {}
 
-    void Init(string projectPath, GameComponentFactory* componentFactory);
+    void Init(string projectPath, GameWindow* gameWindow, GameComponentFactory* componentFactory);
     void Run(Scene* scene);
     
 private:
     void Shutdown();
     void UpdateTime();
 
-    GameWindow  m_gameWindow;
-    GameObject* m_rootObject;
+    GameWindow* m_gameWindow;
     GameComponentFactory* m_engineComponentFactory;
 
     float       m_prevFrameEndTime;

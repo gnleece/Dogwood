@@ -16,9 +16,14 @@
 #include "GameObject.h"
 #include "GameObjectManager.h"
 #include "GameProject.h"
+#include "Testing\GraphicsAPI.h"
 
-void Game::Init(string projectPath, GameComponentFactory* componentFactory)
+void Game::Init(string projectPath, GameWindow* gameWindow, GameComponentFactory* componentFactory)
 {
+    GraphicsAPI* graphicsAPI = GraphicsAPI::Create();
+    auto graphicsAPIName = graphicsAPI->GetGraphicsAPIName();
+    printf(graphicsAPIName.c_str());
+
     printf("=============== GAME INIT ===============\n");
 
     srand((unsigned int)time(NULL));
@@ -38,9 +43,7 @@ void Game::Init(string projectPath, GameComponentFactory* componentFactory)
     GameProject::Singleton().SetRuntimeComponentFactory(m_engineComponentFactory, true);
 
     // Window setup
-    int windowWidth, windowHeight;
-    GameProject::Singleton().GetResolution(windowWidth, windowHeight);
-    m_gameWindow.Setup(GameProject::Singleton().GetName(), windowWidth, windowHeight);
+    m_gameWindow = gameWindow;
 
     // Physics setup
     if (GameProject::Singleton().GetPhysicsSettings().Enabled)
@@ -50,10 +53,10 @@ void Game::Init(string projectPath, GameComponentFactory* componentFactory)
     }
 
     // Rendering setup
-    RenderManager::Singleton().Startup(windowWidth, windowHeight);
+    RenderManager::Singleton()->Startup(m_gameWindow->GetWidth(), m_gameWindow->GetHeight());
 
     // Input setup
-    InputManager::Singleton().Startup(&m_gameWindow);
+    InputManager::Singleton().Startup(gameWindow);
     XInputGamepad* xbox360controller = new XInputGamepad(0);            // TODO make this configurable
     InputManager::Singleton().EnableGamePad(xbox360controller, 0);
 
@@ -64,13 +67,10 @@ void Game::Init(string projectPath, GameComponentFactory* componentFactory)
 void Game::Run(Scene* scene)
 {
     printf("\n=============== GAME RUN ===============\n");
-
-    m_rootObject = scene->GetRuntimeRootObject();
-    RenderManager::Singleton().SetRootObject(m_rootObject);
     
     // Frame time setup
     m_minFrameTime = 1 / (float)MAX_FPS;
-    m_prevFrameEndTime = (float)glfwGetTime();
+    m_prevFrameEndTime = m_gameWindow->GetLastFrameTime();
     m_deltaTime = 0;
     m_timeSinceFPSSnapshot = 0;
     m_framesSinceFPSSnapshot = 0;
@@ -80,7 +80,7 @@ void Game::Run(Scene* scene)
     bool physicsEnabled = GameProject::Singleton().GetPhysicsSettings().Enabled;
 
     // Game loop!
-    while (!m_gameWindow.ShouldClose())
+    while (!m_gameWindow->ShouldClose())
     {
         framesSinceLastPhysicsUpdate++;
 
@@ -90,9 +90,9 @@ void Game::Run(Scene* scene)
         // Game Object update
         GameObjectManager::Singleton().Update(m_deltaTime);
 
+        // Physics update
         if (physicsEnabled && framesSinceLastPhysicsUpdate > physicsUpdateInterval)
         {
-            // Physics update
             PhysicsEngine::Singleton().UpdateBodies(m_deltaTime);
             CollisionEngine::Singleton().CalculateCollisions(m_deltaTime);       // TODO fixed physics timestep?
             PhysicsEngine::Singleton().ResolveCollisions(m_deltaTime);
@@ -100,8 +100,8 @@ void Game::Run(Scene* scene)
         }
 
         // Rendering update
-        RenderManager::Singleton().RenderScene();
-        m_gameWindow.SwapBuffers();
+        RenderManager::Singleton()->RenderScene(scene);
+        m_gameWindow->SwapBuffers();
 
         UpdateTime();
     }
@@ -118,19 +118,17 @@ void Game::Shutdown()
     GameProject::Singleton().Shutdown();
     ResourceManager::Singleton().Shutdown();
     InputManager::Singleton().Shutdown();
-    RenderManager::Singleton().Shutdown();
+    RenderManager::Singleton()->Shutdown();
 
     delete m_engineComponentFactory;
 
-    // Window cleanup
-    m_gameWindow.Destroy();
     exit(EXIT_SUCCESS);
 }
 
 void Game::UpdateTime()
 {
     // Calculate the current frame time
-    float currentTime = (float)glfwGetTime();
+    float currentTime = m_gameWindow->GetLastFrameTime();
     m_deltaTime = currentTime - m_prevFrameEndTime;
 
     // If this frame finished faster than expected, sleep for a while so we don't eat CPU
@@ -139,7 +137,7 @@ void Game::UpdateTime()
         float sleepTime = m_minFrameTime - m_deltaTime;
         std::this_thread::sleep_for(std::chrono::milliseconds((long)(sleepTime * 1000)));
 
-        currentTime = (float)glfwGetTime();
+        currentTime = m_gameWindow->GetLastFrameTime();
         m_deltaTime = currentTime - m_prevFrameEndTime;
     }
 

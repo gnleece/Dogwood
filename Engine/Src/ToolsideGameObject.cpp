@@ -131,7 +131,7 @@ ToolsideGameObject* ToolsideGameObject::DeepCopy(ToolsideGameObject* parent)
 }
 
 // TODO this shouldn't be here
-void ToolsideGameObject::Render(bool dirty, bool wireframe)
+void ToolsideGameObject::Render(bool wireframe)
 {
     wireframe |= m_selected;
 
@@ -146,7 +146,7 @@ void ToolsideGameObject::Render(bool dirty, bool wireframe)
     for (childIter = m_children.begin(); childIter != m_children.end(); childIter++)
     {
         ToolsideGameObject* child = (ToolsideGameObject*)*childIter;
-        child->Render(dirty, wireframe);
+        child->Render(wireframe);
     }
 
     if (m_selected)

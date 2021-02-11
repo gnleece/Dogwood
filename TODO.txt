@@ -113,6 +113,7 @@ EDITOR
         - Function parity for algebra classes
 
         Hi pri
+        - Gnomon and scene view grid are broken (Debug draw refactor)
         - "New Scene" is broken
         - Fix translation tool interactions
             - Local vs. global
@@ -215,6 +216,7 @@ DESIGN DECISIONS
     - Shaders (2 files per shader -> single file format)
     - Serialization (raw XML -> HierarchicalSerializer)
     - TODO wrap all OpenGL (to allow DirectX support as alternate option)
+        - Interface/implementation separation (abstract classes in headers, plat-specific implementations in .cpp)
     - TODO quaternions
     - TODO C#/XAML for Editor?
     - TODO clean up engine interface for game code / separate internal vs. external components
