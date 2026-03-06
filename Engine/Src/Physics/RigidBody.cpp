@@ -203,7 +203,6 @@ void RigidBody::Integrate(float deltaTime)
 void RigidBody::AddForce(Vector3& force)
 {
     m_accumulatedForce += force;
-    printf("Add force\n");
     SetAwake(true);
 }
 
